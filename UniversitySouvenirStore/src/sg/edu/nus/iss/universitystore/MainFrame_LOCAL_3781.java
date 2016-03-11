@@ -10,7 +10,6 @@ import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import sg.edu.nus.iss.universitystore.controller.LoginController;
 import sg.edu.nus.iss.universitystore.view.MainPanel;
 
 public class MainFrame extends JFrame{
@@ -104,8 +103,6 @@ public class MainFrame extends JFrame{
 			public void run() {
 				MainFrame mainFrame = new MainFrame();
 				mainFrame.createAndShowGUI();
-				LoginController lgController=new LoginController();
-				mainFrame.getMainPanel().add(lgController.getLoginPanel());
 			}
 		});
 	}
