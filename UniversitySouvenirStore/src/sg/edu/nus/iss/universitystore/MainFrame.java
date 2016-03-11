@@ -30,6 +30,13 @@ public class MainFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 	/***********************************************************/
+	//Getters & Setters
+	/***********************************************************/
+	public MainPanel getMainPanel() {
+		return mainPanel;
+	}
+	
+	/***********************************************************/
 	//Private Methods
 	/***********************************************************/
 	private void addMenuToFrame() {
@@ -96,6 +103,7 @@ public class MainFrame extends JFrame{
 			public void run() {
 				MainFrame mainFrame = new MainFrame();
 				mainFrame.createAndShowGUI();
+				mainFrame.getPa
 			}
 		});
 	}
