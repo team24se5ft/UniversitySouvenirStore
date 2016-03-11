@@ -12,4 +12,5 @@ public interface ILoginDelegate {
 	/*
 	 * Declare the methods & add the default implementation to each method.
 	 */
+	public void buttonAction();
 }
