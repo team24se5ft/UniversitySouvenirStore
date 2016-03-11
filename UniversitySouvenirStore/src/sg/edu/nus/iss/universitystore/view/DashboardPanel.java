@@ -5,7 +5,6 @@ package sg.edu.nus.iss.universitystore.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
@@ -24,14 +23,11 @@ public class DashboardPanel extends JPanel{
 		
 		setLayout(new BorderLayout());
 		
-		optionPanel = new JPanel();
+		optionPanel = new DashboardOptionsPanel();
 		mainContentPanel = new JPanel();
 		notificationPanel = new JPanel();
 		
 		//Customize the options panel
-		optionPanel.setPreferredSize(new Dimension(200, 300));
-		optionPanel.setMaximumSize(new Dimension(200, 300));
-		optionPanel.setBackground(new Color(100, 200, 150));
 		add(optionPanel, BorderLayout.WEST);
 		
 		//Customize the main content panel
@@ -43,7 +39,7 @@ public class DashboardPanel extends JPanel{
 	//Instance Variables
 	/***********************************************************/
 	private static final long serialVersionUID = 1L;
-	private JPanel optionPanel;
+	private DashboardOptionsPanel optionPanel;
 	private JPanel mainContentPanel;
 	private JPanel notificationPanel;
 	

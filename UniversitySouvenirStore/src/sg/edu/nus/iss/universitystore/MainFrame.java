@@ -9,7 +9,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
+import sg.edu.nus.iss.universitystore.controller.DashboardController;
 import sg.edu.nus.iss.universitystore.controller.LoginController;
 import sg.edu.nus.iss.universitystore.view.MainPanel;
 
@@ -88,15 +90,16 @@ public class MainFrame extends JFrame{
 	//Main
 	/***********************************************************/
 	public static void main(String[] args) {
-		// take the menu bar off the frame
+		//Take the menu bar off the frame
 		System.setProperty(Constants.APPLE_MENUBAR, STR_TRUE);
 
-		// set the look and feel
+		//Set the look and feel
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
 
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -104,8 +107,13 @@ public class MainFrame extends JFrame{
 			public void run() {
 				MainFrame mainFrame = new MainFrame();
 				mainFrame.createAndShowGUI();
-				LoginController lgController=new LoginController();
-				mainFrame.getMainPanel().add(lgController.getLoginPanel());
+				//Add the login screen on launch
+				LoginController loginController = new LoginController();
+				mainFrame.getMainPanel().add(loginController.getLoginPanel());
+				
+				//Test
+				DashboardController dashboardController = new DashboardController();
+				//mainFrame.getMainPanel().add(dashboardController.getDashboardPanel());
 			}
 		});
 	}

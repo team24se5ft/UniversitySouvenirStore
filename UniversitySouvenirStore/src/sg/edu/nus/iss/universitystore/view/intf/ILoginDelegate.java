@@ -9,8 +9,10 @@ package sg.edu.nus.iss.universitystore.view.intf;
  */
 public interface ILoginDelegate {
 
-	/*
-	 * Declare the methods & add the default implementation to each method.
+	/**
+	 * Method called when the login button is clicked.
+	 * @param username The username input by the  user.
+	 * @param password The password input by the user.
 	 */
-	public void buttonAction();
+	public void loginButtonClicked(String username, String password);
 }

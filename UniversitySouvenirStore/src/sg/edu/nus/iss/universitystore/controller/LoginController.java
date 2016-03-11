@@ -5,20 +5,38 @@ import javax.swing.JPanel;
 import sg.edu.nus.iss.universitystore.view.LoginPanel;
 import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
 
+/**
+ * @author Samrat
+ *
+ */
 public class LoginController implements ILoginDelegate {
-	private LoginPanel logPanel;
+	
+	/***********************************************************/
+	//Instance Variables
+	/***********************************************************/
+	private LoginPanel loginPanel;
 
+	/***********************************************************/
+	//Constructors
+	/***********************************************************/
 	public LoginController() {
-		logPanel = new LoginPanel();
-		logPanel.setLoginPanelListener(this);
+		loginPanel = new LoginPanel();
+		loginPanel.setLoginListener(this);
 	}
 	
+	/***********************************************************/
+	//Public Methods
+	/***********************************************************/
 	public JPanel getLoginPanel(){
-		return logPanel;
+		return loginPanel;
 	}
 
+	/***********************************************************/
+	//Interface Implementations
+	/***********************************************************/
 	@Override
-	public void buttonAction() {
-		System.out.println(123);
+	public void loginButtonClicked(String username, String password) {
+		//Validate the credentials here.
+		System.out.println(username + "\n" + password);
 	}
 }

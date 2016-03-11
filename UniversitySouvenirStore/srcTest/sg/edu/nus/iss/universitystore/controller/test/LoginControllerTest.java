@@ -1,6 +1,6 @@
 package sg.edu.nus.iss.universitystore.controller.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
