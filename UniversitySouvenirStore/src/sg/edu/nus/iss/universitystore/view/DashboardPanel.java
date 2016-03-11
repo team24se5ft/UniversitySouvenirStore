@@ -9,4 +9,8 @@ package sg.edu.nus.iss.universitystore.view;
  */
 public class DashboardPanel {
 
+	
+	public DashboardPanel({
+		
+	})
 }
