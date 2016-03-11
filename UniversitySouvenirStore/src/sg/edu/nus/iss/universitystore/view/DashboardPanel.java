@@ -3,14 +3,23 @@
  */
 package sg.edu.nus.iss.universitystore.view;
 
+import javax.swing.JPanel;
+
 /**
  * @author Samrat
  *
  */
-public class DashboardPanel {
+public class DashboardPanel extends JPanel{
 
-	
-	public DashboardPanel({
+	/***********************************************************/
+	//Constructors
+	/***********************************************************/
+	public DashboardPanel(){
 		
-	})
+	}
+	
+	/***********************************************************/
+	//Instance Variables
+	/***********************************************************/
+	private static final long serialVersionUID = 1L;
 }

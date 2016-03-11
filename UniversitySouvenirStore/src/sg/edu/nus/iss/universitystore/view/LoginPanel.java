@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
 
 public class LoginPanel extends JPanel {
+	
+	private static final long serialVersionUID = 1L;
 	private final static String STR_UserLabel = "userName";
 	private final static String STR_PwdLabel = "password";
 	private JLabel userLabel;
