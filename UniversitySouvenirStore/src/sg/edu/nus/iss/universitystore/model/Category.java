@@ -1,6 +1,9 @@
 package sg.edu.nus.iss.universitystore.model;
 
 public class Category {
+	
+	private final static int C_CODE = 0;
+	private final static int C_NAME = 1;
 
 	/***********************************************************/
 	//Instance Variables
@@ -14,6 +17,9 @@ public class Category {
 	public Category(String code, String name){
 		this.code = code;
 		this.name = name;
+	}
+	public Category(String[] args){
+		this(args[C_CODE], args[C_NAME]);
 	}
 	/***********************************************************/
 	//Getters & Setters
@@ -41,6 +47,6 @@ public class Category {
 	 */
 	@Override
 	public String toString() {
-		return "Category [code=" + code + ", name=" + name + "]";
+		return code + ", " + name;
 	}
 }
