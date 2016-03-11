@@ -103,7 +103,6 @@ public class MainFrame extends JFrame{
 			public void run() {
 				MainFrame mainFrame = new MainFrame();
 				mainFrame.createAndShowGUI();
-				mainFrame.getPa
 			}
 		});
 	}
