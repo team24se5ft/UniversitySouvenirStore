@@ -21,32 +21,40 @@ public class DashboardOptionsPanel extends JPanel {
 	public DashboardOptionsPanel() {
 		createGUI();
 	}
-	
+
 	private void createGUI() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(200, 300));
 		setMaximumSize(new Dimension(200, 300));
 		setBackground(new Color(100, 200, 150));
-		
+
 		addButtons();
 		addAnnouncementPane();
 	}
-	
+
 	private void addButtons() {
-		JPanel salesPanel = new JPanel();
-		salesPanel.setLayout(new GridBagLayout());
-		salesPanel.setPreferredSize(new Dimension(200, 50));
-		salesPanel.setMaximumSize(new Dimension(200, 50));
-		salesPanel.setBackground(new Color(10, 50, 150));
-		JLabel label =  new JLabel("Sales");
-		label.setFont(new Font("Verdana",1,30));
-		label.setForeground(Color.WHITE);
-		salesPanel.add(label);
-		
-		add(salesPanel);
+		add(configOptionButton("Sales", 25));
+		add(configOptionButton("Inventory", 25));
+		add(configOptionButton("Discount", 25));
+		add(configOptionButton("Report", 25));
+		add(configOptionButton("Logout", 25));
 	}
-	
+
+	//option Button config here
+	private JPanel configOptionButton(String labelText, int FontSize) {
+		JPanel jpanel = new JPanel();
+		jpanel.setLayout(new GridBagLayout());
+		jpanel.setPreferredSize(new Dimension(200, 50));
+		jpanel.setMaximumSize(new Dimension(200, 50));
+		jpanel.setBackground(new Color(10, 50, 150));
+		JLabel label = new JLabel(labelText);
+		label.setFont(new Font("Verdana", 1, FontSize));
+		label.setForeground(Color.WHITE);
+		jpanel.add(label);
+		return jpanel;
+	}
+
 	private void addAnnouncementPane() {
-		
+
 	}
 }
