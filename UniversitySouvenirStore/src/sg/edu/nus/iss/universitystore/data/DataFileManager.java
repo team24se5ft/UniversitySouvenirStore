@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import sg.edu.nus.iss.universitystore.constants.DataConstants;
 import sg.edu.nus.iss.universitystore.constants.StoreConstants;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
@@ -73,8 +74,7 @@ public class DataFileManager {
 		ArrayList<Category> categories = new ArrayList<>();
 
 		for (String categoryStr : categoryStrList) {
-			String[] strSplit = categoryStr.split(",");
-			categories.add(new Category(strSplit));
+			categories.add(new Category(categoryStr.split(DataConstants.DAT_FILE_SEPRTR)));
 		}
 
 		return categories;
@@ -107,9 +107,8 @@ public class DataFileManager {
 		String[] strKprStrList = storeKeeperData.getAll();
 		ArrayList<StoreKeeper> storeKeeper = new ArrayList<>();
 
-		for (String categoryStr : strKprStrList) {
-			String[] strSplit = categoryStr.split(",");
-			storeKeeper.add(new StoreKeeper(strSplit));
+		for (String strKprStr : strKprStrList) {
+			storeKeeper.add(new StoreKeeper(strKprStr.split(DataConstants.DAT_FILE_SEPRTR)));
 		}
 
 		return storeKeeper;

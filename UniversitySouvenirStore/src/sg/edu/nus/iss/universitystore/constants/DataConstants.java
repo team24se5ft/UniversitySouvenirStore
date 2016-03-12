@@ -11,4 +11,6 @@ public final class DataConstants {
 	public static final String NEW_LINE = "\n";
 	public static final String DIR_SEPARATOR = "\\";
 	public static final String DAT_FILE_PATH = System.getProperty("user.dir") + "\\data\\";
+	public static final String DAT_FILE_SEPRTR = ",";
+	public static final String DAT_FILE_EMPTY = "";
 }
