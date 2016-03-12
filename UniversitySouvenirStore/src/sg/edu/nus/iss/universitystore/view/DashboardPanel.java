@@ -50,10 +50,10 @@ public class DashboardPanel extends JPanel {
 		layout.setHgap(10);
 		layout.setVgap(10);
 		mainContentPanel.setLayout(layout);
-		mainContentPanel.add(DashboardOptionsPanel.STR_sales, new SalesPanel());
-		mainContentPanel.add(DashboardOptionsPanel.STR_inventory, new InventoryPanel());
-		mainContentPanel.add(DashboardOptionsPanel.STR_discount, new DiscountPanel());
-		mainContentPanel.add(DashboardOptionsPanel.STR_report, new ReportPanel());
+		mainContentPanel.add(DashboardOptionsPanel.STR_SALES, new SalesPanel());
+		mainContentPanel.add(DashboardOptionsPanel.STR_INVENTORY, new InventoryPanel());
+		mainContentPanel.add(DashboardOptionsPanel.STR_DISCOUNT, new DiscountPanel());
+		mainContentPanel.add(DashboardOptionsPanel.STR_REPORTS, new ReportPanel());
 		add(mainContentPanel, BorderLayout.CENTER);
 	}
 
@@ -67,7 +67,7 @@ public class DashboardPanel extends JPanel {
 
 	public void changePanel(String option) {
 		System.out.println(option);
-		if (option == DashboardOptionsPanel.STR_logout) {
+		if (option == DashboardOptionsPanel.STR_LOGOUT) {
 			// dispose mainFrame and show Login page
 			return;
 		}
