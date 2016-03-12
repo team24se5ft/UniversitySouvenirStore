@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.universitystore.model.dao.data.impl;
+package sg.edu.nus.iss.universitystore.data;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -8,8 +8,7 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
-import sg.edu.nus.iss.universitystore.model.dao.constants.DataConstants;
-import sg.edu.nus.iss.universitystore.model.dao.data.intf.DataFile;
+import sg.edu.nus.iss.universitystore.constants.DataConstants;
 
 /**
  * Data Access Object Implementation
@@ -18,11 +17,11 @@ import sg.edu.nus.iss.universitystore.model.dao.data.intf.DataFile;
  *
  * @param <T>
  */
-public class DataFileImpl<T> implements DataFile<T> {
+class DataFile<T> implements sg.edu.nus.iss.universitystore.data.intf.DataFile<T> {
 	
 	private String fileName;
 	
-	public DataFileImpl(String fileName) throws FileNotFoundException, IOException{
+	DataFile(String fileName) throws FileNotFoundException, IOException{
 		this.fileName = DataConstants.DAT_FILE_PATH +  
 				fileName + DataConstants.EXTENSION;
 		initialize();
@@ -44,7 +43,6 @@ public class DataFileImpl<T> implements DataFile<T> {
 
 	@Override
 	public void delete(Object id) throws IOException {
-		// TODO Auto-generated method stub
 		String[] contents = getAll();
 		StringBuffer newContent = new StringBuffer();
 		for(String line : contents){

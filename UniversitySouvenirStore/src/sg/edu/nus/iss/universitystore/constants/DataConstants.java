@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.universitystore.model.dao.constants;
+package sg.edu.nus.iss.universitystore.constants;
 
 /**
  * Constants for Data Access Objects
