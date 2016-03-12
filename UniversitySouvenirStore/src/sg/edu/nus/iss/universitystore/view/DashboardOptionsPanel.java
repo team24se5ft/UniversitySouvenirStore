@@ -29,9 +29,10 @@ public class DashboardOptionsPanel extends JPanel {
 	/***********************************************************/
 	public static final String STR_SALES = "Sales";
 	public static final String STR_INVENTORY = "Inventory";
+	public static final String STR_MEMBER = "Member";
+	public static final String STR_DISCOUNT = "Discount";
 	public static final String STR_REPORTS = "Reports";
 	public static final String STR_LOGOUT = "Logout";
-	public static final String STR_DISCOUNT = "Discount";
 	
 	/***********************************************************/
 	//Constructors
@@ -63,6 +64,7 @@ public class DashboardOptionsPanel extends JPanel {
 	private void addButtons() {
 		add(configureOptionButton(STR_SALES, 25));
 		add(configureOptionButton(STR_INVENTORY, 25));
+		add(configureOptionButton(STR_MEMBER, 25));
 		add(configureOptionButton(STR_DISCOUNT, 25));
 		add(configureOptionButton(STR_REPORTS, 25));
 		add(configureOptionButton(STR_LOGOUT, 25));
