@@ -41,7 +41,7 @@ public class UIUtils {
 	 * @param message The message of the dialog
 	 * @param dialogType The dialog type.
 	 */
-	public static void displayOptionPane(JPanel panel,String title, String message ,DialogType dialogType) {
+	public static void showMessageDialog(JPanel panel,String title, String message ,DialogType dialogType) {
 		int messageType;
 		switch (dialogType) {
 		case ERROR_MESSAGE:

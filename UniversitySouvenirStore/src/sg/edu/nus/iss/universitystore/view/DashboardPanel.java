@@ -6,6 +6,7 @@ package sg.edu.nus.iss.universitystore.view;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
@@ -60,10 +61,14 @@ public class DashboardPanel extends JPanel implements DashBoardOptionChangeDeleg
 	// Private Methods
 	/***********************************************************/
 	private void changePanel(String option) {
-		System.out.println(option);
 		if (option.equals(DashboardOptionsPanel.STR_LOGOUT)) {
-			UIUtils.navigateToLogin(this);
-			return;
+			//TODO - Do we keep it here or move to controller?
+			int result = JOptionPane.showConfirmDialog(null, 
+					   "Are you sure you wish to logout?",null, JOptionPane.YES_NO_OPTION);
+			if(result == JOptionPane.YES_OPTION) {
+						UIUtils.navigateToLogin(this);
+					}
+					return;
 		}
 		CardLayout cardLayout = (CardLayout) (mainContentPanel.getLayout());
 		cardLayout.show(mainContentPanel, option);
