@@ -5,10 +5,10 @@ package sg.edu.nus.iss.universitystore.view;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 
 import javax.swing.JPanel;
 
+import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
@@ -19,33 +19,57 @@ import sg.edu.nus.iss.universitystore.view.subpanel.SalesPanel;
  * @author Samrat
  *
  */
-public class DashboardPanel extends JPanel {
+public class DashboardPanel extends JPanel implements DashBoardOptionChangeDelegate {
 
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
+	private static final long serialVersionUID = 1L;
+	private DashboardOptionsPanel optionPanel;
+	private JPanel mainContentPanel;
+	
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
 	public DashboardPanel() {
-
-		setBackground(new Color(25, 99, 221));
-
 		setLayout(new BorderLayout());
 
+		//Initialize the options panel
 		optionPanel = new DashboardOptionsPanel();
-		optionPanel.setOnOptionChangeListener(new DashBoardOptionChangeDelegate() {
-
-			@Override
-			public void onOptionClick(String option) {
-				changePanel(option);
-			}
-		});
+		optionPanel.setOnOptionChangeListener(this);
+		
+		//The main panel which will hold all sub-panels.
 		mainContentPanel = new JPanel();
-		notificationPanel = new JPanel();
 
 		// Customize the options panel
 		add(optionPanel, BorderLayout.WEST);
 
 		// Customize the main content panel
-		mainContentPanel.setBackground(new Color(90, 90, 90));
+		customizeMainContentPanel();
+	}
+
+	/***********************************************************/
+	// Interface implementation
+	/***********************************************************/
+	@Override
+	public void onOptionClick(String option) {
+		changePanel(option);
+	}
+	
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+	private void changePanel(String option) {
+		System.out.println(option);
+		if (option.equals(DashboardOptionsPanel.STR_LOGOUT)) {
+			UIUtils.navigateToLogin(this);
+			return;
+		}
+		CardLayout cardLayout = (CardLayout) (mainContentPanel.getLayout());
+		cardLayout.show(mainContentPanel, option);
+	}
+
+	private void customizeMainContentPanel() {
 		CardLayout layout = new CardLayout();
 		layout.setHgap(10);
 		layout.setVgap(10);
@@ -56,23 +80,4 @@ public class DashboardPanel extends JPanel {
 		mainContentPanel.add(DashboardOptionsPanel.STR_REPORTS, new ReportPanel());
 		add(mainContentPanel, BorderLayout.CENTER);
 	}
-
-	/***********************************************************/
-	// Instance Variables
-	/***********************************************************/
-	private static final long serialVersionUID = 1L;
-	private DashboardOptionsPanel optionPanel;
-	private JPanel mainContentPanel;
-	private JPanel notificationPanel;
-
-	public void changePanel(String option) {
-		System.out.println(option);
-		if (option == DashboardOptionsPanel.STR_LOGOUT) {
-			// dispose mainFrame and show Login page
-			return;
-		}
-		CardLayout cardLayout = (CardLayout) (mainContentPanel.getLayout());
-		cardLayout.show(mainContentPanel, option);
-	}
-
 }

@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.MainFrame;
 import sg.edu.nus.iss.universitystore.controller.DashboardController;
+import sg.edu.nus.iss.universitystore.controller.LoginController;
 
 /**
  * @author Samrat
@@ -40,7 +41,7 @@ public class UIUtils {
 	 * @param message The message of the dialog
 	 * @param dialogType The dialog type.
 	 */
-	public static void displayWarningForIncorrectLogin(JPanel panel,String title, String message ,DialogType dialogType) {
+	public static void displayOptionPane(JPanel panel,String title, String message ,DialogType dialogType) {
 		int messageType;
 		switch (dialogType) {
 		case ERROR_MESSAGE:
@@ -70,6 +71,16 @@ public class UIUtils {
 		mainPanel.removeAll();
 		DashboardController dashbaordController = new DashboardController();
 		mainPanel.add(dashbaordController.getDashboardPanel());
+		mainFrame.getContentPane().invalidate();
+		mainFrame.getContentPane().validate();
+	}
+	
+	public  static void navigateToLogin(JPanel panel) {
+		MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(panel);
+		JPanel mainPanel = mainFrame.getMainPanel();
+		mainPanel.removeAll();
+		LoginController loginController = new LoginController();
+		mainPanel.add(loginController.getLoginPanel());
 		mainFrame.getContentPane().invalidate();
 		mainFrame.getContentPane().validate();
 	}

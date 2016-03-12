@@ -54,7 +54,7 @@ public class LoginController implements ILoginDelegate {
 			UIUtils.navigateToDashboard(loginPanel);
 		}
 		else {
-			UIUtils.displayWarningForIncorrectLogin(loginPanel, Constants.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE, DialogType.WARNING_MESSAGE);
+			UIUtils.displayOptionPane(loginPanel, Constants.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE, DialogType.WARNING_MESSAGE);
 		}
 		
 		

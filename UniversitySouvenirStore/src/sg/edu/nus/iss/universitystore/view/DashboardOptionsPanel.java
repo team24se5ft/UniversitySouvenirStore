@@ -76,9 +76,11 @@ public class DashboardOptionsPanel extends JPanel {
 		jpanel.setMaximumSize(new Dimension(200, 50));
 		jpanel.setBackground(Color.DARK_GRAY);
 		jpanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+		
 		JLabel label = new JLabel(labelText);
 		label.setFont(new Font(Constants.DEFAULT_FONT, 1, fontSize));
 		label.setForeground(Color.WHITE);
+		
 		jpanel.add(label);
 		jpanel.addMouseListener(new MouseListener() {
 
@@ -91,7 +93,7 @@ public class DashboardOptionsPanel extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-
+				dashBoardOptionChangeDelegate.onOptionClick(label.getText());
 			}
 
 			@Override
@@ -108,7 +110,6 @@ public class DashboardOptionsPanel extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				dashBoardOptionChangeDelegate.onOptionClick(labelText);
 			}
 		});
 		return jpanel;
