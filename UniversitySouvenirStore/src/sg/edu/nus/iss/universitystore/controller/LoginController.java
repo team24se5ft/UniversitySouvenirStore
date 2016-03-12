@@ -51,6 +51,7 @@ public class LoginController implements ILoginDelegate {
 		//SMRT - Hard Coding now for 
 		if(username.equals("admin") && password.equals("admin")){
 			//Move to dashboard screen
+			UIUtils.navigateToDashboard(loginPanel);
 		}
 		else {
 			UIUtils.displayWarningForIncorrectLogin(loginPanel, Constants.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE, DialogType.WARNING_MESSAGE);

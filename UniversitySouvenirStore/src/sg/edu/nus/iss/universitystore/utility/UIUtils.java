@@ -8,6 +8,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.MainFrame;
+import sg.edu.nus.iss.universitystore.controller.DashboardController;
+
 /**
  * @author Samrat
  *
@@ -59,5 +62,15 @@ public class UIUtils {
 		JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(panel);
 		JOptionPane.showMessageDialog(topFrame, message,title,
 				messageType);
+	}
+	
+	public static void navigateToDashboard(JPanel panel){
+		MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(panel);
+		JPanel mainPanel = mainFrame.getMainPanel();
+		mainPanel.removeAll();
+		DashboardController dashbaordController = new DashboardController();
+		mainPanel.add(dashbaordController.getDashboardPanel());
+		mainFrame.getContentPane().invalidate();
+		mainFrame.getContentPane().validate();
 	}
 }
