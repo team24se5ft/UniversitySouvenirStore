@@ -31,7 +31,7 @@ public class DashboardOptionsPanel extends JPanel {
 	public static final String STR_INVENTORY = "Inventory";
 	public static final String STR_REPORTS = "Reports";
 	public static final String STR_LOGOUT = "Logout";
-	public static final String STR_DISCOUNT = "Sales";
+	public static final String STR_DISCOUNT = "Discount";
 	
 	/***********************************************************/
 	//Constructors
