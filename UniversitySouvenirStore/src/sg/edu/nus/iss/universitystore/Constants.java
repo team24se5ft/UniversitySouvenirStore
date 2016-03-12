@@ -14,4 +14,6 @@ public class Constants {
 	public final static String APPLE_MENUBAR = "apple.laf.useScreenMenuBar";
 	//Empty String
 	public final static String STR_EMPTY = "";
+	//Warning
+	public final static String STR_WARNING = "Warning";
 }

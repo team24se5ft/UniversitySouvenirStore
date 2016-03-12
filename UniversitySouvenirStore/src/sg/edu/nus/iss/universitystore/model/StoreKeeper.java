@@ -1,17 +1,20 @@
 package sg.edu.nus.iss.universitystore.model;
 
-public class Storekeeper {
+public class StoreKeeper {
 
 	/***********************************************************/
 	//Instance Variables
 	/***********************************************************/
-	private String name;
+	private String userName;
 	private String password;
 	
 	/***********************************************************/
 	//Constructors
 	/***********************************************************/
-	
+	public StoreKeeper(String userName,String password) {
+		this.userName = userName;
+		this.password = password;
+	}
 	
 	/***********************************************************/
 	//Getters & Setters
@@ -20,8 +23,8 @@ public class Storekeeper {
 	/**
 	 * @return the name
 	 */
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return userName;
 	}
 
 	/**
@@ -40,6 +43,6 @@ public class Storekeeper {
 	 */
 	@Override
 	public String toString() {
-		return "Storekeeper [name=" + name + ", password=" + password + "]";
+		return "Storekeeper [name=" + userName + ", password=" + password + "]";
 	}
 }
