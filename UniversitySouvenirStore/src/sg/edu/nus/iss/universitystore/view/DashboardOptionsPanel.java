@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -13,6 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import sg.edu.nus.iss.universitystore.Constants;
+
+import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
 
 /**
  * @author Samrat
@@ -36,6 +40,11 @@ public class DashboardOptionsPanel extends JPanel {
 		createGUI();
 	}
 
+    /***********************************************************/
+    //Instance Variables
+    /***********************************************************/
+    private DashBoardOptionChangeDelegate dashBoardOptionChangeDelegate;
+    
 	/***********************************************************/
 	//Private Methods
 	/***********************************************************/
@@ -71,7 +80,42 @@ public class DashboardOptionsPanel extends JPanel {
 		label.setFont(new Font(Constants.DEFAULT_FONT, 1, fontSize));
 		label.setForeground(Color.WHITE);
 		jpanel.add(label);
+		jpanel.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dashBoardOptionChangeDelegate.onOptionClick(labelText);
+			}
+		});
 		return jpanel;
+	}
+
+	public void setOnOptionChangeListener(DashBoardOptionChangeDelegate dashBoardOptionChangeDelegate) {
+		this.dashBoardOptionChangeDelegate = dashBoardOptionChangeDelegate;
 	}
 
 	private void addAnnouncementPane() {
