@@ -12,6 +12,7 @@ import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
+import sg.edu.nus.iss.universitystore.view.subpanel.MemberPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.ReportPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.SalesPanel;
 
@@ -76,6 +77,7 @@ public class DashboardPanel extends JPanel implements DashBoardOptionChangeDeleg
 		mainContentPanel.setLayout(layout);
 		mainContentPanel.add(DashboardOptionsPanel.STR_SALES, new SalesPanel());
 		mainContentPanel.add(DashboardOptionsPanel.STR_INVENTORY, new InventoryPanel());
+		mainContentPanel.add(DashboardOptionsPanel.STR_MEMBER, new MemberPanel());
 		mainContentPanel.add(DashboardOptionsPanel.STR_DISCOUNT, new DiscountPanel());
 		mainContentPanel.add(DashboardOptionsPanel.STR_REPORTS, new ReportPanel());
 		add(mainContentPanel, BorderLayout.CENTER);
