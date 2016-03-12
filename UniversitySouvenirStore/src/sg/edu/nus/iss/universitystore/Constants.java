@@ -12,6 +12,8 @@ public class Constants {
 	public final static int WINDOW_HEIGHT = 600;
 	//Menu Bar for Apple
 	public final static String APPLE_MENUBAR = "apple.laf.useScreenMenuBar";
+	//Default Font
+	public static final String DEFAULT_FONT = "Verdana";
 	//Empty String
 	public final static String STR_EMPTY = "";
 	//Warning

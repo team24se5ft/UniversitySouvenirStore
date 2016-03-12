@@ -96,8 +96,13 @@ public class MainFrame extends JFrame{
 		//Set the look and feel
 		try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+		} catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        } catch (IllegalAccessException ex) {
+            ex.printStackTrace();
+        } catch (InstantiationException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
 
