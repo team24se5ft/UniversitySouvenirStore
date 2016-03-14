@@ -23,7 +23,7 @@ public class DataFileManager {
 	private DataFile<Category> categoryData;
 	private DataFile<StoreKeeper> storeKeeperData;
 
-	public DataFileManager() {
+	private DataFileManager() {
 		try {
 			initialize();
 		} catch (FileNotFoundException e) {
@@ -74,6 +74,10 @@ public class DataFileManager {
 		ArrayList<Category> categories = new ArrayList<>();
 
 		for (String categoryStr : categoryStrList) {
+			
+			if(categoryStr.isEmpty())
+				continue;
+			
 			categories.add(new Category(categoryStr.split(DataConstants.DAT_FILE_SEPRTR)));
 		}
 
@@ -108,6 +112,10 @@ public class DataFileManager {
 		ArrayList<StoreKeeper> storeKeeper = new ArrayList<>();
 
 		for (String strKprStr : strKprStrList) {
+			
+			if(strKprStr.isEmpty())
+			continue;
+			
 			storeKeeper.add(new StoreKeeper(strKprStr.split(DataConstants.DAT_FILE_SEPRTR)));
 		}
 

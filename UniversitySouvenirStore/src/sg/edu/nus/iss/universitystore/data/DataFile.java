@@ -8,7 +8,8 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
-import sg.edu.nus.iss.universitystore.constants.DataConstants;
+import sg.edu.nus.iss.universitystore.config.Configuration;
+import sg.edu.nus.iss.universitystore.constants.Constants;
 
 /**
  * Data Access Object Implementation
@@ -17,12 +18,12 @@ import sg.edu.nus.iss.universitystore.constants.DataConstants;
  *
  * @param <T>
  */
-class DataFile<T> implements sg.edu.nus.iss.universitystore.data.intf.DataFile<T> {
+class DataFile<T> {
 
 	private String file;
 
 	DataFile(String fileName) throws FileNotFoundException, IOException {
-		this.file = DataConstants.DAT_FILE_PATH + fileName + DataConstants.EXTENSION;
+		this.file = Configuration.DATA_FILE_PATH + fileName + Configuration.DATA_FILE_EXT;
 		initialize();
 
 	}
@@ -35,18 +36,29 @@ class DataFile<T> implements sg.edu.nus.iss.universitystore.data.intf.DataFile<T
 	 */
 	private void initialize() throws FileNotFoundException, IOException {
 		if (!exists(this.file)) {
-			writeStringToFile(DataConstants.DAT_FILE_EMPTY, file);
+			writeStringToFile(Constants.Common.EMPTY_STR, file);
 		}
 	}
 
-	@Override
+	/**
+	 * Create an entry to Data File
+	 * 
+	 * @param t
+	 * @return
+	 * @throws IOException
+	 */
 	public void add(T t) throws IOException {
 		String content = getStringFromFile(file);
 		// Add new content to file
 		writeStringToFile(content + t.toString(), file);
 	}
 
-	@Override
+	/**
+	 * Delete an entry from the Data File
+	 * 
+	 * @param id
+	 * @throws IOException
+	 */
 	public void delete(Object id) throws IOException {
 		String[] contents = getAll();
 		StringBuffer newContent = new StringBuffer();
@@ -54,34 +66,48 @@ class DataFile<T> implements sg.edu.nus.iss.universitystore.data.intf.DataFile<T
 			if (id.toString().equals(line))
 				continue;
 			newContent.append(line);
-			newContent.append(DataConstants.NEW_LINE);
+			newContent.append(Constants.Common.NEW_LINE);
 		}
 		// Do some manipulation
 		writeStringToFile(newContent.toString(), file);
 
 	}
 
-	@Override
+	/**
+	 * Add all contents to Data File
+	 * 
+	 * @param ct
+	 * @throws IOException
+	 */
 	public void addAll(Collection<T> ct) throws IOException {
 		Iterator<T> iterator = ct.iterator();
 		StringBuffer content = new StringBuffer();
 
 		while (iterator.hasNext()) {
 			content.append(iterator.next());
-			content.append(DataConstants.NEW_LINE);
+			content.append(Constants.Common.NEW_LINE);
 		}
 
 		writeStringToFile(content.toString(), file);
 	}
 
-	@Override
+	/**
+	 * Delete all contents of Data File
+	 * 
+	 * @throws FileNotFoundException
+	 */
 	public void deleteAll() throws FileNotFoundException {
-		writeStringToFile(DataConstants.DAT_FILE_EMPTY, file);
+		writeStringToFile(Constants.Common.EMPTY_STR, file);
 	}
 
-	@Override
+	/**
+	 * Get all content of Data File
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
 	public String[] getAll() throws IOException {
-		return getStringFromFile(file).split(DataConstants.NEW_LINE);
+		return getStringFromFile(file).split(Constants.Common.NEW_LINE);
 	}
 
 	/**
@@ -140,7 +166,7 @@ class DataFile<T> implements sg.edu.nus.iss.universitystore.data.intf.DataFile<T
 
 			while (line != null) {
 				sb.append(line);
-				sb.append(DataConstants.NEW_LINE);
+				sb.append(Constants.Common.NEW_LINE);
 				line = br.readLine();
 			}
 		} finally {
