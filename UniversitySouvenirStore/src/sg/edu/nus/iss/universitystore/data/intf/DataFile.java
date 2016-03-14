@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.universitystore.model.dao.data.intf;
+package sg.edu.nus.iss.universitystore.data.intf;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public interface DataFile<T> {
 	 * @param ct
 	 * @throws IOException
 	 */
-	public void addAll(Collection<T> ct) throws IOException;
+	void addAll(Collection<T> ct) throws IOException;
 	
 	/**
 	 * Delete an entry from the Data File
