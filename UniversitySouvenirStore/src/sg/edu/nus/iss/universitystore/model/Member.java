@@ -12,12 +12,29 @@ public class Member {
 	/***********************************************************/
 	//Constructors
 	/***********************************************************/
-	
+	/**
+	 * @param identifier
+	 * @param name
+	 * @param loyaltyPoints
+	 */
+	public Member(String name, String identifier, int loyaltyPoints) {
+		this.identifier = identifier;
+		this.name = name;
+		this.loyaltyPoints = loyaltyPoints;
+		
+	}
 	
 	/***********************************************************/
 	//Getters & Setters
 	/***********************************************************/
 	
+
+	/*public Member(String[] split) {
+		// TODO Auto-generated constructor stub
+	}*/
+
+
+
 	/**
 	 * @return the identifier
 	 */
@@ -38,6 +55,11 @@ public class Member {
 	public int getLoyaltyPoints() {
 		return loyaltyPoints;
 	}
+
+	@Override
+	public String toString() {
+		return name+","+identifier+","+loyaltyPoints;
+	}
 	
 	/***********************************************************/
 	//Public Methods
@@ -46,8 +68,6 @@ public class Member {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	@Override
-	public String toString() {
-		return "Member [identifier=" + identifier + ", name=" + name + ", loyaltyPoints=" + loyaltyPoints + "]";
-	}
+	
+	
 }
