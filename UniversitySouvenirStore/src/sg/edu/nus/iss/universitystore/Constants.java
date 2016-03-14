@@ -18,4 +18,6 @@ public class Constants {
 	public final static String STR_EMPTY = "";
 	//Warning
 	public final static String STR_WARNING = "Warning";
+	
+	public final static String author="Choo";
 }
