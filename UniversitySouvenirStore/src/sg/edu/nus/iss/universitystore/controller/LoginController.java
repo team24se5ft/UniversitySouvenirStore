@@ -17,61 +17,62 @@ import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
  *
  */
 public class LoginController implements ILoginDelegate {
-	
+
 	/***********************************************************/
-	//Constants
+	// Constants
 	/***********************************************************/
 	public static final String STR_INCORRECT_LOGIN_MESSAGE = "The username or password you have entered is invalid. Please try again..";
-	
+
 	/***********************************************************/
-	//Instance Variables
+	// Instance Variables
 	/***********************************************************/
 	private LoginPanel loginPanel;
 	private DataFileManager dataFileManager;
 
 	/***********************************************************/
-	//Constructors
+	// Constructors
 	/***********************************************************/
 	public LoginController() {
 		loginPanel = new LoginPanel();
 		loginPanel.setLoginListener(this);
-		
+
 		// Instantiate Data File Manager
 		dataFileManager = DataFileManager.getInstance();
-		
+
 	}
-	
+
 	/***********************************************************/
-	//Public Methods
+	// Public Methods
 	/***********************************************************/
-	public JPanel getLoginPanel(){
+	public JPanel getLoginPanel() {
 		return loginPanel;
 	}
 
 	/***********************************************************/
-	//Interface Implementations
+	// Interface Implementations
 	/***********************************************************/
 	@Override
 	public void loginButtonClicked(String username, String password) {
 		StoreKeeper storeKeeper = new StoreKeeper(username, password);
-		
+
 		try {
 			// Validate Credentials
-			if(dataFileManager.isValidCredentials(storeKeeper)){
+			if (dataFileManager.isValidCredentials(storeKeeper)) {
 				UIUtils.navigateToDashboard(loginPanel);
-			}
-			else {
-				//UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE, DialogType.WARNING_MESSAGE);
-				UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE, DialogType.WARNING_MESSAGE);
+			} else {
+				// UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING,
+				// STR_INCORRECT_LOGIN_MESSAGE, DialogType.WARNING_MESSAGE);
+				UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE,
+						DialogType.WARNING_MESSAGE);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	/***********************************************************/
-	//Private Methods
+	// Private Methods
 	/***********************************************************/
-	
+
 }

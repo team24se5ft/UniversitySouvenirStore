@@ -12,7 +12,10 @@ public class Vendor {
 	//Constructors
 	/***********************************************************/
 	
-	
+	public Vendor(String name, String description){
+		this.name = name;
+		this.description = description;
+	}
 	/***********************************************************/
 	//Getters & Setters
 	/***********************************************************/

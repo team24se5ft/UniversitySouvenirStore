@@ -16,6 +16,8 @@ public final class Constants {
 		public static final String FILE_PATH = System.getProperty("user.dir") + 
 				FILE_PATH_SEPTR + FILE_FLDR + FILE_PATH_SEPTR;
 		
+		public static final String ID_SEPTR = "/";
+		
 		public static final class FileName {
 			public static final String CATEGORY_DAT = "Category";
 			public static final String DISCOUNT_DAT = "Discount";

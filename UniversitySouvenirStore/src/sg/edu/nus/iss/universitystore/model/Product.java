@@ -3,7 +3,7 @@ package sg.edu.nus.iss.universitystore.model;
 public class Product {
 
 	/***********************************************************/
-	//Instance Variables
+	// Instance Variables
 	/***********************************************************/
 	private String identifier;
 	private String name;
@@ -12,15 +12,44 @@ public class Product {
 	private double price;
 	private int reorderThreshold;
 	private int reorderQuantity;
+
+	/***********************************************************/
+	// Constructors
+	/***********************************************************/
+	public Product(String identifier, String name, String description, String quantity, String price,
+			String reorderThreshold, String reorderQuantity) {
+		this.identifier = identifier;
+		this.name = name;
+		this.description = description;
+		this.quantity = Integer.parseInt(quantity);
+		this.price = Double.parseDouble(price);
+		this.reorderThreshold = Integer.parseInt(reorderThreshold);
+		this.reorderQuantity = Integer.parseInt(reorderQuantity);
+	}
 	
+	public Product(String identified, Goods goods){
+		this.identifier = identifier;
+		this.name = goods.getName();
+		this.description = goods.getDescription();
+		this.quantity = goods.getQuantity();
+		this.price = goods.getPrice();
+		this.reorderThreshold = goods.getReorderThreshold();
+		this.reorderQuantity = goods.getReorderQuantity();
+	}
+
+	/*
+	 * public Product(Object[] args){ this((String)args[0], (String)args[0],
+	 * (String)args[0], (Integer)args[0], (Double)args[0], (Integer)args[0],
+	 * (Integer)args[0]); }
+	 */
+
 	/***********************************************************/
-	//Constructors
+	// Getters & Setters
 	/***********************************************************/
-	
-	
-	/***********************************************************/
-	//Getters & Setters
-	/***********************************************************/
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
 	
 	/**
 	 * @return the identifier
@@ -70,12 +99,14 @@ public class Product {
 	public int getReorderQuantity() {
 		return reorderQuantity;
 	}
-	
+
 	/***********************************************************/
-	//Public Methods
+	// Public Methods
 	/***********************************************************/
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
