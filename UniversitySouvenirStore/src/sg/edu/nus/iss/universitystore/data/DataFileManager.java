@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.DataConstants;
 import sg.edu.nus.iss.universitystore.constants.StoreConstants;
 import sg.edu.nus.iss.universitystore.model.Category;
@@ -58,8 +59,8 @@ public class DataFileManager {
 	 * @throws IOException
 	 */
 	private void initialize() throws FileNotFoundException, IOException {
-		categoryData = new DataFile<>(StoreConstants.CATEGORY_DAT);
-		storeKeeperData = new DataFile<>(StoreConstants.STORE_KEEPER_DAT);
+		categoryData = new DataFile<>(Constants.Data.FileName.CATEGORY_DAT);
+		storeKeeperData = new DataFile<>(Constants.Data.FileName.STORE_KEEPER_DAT);
 
 	}
 

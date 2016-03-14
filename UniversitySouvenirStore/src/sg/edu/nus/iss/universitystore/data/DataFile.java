@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
-import sg.edu.nus.iss.universitystore.config.Configuration;
 import sg.edu.nus.iss.universitystore.constants.Constants;
 
 /**
@@ -23,7 +22,7 @@ class DataFile<T> {
 	private String file;
 
 	DataFile(String fileName) throws FileNotFoundException, IOException {
-		this.file = Configuration.DATA_FILE_PATH + fileName + Configuration.DATA_FILE_EXT;
+		this.file = Constants.Data.FILE_PATH + fileName + Constants.Data.FILE_EXT;
 		initialize();
 
 	}
