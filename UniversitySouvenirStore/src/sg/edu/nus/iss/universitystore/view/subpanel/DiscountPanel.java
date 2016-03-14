@@ -6,8 +6,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,10 +22,15 @@ import javax.swing.table.DefaultTableModel;
 public class DiscountPanel extends JPanel {
 	private JTable DiscountTable;
 
-	private JButton btnActive;
-	private JButton btnStop;
+
 	private JButton btnAdd;
+	private JButton btnEdit;
 	private JButton btnDelete;
+	
+	private BufferedImage addIcon;
+	private BufferedImage editIcon;
+	private BufferedImage deleteIcon;
+
 
 	private JPanel buttonPanel;
 
@@ -56,17 +66,29 @@ public class DiscountPanel extends JPanel {
 	private void initButtonPanel() {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		btnActive = new JButton("Active");
-		btnActive.setPreferredSize(new Dimension(120, 40));
-		btnStop = new JButton("Stop");
-		btnStop.setPreferredSize(new Dimension(120, 40));
-		btnAdd = new JButton("Add");
-		btnAdd.setPreferredSize(new Dimension(120, 40));
-		btnDelete = new JButton("Delete");
-		btnDelete.setPreferredSize(new Dimension(120, 40));
-		buttonPanel.add(btnActive);
-		buttonPanel.add(btnStop);
+	
+		try {
+			addIcon = ImageIO.read(new File("Resources/add_icon.png"));
+			editIcon = ImageIO.read(new File("Resources/edit_icon.png"));
+			deleteIcon = ImageIO.read(new File("Resources/delete_icon.png"));
+			btnAdd = new JButton(new ImageIcon(addIcon));
+			btnEdit = new JButton(new ImageIcon(editIcon));
+			btnDelete = new JButton(new ImageIcon(deleteIcon));
+		} catch (IOException e1) {
+				e1.printStackTrace();
+		}
+		
+		//setting border to empty
+		btnAdd.setBorder(BorderFactory.createEmptyBorder());
+		btnEdit.setBorder(BorderFactory.createEmptyBorder());
+		btnDelete.setBorder(BorderFactory.createEmptyBorder());
+		
+		btnAdd.setPreferredSize(new Dimension(70, 70));
+		btnEdit.setPreferredSize(new Dimension(70, 70));
+		btnDelete.setPreferredSize(new Dimension(70, 70));
+
 		buttonPanel.add(btnAdd);
+		buttonPanel.add(btnEdit);
 		buttonPanel.add(btnDelete);
 		add(buttonPanel, "South");
 		initButtonEvent();
