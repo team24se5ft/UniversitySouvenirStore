@@ -87,32 +87,35 @@ public class SalesPanel extends JPanel {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		addProductIcon = new ImageIcon("Resources/add_icon.png");
-		checkOutIcon = new ImageIcon("Resources/add_icon.png");
+		checkOutIcon = new ImageIcon("Resources/cart_icon.png");
 		cancelIcon = new ImageIcon("Resources/delete_icon.png");
 		
-		//addProductButton = new JButton(icon);
-		//addProductButton.setBorderPainted(false);
-		//addProductButton.setContentAreaFilled(false);
-		//addProductButton.setFocusPainted(false);
-		//addProductButton.setOpaque(false);
 		addProductButton = new JButton("Add Product");
 		addProductButton.setIcon(addProductIcon);
 		addProductButton.setHorizontalTextPosition(JLabel.CENTER);
 		addProductButton.setVerticalTextPosition(JLabel.BOTTOM);
+		addProductButton.setBorderPainted(false);
 		addProductButton.setContentAreaFilled(false);
-		//addProductButton.setPreferredSize(new Dimension(120, 40));
+		addProductButton.setFocusPainted(false);
+		addProductButton.setOpaque(false);	
+		
 		checkOutButton = new JButton("Check Out");
 		checkOutButton.setIcon(checkOutIcon);
 		checkOutButton.setHorizontalTextPosition(JLabel.CENTER);
 		checkOutButton.setVerticalTextPosition(JLabel.BOTTOM);
+		checkOutButton.setBorderPainted(false);
 		checkOutButton.setContentAreaFilled(false);
-		//checkOutButton.setPreferredSize(new Dimension(120, 40));
+		checkOutButton.setFocusPainted(false);
+		checkOutButton.setOpaque(false);
+		
 		cancelButton = new JButton("Cancel");
 		cancelButton.setIcon(cancelIcon);
 		cancelButton.setHorizontalTextPosition(JLabel.CENTER);
 		cancelButton.setVerticalTextPosition(JLabel.BOTTOM);
+		cancelButton.setBorderPainted(false);
 		cancelButton.setContentAreaFilled(false);
-		//cancelButton.setPreferredSize(new Dimension(120, 40));
+		cancelButton.setFocusPainted(false);
+		cancelButton.setOpaque(false);		
 		//buttonPanel.add(addProductButton);
 		buttonPanel.add(addProductButton);
 		buttonPanel.add(checkOutButton);

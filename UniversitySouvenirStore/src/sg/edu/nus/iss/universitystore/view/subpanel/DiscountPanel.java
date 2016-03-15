@@ -77,19 +77,29 @@ public class DiscountPanel extends JPanel {
 		btnAdd.setIcon(addIcon);
 		btnAdd.setHorizontalTextPosition(JLabel.CENTER);
 		btnAdd.setVerticalTextPosition(JLabel.BOTTOM);
+		btnAdd.setBorderPainted(false);
 		btnAdd.setContentAreaFilled(false);
+		btnAdd.setFocusPainted(false);
+		btnAdd.setOpaque(false);
 		
 		btnEdit = new JButton("Edit Discount");
 		btnEdit.setIcon(editIcon);
 		btnEdit.setHorizontalTextPosition(JLabel.CENTER);
 		btnEdit.setVerticalTextPosition(JLabel.BOTTOM);
+		btnEdit.setBorderPainted(false);
 		btnEdit.setContentAreaFilled(false);
+		btnEdit.setFocusPainted(false);
+		btnEdit.setOpaque(false);
+		
 		
 		btnDelete = new JButton("Delete Discount");
 		btnDelete.setIcon(deleteIcon);
 		btnDelete.setHorizontalTextPosition(JLabel.CENTER);
 		btnDelete.setVerticalTextPosition(JLabel.BOTTOM);
+		btnDelete.setBorderPainted(false);
 		btnDelete.setContentAreaFilled(false);
+		btnDelete.setFocusPainted(false);
+		btnDelete.setOpaque(false);
 
 		buttonPanel.add(btnAdd);
 		buttonPanel.add(btnEdit);
