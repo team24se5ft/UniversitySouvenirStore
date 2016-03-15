@@ -11,6 +11,7 @@ import java.awt.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,10 +28,15 @@ public class SalesPanel extends JPanel {
 	private JButton addProductButton;
 	private JButton cancelButton;
 	private JButton checkOutButton;
+	
+	private ImageIcon addProductIcon;
+	private ImageIcon checkOutIcon;
+	private ImageIcon cancelIcon;
 
 	private JPanel buttonPanel;
 	private JPanel customerInfoPanel;
 	private JPanel saleContentPanel;
+
 
 	public SalesPanel() {
 		BorderLayout borderLayout = new BorderLayout();
@@ -80,12 +86,34 @@ public class SalesPanel extends JPanel {
 	private void initButtonPanel() {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
+		addProductIcon = new ImageIcon("Resources/add_icon.png");
+		checkOutIcon = new ImageIcon("Resources/add_icon.png");
+		cancelIcon = new ImageIcon("Resources/delete_icon.png");
+		
+		//addProductButton = new JButton(icon);
+		//addProductButton.setBorderPainted(false);
+		//addProductButton.setContentAreaFilled(false);
+		//addProductButton.setFocusPainted(false);
+		//addProductButton.setOpaque(false);
 		addProductButton = new JButton("Add Product");
-		addProductButton.setPreferredSize(new Dimension(120, 40));
-		checkOutButton = new JButton("Check OUT");
-		checkOutButton.setPreferredSize(new Dimension(120, 40));
+		addProductButton.setIcon(addProductIcon);
+		addProductButton.setHorizontalTextPosition(JLabel.CENTER);
+		addProductButton.setVerticalTextPosition(JLabel.BOTTOM);
+		addProductButton.setContentAreaFilled(false);
+		//addProductButton.setPreferredSize(new Dimension(120, 40));
+		checkOutButton = new JButton("Check Out");
+		checkOutButton.setIcon(checkOutIcon);
+		checkOutButton.setHorizontalTextPosition(JLabel.CENTER);
+		checkOutButton.setVerticalTextPosition(JLabel.BOTTOM);
+		checkOutButton.setContentAreaFilled(false);
+		//checkOutButton.setPreferredSize(new Dimension(120, 40));
 		cancelButton = new JButton("Cancel");
-		cancelButton.setPreferredSize(new Dimension(120, 40));
+		cancelButton.setIcon(cancelIcon);
+		cancelButton.setHorizontalTextPosition(JLabel.CENTER);
+		cancelButton.setVerticalTextPosition(JLabel.BOTTOM);
+		cancelButton.setContentAreaFilled(false);
+		//cancelButton.setPreferredSize(new Dimension(120, 40));
+		//buttonPanel.add(addProductButton);
 		buttonPanel.add(addProductButton);
 		buttonPanel.add(checkOutButton);
 		buttonPanel.add(cancelButton);

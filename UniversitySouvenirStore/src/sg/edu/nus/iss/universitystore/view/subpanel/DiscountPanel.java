@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -14,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,6 +28,10 @@ public class DiscountPanel extends JPanel {
 	private JButton btnAdd;
 	private JButton btnEdit;
 	private JButton btnDelete;
+	
+	private ImageIcon addIcon;
+	private ImageIcon editIcon;
+	private ImageIcon deleteIcon;
 	
 	private JPanel buttonPanel;
 
@@ -62,19 +68,28 @@ public class DiscountPanel extends JPanel {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 	    
-		//Buttons
-		btnAdd = new JButton(new ImageIcon("Resources/add_icon.png"));
-		btnEdit = new JButton(new ImageIcon("Resources/edit_icon.png"));
-		btnDelete = new JButton(new ImageIcon("Resources/delete_icon.png"));
-				
-		//setting border to empty
-		btnAdd.setBorder(BorderFactory.createEmptyBorder());
-		btnEdit.setBorder(BorderFactory.createEmptyBorder());
-		btnDelete.setBorder(BorderFactory.createEmptyBorder());
+		//ImageIcons with Label
+		addIcon = new ImageIcon("Resources/add_icon.png");
+		editIcon = new ImageIcon("Resources/edit_icon.png");
+		deleteIcon = new ImageIcon("Resources/delete_icon.png");
 		
-		btnAdd.setPreferredSize(new Dimension(70, 70));
-		btnEdit.setPreferredSize(new Dimension(70, 70));
-		btnDelete.setPreferredSize(new Dimension(70, 70));
+		btnAdd = new JButton("Add Discount");
+		btnAdd.setIcon(addIcon);
+		btnAdd.setHorizontalTextPosition(JLabel.CENTER);
+		btnAdd.setVerticalTextPosition(JLabel.BOTTOM);
+		btnAdd.setContentAreaFilled(false);
+		
+		btnEdit = new JButton("Edit Discount");
+		btnEdit.setIcon(editIcon);
+		btnEdit.setHorizontalTextPosition(JLabel.CENTER);
+		btnEdit.setVerticalTextPosition(JLabel.BOTTOM);
+		btnEdit.setContentAreaFilled(false);
+		
+		btnDelete = new JButton("Delete Discount");
+		btnDelete.setIcon(deleteIcon);
+		btnDelete.setHorizontalTextPosition(JLabel.CENTER);
+		btnDelete.setVerticalTextPosition(JLabel.BOTTOM);
+		btnDelete.setContentAreaFilled(false);
 
 		buttonPanel.add(btnAdd);
 		buttonPanel.add(btnEdit);
