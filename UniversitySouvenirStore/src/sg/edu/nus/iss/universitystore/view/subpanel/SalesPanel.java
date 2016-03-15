@@ -86,41 +86,34 @@ public class SalesPanel extends JPanel {
 	private void initButtonPanel() {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		addProductIcon = new ImageIcon("Resources/add_icon.png");
-		checkOutIcon = new ImageIcon("Resources/cart_icon.png");
-		cancelIcon = new ImageIcon("Resources/delete_icon.png");
 		
-		addProductButton = new JButton("Add Product");
-		addProductButton.setIcon(addProductIcon);
-		addProductButton.setHorizontalTextPosition(JLabel.CENTER);
-		addProductButton.setVerticalTextPosition(JLabel.BOTTOM);
-		addProductButton.setBorderPainted(false);
-		addProductButton.setContentAreaFilled(false);
-		addProductButton.setFocusPainted(false);
-		addProductButton.setOpaque(false);	
-		
-		checkOutButton = new JButton("Check Out");
-		checkOutButton.setIcon(checkOutIcon);
-		checkOutButton.setHorizontalTextPosition(JLabel.CENTER);
-		checkOutButton.setVerticalTextPosition(JLabel.BOTTOM);
-		checkOutButton.setBorderPainted(false);
-		checkOutButton.setContentAreaFilled(false);
-		checkOutButton.setFocusPainted(false);
-		checkOutButton.setOpaque(false);
-		
-		cancelButton = new JButton("Cancel");
-		cancelButton.setIcon(cancelIcon);
-		cancelButton.setHorizontalTextPosition(JLabel.CENTER);
-		cancelButton.setVerticalTextPosition(JLabel.BOTTOM);
-		cancelButton.setBorderPainted(false);
-		cancelButton.setContentAreaFilled(false);
-		cancelButton.setFocusPainted(false);
-		cancelButton.setOpaque(false);		
+		addProductButton=initImageButton("Resources/add_icon.png","Add Product");
+		checkOutButton=initImageButton("Resources/cart_icon.png","Check Out");
+		cancelButton=initImageButton("Resources/delete_icon.png","Cancel");
 		//buttonPanel.add(addProductButton);
 		buttonPanel.add(addProductButton);
 		buttonPanel.add(checkOutButton);
 		buttonPanel.add(cancelButton);
 		add(buttonPanel, "South");
+	}
+	
+	/**
+	 * imageButton init here
+	 * @param imageUrl
+	 * @param btnText
+	 * @return
+	 */
+	private JButton initImageButton(String imageUrl,String btnText){
+		ImageIcon icon = new ImageIcon(imageUrl);
+		JButton btn = new JButton(btnText);
+		btn.setIcon(icon);
+		btn.setHorizontalTextPosition(JLabel.CENTER);
+		btn.setVerticalTextPosition(JLabel.BOTTOM);
+		btn.setBorderPainted(false);
+		btn.setContentAreaFilled(false);
+		btn.setFocusPainted(false);
+		btn.setOpaque(false);
+		return btn;
 	}
 
 }

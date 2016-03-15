@@ -5,24 +5,32 @@ import java.time.LocalDate;
 public class Discount {
 
 	/***********************************************************/
-	//Instance Variables
+	// Instance Variables
 	/***********************************************************/
 	private String code;
 	private String description;
-	private LocalDate startDate;
+	private String startDate;
 	private int period;
 	private float percentage;
-	private String eligibilty;
-	
+	private String eligibilty;// "M" means Member,"A" means All
+
 	/***********************************************************/
-	//Constructors
+	// Constructors
 	/***********************************************************/
-	
-	
+	public Discount(String code, String description, String startDate, int period, float percentage,
+			String eligibilty) {
+		this.code = code;
+		this.description = description;
+		this.startDate = startDate;
+		this.period = period;
+		this.percentage = percentage;
+		this.eligibilty = eligibilty;
+	}
+
 	/***********************************************************/
-	//Getters & Setters
+	// Getters & Setters
 	/***********************************************************/
-	
+
 	/**
 	 * @return the code
 	 */
@@ -40,7 +48,7 @@ public class Discount {
 	/**
 	 * @return the startDate
 	 */
-	public LocalDate getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
@@ -64,12 +72,14 @@ public class Discount {
 	public String getEligibilty() {
 		return eligibilty;
 	}
-	
+
 	/***********************************************************/
-	//Public Methods
+	// Public Methods
 	/***********************************************************/
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

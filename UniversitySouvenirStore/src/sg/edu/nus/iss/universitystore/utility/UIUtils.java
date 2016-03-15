@@ -65,6 +65,7 @@ public class UIUtils {
 				messageType);
 	}
 	
+	
 	public static void navigateToDashboard(JPanel panel){
 		MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(panel);
 		JPanel mainPanel = mainFrame.getMainPanel();
