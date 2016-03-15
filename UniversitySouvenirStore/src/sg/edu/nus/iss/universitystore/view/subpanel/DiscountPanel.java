@@ -27,11 +27,6 @@ public class DiscountPanel extends JPanel {
 	private JButton btnEdit;
 	private JButton btnDelete;
 	
-	private BufferedImage addIcon;
-	private BufferedImage editIcon;
-	private BufferedImage deleteIcon;
-
-
 	private JPanel buttonPanel;
 
 	public DiscountPanel() {
@@ -66,18 +61,12 @@ public class DiscountPanel extends JPanel {
 	private void initButtonPanel() {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-	
-		try {
-			addIcon = ImageIO.read(new File("Resources/add_icon.png"));
-			editIcon = ImageIO.read(new File("Resources/edit_icon.png"));
-			deleteIcon = ImageIO.read(new File("Resources/delete_icon.png"));
-			btnAdd = new JButton(new ImageIcon(addIcon));
-			btnEdit = new JButton(new ImageIcon(editIcon));
-			btnDelete = new JButton(new ImageIcon(deleteIcon));
-		} catch (IOException e1) {
-				e1.printStackTrace();
-		}
-		
+	    
+		//Buttons
+		btnAdd = new JButton(new ImageIcon("Resources/add_icon.png"));
+		btnEdit = new JButton(new ImageIcon("Resources/edit_icon.png"));
+		btnDelete = new JButton(new ImageIcon("Resources/delete_icon.png"));
+				
 		//setting border to empty
 		btnAdd.setBorder(BorderFactory.createEmptyBorder());
 		btnEdit.setBorder(BorderFactory.createEmptyBorder());

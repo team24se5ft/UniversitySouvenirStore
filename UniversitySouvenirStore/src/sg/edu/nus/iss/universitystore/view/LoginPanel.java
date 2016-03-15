@@ -7,16 +7,23 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import sg.edu.nus.iss.universitystore.Constants;
 import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
@@ -57,7 +64,7 @@ public class LoginPanel extends JPanel{
 	{
 		try
 		{
-			imgbackground = javax.imageio.ImageIO.read(new File("Resources/Test.jpg"));
+			imgbackground = javax.imageio.ImageIO.read(new File("Resources/main_background.jpg"));
 		}
 		catch (Exception e) { /*handled in paintComponent()*/ }
 		setLayout(new GridBagLayout());
@@ -92,12 +99,15 @@ public class LoginPanel extends JPanel{
 
 	private void createGUI() {
 		overlayPanel = new JPanel();
-		overlayPanel.setPreferredSize(new Dimension(300, 100));
-		overlayPanel.setMaximumSize(new Dimension(300, 100));
-		overlayPanel.setBackground(Color.WHITE);
+		overlayPanel.setPreferredSize(new Dimension(330, 170));
+		overlayPanel.setMaximumSize(new Dimension(330, 170));
+		overlayPanel.setBackground(new java.awt.Color(0, 102, 204));
 		overlayPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		overlayPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		overlayPanel.setOpaque(false);
+		//overlayPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+		overlayPanel.setOpaque(true);
+		//ImageIcon icon = new ImageIcon("Resources/add_icon.png");
+		//overlayPanel.setBorder(BorderFactory.createMatteBorder(-1, -1, -1, -1, icon));
+        overlayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "Login", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Vani", 3, 24), new java.awt.Color(255, 255, 255)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 16), new java.awt.Color(255, 255, 255))); // NOI18N
 		//Add child elements to the overlay
 		addElementsToOverLay();
 		//Add the overlay panel to the main panel.
@@ -105,11 +115,13 @@ public class LoginPanel extends JPanel{
 	}
 
 	private void addElementsToOverLay() {
-		overlayPanel.setLayout(new FlowLayout());
+		//overlayPanel.setLayout(new FlowLayout());
 
 		//Label UserName
 		lblUserName = new JLabel(STR_USER_LABEL);
-		overlayPanel.add(lblUserName);
+		lblUserName.setFont(new java.awt.Font("Vani", 2, 18)); 
+        lblUserName.setForeground(new java.awt.Color(255, 255, 255));
+        overlayPanel.add(lblUserName);
 
 		//Text field UserName
 		txtUserName = new JTextField();
@@ -118,6 +130,8 @@ public class LoginPanel extends JPanel{
 
 		//Label UserName
 		lblPassword = new JLabel(STR_PASSWORD_LABEL);
+		lblPassword.setFont(new java.awt.Font("Vani", 2, 18));
+        lblPassword.setForeground(new java.awt.Color(255, 255, 255));
 		overlayPanel.add(lblPassword);
 
 		//Text field UserName
@@ -126,9 +140,10 @@ public class LoginPanel extends JPanel{
 		overlayPanel.add(txtPassword);
 		
 		//Submit button
-		btnSubmit = new JButton(STR_LOGIN);
+		btnSubmit = new JButton(new ImageIcon("Resources/login_icon.jpg"));
+		btnSubmit.setBorder(BorderFactory.createEmptyBorder());
+		
 		btnSubmit.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				loginListener.loginButtonClicked(txtUserName.getText(), getPassword());
