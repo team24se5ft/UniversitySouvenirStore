@@ -4,10 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.model.Member;
-import sg.edu.nus.iss.universitystore.view.dialog.AddDiscountDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.AddMemberDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmDialog;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.AddDiscountDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.AddMemberDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.MemberPanel;

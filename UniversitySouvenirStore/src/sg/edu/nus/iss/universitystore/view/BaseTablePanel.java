@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Samrat
  *
  */
-public class BaseTablePanel extends JPanel{
+public abstract class BaseTablePanel extends JPanel{
 
 	/***********************************************************/
 	// Constants
@@ -47,17 +48,27 @@ public class BaseTablePanel extends JPanel{
 	 * Table for displaying the elements.
 	 */
 	private JTable table;
+	
+	/***********************************************************/
+	// Abstract Methods
+	/***********************************************************/
+	protected abstract ActionListener addAction();
+	
+	protected abstract ActionListener editAction();
+	
+	protected abstract ActionListener deleteAction();
+	
 	/***********************************************************/
 	// Protected Methods
 	/***********************************************************/
 	/**
-	 * Method to create a JTable with all the customization.
+	 * Method to create a JScrollPane with a JTable in it.
 	 * Each time it is called, a new instance will be created.
 	 * @param data The data that needs to be populated in the table.
 	 * @param headers The headers of the table.
-	 * @return The JTable with all the values populated.
+	 * @return The JScrollPane with an embedded table with all the values populated.
 	 */
-	protected JTable getTable(String[] data, String[] headers) {
+	protected JScrollPane getScrollPaneWithTable(String[] data, String[] headers) {
 
 		String tableData[][] = { data };
 
@@ -76,17 +87,16 @@ public class BaseTablePanel extends JPanel{
 		table.setBorder(BorderFactory.createEtchedBorder());
 		table.setGridColor(Color.BLACK);
 		table.setIntercellSpacing(new Dimension(1, 1));
-		return table;
+		JScrollPane scrollPane = new JScrollPane(table);
+		return scrollPane;
 	}
 
 	/**
 	 * Method to create a JPanel which will have the "Add/Edit/Delete" functionality.
-	 * @param add The action listener for triggering the add action.
-	 * @param edit The edit listener for triggering the edit action.
-	 * @param delete The delete listener for triggering the delete action.
+	 * This will automatically assign the various button actions from the abstract methods.
 	 * @return The panel containing all the three buttons.
 	 */
-	protected JPanel getButtonPanel(ActionListener add, ActionListener edit, ActionListener delete) {
+	protected JPanel getButtonPanel() {
 		JPanel jPanel = new JPanel();
 
 		// Initialize the button.
@@ -104,9 +114,9 @@ public class BaseTablePanel extends JPanel{
 		btnDelete.setPreferredSize(new Dimension(70, 70));
 
 		// Add the actions.
-		btnAdd.addActionListener(add);
-		btnEdit.addActionListener(edit);
-		btnDelete.addActionListener(delete);
+		btnAdd.addActionListener(addAction());
+		btnEdit.addActionListener(editAction());
+		btnDelete.addActionListener(deleteAction());
 
 		// Add the buttons to the panel.
 		jPanel.add(btnAdd);

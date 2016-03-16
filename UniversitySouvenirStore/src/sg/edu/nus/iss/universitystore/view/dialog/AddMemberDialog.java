@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridLayout;
-
 import java.awt.Label;
 import java.awt.Panel;
 import java.awt.TextField;
@@ -10,9 +9,6 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
-import sg.edu.nus.iss.universitystore.view.dialog.intf.AddDiscountDialogDelegate;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.AddMemberDialogDelegate;
-import sg.edu.nus.iss.universitystore.view.intf.AddMemberDelegate;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.AddMemberDialogDelegate;
 
 public class AddMemberDialog extends OkCancelDialog implements WindowListener {

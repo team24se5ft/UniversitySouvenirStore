@@ -1,19 +1,12 @@
 package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 
-import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
+import sg.edu.nus.iss.universitystore.view.CategoryPanel;
+import sg.edu.nus.iss.universitystore.view.ProductPanel;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 
 /**
@@ -21,7 +14,7 @@ import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
  *
  */
 
-public class InventoryPanel extends BaseTablePanel{
+public class InventoryPanel extends JPanel{
 
 	/***********************************************************/
 	// Constants
@@ -35,53 +28,25 @@ public class InventoryPanel extends BaseTablePanel{
 	// Instance Variables
 	/***********************************************************/
 	/**
-	 * The main tabbed pane of the screen. Segregates between Show All & Create New options. 
+	 * The main tabbed pane of the screen. 
 	 */
 	private JTabbedPane tabbedPane;
 
 	/**
 	 * Panel which displays all the functionalities related to the category.
 	 */
-	private JPanel categoryPanel;
+	private CategoryPanel categoryPanel;
 
 	/**
 	 * Panel which displays all the functionalities related to the product.
 	 */
-	private JPanel productPanel;
+	private ProductPanel productPanel;
 
 	/**
 	 * Delegate for informing the controller about the various events.
 	 */
 	private IInventoryDelegate delegate;
 
-	/**
-	 * Table consisting of all categories.
-	 */
-	private JTable categoryTable;
-
-	/**
-	 * The table consisting of all the products.
-	 */
-	private JTable productTable;
-	/*
-	 * Array for storing the category table headers.
-	 */
-	private String[] categoryTableHeaders;
-
-	/*
-	 * Array for storing the category content.
-	 */
-	private String[] categoryTableContent;
-
-	/*
-	 * Array for storing the product table headers.
-	 */
-	private String[] productTableHeaders;
-
-	/*
-	 * Array for storing the product content.
-	 */
-	private String[] productTableContent; 
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
@@ -102,95 +67,39 @@ public class InventoryPanel extends BaseTablePanel{
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
-	public void setCategoryTableData(String[] headers, String[] content) {
+	public void setCategoryTableData(String[] header, String[] content) {
 		// Store the values
-		categoryTableHeaders = headers;
-		categoryTableContent = content;
+		categoryPanel.setTableHeader(header);
+		categoryPanel.setTableContent(content);
 	}
 
-	public void setProductTableData(String[] headers, String[] content) {
+	public void setProductTableData(String[] header, String[] content) {
 		// Store the values
-		productTableHeaders = headers;
-		productTableContent = content;
+		productPanel.setTableHeader(header);
+		productPanel.setTableContent(content);
 	}
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/
 	private void createGUI() {
-		createTabbedPane();
+		// TEST
+		String[] categoryTableHeaders = new String[]{ "Category Name", "Category Code" };
+		String[] categoryTableContent = new String[]{ "Phones", "PHO" };
+		categoryPanel = new CategoryPanel(categoryTableContent, categoryTableHeaders);
+		// TEST
+		categoryTableHeaders = new String[]{ "Product Name", "Quantity" , "Price"};
+		categoryTableContent = new String[]{ "Samsung Galaxy", "65", "999" };
+		productPanel = new ProductPanel(categoryTableContent, categoryTableHeaders);
+		createTabbedPane(categoryPanel, productPanel);
 	}
 
-	private void createTabbedPane() {
+	private void createTabbedPane(JPanel categoryPanel, JPanel productPanel) {
 		tabbedPane = new JTabbedPane();
 		// TODO - Add image to the tabbed pane?
-		tabbedPane.addTab("Category", null, createCategoryPanel(),
+		tabbedPane.addTab("Category", null, categoryPanel,
 				"All functionalities related to the categories.");
-		tabbedPane.addTab("Product", null, createProductPanel(),
+		tabbedPane.addTab("Product", null, productPanel,
 				"All functionalities related to the products.");
 		add(tabbedPane, BorderLayout.CENTER);
-	}
-
-	/**
-	 * Method to create the category panel.
-	 * @return Return the category panel after updating the UI.
-	 */
-	private JPanel createCategoryPanel() {
-		// TEST
-		categoryTableHeaders = new String[]{ "Category Name", "Category Code" };
-		categoryTableContent = new String[]{ "Phones", "PHO" };
-		// Get the panel elements ready.
-		categoryPanel = new JPanel();
-		categoryPanel.setLayout(new BorderLayout());
-		// Add the table
-		categoryTable = getTable(categoryTableContent, categoryTableHeaders);
-		JScrollPane scrollPane = new JScrollPane(categoryTable);
-		categoryPanel.add(scrollPane,BorderLayout.CENTER);
-		// Add the button panel
-		ActionListener addCategory = new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-
-		ActionListener editCategory = new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-
-		ActionListener deleteCategory = new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-		categoryPanel.add(getButtonPanel(addCategory, editCategory, deleteCategory), BorderLayout.SOUTH);
-		return categoryPanel;
-	}
-
-	/**
-	 * Method to create the Product Panel
-	 * @return Return the product panel after updating the UI.
-	 */
-	private JPanel createProductPanel() {
-		// TEST
-		productTableHeaders = new String[]{ "Product Name", "Quantity" , "Price"};
-		productTableContent = new String[]{ "Samsung Galaxy", "65", "999" };
-		// Get the panel elements ready.
-		productPanel = new JPanel();
-		productPanel.setLayout(new BorderLayout());
-		// Add the table
-		productTable = getTable(productTableContent, productTableHeaders);
-		JScrollPane scrollPane = new JScrollPane(productTable);
-		productPanel.add(scrollPane,BorderLayout.CENTER);
-		return productPanel;
 	}
 }
