@@ -43,7 +43,10 @@ public class BaseTablePanel extends JPanel{
 	 * Button which deals with deleting an element. Will be a part of the bottom panel.
 	 */
 	protected JButton btnDelete;
-
+	/**
+	 * Table for displaying the elements.
+	 */
+	private JTable table;
 	/***********************************************************/
 	// Protected Methods
 	/***********************************************************/
@@ -68,12 +71,12 @@ public class BaseTablePanel extends JPanel{
 			}
 		};
 		// Create the table
-		JTable jTable = new JTable(categoryModel);
-		jTable.setRowHeight(30);//TODO - Move to constants
-		jTable.setBorder(BorderFactory.createEtchedBorder());
-		jTable.setGridColor(Color.BLACK);
-		jTable.setIntercellSpacing(new Dimension(1, 1));
-		return jTable;
+		table = new JTable(categoryModel);
+		table.setRowHeight(30);//TODO - Move to constants
+		table.setBorder(BorderFactory.createEtchedBorder());
+		table.setGridColor(Color.BLACK);
+		table.setIntercellSpacing(new Dimension(1, 1));
+		return table;
 	}
 
 	/**
@@ -85,7 +88,7 @@ public class BaseTablePanel extends JPanel{
 	 */
 	protected JPanel getButtonPanel(ActionListener add, ActionListener edit, ActionListener delete) {
 		JPanel jPanel = new JPanel();
-		
+
 		// Initialize the button.
 		btnAdd = new JButton(new ImageIcon("Resources/add_icon.png"));
 		btnEdit = new JButton(new ImageIcon("Resources/edit_icon.png"));
@@ -99,17 +102,17 @@ public class BaseTablePanel extends JPanel{
 		btnAdd.setPreferredSize(new Dimension(70, 70));
 		btnEdit.setPreferredSize(new Dimension(70, 70));
 		btnDelete.setPreferredSize(new Dimension(70, 70));
-		
+
 		// Add the actions.
 		btnAdd.addActionListener(add);
 		btnEdit.addActionListener(edit);
 		btnDelete.addActionListener(delete);
-		
+
 		// Add the buttons to the panel.
 		jPanel.add(btnAdd);
 		jPanel.add(btnEdit);
 		jPanel.add(btnDelete);
-		
+
 		// Return the panel.
 		return jPanel;
 	}
