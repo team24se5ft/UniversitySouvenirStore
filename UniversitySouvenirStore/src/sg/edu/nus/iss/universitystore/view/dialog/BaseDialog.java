@@ -18,7 +18,7 @@ public abstract class BaseDialog extends JDialog {
 	/***********************************************************/
 	public BaseDialog (JFrame parent, String title) {
 		super (parent, title);
-		add ("Center", createFormPanel());
+		add ("Center", getPanelToAddToDialog());
 		add ("South",  createButtonPanel());
 	}
 
@@ -33,14 +33,14 @@ public abstract class BaseDialog extends JDialog {
 	 * Method to implement the actual JPanel that will consist of all the labels & textfields.
 	 * @return The JPanel that will be displayed in the dialog.
 	 */
-	protected abstract JPanel createFormPanel () ;
+	protected abstract JPanel getPanelToAddToDialog () ;
 
 	/**
 	 * Callback to inform the child that the "Confirm" button has been tapped in the dialog.
 	 * @return Boolean to indicate whether the dialog needs to be removed from the frame or not. 
 	 * If true, then the dialog will be removed.  
 	 */
-	protected abstract boolean performOkAction () ;
+	protected abstract boolean confirmClicked () ;
 
 	/***********************************************************/
 	// Private Methods
@@ -55,7 +55,7 @@ public abstract class BaseDialog extends JDialog {
 		Button btnConfirm = new Button(ViewConstants.Labels.STR_CONFIRM);
 		btnConfirm.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent e) {
-				boolean success = performOkAction ();
+				boolean success = confirmClicked ();
 				if (success) {
 					destroyDialog ();
 				}

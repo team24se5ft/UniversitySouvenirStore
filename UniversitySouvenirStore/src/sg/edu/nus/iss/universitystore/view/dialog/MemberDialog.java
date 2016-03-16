@@ -35,7 +35,7 @@ public class MemberDialog extends BaseDialog implements WindowListener {
 	}
 
 	@Override
-	protected JPanel createFormPanel() {
+	protected JPanel getPanelToAddToDialog() {
 		JPanel jp = new JPanel();
 		jp.setLayout(new GridLayout(3, 3));
 		labelSurName = new Label("surName");
@@ -61,7 +61,7 @@ public class MemberDialog extends BaseDialog implements WindowListener {
 	}
 
 	@Override
-	protected boolean performOkAction() {
+	protected boolean confirmClicked() {
 		if (tfSurName.getText().length() != 0 && tfFirstName.getText().length() != 0) {
 			delegate.MemberCallBack(tfSurName.getText(), tfFirstName.getText(), tfSecondName.getText());
 			return true;

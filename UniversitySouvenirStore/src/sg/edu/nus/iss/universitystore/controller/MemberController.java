@@ -55,7 +55,7 @@ public class MemberController implements IMemberDelegate {
 				"Do u really want to delete row " + (row + 1)) {
 
 			@Override
-			protected boolean performOkAction() {
+			protected boolean confirmClicked() {
 				// TODO dataModify
 				// UIupdate
 				memberPanel.onRemoveDiscount(row);

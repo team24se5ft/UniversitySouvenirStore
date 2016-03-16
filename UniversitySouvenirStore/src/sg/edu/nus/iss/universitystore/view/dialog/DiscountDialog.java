@@ -138,7 +138,7 @@ public class DiscountDialog extends BaseDialog implements WindowListener {
 	 * when Ok button be clicked
 	 */
 	@Override
-	protected boolean performOkAction() {
+	protected boolean confirmClicked() {
 		// check discount eligibility
 		String eligibility;
 		if (randioButtonM.isSelected()) {

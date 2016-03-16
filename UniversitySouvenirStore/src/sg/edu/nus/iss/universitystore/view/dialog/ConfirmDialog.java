@@ -21,7 +21,7 @@ public class ConfirmDialog extends BaseDialog implements WindowListener{
 		this.setLocationRelativeTo(parent);
 	}
 
-	protected JPanel createFormPanel() {
+	protected JPanel getPanelToAddToDialog() {
 		JPanel p = new JPanel();
 		messageLabel = new Label();
 		p.add(messageLabel);
@@ -71,7 +71,7 @@ public class ConfirmDialog extends BaseDialog implements WindowListener{
 	}
 
 	@Override
-	protected boolean performOkAction() {
+	protected boolean confirmClicked() {
 		return false;
 	}
 
