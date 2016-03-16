@@ -1,20 +1,28 @@
 package sg.edu.nus.iss.universitystore.controller;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.model.Member;
-import sg.edu.nus.iss.universitystore.view.dialog.AddMemberDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmDialog;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.AddMemberDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.MemberDialog;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.MemberDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.MemberPanel;
 
 public class MemberController implements IMemberDelegate {
 	private MemberPanel memberPanel;
+	private ArrayList<Member> memberList;
 
 	public MemberController() {
 		memberPanel = new MemberPanel(this);
+		memberList = new ArrayList<Member>();
+		for (int i = 0; i < 2; i++) {
+			Member e=new Member("testMember","123456",100);
+			memberList.add(e);
+		}
 	}
 
 	public MemberPanel getmemberPanel() {
@@ -23,18 +31,17 @@ public class MemberController implements IMemberDelegate {
 
 	@Override
 	public void addMember() {
-		new AddMemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "AddMember",
-				new AddMemberDialogDelegate() {
+		new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "AddMember",
+				new MemberDialogDelegate() {
 
 					@Override
-					public void onAddMember(String memberId, String memberName, String loyaltyPoints) {
+					public void MemberCallBack(String memberId, String memberName, String loyaltyPoints) {
 						Member member = new Member(memberId, memberName, Integer.valueOf(loyaltyPoints));
 						// TODO dataModify
 						// UIupdate
 						memberPanel.onAddMember(member);
 					}
 				}).setVisible(true);
-		;
 	}
 
 	// TODO keep a list of discount in the controller and modify according to

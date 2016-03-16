@@ -9,11 +9,11 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import sg.edu.nus.iss.universitystore.view.dialog.intf.AddMemberDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.MemberDialogDelegate;
 
 public class AddMemberDialog extends BaseDialog implements WindowListener {
 	private static final long serialVersionUID = 3029306694712724442L;
-	private AddMemberDialogDelegate delegate;
+	private MemberDialogDelegate delegate;
 
 	private Label labelFirstName;
 	private Label labelSecondName;
@@ -22,11 +22,11 @@ public class AddMemberDialog extends BaseDialog implements WindowListener {
 	private TextField tfSecondName;
 	private TextField tfSurName;
 
-	public AddMemberDialog(JFrame parent) {
+	public MemberDialog(JFrame parent) {
 		super(parent, "AddMember");
 	}
 
-	public AddMemberDialog(JFrame parent, String title,AddMemberDialogDelegate addMemberDialogDelegate) {
+	public MemberDialog(JFrame parent, String title,MemberDialogDelegate addMemberDialogDelegate) {
 		super(parent, title);
 		this.addWindowListener(this);
 		this.setSize(400, 150);
@@ -63,7 +63,7 @@ public class AddMemberDialog extends BaseDialog implements WindowListener {
 	@Override
 	protected boolean performOkAction() {
 		if (tfSurName.getText().length() != 0 && tfFirstName.getText().length() != 0) {
-			delegate.onAddMember(tfSurName.getText(), tfFirstName.getText(), tfSecondName.getText());
+			delegate.MemberCallBack(tfSurName.getText(), tfFirstName.getText(), tfSecondName.getText());
 			return true;
 		}
 		return false;
