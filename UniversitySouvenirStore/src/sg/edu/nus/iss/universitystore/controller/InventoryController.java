@@ -1,13 +1,14 @@
 package sg.edu.nus.iss.universitystore.controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
-import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.view.dialog.CategoryDialog;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
 
@@ -16,7 +17,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
  *
  */
 public class InventoryController implements IInventoryDelegate{
-	
+
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
@@ -24,26 +25,26 @@ public class InventoryController implements IInventoryDelegate{
 	 * Instance of the Inventory Manager for retrieving the data from the dB.
 	 */
 	private InventoryManager inventoryManager;
-	
+
 	/**
 	 * Holds the reference to the view associated to show the inventory.
 	 */
 	private InventoryPanel inventoryPanel;
-	
+
 	/**
 	 * The list of all categories.
 	 */
 	private ArrayList<Category> arrCategory;
-	
+
 	/**
 	 * The list of all products.
 	 */
 	private ArrayList<Product> arrProduct;
-	
+
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	
+
 	/**
 	 * Inventory Controller Constructor 
 	 */
@@ -56,13 +57,13 @@ public class InventoryController implements IInventoryDelegate{
 			// TODO: handle exception
 			System.out.println(e.getStackTrace());
 		}
-		
+
 		// Initialize the panel
 		inventoryPanel = new InventoryPanel(this);
-		
+
 		// TODO: Setup the various components of the panel with the data retrieved from the manager.
 	}
-	
+
 	/***********************************************************/
 	// Getters & setters
 	/***********************************************************/
@@ -73,40 +74,44 @@ public class InventoryController implements IInventoryDelegate{
 	/***********************************************************/
 	// IInventoryDelegate Implementation
 	/***********************************************************/
-	
+
 	@Override
 	public void addCategoryClicked() {
-		// TODO Auto-generated method stub
-		
+		// Get main frame
+		JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
+
+		CategoryDialog categoryDialog = new CategoryDialog(topFrame, "Add Category");
+		categoryDialog.setVisible(true);
+
 	}
 
 	@Override
 	public void editCategoryClicked() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteCategoryClicked() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void addProductClicked() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void editProductClicked() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteProductClicked() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
