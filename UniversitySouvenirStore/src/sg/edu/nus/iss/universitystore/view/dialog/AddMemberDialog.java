@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridLayout;
+
 import java.awt.Label;
 import java.awt.Panel;
 import java.awt.TextField;
@@ -9,10 +10,14 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
+import sg.edu.nus.iss.universitystore.view.dialog.intf.AddDiscountDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.AddMemberDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.AddMemberDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.AddMemberDialogDelegate;
 
 public class AddMemberDialog extends OkCancelDialog implements WindowListener {
 	private static final long serialVersionUID = 3029306694712724442L;
+	private AddMemberDialogDelegate delegate;
 
 	private Label labelFirstName;
 	private Label labelSecondName;
@@ -25,7 +30,7 @@ public class AddMemberDialog extends OkCancelDialog implements WindowListener {
 		super(parent, "AddMember");
 	}
 
-	public AddMemberDialog(JFrame parent, String title,AddMemberDelegate delegate) {
+	public AddMemberDialog(JFrame parent, String title,AddMemberDialogDelegate addMemberDialogDelegate) {
 		super(parent, title);
 		this.addWindowListener(this);
 		this.setSize(400, 150);
@@ -62,7 +67,7 @@ public class AddMemberDialog extends OkCancelDialog implements WindowListener {
 	@Override
 	protected boolean performOkAction() {
 		if (tfSurName.getText().length() != 0 && tfFirstName.getText().length() != 0) {
-//			clubApp.addMember(tfSurName.getText(), tfFirstName.getText(), tfSecondName.getText());
+			delegate.onAddMember(tfSurName.getText(), tfFirstName.getText(), tfSecondName.getText());
 			return true;
 		}
 		return false;

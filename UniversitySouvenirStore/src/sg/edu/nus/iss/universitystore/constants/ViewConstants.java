@@ -29,7 +29,11 @@ public class ViewConstants {
 		public static final String STR_CHECKOUT_SALES = "Check Out";
 		public static final String STR_CANCEL_SALES = "Cancel";
 		
-		
+		//Labels for Member
+		public static final String STR_ADD_MEMBER = "Add Member";
+		public static final String STR_EDIT_MEMBER = "Edit Member";
+		public static final String STR_DELETE_MEMBER = "Delete Member";
+				
 	}
 	
 	public class TableHeaders {
@@ -40,6 +44,11 @@ public class ViewConstants {
 		public static final String DISCOUNT_DESCRIPTION = "Description";
 		public static final String DISCOUNT_STARTDATE = "StartDate";
 		public static final String DISCOUNT_PERIOD = "Period";
+		
+		//Member Table Headers
+		public static final String MEMBER_NAME = "Name";
+		public static final String MEMBER_ID = "Member ID";
+		public static final String MEMBER_POINTS = "Loyalty Points";
 	}
 	
 	public static final class PaneHeaders {
