@@ -2,15 +2,16 @@ package sg.edu.nus.iss.universitystore.controller;
 
 import java.io.IOException;
 
+
 import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.Constants;
-import sg.edu.nus.iss.universitystore.data.DataFileManager;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.LoginPanel;
 import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
+import sg.edu.nus.iss.universitystore.data.LoginManager;
 
 /**
  * @author Samrat
@@ -27,7 +28,7 @@ public class LoginController implements ILoginDelegate {
 	// Instance Variables
 	/***********************************************************/
 	private LoginPanel loginPanel;
-	private DataFileManager dataFileManager;
+	private LoginManager loginManager;
 
 	/***********************************************************/
 	// Constructors
@@ -37,7 +38,7 @@ public class LoginController implements ILoginDelegate {
 		loginPanel.setLoginListener(this);
 
 		// Instantiate Data File Manager
-		dataFileManager = DataFileManager.getInstance();
+		loginManager = LoginManager.getInstance();
 
 	}
 
@@ -57,7 +58,7 @@ public class LoginController implements ILoginDelegate {
 
 		try {
 			// Validate Credentials
-			if (dataFileManager.isValidCredentials(storeKeeper)) {
+			if (loginManager.isValidCredentials(storeKeeper)) {
 				UIUtils.navigateToDashboard(loginPanel);
 			} else {
 				// UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING,
