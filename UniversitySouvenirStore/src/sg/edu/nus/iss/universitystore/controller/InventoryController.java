@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
+import sg.edu.nus.iss.universitystore.exception.StoreException;
 
 public class InventoryController {
 	
@@ -21,8 +22,9 @@ public class InventoryController {
 	 * 
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
+	 * @throws StoreException 
 	 */
-	public InventoryController() throws FileNotFoundException, IOException{
+	public InventoryController() throws FileNotFoundException, IOException, StoreException{
 		inventoryManager = InventoryManager.getInstance();
 	}
 

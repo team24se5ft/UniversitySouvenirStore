@@ -83,7 +83,8 @@ public class DashboardPanel extends JPanel implements DashBoardOptionChangeDeleg
 		mainContentPanel.add(DashboardOptionsPanel.STR_SALES, new SalesPanel());
 		mainContentPanel.add(DashboardOptionsPanel.STR_INVENTORY, new InventoryPanel());
 		mainContentPanel.add(DashboardOptionsPanel.STR_MEMBER, new MemberPanel());
-		mainContentPanel.add(DashboardOptionsPanel.STR_DISCOUNT, new DiscountPanel());
+		// TODO: To be resolved
+		// mainContentPanel.add(DashboardOptionsPanel.STR_DISCOUNT, new DiscountPanel());
 		mainContentPanel.add(DashboardOptionsPanel.STR_REPORTS, new ReportPanel());
 		add(mainContentPanel, BorderLayout.CENTER);
 	}

@@ -105,7 +105,7 @@ public class MemberManager {
 		ArrayList<Member> member = getAllMembers();
 		for (Member memberLine : member) {
 			if (memberLine.getIdentifier().equals(identifier)) {
-				memberData.delete(memberLine);
+				memberData.delete(memberLine.toString());
 			} else {
 				System.out.println(DataConstants.MEMBER_NOT_FOUND);
 			}

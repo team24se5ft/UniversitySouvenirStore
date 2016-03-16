@@ -10,6 +10,7 @@ import sg.edu.nus.iss.universitystore.constants.StoreConstants;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.data.DataFile;
+import sg.edu.nus.iss.universitystore.exception.StoreException;
 
 /**
  * Common Data File Access Class
@@ -69,8 +70,9 @@ public class DataFileManager {
 	 * 
 	 * @return List of all Categories
 	 * @throws IOException
+	 * @throws StoreException 
 	 */
-	public ArrayList<Category> getAllCategories() throws IOException {
+	public ArrayList<Category> getAllCategories() throws IOException, StoreException {
 		String[] categoryStrList = categoryData.getAll();
 		ArrayList<Category> categories = new ArrayList<>();
 

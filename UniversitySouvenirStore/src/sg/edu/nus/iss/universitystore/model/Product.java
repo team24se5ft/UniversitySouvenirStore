@@ -26,8 +26,8 @@ public class Product {
 		this.reorderThreshold = Integer.parseInt(reorderThreshold);
 		this.reorderQuantity = Integer.parseInt(reorderQuantity);
 	}
-	
-	public Product(String identified, Goods goods){
+
+	public Product(String identifier, Goods goods) {
 		this.identifier = identifier;
 		this.name = goods.getName();
 		this.description = goods.getDescription();
@@ -50,7 +50,7 @@ public class Product {
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
-	
+
 	/**
 	 * @return the identifier
 	 */
@@ -103,7 +103,6 @@ public class Product {
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -111,8 +110,59 @@ public class Product {
 	 */
 	@Override
 	public String toString() {
-		return "Product [identifier=" + identifier + ", name=" + name + ", description=" + description + ", quantity="
-				+ quantity + ", price=" + price + ", reorderThreshold=" + reorderThreshold + ", reorderQuantity="
-				+ reorderQuantity + "]";
+		return identifier + "," + name + "," + description + "," + quantity + "," + price + "," + reorderThreshold + ","
+				+ reorderQuantity;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + quantity;
+		result = prime * result + reorderQuantity;
+		result = prime * result + reorderThreshold;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (identifier == null) {
+			if (other.identifier != null)
+				return false;
+		} else if (!identifier.equals(other.identifier))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
+			return false;
+		if (quantity != other.quantity)
+			return false;
+		if (reorderQuantity != other.reorderQuantity)
+			return false;
+		if (reorderThreshold != other.reorderThreshold)
+			return false;
+		return true;
+	}
+
 }

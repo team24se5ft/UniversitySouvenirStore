@@ -9,14 +9,22 @@ public final class Constants {
 	
 	public static final class Data {
 		
-		public static final String FILE_PATH_SEPTR = System.getProperty("os.name").startsWith("WIN")?"\\":"//";
+		// TODO: Is this the best solution
+		public enum FILE_FOLDER { TEST,DATA;}
+		
+		// TODO: Come up with better solution
+		public static final String FILE_PATH_SEPTR = System.getProperty("os.name").toUpperCase().startsWith("WIN")?"\\":"//";
 		public static final String FILE_EXT = ".dat";
 		public static final String FILE_SEPTR = ",";
 		public static final String FILE_FLDR = "data";
 		public static final String FILE_PATH = System.getProperty("user.dir") + 
-				FILE_PATH_SEPTR + FILE_FLDR + FILE_PATH_SEPTR;
+				FILE_PATH_SEPTR + FILE_FOLDER.DATA.toString().toLowerCase() + FILE_PATH_SEPTR;
 		
 		public static final String ID_SEPTR = "/";
+		
+		public static final String TEST_FILE_PATH = System.getProperty("user.dir") + 
+				FILE_PATH_SEPTR + FILE_FOLDER.TEST.toString().toLowerCase() + 
+				FILE_PATH_SEPTR + FILE_FOLDER.DATA.toString().toLowerCase() + FILE_PATH_SEPTR;
 		
 		public static final class FileName {
 			public static final String CATEGORY_DAT = "Category";

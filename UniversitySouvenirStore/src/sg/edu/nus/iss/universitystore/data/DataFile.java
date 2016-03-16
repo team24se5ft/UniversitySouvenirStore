@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.universitystore.data;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
+import sg.edu.nus.iss.universitystore.test.InitializeTest;
 
 /**
  * Data Access Object Implementation
@@ -22,7 +24,9 @@ class DataFile<T> {
 	private String file;
 
 	DataFile(String fileName) throws FileNotFoundException, IOException {
-		this.file = Constants.Data.FILE_PATH + fileName + Constants.Data.FILE_EXT;
+		String filePath = InitializeTest.isJUnit() ?
+				Constants.Data.TEST_FILE_PATH : Constants.Data.FILE_PATH;
+		this.file = filePath + fileName + Constants.Data.FILE_EXT;
 		initialize();
 
 	}
@@ -46,10 +50,10 @@ class DataFile<T> {
 	 * @return
 	 * @throws IOException
 	 */
-	public void add(T t) throws IOException {
+	public boolean add(T t) throws IOException {
 		String content = getStringFromFile(file);
 		// Add new content to file
-		writeStringToFile(content + t.toString(), file);
+		return writeStringToFile(content + t.toString(), file);
 	}
 
 	/**
@@ -58,17 +62,17 @@ class DataFile<T> {
 	 * @param id
 	 * @throws IOException
 	 */
-	public void delete(Object id) throws IOException {
+	public boolean delete(String id) throws IOException {
 		String[] contents = getAll();
 		StringBuffer newContent = new StringBuffer();
 		for (String line : contents) {
-			if (id.toString().equals(line))
+			if (id.equals(line))
 				continue;
 			newContent.append(line);
 			newContent.append(Constants.Common.NEW_LINE);
 		}
 		// Do some manipulation
-		writeStringToFile(newContent.toString(), file);
+		return writeStringToFile(newContent.toString(), file);
 
 	}
 
@@ -78,7 +82,7 @@ class DataFile<T> {
 	 * @param ct
 	 * @throws IOException
 	 */
-	public void addAll(Collection<T> ct) throws IOException {
+	public boolean addAll(Collection<T> ct) throws IOException {
 		Iterator<T> iterator = ct.iterator();
 		StringBuffer content = new StringBuffer();
 
@@ -87,7 +91,7 @@ class DataFile<T> {
 			content.append(Constants.Common.NEW_LINE);
 		}
 
-		writeStringToFile(content.toString(), file);
+		return writeStringToFile(content.toString(), file);
 	}
 
 	/**
@@ -95,8 +99,8 @@ class DataFile<T> {
 	 * 
 	 * @throws FileNotFoundException
 	 */
-	public void deleteAll() throws FileNotFoundException {
-		writeStringToFile(Constants.Common.EMPTY_STR, file);
+	public boolean deleteAll() throws FileNotFoundException {
+		return writeStringToFile(Constants.Common.EMPTY_STR, file);
 	}
 
 	/**
@@ -107,6 +111,14 @@ class DataFile<T> {
 	 */
 	public String[] getAll() throws IOException {
 		return getStringFromFile(file).split(Constants.Common.NEW_LINE);
+	}
+	
+	/**
+	 * Delete File
+	 * @return
+	 */
+	public boolean delete(){
+		return (new File(file)).delete();
 	}
 
 	/**
@@ -137,14 +149,17 @@ class DataFile<T> {
 	 * @param file
 	 * @throws FileNotFoundException
 	 */
-	private void writeStringToFile(String stringToWrite, String file) throws FileNotFoundException {
+	private boolean writeStringToFile(String stringToWrite, String file) throws FileNotFoundException {
+		boolean status = false;
 		PrintWriter writeToFile = null;
 		try {
 			writeToFile = new PrintWriter(file);
 			writeToFile.print(stringToWrite);
+			status = true;
 		} finally {
 			writeToFile.close();
 		}
+		return status;
 	}
 
 	/**
