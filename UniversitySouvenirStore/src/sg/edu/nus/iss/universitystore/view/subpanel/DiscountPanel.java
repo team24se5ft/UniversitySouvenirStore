@@ -18,26 +18,31 @@ import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
-
+/**
+ * 
+ * @author linby
+ *
+ */
 public class DiscountPanel extends JPanel {
 	private JTable DiscountTable;
 
+	
 	private JButton btnAdd;
 	private JButton btnEdit;
 	private JButton btnDelete;
 
-	private ImageIcon addIcon;
-	private ImageIcon editIcon;
-	private ImageIcon deleteIcon;
-
 	private JPanel buttonPanel;
 
-	private IDiscountDelegate delegate;
+	private IDiscountDelegate delegate;//to communicate with Discount controller
 
+	/***********************************************************/
+	//Constructors
+	/***********************************************************/
 	public DiscountPanel(IDiscountDelegate delegate) {
 		setBackground(Color.WHITE);
 		this.delegate = delegate;
 		BorderLayout borderLayout = new BorderLayout();
+		//set height and width gap
 		borderLayout.setHgap(20);
 		borderLayout.setVgap(20);
 		this.setLayout(borderLayout);
@@ -46,10 +51,15 @@ public class DiscountPanel extends JPanel {
 		// add(new JLabel("discount"));
 	}
 
+	/***********************************************************/
+	//Private Methods
+	/***********************************************************/
 	private void initDiscountTable() {
+		//FIXME hardcode need to fix after use formal data
 		String[] headers = { "code", "percentage", "type", "description", "startDate", "period" };
 		String[] content = { "Holiday", "20.0%", "M", "holiday celebration", "27/06", "18" };
 		String data[][] = { content };
+		//init table model
 		DefaultTableModel model = new DefaultTableModel(data, headers) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -113,20 +123,10 @@ public class DiscountPanel extends JPanel {
 		btn.setOpaque(false);
 		return btn;
 	}
-
-	public void onRemoveDiscount(int row) {
-		DefaultTableModel model = (DefaultTableModel) DiscountTable.getModel();
-		if (DiscountTable.getSelectedRow() != -1) {
-			model.removeRow(row);
-		}
-	}
-
-	public void onAddDiscount(Discount discount) {
-		DefaultTableModel model = (DefaultTableModel) DiscountTable.getModel();
-		model.addRow(new Object[] { discount.getCode(), discount.getPercentage() + "%", discount.getEligibilty(),
-				discount.getDescription(), discount.getStartDate().toString(), discount.getPeriod() });
-	}
-
+	
+	/**
+	 * all the DiscountPanel button`s event init here
+	 */
 	private void initButtonEvent() {
 		btnDelete.addActionListener(new ActionListener() {
 
@@ -145,4 +145,29 @@ public class DiscountPanel extends JPanel {
 
 	}
 
+	
+	/***********************************************************/
+	//Public Methods
+	/***********************************************************/
+	/**
+	 * after confirm in dialog to remove item
+	 * @param row which row should be deleted
+	 */
+	public void onRemoveDiscount(int row) {
+		DefaultTableModel model = (DefaultTableModel) DiscountTable.getModel();
+		if (DiscountTable.getSelectedRow() != -1) {
+			model.removeRow(row);
+		}
+	}
+
+	/**
+	 * after click ok in discountPanel to addDiscount
+	 * @param discount
+	 */
+	public void onAddDiscount(Discount discount) {
+		DefaultTableModel model = (DefaultTableModel) DiscountTable.getModel();
+		model.addRow(new Object[] { discount.getCode(), discount.getPercentage() + "%", discount.getEligibilty(),
+				discount.getDescription(), discount.getStartDate().toString(), discount.getPeriod() });
+	}
+	
 }

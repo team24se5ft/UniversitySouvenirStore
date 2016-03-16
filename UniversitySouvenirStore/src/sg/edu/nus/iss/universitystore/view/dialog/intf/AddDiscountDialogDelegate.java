@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.universitystore.view.dialog.intf;
 
-import java.time.LocalDate;
-
 public interface AddDiscountDialogDelegate {
 	/**
 	 * add discount dialog call back function

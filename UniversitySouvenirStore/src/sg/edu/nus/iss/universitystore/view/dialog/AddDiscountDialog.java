@@ -19,17 +19,22 @@ import sg.edu.nus.iss.universitystore.view.dialog.intf.AddDiscountDialogDelegate
 public class AddDiscountDialog extends OkCancelDialog implements WindowListener {
 	private static final long serialVersionUID = 3029306694712724442L;
 
-	private TextField code;
-	private TextField percentage;
+	//textfield define
+	private TextField code;  
+	private TextField percentage; 
 	private TextField description;
 	private TextField startDate;
 	private TextField period;
 
+	//M for member,A for All
 	JRadioButton randioButtonM;
 	JRadioButton randioButtonA;
 
 	private AddDiscountDialogDelegate delegate;
 
+	/***********************************************************/
+	//Constructors
+	/***********************************************************/
 	public AddDiscountDialog(JFrame parent) {
 		super(parent, "AddDiscount");
 	}
@@ -42,7 +47,31 @@ public class AddDiscountDialog extends OkCancelDialog implements WindowListener 
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
+	
+	
+	/***********************************************************/
+	//Private Methods
+	/***********************************************************/
+	/**
+	 * single button initliazaiton
+	 */
+	private JPanel initSingleButtonGroup() {
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		randioButtonM = new JRadioButton("M", true);
+		randioButtonA = new JRadioButton("A");
+		contentPane.add(randioButtonM);
+		contentPane.add(randioButtonA);
+		ButtonGroup group = new ButtonGroup();
+		group.add(randioButtonM);
+		group.add(randioButtonA);
+		return contentPane;
+	}
 
+	/***********************************************************/
+	//override method
+	/***********************************************************/
 	@Override
 	protected Panel createFormPanel() {
 		Panel jp = new Panel();
@@ -73,24 +102,10 @@ public class AddDiscountDialog extends OkCancelDialog implements WindowListener 
 		jp.add(period);
 		return jp;
 	}
-
+	
 	/**
-	 * single button initliazaiton
+	 * when Ok button be clicked
 	 */
-	private JPanel initSingleButtonGroup() {
-		JPanel contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		randioButtonM = new JRadioButton("M", true);
-		randioButtonA = new JRadioButton("A");
-		contentPane.add(randioButtonM);
-		contentPane.add(randioButtonA);
-		ButtonGroup group = new ButtonGroup();
-		group.add(randioButtonM);
-		group.add(randioButtonA);
-		return contentPane;
-	}
-
 	@Override
 	protected boolean performOkAction() {
 		// check discount eligibility
