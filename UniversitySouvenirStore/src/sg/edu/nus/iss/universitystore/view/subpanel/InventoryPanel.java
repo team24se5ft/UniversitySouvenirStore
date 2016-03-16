@@ -11,6 +11,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 
 /**
@@ -18,7 +19,7 @@ import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
  *
  */
 
-public class InventoryPanel extends JPanel{
+public class InventoryPanel extends BaseTablePanel{
 
 	/***********************************************************/
 	// Constants
@@ -51,6 +52,15 @@ public class InventoryPanel extends JPanel{
 	 */
 	private IInventoryDelegate delegate;
 
+	/**
+	 * Table consisting of all categories.
+	 */
+	private JTable categoryTable;
+	
+	/**
+	 * The table consisting of all the products.
+	 */
+	private JTable productTable;
 	/*
 	 * Array for storing the category table headers.
 	 */
@@ -130,14 +140,16 @@ public class InventoryPanel extends JPanel{
 		categoryPanel = new JPanel();
 		categoryPanel.setLayout(new BorderLayout());
 		// Add the table
-		categoryPanel.add(getScrollPaneWithTable(categoryTableContent, categoryTableHeaders),BorderLayout.CENTER);
-		// Add the button
+		categoryTable = getTable(categoryTableContent, categoryTableHeaders);
+		JScrollPane scrollPane = new JScrollPane(categoryTable);
+		categoryPanel.add(scrollPane,BorderLayout.CENTER);
+		// Add the button panel
 		return categoryPanel;
 	}
 
 	/**
 	 * Method to create the Product Panel
-	 * @return Retrun the product panel after updating the UI.
+	 * @return Return the product panel after updating the UI.
 	 */
 	private JPanel createProductPanel() {
 		// TEST
@@ -147,37 +159,14 @@ public class InventoryPanel extends JPanel{
 		productPanel = new JPanel();
 		productPanel.setLayout(new BorderLayout());
 		// Add the table
-		productPanel.add(getScrollPaneWithTable(productTableContent, productTableHeaders), BorderLayout.CENTER);
+		productTable = getTable(productTableContent, productTableHeaders);
+		JScrollPane scrollPane = new JScrollPane(productTable);
+		productPanel.add(scrollPane,BorderLayout.CENTER);
 		return productPanel;
 	}
-
-	/**
-	 * Method to create a JScrollpane containing a JTable.
-	 * @param data The data that needs to be populated in the table.
-	 * @param headers The headers of the table.
-	 * @return The JScrollPane with all the values populated.
-	 */
-	private JScrollPane getScrollPaneWithTable(String[] data, String[] headers) {
-
-		String tableData[][] = { data };
-
-		// Complete the abstract class & create a new instance
-		DefaultTableModel categoryModel = new DefaultTableModel(tableData, headers) {
-
-			private static final long serialVersionUID = 1L;
-
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		// Create the table
-		JTable categoryTable = new JTable(categoryModel);
-		categoryTable.setRowHeight(30);
-		categoryTable.setBorder(BorderFactory.createEtchedBorder());
-		categoryTable.setGridColor(Color.BLACK);
-		categoryTable.setIntercellSpacing(new Dimension(1, 1));
-		// Create the scroll pane
-		JScrollPane scrollPane = new JScrollPane(categoryTable);
-		return scrollPane;
+	
+	private JPanel getButtonPanel(){
+		
+		return null;
 	}
 }

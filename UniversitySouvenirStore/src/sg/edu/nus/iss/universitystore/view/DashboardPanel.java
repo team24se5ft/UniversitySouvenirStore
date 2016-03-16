@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.controller.DiscountController;
+import sg.edu.nus.iss.universitystore.controller.InventoryController;
 import sg.edu.nus.iss.universitystore.controller.MemberController;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
@@ -82,7 +83,7 @@ public class DashboardPanel extends JPanel implements DashBoardOptionChangeDeleg
 		layout.setVgap(10);
 		mainContentPanel.setLayout(layout);
 		mainContentPanel.add(ViewConstants.MenuOptions.STR_SALES, new SalesPanel());
-		mainContentPanel.add(ViewConstants.MenuOptions.STR_INVENTORY, new InventoryPanel());
+		mainContentPanel.add(ViewConstants.MenuOptions.STR_INVENTORY, new InventoryController().getInventoryPanel());
 		mainContentPanel.add(ViewConstants.MenuOptions.STR_MEMBER, new MemberController().getmemberPanel());
 		// TODO: To be resolved
 		 mainContentPanel.add(ViewConstants.MenuOptions.STR_DISCOUNT, new DiscountController().getDiscountPanel());
