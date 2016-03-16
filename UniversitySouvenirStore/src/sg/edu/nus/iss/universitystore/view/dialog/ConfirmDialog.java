@@ -6,8 +6,9 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-public class ConfirmDialog extends OkCancelDialog implements WindowListener{
+public class ConfirmDialog extends BaseDialog implements WindowListener{
 
 	private Label messageLabel;
 
@@ -20,8 +21,8 @@ public class ConfirmDialog extends OkCancelDialog implements WindowListener{
 		this.setLocationRelativeTo(parent);
 	}
 
-	protected Panel createFormPanel() {
-		Panel p = new Panel();
+	protected JPanel createFormPanel() {
+		JPanel p = new JPanel();
 		messageLabel = new Label();
 		p.add(messageLabel);
 		return p;

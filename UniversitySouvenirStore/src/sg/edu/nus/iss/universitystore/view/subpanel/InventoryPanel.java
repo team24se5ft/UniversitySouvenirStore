@@ -5,8 +5,6 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import sg.edu.nus.iss.universitystore.view.CategoryPanel;
-import sg.edu.nus.iss.universitystore.view.ProductPanel;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 
 /**

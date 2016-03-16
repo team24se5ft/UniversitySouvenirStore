@@ -1,19 +1,20 @@
 /**
  * 
  */
-package sg.edu.nus.iss.universitystore.view;
+package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 
 /**
  * @author Samrat
  *
  */
-public class CategoryPanel extends BaseTablePanel{
+public class ProductPanel extends BaseTablePanel{
 
 	/***********************************************************/
 	// Constants
@@ -28,20 +29,20 @@ public class CategoryPanel extends BaseTablePanel{
 	/***********************************************************/
 
 	/*
-	 * Array for storing the category table headers.
+	 * Array for storing the product table headers.
 	 */
 	private String[] tableHeaders;
 
 	/*
-	 * Array for storing the category content.
+	 * Array for storing the product content.
 	 */
 	private String[] tableContent;
-	
+
 	/**
 	 * Delegate for calling the controller.
 	 */
 	private IInventoryDelegate delegate;
-	
+
 	/***********************************************************/
 	// Getters & Setters
 	/***********************************************************/
@@ -54,6 +55,20 @@ public class CategoryPanel extends BaseTablePanel{
 	}
 
 	/***********************************************************/
+	// Constructors
+	/***********************************************************/
+	public ProductPanel(String[] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
+		// Store the values.
+		this.tableContent = tableContent;
+		this.tableHeaders = tableHeaders;
+		this.delegate = delegate;
+		// Start with the GUI.
+		setLayout(new BorderLayout());
+		add(getScrollPaneWithTable(this.tableContent, this.tableHeaders),BorderLayout.CENTER);
+		add(getButtonPanel(),BorderLayout.SOUTH);
+	}
+
+	/***********************************************************/
 	// Abstract Methods Implementation
 	/***********************************************************/
 	protected ActionListener addAction() {
@@ -61,7 +76,7 @@ public class CategoryPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.addCategoryClicked();
+				delegate.addProductClicked();
 			}
 		};
 	}
@@ -71,7 +86,7 @@ public class CategoryPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.editCategoryClicked();
+				delegate.editProductClicked();
 			}
 		};
 	}
@@ -81,22 +96,9 @@ public class CategoryPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.deleteCategoryClicked();
+				delegate.deleteProductClicked();
+
 			}
 		};
-	}
-
-	/***********************************************************/
-	// Constructors
-	/***********************************************************/
-	public CategoryPanel(String[] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
-		// Store the values.
-		this.tableContent = tableContent;
-		this.tableHeaders = tableHeaders;
-		this.delegate = delegate;
-		// Start with the GUI.
-		setLayout(new BorderLayout());
-		add(getScrollPaneWithTable(this.tableContent, this.tableHeaders),BorderLayout.CENTER);
-		add(getButtonPanel(),BorderLayout.SOUTH);
 	}
 }

@@ -33,7 +33,10 @@ public class ViewConstants {
 		public static final String STR_ADD_MEMBER = "Add Member";
 		public static final String STR_EDIT_MEMBER = "Edit Member";
 		public static final String STR_DELETE_MEMBER = "Delete Member";
-				
+		
+		// Base Dialog
+		public static final String STR_CONFIRM = "Confirm";
+		public static final String STR_CANCEL = "Cancel";
 	}
 	
 	public class TableHeaders {

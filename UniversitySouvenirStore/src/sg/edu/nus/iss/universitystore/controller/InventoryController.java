@@ -36,7 +36,7 @@ public class InventoryController implements IInventoryDelegate{
 	private ArrayList<Category> arrCategory;
 	
 	/**
-	 * 
+	 * The list of all products.
 	 */
 	private ArrayList<Product> arrProduct;
 	
@@ -50,6 +50,8 @@ public class InventoryController implements IInventoryDelegate{
 	public InventoryController(){
 		try {
 			inventoryManager = InventoryManager.getInstance();
+			arrCategory = inventoryManager.getAllCategories();
+			arrProduct = inventoryManager.getAllProducts();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getStackTrace());

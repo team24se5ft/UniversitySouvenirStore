@@ -2,16 +2,16 @@ package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridLayout;
 import java.awt.Label;
-import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.view.dialog.intf.AddMemberDialogDelegate;
 
-public class AddMemberDialog extends OkCancelDialog implements WindowListener {
+public class AddMemberDialog extends BaseDialog implements WindowListener {
 	private static final long serialVersionUID = 3029306694712724442L;
 	private AddMemberDialogDelegate delegate;
 
@@ -35,8 +35,8 @@ public class AddMemberDialog extends OkCancelDialog implements WindowListener {
 	}
 
 	@Override
-	protected Panel createFormPanel() {
-		Panel jp = new Panel();
+	protected JPanel createFormPanel() {
+		JPanel jp = new JPanel();
 		jp.setLayout(new GridLayout(3, 3));
 		labelSurName = new Label("surName");
 		labelFirstName = new Label("firstName");
