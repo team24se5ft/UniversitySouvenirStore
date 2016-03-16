@@ -29,7 +29,7 @@ public interface IInventoryDelegate {
 	public void deleteCategoryClicked();
 	
 	/***********************************************************/
-	// Abstract Methods Implementation
+	// CRUD operations for Product
 	/***********************************************************/
 	
 	/**

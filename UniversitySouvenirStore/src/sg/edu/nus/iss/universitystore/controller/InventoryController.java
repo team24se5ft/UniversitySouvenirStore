@@ -2,9 +2,12 @@ package sg.edu.nus.iss.universitystore.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
+import sg.edu.nus.iss.universitystore.model.Category;
+import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
 
@@ -17,12 +20,26 @@ public class InventoryController implements IInventoryDelegate{
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
+	/**
+	 * Instance of the Inventory Manager for retrieving the data from the dB.
+	 */
 	private InventoryManager inventoryManager;
 	
 	/**
 	 * Holds the reference to the view associated to show the inventory.
 	 */
 	private InventoryPanel inventoryPanel;
+	
+	/**
+	 * The list of all categories.
+	 */
+	private ArrayList<Category> arrCategory;
+	
+	/**
+	 * 
+	 */
+	private ArrayList<Product> arrProduct;
+	
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
@@ -40,6 +57,8 @@ public class InventoryController implements IInventoryDelegate{
 		
 		// Initialize the panel
 		inventoryPanel = new InventoryPanel(this);
+		
+		// TODO: Setup the various components of the panel with the data retrieved from the manager.
 	}
 	
 	/***********************************************************/
