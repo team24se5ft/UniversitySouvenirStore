@@ -1,15 +1,17 @@
 package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
@@ -56,7 +58,7 @@ public class InventoryPanel extends BaseTablePanel{
 	 * Table consisting of all categories.
 	 */
 	private JTable categoryTable;
-	
+
 	/**
 	 * The table consisting of all the products.
 	 */
@@ -144,6 +146,33 @@ public class InventoryPanel extends BaseTablePanel{
 		JScrollPane scrollPane = new JScrollPane(categoryTable);
 		categoryPanel.add(scrollPane,BorderLayout.CENTER);
 		// Add the button panel
+		ActionListener addCategory = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		};
+
+		ActionListener editCategory = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		};
+
+		ActionListener deleteCategory = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		};
+		categoryPanel.add(getButtonPanel(addCategory, editCategory, deleteCategory), BorderLayout.SOUTH);
 		return categoryPanel;
 	}
 
@@ -163,10 +192,5 @@ public class InventoryPanel extends BaseTablePanel{
 		JScrollPane scrollPane = new JScrollPane(productTable);
 		productPanel.add(scrollPane,BorderLayout.CENTER);
 		return productPanel;
-	}
-	
-	private JPanel getButtonPanel(){
-		
-		return null;
 	}
 }
