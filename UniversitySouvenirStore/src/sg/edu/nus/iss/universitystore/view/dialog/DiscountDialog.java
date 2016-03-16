@@ -104,7 +104,7 @@ public class DiscountDialog extends BaseDialog implements WindowListener {
 	// override method
 	/***********************************************************/
 	@Override
-	protected JPanel createFormPanel() {
+	protected JPanel getPanelToAddToDialog() {
 		JPanel jp = new JPanel();
 		jp.setLayout(new GridLayout(6, 6));
 
