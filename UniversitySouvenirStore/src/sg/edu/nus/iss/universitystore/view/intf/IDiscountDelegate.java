@@ -12,4 +12,7 @@ public interface IDiscountDelegate {
 	 *            convert row to make sure delete selected row
 	 */
 	public void deleteDiscount(int row);
+	
+	
+	public void updateDiscount(int row);
 }

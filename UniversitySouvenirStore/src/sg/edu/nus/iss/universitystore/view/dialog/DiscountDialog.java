@@ -14,44 +14,75 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
-import sg.edu.nus.iss.universitystore.view.dialog.intf.AddDiscountDialogDelegate;
+import sg.edu.nus.iss.universitystore.model.Discount;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.DiscountDialogDelegate;
 
-public class AddDiscountDialog extends OkCancelDialog implements WindowListener {
+public class DiscountDialog extends OkCancelDialog implements WindowListener {
 	private static final long serialVersionUID = 3029306694712724442L;
+	private int type;// 0=add,1=update
 
-	//textfield define
-	private TextField code;  
-	private TextField percentage; 
+	// textfield define
+	private TextField code;
+	private TextField percentage;
 	private TextField description;
 	private TextField startDate;
 	private TextField period;
 
-	//M for member,A for All
+	// M for member,A for All
 	JRadioButton randioButtonM;
 	JRadioButton randioButtonA;
 
-	private AddDiscountDialogDelegate delegate;
+	private DiscountDialogDelegate delegate;
 
 	/***********************************************************/
-	//Constructors
+	// Constants
 	/***********************************************************/
-	public AddDiscountDialog(JFrame parent) {
+	public final static int ADD_TYPE = 0;
+	public final static int UPDATE_TYPE = 1;
+
+	/***********************************************************/
+	// Constructors
+	/***********************************************************/
+	public DiscountDialog(JFrame parent) {
 		super(parent, "AddDiscount");
 	}
 
-	public AddDiscountDialog(JFrame parent, String title, AddDiscountDialogDelegate delegate) {
+	public DiscountDialog(JFrame parent, String title, DiscountDialogDelegate delegate, int type) {
 		super(parent, title);
+		this.type = type;
 		this.delegate = delegate;
 		this.addWindowListener(this);
 		this.setSize(400, 300);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
-	
-	
+
 	/***********************************************************/
-	//Private Methods
+	// Public Methods
 	/***********************************************************/
+	/**
+	 * invoke this function when you need fill data into the dialog
+	 * @param discount
+	 */
+	public void setDiscountData(Discount discount) {
+		code.setText(discount.getCode());
+		percentage.setText(discount.getPercentage()+"");
+		description.setText(discount.getDescription());
+		startDate.setText(discount.getStartDate());
+		period.setText(discount.getPeriod() + "");
+		if (discount.getEligibilty().equals("M")) {
+			randioButtonM.setSelected(true);
+			randioButtonA.setSelected(false);
+		} else {
+			randioButtonM.setSelected(false);
+			randioButtonA.setSelected(true);
+		}
+	}
+
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+
 	/**
 	 * single button initliazaiton
 	 */
@@ -70,7 +101,7 @@ public class AddDiscountDialog extends OkCancelDialog implements WindowListener 
 	}
 
 	/***********************************************************/
-	//override method
+	// override method
 	/***********************************************************/
 	@Override
 	protected Panel createFormPanel() {
@@ -102,7 +133,7 @@ public class AddDiscountDialog extends OkCancelDialog implements WindowListener 
 		jp.add(period);
 		return jp;
 	}
-	
+
 	/**
 	 * when Ok button be clicked
 	 */
@@ -117,12 +148,12 @@ public class AddDiscountDialog extends OkCancelDialog implements WindowListener 
 		}
 		// check date format
 		String startdate = startDate.getText();
-//		if (!DateUtils.checkDate()) {
-//			return false;
-//		}
+		// if (!DateUtils.checkDate()) {
+		// return false;
+		// }
 		if (code.getText().length() != 0 && percentage.getText().length() != 0) {
-			delegate.onAddDiscount(code.getText(), description.getText(), startdate, period.getText(), percentage.getText(),
-					eligibility);
+			delegate.onDiscountCallBack(code.getText(), description.getText(), startdate, period.getText(),
+					percentage.getText(), eligibility);
 			return true;
 		}
 		return false;

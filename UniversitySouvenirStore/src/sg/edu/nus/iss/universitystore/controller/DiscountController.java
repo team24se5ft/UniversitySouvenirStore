@@ -1,20 +1,29 @@
 package sg.edu.nus.iss.universitystore.controller;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.model.Discount;
-import sg.edu.nus.iss.universitystore.view.dialog.AddDiscountDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmDialog;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.AddDiscountDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.DiscountDialog;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.DiscountDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
 
 public class DiscountController implements IDiscountDelegate {
 	private DiscountPanel discountPanel;
+	private ArrayList<Discount> discountList;
 
 	public DiscountController() {
 		discountPanel = new DiscountPanel(this);
+		discountList = new ArrayList<Discount>();
+		for (int i = 0; i < 5; i++) {
+			Discount e=new Discount("Test", "lose my previous code TnT", "06/06", 10, 20, "A");
+			discountList.add(e);
+		}
+		discountPanel.setDiscountTableData(discountList);
 	}
 
 	public DiscountPanel getDiscountPanel() {
@@ -23,21 +32,21 @@ public class DiscountController implements IDiscountDelegate {
 
 	@Override
 	public void addDiscount() {
-		new AddDiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "AddDiscount",
-				new AddDiscountDialogDelegate() {
+		new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "AddDiscount",
+				new DiscountDialogDelegate() {
 
 					@Override
-					public void onAddDiscount(String code, String description, String startDate, String period,
+					public void onDiscountCallBack(String code, String description, String startDate, String period,
 							String percentage, String eligibilty) {
 						Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
 								Float.valueOf(percentage), eligibilty);
 						// TODO dataModify
+						discountList.add(discount);
 						// UIupdate
 						discountPanel.onAddDiscount(discount);
 					}
 
-				}).setVisible(true);
-		;
+				}, DiscountDialog.ADD_TYPE).setVisible(true);
 	}
 
 	// TODO keep a list of discount in the controller and modify according to
@@ -53,10 +62,36 @@ public class DiscountController implements IDiscountDelegate {
 			@Override
 			protected boolean performOkAction() {
 				// TODO dataModify
+				discountList.remove(row);
 				// UIupdate
 				discountPanel.onRemoveDiscount(row);
 				return true;
 			}
 		}.setVisible(true);
+	}
+
+	@Override
+	public void updateDiscount(int row) {
+		if (row < 0) {
+			return;
+		}
+		DiscountDialog updateDlg=new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "UpdateDiscount",
+				new DiscountDialogDelegate() {
+
+					@Override
+					public void onDiscountCallBack(String code, String description, String startDate, String period,
+							String percentage, String eligibilty) {
+						Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
+								Float.valueOf(percentage), eligibilty);
+						// TODO dataModify
+						discountList.remove(row);
+						discountList.add(row,discount);
+						// UIupdate
+						discountPanel.onUpdateDiscount(discount, row);
+					}
+
+				}, DiscountDialog.UPDATE_TYPE);
+		updateDlg.setDiscountData(discountList.get(row));
+		updateDlg.setVisible(true);
 	}
 }

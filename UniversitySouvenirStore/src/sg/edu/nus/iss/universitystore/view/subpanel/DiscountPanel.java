@@ -1,12 +1,12 @@
 package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -19,7 +19,6 @@ import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
-import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 
 /**
  * 
@@ -29,23 +28,23 @@ import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 public class DiscountPanel extends JPanel {
 	private JTable DiscountTable;
 
-	
 	private JButton btnAdd;
 	private JButton btnEdit;
 	private JButton btnDelete;
 
 	private JPanel buttonPanel;
 
-	private IDiscountDelegate delegate;//to communicate with Discount controller
+	private IDiscountDelegate delegate;// to communicate with Discount
+										// controller
 
 	/***********************************************************/
-	//Constructors
+	// Constructors
 	/***********************************************************/
 	public DiscountPanel(IDiscountDelegate delegate) {
 		setBackground(Color.WHITE);
 		this.delegate = delegate;
 		BorderLayout borderLayout = new BorderLayout();
-		//set height and width gap
+		// set height and width gap
 		borderLayout.setHgap(20);
 		borderLayout.setVgap(20);
 		this.setLayout(borderLayout);
@@ -55,14 +54,15 @@ public class DiscountPanel extends JPanel {
 	}
 
 	/***********************************************************/
-	//Private Methods
+	// Private Methods
 	/***********************************************************/
+	// FIXME latter use our own table component
 	private void initDiscountTable() {
-		//FIXME hardcode need to fix after use formal data
-		String[] headers = { ViewConstants.TableHeaders.DISCOUNT_CODE, ViewConstants.TableHeaders.DISCOUNT_PERCENTAGE, ViewConstants.TableHeaders.DISCOUNT_TYPE, ViewConstants.TableHeaders.DISCOUNT_DESCRIPTION, ViewConstants.TableHeaders.DISCOUNT_STARTDATE, ViewConstants.TableHeaders.DISCOUNT_PERIOD };
-		String[] content = { "Holiday", "20.0%", "M", "holiday celebration", "27/06", "18" };
-		String data[][] = { content };
-		//init table model
+		// FIXME hardcode need to fix after use formal data
+		String[] headers = { "code", "percentage", "type", "description", "startDate", "period" };
+//		String[] content = { "Holiday", "20.0%", "M", "holiday celebration", "27/06", "18" };
+		String data[][] = {  };
+		// init table model
 		DefaultTableModel model = new DefaultTableModel(data, headers) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -77,28 +77,33 @@ public class DiscountPanel extends JPanel {
 		add(JSP, "Center");
 	}
 
+	/**
+	 * init ButtonPanle which include add,update and delete
+	 */
 	private void initButtonPanel() {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 
 		// ImageIcons with Label
-		btnAdd = initImageButton("Resources/add_icon.png", ViewConstants.Labels.STR_ADD_DISCOUNT);
-		btnEdit = initImageButton("Resources/edit_icon.png", ViewConstants.Labels.STR_EDIT_DISCOUNT);
-		btnDelete = initImageButton("Resources/delete_icon.png", ViewConstants.Labels.STR_DELETE_DISCOUNT);
+		// btnAdd = initImageButton("Resources/add_icon.png", "Add Discount");
+		// btnEdit = initImageButton("Resources/edit_icon.png", "Edit
+		// Discount");
+		// btnDelete = initImageButton("Resources/delete_icon.png", "Delete
+		// Discount");
 
-		// // Buttons
-		// btnAdd = new JButton(new ImageIcon("Resources/add_icon.png"));
-		// btnEdit = new JButton(new ImageIcon("Resources/edit_icon.png"));
-		// btnDelete = new JButton(new ImageIcon("Resources/delete_icon.png"));
-		//
-		// // setting border to empty
-		// btnAdd.setBorder(BorderFactory.createEmptyBorder());
-		// btnEdit.setBorder(BorderFactory.createEmptyBorder());
-		// btnDelete.setBorder(BorderFactory.createEmptyBorder());
-		//
-		// btnAdd.setPreferredSize(new Dimension(70, 70));
-		// btnEdit.setPreferredSize(new Dimension(70, 70));
-		// btnDelete.setPreferredSize(new Dimension(70, 70));
+		// Buttons
+		btnAdd = new JButton(new ImageIcon("Resources/add_icon.png"));
+		btnEdit = new JButton(new ImageIcon("Resources/edit_icon.png"));
+		btnDelete = new JButton(new ImageIcon("Resources/delete_icon.png"));
+
+		// setting border to empty
+		btnAdd.setBorder(BorderFactory.createEmptyBorder());
+		btnEdit.setBorder(BorderFactory.createEmptyBorder());
+		btnDelete.setBorder(BorderFactory.createEmptyBorder());
+
+		btnAdd.setPreferredSize(new Dimension(70, 70));
+		btnEdit.setPreferredSize(new Dimension(70, 70));
+		btnDelete.setPreferredSize(new Dimension(70, 70));
 
 		buttonPanel.add(btnAdd);
 		buttonPanel.add(btnEdit);
@@ -126,7 +131,7 @@ public class DiscountPanel extends JPanel {
 		btn.setOpaque(false);
 		return btn;
 	}
-	
+
 	/**
 	 * all the DiscountPanel button`s event init here
 	 */
@@ -145,16 +150,35 @@ public class DiscountPanel extends JPanel {
 				delegate.addDiscount();
 			}
 		});
+		btnEdit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				delegate.updateDiscount(DiscountTable.getSelectedRow());
+			}
+		});
 
 	}
 
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
 	
-	/***********************************************************/
-	//Public Methods
-	/***********************************************************/
+	/**
+	 * entrance of discount tableData,should be invoke by controller
+	 * @param list
+	 */
+	public void setDiscountTableData(ArrayList<Discount> list){
+		for(Discount entity:list){
+			onAddDiscount(entity);
+		}
+	}
+
 	/**
 	 * after confirm in dialog to remove item
-	 * @param row which row should be deleted
+	 * 
+	 * @param row
+	 *            which row should be deleted
 	 */
 	public void onRemoveDiscount(int row) {
 		DefaultTableModel model = (DefaultTableModel) DiscountTable.getModel();
@@ -164,7 +188,8 @@ public class DiscountPanel extends JPanel {
 	}
 
 	/**
-	 * after click ok in discountPanel to addDiscount
+	 * after click ok in AddDiscountDialog to addDiscount
+	 * 
 	 * @param discount
 	 */
 	public void onAddDiscount(Discount discount) {
@@ -172,5 +197,23 @@ public class DiscountPanel extends JPanel {
 		model.addRow(new Object[] { discount.getCode(), discount.getPercentage() + "%", discount.getEligibilty(),
 				discount.getDescription(), discount.getStartDate().toString(), discount.getPeriod() });
 	}
+
+	/**
+	 * after click ok in ModifyDiscountDialog to updateDiscount
+	 * 
+	 * @param discount
+	 */
+	public void onUpdateDiscount(Discount discount, int row) {
+		DefaultTableModel model = (DefaultTableModel) DiscountTable.getModel();
+		model.removeRow(row);
+		model.insertRow(row,
+				new Object[] { discount.getCode(), discount.getPercentage()+ "%", discount.getEligibilty(),
+						discount.getDescription(), discount.getStartDate().toString(), discount.getPeriod() });
+	}
 	
+	public void updateUI(String[] header,String[][] content){
+		DefaultTableModel model = (DefaultTableModel) DiscountTable.getModel();
+		model.setDataVector(content, header);
+	}
+
 }
