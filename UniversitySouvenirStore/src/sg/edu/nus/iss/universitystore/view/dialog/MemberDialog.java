@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.view.dialog.intf.MemberDialogDelegate;
 
-public class AddMemberDialog extends BaseDialog implements WindowListener {
+public class MemberDialog extends BaseDialog implements WindowListener {
 	private static final long serialVersionUID = 3029306694712724442L;
 	private MemberDialogDelegate delegate;
 
