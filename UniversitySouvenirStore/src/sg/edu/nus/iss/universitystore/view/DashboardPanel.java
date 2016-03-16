@@ -9,6 +9,7 @@ import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import sg.edu.nus.iss.universitystore.controller.DiscountController;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
@@ -84,7 +85,7 @@ public class DashboardPanel extends JPanel implements DashBoardOptionChangeDeleg
 		mainContentPanel.add(DashboardOptionsPanel.STR_INVENTORY, new InventoryPanel());
 		mainContentPanel.add(DashboardOptionsPanel.STR_MEMBER, new MemberPanel());
 		// TODO: To be resolved
-		// mainContentPanel.add(DashboardOptionsPanel.STR_DISCOUNT, new DiscountPanel());
+		 mainContentPanel.add(DashboardOptionsPanel.STR_DISCOUNT, new DiscountController().getDiscountPanel());
 		mainContentPanel.add(DashboardOptionsPanel.STR_REPORTS, new ReportPanel());
 		add(mainContentPanel, BorderLayout.CENTER);
 	}
