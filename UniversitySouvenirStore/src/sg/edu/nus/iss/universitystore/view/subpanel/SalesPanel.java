@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -16,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 
 public class SalesPanel extends JPanel {
 	private List productList;
@@ -87,9 +90,9 @@ public class SalesPanel extends JPanel {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		
-		addProductButton=initImageButton("Resources/add_icon.png","Add Product");
-		checkOutButton=initImageButton("Resources/cart_icon.png","Check Out");
-		cancelButton=initImageButton("Resources/delete_icon.png","Cancel");
+		addProductButton=initImageButton("Resources/add_icon.png",ViewConstants.Labels.STR_ADD_SALESPRODUCT);
+		checkOutButton=initImageButton("Resources/cart_icon.png",ViewConstants.Labels.STR_CHECKOUT_SALES);
+		cancelButton=initImageButton("Resources/delete_icon.png",ViewConstants.Labels.STR_CANCEL_SALES);
 		//buttonPanel.add(addProductButton);
 		buttonPanel.add(addProductButton);
 		buttonPanel.add(checkOutButton);

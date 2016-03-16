@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package sg.edu.nus.iss.universitystore.view;
 
 import java.awt.BorderLayout;
@@ -9,6 +7,7 @@ import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.controller.DiscountController;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
@@ -37,14 +36,14 @@ public class DashboardPanel extends JPanel implements DashBoardOptionChangeDeleg
 	public DashboardPanel() {
 		setLayout(new BorderLayout());
 
-		//Initialize the options panel
+		//Initialize the MenuOptions panel
 		optionPanel = new DashboardOptionsPanel();
 		optionPanel.setOnOptionChangeListener(this);
 		
 		//The main panel which will hold all sub-panels.
 		mainContentPanel = new JPanel();
 
-		// Customize the options panel
+		// Customize the MenuOptions panel
 		add(optionPanel, BorderLayout.WEST);
 
 		// Customize the main content panel
@@ -63,7 +62,7 @@ public class DashboardPanel extends JPanel implements DashBoardOptionChangeDeleg
 	// Private Methods
 	/***********************************************************/
 	private void changePanel(String option) {
-		if (option.equals(DashboardOptionsPanel.STR_LOGOUT)) {
+		if (option.equals(ViewConstants.MenuOptions.STR_LOGOUT)) {
 			//TODO - Do we keep it here or move to controller?
 			int result = JOptionPane.showConfirmDialog(null, 
 					   "Are you sure you wish to logout?",null, JOptionPane.YES_NO_OPTION);
@@ -81,12 +80,12 @@ public class DashboardPanel extends JPanel implements DashBoardOptionChangeDeleg
 		layout.setHgap(10);
 		layout.setVgap(10);
 		mainContentPanel.setLayout(layout);
-		mainContentPanel.add(DashboardOptionsPanel.STR_SALES, new SalesPanel());
-		mainContentPanel.add(DashboardOptionsPanel.STR_INVENTORY, new InventoryPanel());
-		mainContentPanel.add(DashboardOptionsPanel.STR_MEMBER, new MemberPanel());
+		mainContentPanel.add(ViewConstants.MenuOptions.STR_SALES, new SalesPanel());
+		mainContentPanel.add(ViewConstants.MenuOptions.STR_INVENTORY, new InventoryPanel());
+		mainContentPanel.add(ViewConstants.MenuOptions.STR_MEMBER, new MemberPanel());
 		// TODO: To be resolved
-		 mainContentPanel.add(DashboardOptionsPanel.STR_DISCOUNT, new DiscountController().getDiscountPanel());
-		mainContentPanel.add(DashboardOptionsPanel.STR_REPORTS, new ReportPanel());
+		 mainContentPanel.add(ViewConstants.MenuOptions.STR_DISCOUNT, new DiscountController().getDiscountPanel());
+		mainContentPanel.add(ViewConstants.MenuOptions.STR_REPORTS, new ReportPanel());
 		add(mainContentPanel, BorderLayout.CENTER);
 	}
 }

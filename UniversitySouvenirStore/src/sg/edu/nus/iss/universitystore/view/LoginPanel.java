@@ -1,9 +1,12 @@
 package sg.edu.nus.iss.universitystore.view;
 
 import java.awt.Color;
+
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -26,6 +29,7 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import sg.edu.nus.iss.universitystore.Constants;
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
 
 /**
@@ -33,14 +37,11 @@ import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
  *
  */
 public class LoginPanel extends JPanel{
-
+	
 	/***********************************************************/
 	//Constants
 	/***********************************************************/
-	private static final long serialVersionUID = 1L;
-	private final static String STR_USER_LABEL = "Username:";
-	private final static String STR_PASSWORD_LABEL = "Password:";
-	private final static String STR_LOGIN = "Login";
+	public static final long serialVersionUID = 1L;
 
 	/***********************************************************/
 	//Instance Variables
@@ -107,7 +108,7 @@ public class LoginPanel extends JPanel{
 		overlayPanel.setOpaque(true);
 		//ImageIcon icon = new ImageIcon("Resources/add_icon.png");
 		//overlayPanel.setBorder(BorderFactory.createMatteBorder(-1, -1, -1, -1, icon));
-        overlayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "Login", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Vani", 3, 24), new java.awt.Color(255, 255, 255)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 16), new java.awt.Color(255, 255, 255))); // NOI18N
+        overlayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, ViewConstants.Labels.STR_LOGIN, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 3, 24), new java.awt.Color(255, 255, 255)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(ViewConstants.Fonts.TAHOMA_FONT, 0, 16), new java.awt.Color(255, 255, 255)));
 		//Add child elements to the overlay
 		addElementsToOverLay();
 		//Add the overlay panel to the main panel.
@@ -118,8 +119,8 @@ public class LoginPanel extends JPanel{
 		//overlayPanel.setLayout(new FlowLayout());
 
 		//Label UserName
-		lblUserName = new JLabel(STR_USER_LABEL);
-		lblUserName.setFont(new java.awt.Font("Vani", 2, 18)); 
+		lblUserName = new JLabel(ViewConstants.Labels.STR_USER_LABEL);
+		lblUserName.setFont(new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 2, 18)); 
         lblUserName.setForeground(new java.awt.Color(255, 255, 255));
         overlayPanel.add(lblUserName);
 
@@ -129,8 +130,8 @@ public class LoginPanel extends JPanel{
 		overlayPanel.add(txtUserName);
 
 		//Label UserName
-		lblPassword = new JLabel(STR_PASSWORD_LABEL);
-		lblPassword.setFont(new java.awt.Font("Vani", 2, 18));
+		lblPassword = new JLabel(ViewConstants.Labels.STR_PASSWORD_LABEL);
+		lblPassword.setFont(new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 2, 18));
         lblPassword.setForeground(new java.awt.Color(255, 255, 255));
 		overlayPanel.add(lblPassword);
 
@@ -149,6 +150,7 @@ public class LoginPanel extends JPanel{
 		btnSubmit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+		
 				loginListener.loginButtonClicked(txtUserName.getText(), getPassword());
 			}
 		});

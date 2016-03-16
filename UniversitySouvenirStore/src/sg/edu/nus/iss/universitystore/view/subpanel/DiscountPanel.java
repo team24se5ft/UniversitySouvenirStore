@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -18,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
+
 /**
  * 
  * @author linby
@@ -56,7 +59,7 @@ public class DiscountPanel extends JPanel {
 	/***********************************************************/
 	private void initDiscountTable() {
 		//FIXME hardcode need to fix after use formal data
-		String[] headers = { "code", "percentage", "type", "description", "startDate", "period" };
+		String[] headers = { ViewConstants.TableHeaders.DISCOUNT_CODE, ViewConstants.TableHeaders.DISCOUNT_PERCENTAGE, ViewConstants.TableHeaders.DISCOUNT_TYPE, ViewConstants.TableHeaders.DISCOUNT_DESCRIPTION, ViewConstants.TableHeaders.DISCOUNT_STARTDATE, ViewConstants.TableHeaders.DISCOUNT_PERIOD };
 		String[] content = { "Holiday", "20.0%", "M", "holiday celebration", "27/06", "18" };
 		String data[][] = { content };
 		//init table model
@@ -79,9 +82,9 @@ public class DiscountPanel extends JPanel {
 		buttonPanel.setLayout(new FlowLayout());
 
 		// ImageIcons with Label
-		btnAdd = initImageButton("Resources/add_icon.png", "Add Discount");
-		btnEdit = initImageButton("Resources/edit_icon.png", "Edit Discount");
-		btnDelete = initImageButton("Resources/delete_icon.png", "Delete Discount");
+		btnAdd = initImageButton("Resources/add_icon.png", ViewConstants.Labels.STR_ADD_DISCOUNT);
+		btnEdit = initImageButton("Resources/edit_icon.png", ViewConstants.Labels.STR_EDIT_DISCOUNT);
+		btnDelete = initImageButton("Resources/delete_icon.png", ViewConstants.Labels.STR_DELETE_DISCOUNT);
 
 		// // Buttons
 		// btnAdd = new JButton(new ImageIcon("Resources/add_icon.png"));

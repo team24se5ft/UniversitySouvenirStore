@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import sg.edu.nus.iss.universitystore.Constants;
-
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
 
 /**
@@ -24,16 +24,6 @@ import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
  */
 public class DashboardOptionsPanel extends JPanel {
 
-	/***********************************************************/
-	//Constants
-	/***********************************************************/
-	public static final String STR_SALES = "Sales";
-	public static final String STR_INVENTORY = "Inventory";
-	public static final String STR_MEMBER = "Member";
-	public static final String STR_DISCOUNT = "Discount";
-	public static final String STR_REPORTS = "Reports";
-	public static final String STR_LOGOUT = "Logout";
-	
 	/***********************************************************/
 	//Constructors
 	/***********************************************************/
@@ -62,12 +52,12 @@ public class DashboardOptionsPanel extends JPanel {
 	}
 
 	private void addButtons() {
-		add(configureOptionButton(STR_SALES, 25));
-		add(configureOptionButton(STR_INVENTORY, 25));
-		add(configureOptionButton(STR_MEMBER, 25));
-		add(configureOptionButton(STR_DISCOUNT, 25));
-		add(configureOptionButton(STR_REPORTS, 25));
-		add(configureOptionButton(STR_LOGOUT, 25));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_SALES, 25));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_INVENTORY, 25));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_MEMBER, 25));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_DISCOUNT, 25));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_REPORTS, 25));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_LOGOUT, 25));
 	}
 
 	//option Button configure here
