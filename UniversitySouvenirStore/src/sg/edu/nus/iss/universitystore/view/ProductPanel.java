@@ -7,6 +7,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
+
 /**
  * @author Samrat
  *
@@ -35,6 +37,11 @@ public class ProductPanel extends BaseTablePanel{
 	 */
 	private String[] tableContent;
 
+	/**
+	 * Delegate for calling the controller.
+	 */
+	private IInventoryDelegate delegate;
+
 	/***********************************************************/
 	// Getters & Setters
 	/***********************************************************/
@@ -49,13 +56,14 @@ public class ProductPanel extends BaseTablePanel{
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public ProductPanel(String[] tableContent,String[] tableHeaders) {
+	public ProductPanel(String[] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
 		// Store the values.
 		this.tableContent = tableContent;
 		this.tableHeaders = tableHeaders;
+		this.delegate = delegate;
 		// Start with the GUI.
 		setLayout(new BorderLayout());
-		add(getScrollPaneWithTable(tableContent, tableHeaders),BorderLayout.CENTER);
+		add(getScrollPaneWithTable(this.tableContent, this.tableHeaders),BorderLayout.CENTER);
 		add(getButtonPanel(),BorderLayout.SOUTH);
 	}
 
@@ -67,8 +75,7 @@ public class ProductPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+				delegate.addProductClicked();
 			}
 		};
 	}
@@ -78,8 +85,7 @@ public class ProductPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+				delegate.editProductClicked();
 			}
 		};
 	}
@@ -89,7 +95,7 @@ public class ProductPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				delegate.deleteProductClicked();
 
 			}
 		};

@@ -85,11 +85,11 @@ public class InventoryPanel extends JPanel{
 		// TEST
 		String[] categoryTableHeaders = new String[]{ "Category Name", "Category Code" };
 		String[] categoryTableContent = new String[]{ "Phones", "PHO" };
-		categoryPanel = new CategoryPanel(categoryTableContent, categoryTableHeaders);
+		categoryPanel = new CategoryPanel(categoryTableContent, categoryTableHeaders,delegate);
 		// TEST
 		categoryTableHeaders = new String[]{ "Product Name", "Quantity" , "Price"};
 		categoryTableContent = new String[]{ "Samsung Galaxy", "65", "999" };
-		productPanel = new ProductPanel(categoryTableContent, categoryTableHeaders);
+		productPanel = new ProductPanel(categoryTableContent, categoryTableHeaders, delegate);
 		createTabbedPane(categoryPanel, productPanel);
 	}
 

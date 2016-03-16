@@ -7,6 +7,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
+
 /**
  * @author Samrat
  *
@@ -34,7 +36,12 @@ public class CategoryPanel extends BaseTablePanel{
 	 * Array for storing the category content.
 	 */
 	private String[] tableContent;
-
+	
+	/**
+	 * Delegate for calling the controller.
+	 */
+	private IInventoryDelegate delegate;
+	
 	/***********************************************************/
 	// Getters & Setters
 	/***********************************************************/
@@ -54,8 +61,7 @@ public class CategoryPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+				delegate.addCategoryClicked();
 			}
 		};
 	}
@@ -65,8 +71,7 @@ public class CategoryPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+				delegate.editCategoryClicked();
 			}
 		};
 	}
@@ -76,8 +81,7 @@ public class CategoryPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+				delegate.deleteCategoryClicked();
 			}
 		};
 	}
@@ -85,13 +89,14 @@ public class CategoryPanel extends BaseTablePanel{
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public CategoryPanel(String[] tableContent,String[] tableHeaders) {
+	public CategoryPanel(String[] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
 		// Store the values.
 		this.tableContent = tableContent;
 		this.tableHeaders = tableHeaders;
+		this.delegate = delegate;
 		// Start with the GUI.
 		setLayout(new BorderLayout());
-		add(getScrollPaneWithTable(tableContent, tableHeaders),BorderLayout.CENTER);
+		add(getScrollPaneWithTable(this.tableContent, this.tableHeaders),BorderLayout.CENTER);
 		add(getButtonPanel(),BorderLayout.SOUTH);
 	}
 }

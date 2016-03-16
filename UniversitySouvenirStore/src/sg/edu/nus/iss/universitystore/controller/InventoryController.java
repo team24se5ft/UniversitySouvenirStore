@@ -28,11 +28,7 @@ public class InventoryController implements IInventoryDelegate{
 	/***********************************************************/
 	
 	/**
-	 * Inventory Controller Constructor
-	 * 
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 * @throws StoreException 
+	 * Inventory Controller Constructor 
 	 */
 	public InventoryController(){
 		try {
@@ -45,10 +41,51 @@ public class InventoryController implements IInventoryDelegate{
 		// Initialize the panel
 		inventoryPanel = new InventoryPanel(this);
 	}
+	
 	/***********************************************************/
 	// Getters & setters
 	/***********************************************************/
 	public InventoryPanel getInventoryPanel() {
 		return inventoryPanel;
+	}
+
+	/***********************************************************/
+	// IInventoryDelegate Implementation
+	/***********************************************************/
+	
+	@Override
+	public void addCategoryClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void editCategoryClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteCategoryClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addProductClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void editProductClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteProductClicked() {
+		// TODO Auto-generated method stub
+		
 	}
 }
