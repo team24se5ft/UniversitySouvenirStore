@@ -7,6 +7,27 @@ public class Member {
 	/***********************************************************/
 	private String identifier;
 	private String name;
+	/**
+	 * @param identifier the identifier to set
+	 */
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @param loyaltyPoints the loyaltyPoints to set
+	 */
+	public void setLoyaltyPoints(int loyaltyPoints) {
+		this.loyaltyPoints = loyaltyPoints;
+	}
+
 	private int loyaltyPoints;
 	
 	/***********************************************************/
