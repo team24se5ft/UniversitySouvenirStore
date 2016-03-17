@@ -20,32 +20,39 @@ public class MemberController implements IMemberDelegate {
 		memberPanel = new MemberPanel(this);
 		memberList = new ArrayList<Member>();
 		for (int i = 0; i < 2; i++) {
-			Member e=new Member("testMember","123456",100);
+			Member e=new Member("A12345", "Sample", -1);
 			memberList.add(e);
 		}
+		memberPanel.setMemberTableData(memberList);
 	}
 
-	public MemberPanel getmemberPanel() {
+	public MemberPanel getMemberPanel() {
 		return memberPanel;
 	}
-
+    /**
+     * Implementing addMember from IMemberDelegate
+     */
 	@Override
 	public void addMember() {
 		new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "AddMember",
 				new IMemberDialogDelegate() {
-
 					@Override
 					public void MemberCallBack(String memberId, String memberName, String loyaltyPoints) {
-						Member member = new Member(memberId, memberName, Integer.valueOf(loyaltyPoints));
+						// TODO Auto-generated method stub
+						Member member = new Member(memberId,memberName,Integer.valueOf(loyaltyPoints));
 						// TODO dataModify
+						memberList.add(member);
 						// UIupdate
 						memberPanel.onAddMember(member);
 					}
-				}).setVisible(true);
+
+				}, MemberDialog.ADD_TYPE).setVisible(true);
 	}
 
-	// TODO keep a list of discount in the controller and modify according to
-	// given row.
+    /*
+     * Implementing deleteMember from IMemberDelegate
+     * @see sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate#deleteMember(int)
+     */
 	@Override
 	public void deleteMember(int row) {
 		if (row < 0) {
@@ -53,20 +60,46 @@ public class MemberController implements IMemberDelegate {
 		}
 		new ConfirmDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "ConfirmDialog",
 				"Do u really want to delete row " + (row + 1)) {
+					private static final long serialVersionUID = 1L;
 
 			@Override
 			protected boolean confirmClicked() {
 				// TODO dataModify
+				memberList.remove(row);
 				// UIupdate
-				memberPanel.onRemoveDiscount(row);
+				memberPanel.onRemoveMember(row);
 				return true;
 			}
 		}.setVisible(true);
 	}
 
+	/**
+	 * Implementing updateMember from IMemberDelegate
+	 */
 	@Override
-	public void onaddMember() {
+	public void updateMember(int row) {
 		// TODO Auto-generated method stub
+		if (row < 0) {
+			return;
+		}
+		MemberDialog updateDlg=new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "UpdateMember",
+				new IMemberDialogDelegate() {
+
+					@Override
+					public void MemberCallBack(String memberId, String memberName, String loyaltyPoints) {
+						// TODO Auto-generated method stub
+						Member member = new Member(memberId, memberName, Integer.valueOf(loyaltyPoints));
+						// TODO dataModify
+						memberList.remove(row);
+						memberList.add(row,member);
+						// UIupdate
+						memberPanel.onUpdateMember(member, row);
+						
+					}
+
+				}, MemberDialog.UPDATE_TYPE);
+		updateDlg.setMemberData(memberList.get(row));
+		updateDlg.setVisible(true);
 		
 	}
 }

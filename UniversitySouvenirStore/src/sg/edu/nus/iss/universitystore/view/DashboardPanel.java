@@ -84,7 +84,7 @@ public class DashboardPanel extends JPanel implements IDashBoardOptionChangeDele
 		mainContentPanel.setLayout(layout);
 		mainContentPanel.add(ViewConstants.MenuOptions.STR_SALES, new SalesPanel());
 		mainContentPanel.add(ViewConstants.MenuOptions.STR_INVENTORY, new InventoryController().getInventoryPanel());
-		mainContentPanel.add(ViewConstants.MenuOptions.STR_MEMBER, new MemberController().getmemberPanel());
+		mainContentPanel.add(ViewConstants.MenuOptions.STR_MEMBER, new MemberController().getMemberPanel());
 		// TODO: To be resolved
 		 mainContentPanel.add(ViewConstants.MenuOptions.STR_DISCOUNT, new DiscountController().getDiscountPanel());
 		mainContentPanel.add(ViewConstants.MenuOptions.STR_REPORTS, new ReportPanel());

@@ -38,7 +38,7 @@ public class Member {
 	 * @param name
 	 * @param loyaltyPoints
 	 */
-	public Member(String name, String identifier, int loyaltyPoints) {
+	public Member(String identifier, String name, int loyaltyPoints) {
 		this.identifier = identifier;
 		this.name = name;
 		this.loyaltyPoints = loyaltyPoints;

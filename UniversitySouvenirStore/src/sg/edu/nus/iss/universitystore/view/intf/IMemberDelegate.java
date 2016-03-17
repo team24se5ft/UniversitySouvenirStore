@@ -11,8 +11,7 @@ public interface IMemberDelegate {
 	     * @param row
 	     */
 		public void deleteMember(int row);
-		public void onaddMember();
-
+		public void updateMember(int row);
 }
 
 

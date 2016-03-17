@@ -9,61 +9,86 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.IMemberDialogDelegate;
 
 public class MemberDialog extends BaseDialog implements WindowListener {
 	private static final long serialVersionUID = 3029306694712724442L;
+	private int type;
 	private IMemberDialogDelegate delegate;
 
-	private Label labelFirstName;
-	private Label labelSecondName;
-	private Label labelSurName;
-	private TextField tfFirstName;
-	private TextField tfSecondName;
-	private TextField tfSurName;
+	/***********************************************************/
+	// Constants
+	/***********************************************************/
+	public final static int ADD_TYPE = 0;
+	public final static int UPDATE_TYPE = 1;
+
+	private Label labelMemberName;
+	private Label labelLoyaltyPoints;
+	private Label labelMemberId;
+	private TextField tfMemberName;
+	private TextField tfLoyaltyPoints;
+	private TextField tfMemberId;
 
 	public MemberDialog(JFrame parent) {
 		super(parent, "AddMember");
 	}
 
-	public MemberDialog(JFrame parent, String title,IMemberDialogDelegate addMemberDialogDelegate) {
+	public MemberDialog(JFrame parent, String title,IMemberDialogDelegate delegate, int type) {
 		super(parent, title);
+		this.type = type;
+		this.delegate = delegate;
 		this.addWindowListener(this);
-		this.setSize(400, 150);
+		this.setSize(250, 250);
 		this.setResizable(false);
-		this.setLocation(200, 200);
+		this.setLocationRelativeTo(parent);
 	}
+	
+	/**
+	 * invoke this function when you need fill data into the dialog
+	 * @param member
+	 */
+	public void setMemberData(Member member) {
+		tfMemberId.setText(member.getIdentifier());
+		tfMemberName.setText(member.getName());
+		tfLoyaltyPoints.setText(member.getLoyaltyPoints()+ "");
+		
+		
+	}
+	
 
 	@Override
 	protected JPanel getPanelToAddToDialog() {
 		JPanel jp = new JPanel();
 		jp.setLayout(new GridLayout(3, 3));
-		labelSurName = new Label("surName");
-		labelFirstName = new Label("firstName");
-		labelSecondName = new Label("secondName");
+		labelMemberId = new Label("Member ID");
+		labelMemberName = new Label("Member Name");
+		labelLoyaltyPoints = new Label("Loyalty Points");
 
-		tfFirstName = new TextField();
-		tfFirstName.setColumns(1);
-		tfSecondName = new TextField();
-		tfSecondName.setColumns(1);
-		tfSurName = new TextField();
-		tfSurName.setColumns(1);
+		tfMemberName = new TextField();
+		tfMemberName.setColumns(1);
+		tfMemberId = new TextField();
+		tfMemberId.setColumns(1);
+		tfLoyaltyPoints = new TextField();
+		tfLoyaltyPoints.setColumns(1);
 
-		jp.add(labelSurName);
-		jp.add(tfSurName);
+		jp.add(labelMemberId);
+		jp.add(tfMemberId);
 
-		jp.add(labelFirstName);
-		jp.add(tfFirstName);
+		jp.add(labelMemberName);
+		jp.add(tfMemberName);
 
-		jp.add(labelSecondName);
-		jp.add(tfSecondName);
+		jp.add(labelLoyaltyPoints);
+		jp.add(tfLoyaltyPoints);
 		return jp;
 	}
-
+    /**
+     * adding row to table onClick
+     */
 	@Override
 	protected boolean confirmClicked() {
-		if (tfSurName.getText().length() != 0 && tfFirstName.getText().length() != 0) {
-			delegate.MemberCallBack(tfSurName.getText(), tfFirstName.getText(), tfSecondName.getText());
+		if (tfMemberId.getText().length() != 0 && tfMemberName.getText().length() != 0) {
+			delegate.MemberCallBack(tfMemberId.getText(), tfMemberName.getText(), tfLoyaltyPoints.getText());
 			return true;
 		}
 		return false;
