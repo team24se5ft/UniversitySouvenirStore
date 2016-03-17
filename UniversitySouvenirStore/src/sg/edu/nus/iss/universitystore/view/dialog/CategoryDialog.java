@@ -17,6 +17,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.universitystore.view.dialog.intf.ICategoryDialogDelegate;
+
 /**
  * @author Samrat
  *
@@ -40,9 +42,11 @@ public class CategoryDialog extends BaseDialog implements WindowListener {
 	 * @param parent The parent frame on top of which this dialog will be created.
 	 * @param title The title of this dialog.
 	 */
-	public CategoryDialog(JFrame parent, String title) {
+	public CategoryDialog(JFrame parent, String title, ICategoryDialogDelegate delegate) {
 		// Call the parent
 		super(parent, title);
+		// Set the delegate
+		this.delegate = delegate;
 		// Customize this dialog
 		this.addWindowListener(this);
 		this.setSize(400, 200);//TODO: Move to constants
@@ -58,13 +62,23 @@ public class CategoryDialog extends BaseDialog implements WindowListener {
 	 */
 	private JPanel jPanel;
 	
+	/**
+	 * Delegate for communicating with the controller.
+	 */
+	private ICategoryDialogDelegate delegate;
+	
+	/**
+	 * Text field for holding the category name entered by the user.
+	 */
+	private JTextField categoryName;
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
 
 	@Override
 	protected boolean confirmClicked() {
-		// TODO Auto-generated method stub
+		// TODO - Add validation
+		delegate.confirmClicked(categoryName.getText());
 		return false;
 	}
 
@@ -112,13 +126,13 @@ public class CategoryDialog extends BaseDialog implements WindowListener {
 	    gridBagConstraintForLabel.gridy = yPos;
 	    jPanel.add(jLabel, gridBagConstraintForLabel);
 
-	    JTextField textField = new JTextField(10);
+	    categoryName = new JTextField(10);
 	    GridBagConstraints gridBagConstraintForTextField = new GridBagConstraints();
 	    gridBagConstraintForTextField.fill = GridBagConstraints.BOTH;
 	    gridBagConstraintForTextField.insets = new Insets(0, 0, 5, 0);
 	    gridBagConstraintForTextField.gridx = 1;
 	    gridBagConstraintForTextField.gridy = yPos;
-	    jPanel.add(textField, gridBagConstraintForTextField);
+	    jPanel.add(categoryName, gridBagConstraintForTextField);
 	}
 	
 	/***********************************************************/

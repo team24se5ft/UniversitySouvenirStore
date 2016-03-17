@@ -9,6 +9,7 @@ import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.view.dialog.CategoryDialog;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.ICategoryDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
 
@@ -16,7 +17,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
  * @author Samrat
  *
  */
-public class InventoryController implements IInventoryDelegate{
+public class InventoryController implements IInventoryDelegate, ICategoryDialogDelegate{
 
 	/***********************************************************/
 	// Instance Variables
@@ -83,7 +84,7 @@ public class InventoryController implements IInventoryDelegate{
 
 	@Override
 	public void addCategoryClicked() {
-		CategoryDialog categoryDialog = new CategoryDialog(topFrame, "Add Category");
+		CategoryDialog categoryDialog = new CategoryDialog(topFrame, "Add Category", this);
 		categoryDialog.setVisible(true);
 	}
 
@@ -115,5 +116,16 @@ public class InventoryController implements IInventoryDelegate{
 	public void deleteProductClicked() {
 		// TODO Auto-generated method stub
 
+	}
+	/***********************************************************/
+	// ICategoryDialogDelegate Implementation
+	/***********************************************************/
+	public void confirmClicked(String categoryName) {
+		try {
+			inventoryManager.addCategory(categoryName, categoryName);
+			System.out.println(inventoryManager.getAllCategories());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }
