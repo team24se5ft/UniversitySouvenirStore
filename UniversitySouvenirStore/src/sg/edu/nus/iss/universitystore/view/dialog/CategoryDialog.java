@@ -45,7 +45,7 @@ public class CategoryDialog extends BaseDialog implements WindowListener {
 		super(parent, title);
 		// Customize this dialog
 		this.addWindowListener(this);
-		this.setSize(400, 200);
+		this.setSize(400, 200);//TODO: Move to constants
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
@@ -87,7 +87,7 @@ public class CategoryDialog extends BaseDialog implements WindowListener {
 	    jPanel.setLayout(panelGridBagLayout);
 
 	    // Finally add the elements
-	    createLabelAndTextField("Category Name:", 0);
+	    createLabelAndTextField("Category Name:", 0);// TODO: Move to constants.
 		
 		return jPanel;
 	}

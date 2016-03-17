@@ -41,15 +41,28 @@ public class LoginPanel extends JPanel{
 	/***********************************************************/
 	//Constants
 	/***********************************************************/
+	/**
+	 * Serial Version UID.
+	 */
 	public static final long serialVersionUID = 1L;
 
 	/***********************************************************/
 	//Instance Variables
 	/***********************************************************/
+	
+	/**
+	 * The background image for the panel.
+	 */
 	private Image imgbackground;
 
-	private ILoginDelegate loginListener;
+	/**
+	 * The delegate object which will enable communication to the controller.
+	 */
+	private ILoginDelegate delegate;
 
+	/**
+	 * The overlay panel which holds the text fields, labels & submit button.
+	 */
 	private JPanel overlayPanel;
 
 	//Part of the child panel
@@ -75,13 +88,20 @@ public class LoginPanel extends JPanel{
 	/***********************************************************/
 	//Getter & Setters
 	/***********************************************************/
-	public void setLoginListener(ILoginDelegate loginListener) {
-		this.loginListener = loginListener;
+	/**
+	 * Set the login delegate to enable communication from the view.
+	 * @param loginListener
+	 */
+	public void setDelegate(ILoginDelegate delegate) {
+		this.delegate = delegate;
 	}
 	
 	/***********************************************************/
 	//Public Methods
 	/***********************************************************/
+	/**
+	 * Allows clearing the username & password textfield.
+	 */
 	public void clearAllFields() {
 		txtUserName.setText(Constants.STR_EMPTY);
 		txtPassword.setText(Constants.STR_EMPTY);
@@ -98,16 +118,16 @@ public class LoginPanel extends JPanel{
 			g.drawImage(imgbackground,0,0,this.getWidth(),this.getHeight(),this);
 	}
 
+	/**
+	 * The main method for creating the GUI.
+	 */
 	private void createGUI() {
 		overlayPanel = new JPanel();
 		overlayPanel.setPreferredSize(new Dimension(330, 170));
 		overlayPanel.setMaximumSize(new Dimension(330, 170));
 		overlayPanel.setBackground(new java.awt.Color(0, 102, 204));
 		overlayPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		//overlayPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
 		overlayPanel.setOpaque(true);
-		//ImageIcon icon = new ImageIcon("Resources/add_icon.png");
-		//overlayPanel.setBorder(BorderFactory.createMatteBorder(-1, -1, -1, -1, icon));
         overlayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, ViewConstants.Labels.STR_LOGIN, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 3, 24), new java.awt.Color(255, 255, 255)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(ViewConstants.Fonts.TAHOMA_FONT, 0, 16), new java.awt.Color(255, 255, 255)));
 		//Add child elements to the overlay
 		addElementsToOverLay();
@@ -115,13 +135,12 @@ public class LoginPanel extends JPanel{
 		add(overlayPanel);
 	}
 
+	/**
+	 * Method to add the child elements to the Overlay Panel.
+	 */
 	private void addElementsToOverLay() {
-		//overlayPanel.setLayout(new FlowLayout());
-
 		//Label UserName
-		lblUserName = new JLabel(ViewConstants.Labels.STR_USER_LABEL);
-		lblUserName.setFont(new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 2, 18)); 
-        lblUserName.setForeground(new java.awt.Color(255, 255, 255));
+        lblUserName = getLabel(ViewConstants.Labels.STR_USER_LABEL);
         overlayPanel.add(lblUserName);
 
 		//Text field UserName
@@ -130,9 +149,7 @@ public class LoginPanel extends JPanel{
 		overlayPanel.add(txtUserName);
 
 		//Label UserName
-		lblPassword = new JLabel(ViewConstants.Labels.STR_PASSWORD_LABEL);
-		lblPassword.setFont(new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 2, 18));
-        lblPassword.setForeground(new java.awt.Color(255, 255, 255));
+        lblPassword = getLabel(ViewConstants.Labels.STR_PASSWORD_LABEL);
 		overlayPanel.add(lblPassword);
 
 		//Text field UserName
@@ -151,14 +168,30 @@ public class LoginPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 		
-				loginListener.loginButtonClicked(txtUserName.getText(), getPassword());
+				delegate.loginButtonClicked(txtUserName.getText(), getPassword());
 			}
 		});
 		overlayPanel.add(btnSubmit);
 	}
-	
+
+	/**
+	 * Get string from the password textfield.
+	 * @return The string from the password textfield.
+	 */
 	private String getPassword(){
 		//TODO - Find a better way of getting the password.
 		return new String(txtPassword.getPassword());
+	}
+	
+	/**
+	 * Get formatted JLabel.
+	 * @param labelText The text associated with the label.
+	 * @return A formatted JLabel object with the associated text. 
+	 */
+	private JLabel getLabel(String labelText) {
+		JLabel jLabel = new JLabel(labelText);
+		jLabel.setFont(new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 2, 18)); 
+		jLabel.setForeground(new java.awt.Color(255, 255, 255));
+		return jLabel;
 	}
 }

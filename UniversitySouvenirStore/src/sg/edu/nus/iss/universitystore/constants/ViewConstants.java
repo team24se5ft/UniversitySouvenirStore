@@ -16,7 +16,7 @@ public class ViewConstants {
 	public static final class Labels {
 		//Labels for LoginPanel
 		public static final String STR_USER_LABEL = "Username:";
-		public static final String STR_PASSWORD_LABEL = "Password:";
+		public static final String STR_PASSWORD_LABEL = "Password: ";
 		public static final String STR_LOGIN = "Login";
 		
 		//Labels for Discount

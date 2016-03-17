@@ -23,7 +23,7 @@ public class LoginController implements ILoginDelegate {
 	// Constants
 	/***********************************************************/
 	public static final String STR_INCORRECT_LOGIN_MESSAGE = "The username or password you have entered is invalid. Please try again..";
-
+	public static final String STR_USERNAME_CANNOT_BE_EMPTY = "The username or password cannot be empty.";
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
@@ -34,12 +34,12 @@ public class LoginController implements ILoginDelegate {
 	// Constructors
 	/***********************************************************/
 	public LoginController() {
+		// Instantiate the panel & set its listener to this.
 		loginPanel = new LoginPanel();
-		loginPanel.setLoginListener(this);
+		loginPanel.setDelegate(this);
 
 		// Instantiate Data File Manager
 		loginManager = LoginManager.getInstance();
-
 	}
 
 	/***********************************************************/
@@ -55,20 +55,22 @@ public class LoginController implements ILoginDelegate {
 	@Override
 	public void loginButtonClicked(String username, String password) {
 		StoreKeeper storeKeeper = new StoreKeeper(username, password);
-
-		try {
-			// Validate Credentials
-			if (loginManager.isValidCredentials(storeKeeper)) {
-				UIUtils.navigateToDashboard(loginPanel);
-			} else {
-				// UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING,
-				// STR_INCORRECT_LOGIN_MESSAGE, DialogType.WARNING_MESSAGE);
-				UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE,
-						DialogType.WARNING_MESSAGE);
+		if (username.length() > 0 && password.length() > 0) {
+			try {
+				// Validate Credentials
+				if (loginManager.isValidCredentials(storeKeeper)) {
+					UIUtils.navigateToDashboard(loginPanel);
+				} else {
+					UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE,
+							DialogType.WARNING_MESSAGE);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} else {
+			UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING, STR_USERNAME_CANNOT_BE_EMPTY,
+					DialogType.WARNING_MESSAGE);
 		}
 	}
 
