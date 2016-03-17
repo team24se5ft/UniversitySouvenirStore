@@ -1,6 +1,6 @@
 package sg.edu.nus.iss.universitystore.view.dialog.intf;
 
-public interface MemberDialogDelegate {
+public interface IMemberDialogDelegate {
 	/**
 	 * add member dialog call back function
 	 */

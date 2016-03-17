@@ -12,7 +12,7 @@ import sg.edu.nus.iss.universitystore.controller.DiscountController;
 import sg.edu.nus.iss.universitystore.controller.InventoryController;
 import sg.edu.nus.iss.universitystore.controller.MemberController;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
-import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
+import sg.edu.nus.iss.universitystore.view.intf.IDashBoardOptionChangeDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.MemberPanel;
@@ -23,7 +23,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.SalesPanel;
  * @author Samrat
  *
  */
-public class DashboardPanel extends JPanel implements DashBoardOptionChangeDelegate {
+public class DashboardPanel extends JPanel implements IDashBoardOptionChangeDelegate {
 
 	/***********************************************************/
 	// Instance Variables

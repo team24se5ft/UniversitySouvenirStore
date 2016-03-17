@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.MemberDialog;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.MemberDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.IMemberDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.MemberPanel;
 
@@ -32,7 +32,7 @@ public class MemberController implements IMemberDelegate {
 	@Override
 	public void addMember() {
 		new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "AddMember",
-				new MemberDialogDelegate() {
+				new IMemberDialogDelegate() {
 
 					@Override
 					public void MemberCallBack(String memberId, String memberName, String loyaltyPoints) {

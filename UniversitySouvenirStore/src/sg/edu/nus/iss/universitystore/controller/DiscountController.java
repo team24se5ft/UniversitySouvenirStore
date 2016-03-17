@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.DiscountDialog;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.DiscountDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.IDiscountDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
 
@@ -33,7 +33,7 @@ public class DiscountController implements IDiscountDelegate {
 	@Override
 	public void addDiscount() {
 		new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "AddDiscount",
-				new DiscountDialogDelegate() {
+				new IDiscountDialogDelegate() {
 
 					@Override
 					public void onDiscountCallBack(String code, String description, String startDate, String period,
@@ -76,7 +76,7 @@ public class DiscountController implements IDiscountDelegate {
 			return;
 		}
 		DiscountDialog updateDlg=new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "UpdateDiscount",
-				new DiscountDialogDelegate() {
+				new IDiscountDialogDelegate() {
 
 					@Override
 					public void onDiscountCallBack(String code, String description, String startDate, String period,

@@ -41,6 +41,10 @@ public class InventoryController implements IInventoryDelegate{
 	 */
 	private ArrayList<Product> arrProduct;
 
+	/**
+	 * The reference to the main frame on which the current panel is added.
+	 */
+	private JFrame topFrame;
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
@@ -61,6 +65,8 @@ public class InventoryController implements IInventoryDelegate{
 		// Initialize the panel
 		inventoryPanel = new InventoryPanel(this);
 
+		// Get main frame
+		topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
 		// TODO: Setup the various components of the panel with the data retrieved from the manager.
 	}
 
@@ -77,12 +83,8 @@ public class InventoryController implements IInventoryDelegate{
 
 	@Override
 	public void addCategoryClicked() {
-		// Get main frame
-		JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
-
 		CategoryDialog categoryDialog = new CategoryDialog(topFrame, "Add Category");
 		categoryDialog.setVisible(true);
-
 	}
 
 	@Override

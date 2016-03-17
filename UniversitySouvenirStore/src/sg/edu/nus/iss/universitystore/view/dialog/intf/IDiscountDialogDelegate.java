@@ -1,6 +1,6 @@
 package sg.edu.nus.iss.universitystore.view.dialog.intf;
 
-public interface DiscountDialogDelegate {
+public interface IDiscountDialogDelegate {
 	/**
 	 * add discount dialog call back function
 	 */

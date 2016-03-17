@@ -15,7 +15,7 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
 import sg.edu.nus.iss.universitystore.model.Discount;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.DiscountDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.IDiscountDialogDelegate;
 
 public class DiscountDialog extends BaseDialog implements WindowListener {
 	private static final long serialVersionUID = 3029306694712724442L;
@@ -32,7 +32,7 @@ public class DiscountDialog extends BaseDialog implements WindowListener {
 	JRadioButton randioButtonM;
 	JRadioButton randioButtonA;
 
-	private DiscountDialogDelegate delegate;
+	private IDiscountDialogDelegate delegate;
 
 	/***********************************************************/
 	// Constants
@@ -47,7 +47,7 @@ public class DiscountDialog extends BaseDialog implements WindowListener {
 		super(parent, "AddDiscount");
 	}
 
-	public DiscountDialog(JFrame parent, String title, DiscountDialogDelegate delegate, int type) {
+	public DiscountDialog(JFrame parent, String title, IDiscountDialogDelegate delegate, int type) {
 		super(parent, title);
 		this.type = type;
 		this.delegate = delegate;

@@ -9,11 +9,11 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import sg.edu.nus.iss.universitystore.view.dialog.intf.MemberDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.IMemberDialogDelegate;
 
 public class MemberDialog extends BaseDialog implements WindowListener {
 	private static final long serialVersionUID = 3029306694712724442L;
-	private MemberDialogDelegate delegate;
+	private IMemberDialogDelegate delegate;
 
 	private Label labelFirstName;
 	private Label labelSecondName;
@@ -26,7 +26,7 @@ public class MemberDialog extends BaseDialog implements WindowListener {
 		super(parent, "AddMember");
 	}
 
-	public MemberDialog(JFrame parent, String title,MemberDialogDelegate addMemberDialogDelegate) {
+	public MemberDialog(JFrame parent, String title,IMemberDialogDelegate addMemberDialogDelegate) {
 		super(parent, title);
 		this.addWindowListener(this);
 		this.setSize(400, 150);

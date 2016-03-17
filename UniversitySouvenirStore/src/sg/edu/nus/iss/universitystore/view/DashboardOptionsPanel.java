@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 
 import sg.edu.nus.iss.universitystore.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
-import sg.edu.nus.iss.universitystore.view.intf.DashBoardOptionChangeDelegate;
+import sg.edu.nus.iss.universitystore.view.intf.IDashBoardOptionChangeDelegate;
 
 /**
  * @author Samrat
@@ -34,7 +34,7 @@ public class DashboardOptionsPanel extends JPanel {
     /***********************************************************/
     //Instance Variables
     /***********************************************************/
-    private DashBoardOptionChangeDelegate dashBoardOptionChangeDelegate;
+    private IDashBoardOptionChangeDelegate dashBoardOptionChangeDelegate;
     
 	/***********************************************************/
 	//Private Methods
@@ -107,7 +107,7 @@ public class DashboardOptionsPanel extends JPanel {
 		return jpanel;
 	}
 
-	public void setOnOptionChangeListener(DashBoardOptionChangeDelegate dashBoardOptionChangeDelegate) {
+	public void setOnOptionChangeListener(IDashBoardOptionChangeDelegate dashBoardOptionChangeDelegate) {
 		this.dashBoardOptionChangeDelegate = dashBoardOptionChangeDelegate;
 	}
 
