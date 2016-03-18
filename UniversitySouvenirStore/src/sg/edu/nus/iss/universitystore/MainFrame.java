@@ -115,10 +115,6 @@ public class MainFrame extends JFrame{
 				//Add the login screen on launch
 				LoginController loginController = new LoginController();
 				mainFrame.getMainPanel().add(loginController.getLoginPanel());
-				
-				//Test
-				DashboardController dashboardController = new DashboardController();
-				//mainFrame.getMainPanel().add(dashboardController.getDashboardPanel());
 			}
 		});
 	}
