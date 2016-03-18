@@ -13,7 +13,9 @@ import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.dialog.CategoryDialog;
+import sg.edu.nus.iss.universitystore.view.dialog.ProductDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.ICategoryDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.IProductDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.CategoryPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
@@ -22,7 +24,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
  * @author Samrat
  *
  */
-public class InventoryController implements IInventoryDelegate, ICategoryDialogDelegate{
+public class InventoryController implements IInventoryDelegate, ICategoryDialogDelegate, IProductDialogDelegate{
 
 	/***********************************************************/
 	// Constants
@@ -114,7 +116,8 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 
 	@Override
 	public void addProductClicked() {
-		// TODO Auto-generated method stub
+		ProductDialog productDialog = new ProductDialog(topFrame, "Add Product", this);
+		productDialog.setVisible(true);
 
 	}
 

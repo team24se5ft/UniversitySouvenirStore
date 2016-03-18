@@ -3,27 +3,24 @@
  */
 package sg.edu.nus.iss.universitystore.view.dialog;
 
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-import sg.edu.nus.iss.universitystore.view.dialog.intf.ICategoryDialogDelegate;
+import sg.edu.nus.iss.universitystore.view.dialog.intf.IProductDialogDelegate;
 
 /**
  * @author Samrat
  *
  */
-public class CategoryDialog extends BaseDialog implements WindowListener {
+public class ProductDialog extends BaseDialog implements WindowListener {
 
 	/***********************************************************/
 	// Constants
@@ -41,16 +38,15 @@ public class CategoryDialog extends BaseDialog implements WindowListener {
 	 * Constructor to create the dialog.
 	 * @param parent The parent frame on top of which this dialog will be created.
 	 * @param title The title of this dialog.
-	 * @param delegate The delegate(controller reference) which enables communication to the controller.
 	 */
-	public CategoryDialog(JFrame parent, String title, ICategoryDialogDelegate delegate) {
+	public ProductDialog(JFrame parent, String title, IProductDialogDelegate delegate) {
 		// Call the parent
 		super(parent, title);
 		// Set the delegate
 		this.delegate = delegate;
 		// Customize this dialog
 		this.addWindowListener(this);
-		this.setSize(400, 200);//TODO: Move to constants
+		this.setSize(400, 300);//TODO: Move to constants
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
@@ -66,30 +62,46 @@ public class CategoryDialog extends BaseDialog implements WindowListener {
 	/**
 	 * Delegate for communicating with the controller.
 	 */
-	private ICategoryDialogDelegate delegate;
+	private IProductDialogDelegate delegate;
 
 	/**
-	 * Text field for holding the category name entered by the user.
+	 * Text field for holding the product name entered by the user.
 	 */
-	private JTextField categoryName;
+	private JTextField productName;
 
 	/**
-	 * Textfield for holding the category code entered by the user.
+	 * Textfield for holding the production description as entered by the user.
 	 */
-	private JTextField categoryCode;
+	private JTextField productDescription;
+
+	/**
+	 * Textfield for holding the quantity available for the particular product.
+	 */
+	private JTextField quantity;
+
+	/**
+	 * Textfield for holding the price for the particular product.
+	 */
+	private JTextField price;
+	
+	/**
+	 * Textfield for holding the bar code number for the particular product.
+	 */
+	private JTextField barcodeNumber;
+
+	/**
+	 * Textfield for holding the reorder quantity of the particular product.
+	 */
+	private JTextField reorderQuantity;
+
+	/**
+	 * Textfield for holding the order quantity of the particular product.
+	 */
+	private JTextField orderQuantity;
+
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
-	/* (non-Javadoc)
-	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#getPanelToAddToDialog()
-	 */
-	@Override
-	protected boolean confirmClicked() {
-		// TODO - Add validation
-		delegate.confirmClicked(categoryCode.getText(), categoryName.getText());
-		return false;
-	}
-	
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#getPanelToAddToDialog()
 	 */
@@ -112,14 +124,38 @@ public class CategoryDialog extends BaseDialog implements WindowListener {
 		jPanel.setLayout(panelGridBagLayout);
 
 		// Finally add the elements
-		createLabelOnPanel(jPanel, "Category Code:", 0);// Move to constants
-		categoryCode = createTextFieldOnPanel(jPanel, 0);
+		createLabelOnPanel(jPanel, "Product Name:", 0);// Move to constants
+		productName = createTextFieldOnPanel(jPanel, 0);
+
+		createLabelOnPanel(jPanel, "Product Description:", 1);// Move to constants
+		productDescription = createTextFieldOnPanel(jPanel, 1);
 		
-		createLabelOnPanel(jPanel, "Category Name:", 1);// Move to constants
-		categoryName = createTextFieldOnPanel(jPanel, 1);
+		createLabelOnPanel(jPanel, "Product Quantity:", 2);// Move to constants
+		quantity = createTextFieldOnPanel(jPanel, 2);
+		
+		createLabelOnPanel(jPanel, "Product Price:", 3);// Move to constants
+		price = createTextFieldOnPanel(jPanel, 3);
+		
+		createLabelOnPanel(jPanel, "Bar Code Number:", 4);// Move to constants
+		barcodeNumber = createTextFieldOnPanel(jPanel, 4);
+		
+		createLabelOnPanel(jPanel, "Reorder Quantity (Threshold):", 5);// Move to constants
+		reorderQuantity = createTextFieldOnPanel(jPanel, 5);
+		
+		createLabelOnPanel(jPanel, "Order Quantity:", 6);// Move to constants
+		orderQuantity = createTextFieldOnPanel(jPanel, 6);
+		
 		return jPanel;
 	}
 
+	/* (non-Javadoc)
+	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#confirmClicked()
+	 */
+	@Override
+	protected boolean confirmClicked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	/***********************************************************/
 	// Window Listener Methods
 	/***********************************************************/
