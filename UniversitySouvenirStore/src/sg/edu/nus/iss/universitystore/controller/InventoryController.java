@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.Constants;
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.utility.UIUtils;
+import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.dialog.CategoryDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.ICategoryDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
+import sg.edu.nus.iss.universitystore.view.subpanel.CategoryPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
 
 /**
@@ -19,6 +24,13 @@ import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
  */
 public class InventoryController implements IInventoryDelegate, ICategoryDialogDelegate{
 
+	/***********************************************************/
+	// Constants
+	/***********************************************************/
+	public static final String STR_ERROR_MESSAGE_CATEGORY_CODE_OR_NAME_EMPTY = "The category code or name cannot be left empty.";
+	public static final String STR_ERROR_FAILED = "The category was not added.";
+	public static final String STR_SUCCESS_MESSAGE = "The category was successfully added.";
+	public static final String STR_ERROR_CATEGORY_3_DIGIT = "The category code should only consist of three alphabets without any spaces.";
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
@@ -120,12 +132,28 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 	/***********************************************************/
 	// ICategoryDialogDelegate Implementation
 	/***********************************************************/
-	public void confirmClicked(String categoryName) {
-		try {
-			inventoryManager.addCategory(categoryName, categoryName);
-			System.out.println(inventoryManager.getAllCategories());
-		} catch (Exception e) {
-			// TODO: handle exception
+	
+	// TODO - Speak to Choo about the validation.
+	public void confirmClicked(String categoryCode, String categoryName) {
+		// Client side validation
+		if(categoryCode.length() > 0 && categoryName.length() > 0) {
+			// Category Code client side validation.
+			if(categoryCode.length() == 3) {
+				try {
+					inventoryManager.addCategory(categoryCode, categoryName);
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_SUCCESS, STR_SUCCESS_MESSAGE,
+							DialogType.INFORMATION_MESSAGE);
+				} catch (Exception e) {
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+							DialogType.WARNING_MESSAGE);
+				}
+			} else {
+				UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_ERROR_CATEGORY_3_DIGIT,
+						DialogType.WARNING_MESSAGE);
+			}
+		} else {
+			UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_ERROR_MESSAGE_CATEGORY_CODE_OR_NAME_EMPTY,
+					DialogType.WARNING_MESSAGE);
 		}
 	}
 }

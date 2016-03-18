@@ -9,5 +9,5 @@ package sg.edu.nus.iss.universitystore.view.dialog.intf;
  */
 public interface ICategoryDialogDelegate {
 
-	public void confirmClicked(String categoryName);
+	public void confirmClicked(String categoryCode, String categoryName);
 }

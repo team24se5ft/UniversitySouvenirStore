@@ -16,6 +16,4 @@ public class Constants {
 	public static final String DEFAULT_FONT = "Verdana";
 	//Empty String
 	public final static String STR_EMPTY = "";
-	//Warning
-	public final static String STR_WARNING = "Warning";
 }

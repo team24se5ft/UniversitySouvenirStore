@@ -22,10 +22,10 @@ public class ConfirmDialog extends BaseDialog implements WindowListener{
 	}
 
 	protected JPanel getPanelToAddToDialog() {
-		JPanel p = new JPanel();
+		JPanel jPanel = new JPanel();
 		messageLabel = new Label();
-		p.add(messageLabel);
-		return p;
+		jPanel.add(messageLabel);
+		return jPanel;
 	}
 
 	@Override

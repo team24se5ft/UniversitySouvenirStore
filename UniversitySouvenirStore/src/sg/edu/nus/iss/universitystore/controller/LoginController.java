@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.Constants;
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
@@ -61,7 +62,7 @@ public class LoginController implements ILoginDelegate {
 				if (loginManager.isValidCredentials(storeKeeper)) {
 					UIUtils.navigateToDashboard(loginPanel);
 				} else {
-					UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE,
+					UIUtils.showMessageDialog(loginPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE,
 							DialogType.WARNING_MESSAGE);
 				}
 			} catch (IOException e) {
@@ -69,7 +70,7 @@ public class LoginController implements ILoginDelegate {
 				e.printStackTrace();
 			}
 		} else {
-			UIUtils.showMessageDialog(loginPanel, Constants.STR_WARNING, STR_USERNAME_CANNOT_BE_EMPTY,
+			UIUtils.showMessageDialog(loginPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_USERNAME_CANNOT_BE_EMPTY,
 					DialogType.WARNING_MESSAGE);
 		}
 	}

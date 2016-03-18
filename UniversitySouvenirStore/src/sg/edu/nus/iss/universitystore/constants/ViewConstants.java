@@ -39,6 +39,14 @@ public class ViewConstants {
 		public static final String STR_CANCEL = "Cancel";
 	}
 	
+	public static final class ErrorMessages {
+		
+		//Warning
+		public final static String STR_WARNING = "Warning";
+		// Success
+		public final static String STR_SUCCESS = "Success";
+	}
+	
 	public class TableHeaders {
 		//Discount Table Headers
 		public static final String DISCOUNT_CODE = "Code";
