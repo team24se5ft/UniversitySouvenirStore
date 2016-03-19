@@ -8,7 +8,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
-import sg.edu.nus.iss.universitystore.constants.DataConstants;
 import sg.edu.nus.iss.universitystore.exception.MemberNotFound;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.model.Member;
@@ -89,7 +88,7 @@ public class MemberManager {
 	public boolean addNewMember(String name, String identifier) throws MemberNotFound, IOException, StoreException {
 		if (isMember(identifier))
 			return false;
-		Member newMember = new Member(name, identifier, DataConstants.LOYALTY_NEW_MEMBER);
+		Member newMember = new Member(name, identifier, Constants.Data.Member.LOYALTY_NEW_MEMBER);
 		memberData.add(newMember);
 		return true;
 	}
@@ -126,7 +125,7 @@ public class MemberManager {
 		for (String singleMember : membersList) {
 			if (singleMember.isEmpty())
 				continue;
-			String[] memberSeperator = singleMember.split(DataConstants.DAT_FILE_SEPRTR);
+			String[] memberSeperator = singleMember.split(Constants.Data.FILE_SEPTR);
 			storedMembers.add(new Member(memberSeperator[0], memberSeperator[1], Integer.parseInt(memberSeperator[2])));
 
 		}

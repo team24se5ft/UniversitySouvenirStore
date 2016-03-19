@@ -1,38 +1,38 @@
 package sg.edu.nus.iss.universitystore.model;
 
-public class Goods {
+public class Item {
 
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
-	private Category category;
+	private String itemID;
 	private String name;
 	private String description;
 	private int quantity;
 	private double price;
-	private int reorderThreshold;
-	private int reorderQuantity;
-	
+
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public Goods(Category category, String name, String description, int quantity, double price, int reorderThreshold, int reorderQuantity){
-		this.category = category;
+	public Item(String itemID, String name, String description, int quantity, double price) {
+		this.itemID = itemID;
 		this.name = name;
 		this.description = description;
 		this.quantity = quantity;
 		this.price = price;
-		this.reorderThreshold = reorderThreshold;
-		this.reorderQuantity = reorderQuantity;
+	}
+	
+	public Item(String name, String description, int quantity, double price) {
+		this(null, name, description, quantity, price);
 	}
 
 	/***********************************************************/
 	// Getters & Setters
 	/***********************************************************/
-	public Category getCategory() {
-		return category;
+	public String getItemID() {
+		return itemID;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -49,30 +49,25 @@ public class Goods {
 		return price;
 	}
 
-	public int getReorderThreshold() {
-		return reorderThreshold;
-	}
-
-	public int getReorderQuantity() {
-		return reorderQuantity;
-	}
-
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
 	@Override
+	public String toString() {
+		return itemID + "," + name + "," + description + "," + quantity + "," + price;
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((itemID == null) ? 0 : itemID.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(price);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + quantity;
-		result = prime * result + reorderQuantity;
-		result = prime * result + reorderThreshold;
 		return result;
 	}
 
@@ -84,16 +79,16 @@ public class Goods {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Goods other = (Goods) obj;
-		if (category == null) {
-			if (other.category != null)
-				return false;
-		} else if (!category.equals(other.category))
-			return false;
+		Item other = (Item) obj;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
+			return false;
+		if (itemID == null) {
+			if (other.itemID != null)
+				return false;
+		} else if (!itemID.equals(other.itemID))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -104,11 +99,7 @@ public class Goods {
 			return false;
 		if (quantity != other.quantity)
 			return false;
-		if (reorderQuantity != other.reorderQuantity)
-			return false;
-		if (reorderThreshold != other.reorderThreshold)
-			return false;
 		return true;
 	}
-	
+
 }

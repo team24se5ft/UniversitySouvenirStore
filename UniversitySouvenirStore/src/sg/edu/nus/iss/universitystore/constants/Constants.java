@@ -36,5 +36,16 @@ public final class Constants {
 			public static final String VENDOR_DAT = "Vendor";
 			
 		}
+		
+		public static final class Product {
+			public static final class Pattern {
+				public static final String ID_MATCH = "(\\w+)" + ID_SEPTR + "\\d+";
+				public static final String ID_REPLACE = "$1";
+			}
+		}
+		
+		public static final class Member {
+			public static final int LOYALTY_NEW_MEMBER = -1;
+		}
 	}
 }

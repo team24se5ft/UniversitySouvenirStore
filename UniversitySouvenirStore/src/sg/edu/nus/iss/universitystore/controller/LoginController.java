@@ -2,17 +2,15 @@ package sg.edu.nus.iss.universitystore.controller;
 
 import java.io.IOException;
 
-
 import javax.swing.JPanel;
 
-import sg.edu.nus.iss.universitystore.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
+import sg.edu.nus.iss.universitystore.data.LoginManager;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.LoginPanel;
 import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
-import sg.edu.nus.iss.universitystore.data.LoginManager;
 
 /**
  * @author Samrat
