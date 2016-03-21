@@ -4,8 +4,6 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridBagLayout;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,13 +12,11 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-import sg.edu.nus.iss.universitystore.view.dialog.intf.IProductDialogDelegate;
-
 /**
  * @author Samrat
  *
  */
-public class ProductDialog extends BaseDialog {
+public abstract class ProductDialog extends BaseDialog {
 
 	/***********************************************************/
 	// Constants
@@ -39,11 +35,9 @@ public class ProductDialog extends BaseDialog {
 	 * @param parent The parent frame on top of which this dialog will be created.
 	 * @param title The title of this dialog.
 	 */
-	public ProductDialog(JFrame parent, String title, IProductDialogDelegate delegate) {
+	public ProductDialog(JFrame parent, String title) {
 		// Call the parent
 		super(parent, title);
-		// Set the delegate
-		this.delegate = delegate;
 		// Customize this dialog
 		this.addWindowListener(this);
 		this.setSize(400, 300);//TODO: Move to constants
@@ -58,11 +52,6 @@ public class ProductDialog extends BaseDialog {
 	 * The panel associated with this dialog.
 	 */
 	private JPanel jPanel;
-
-	/**
-	 * Delegate for communicating with the controller.
-	 */
-	private IProductDialogDelegate delegate;
 
 	/**
 	 * Text field for holding the product name entered by the user.
@@ -99,6 +88,10 @@ public class ProductDialog extends BaseDialog {
 	 */
 	private JTextField orderQuantity;
 
+	/***********************************************************/
+	// Abstract Method Definition
+	/***********************************************************/
+	public abstract boolean productCallback(String productName, String productDescription, String quantity, String price, String barcodeNumber, String reorderQuantity, String orderQuantity);
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
@@ -153,7 +146,7 @@ public class ProductDialog extends BaseDialog {
 	 */
 	@Override
 	protected boolean confirmClicked() {
-		delegate.confirmClicked(productName.getText(), productDescription.getText(), quantity.getText(), price.getText(), barcodeNumber.getText(), reorderQuantity.getText(), orderQuantity.getText());
+		productCallback(productName.getText(), productDescription.getText(), quantity.getText(), price.getText(), barcodeNumber.getText(), reorderQuantity.getText(), orderQuantity.getText());
 		// TODO Auto-generated method stub
 		return false;
 	}

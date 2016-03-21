@@ -15,7 +15,6 @@ import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.dialog.CategoryDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ProductDialog;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.IProductDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
 
@@ -23,7 +22,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
  * @author Samrat
  *
  */
-public class InventoryController implements IInventoryDelegate, IProductDialogDelegate{
+public class InventoryController implements IInventoryDelegate{
 
 	/***********************************************************/
 	// Constants
@@ -137,7 +136,6 @@ public class InventoryController implements IInventoryDelegate, IProductDialogDe
 				return false;
 			}
 		};
-
 		// Make the category dialog visible.
 		categoryDialog.setVisible(true);
 	}
@@ -204,7 +202,15 @@ public class InventoryController implements IInventoryDelegate, IProductDialogDe
 
 	@Override
 	public void addProductClicked() {
-		ProductDialog productDialog = new ProductDialog(topFrame, "Add Product", this);
+		ProductDialog productDialog = new ProductDialog(topFrame, "Add Product"){
+
+			@Override
+			public boolean productCallback(String productName, String productDescription, String quantity, String price,
+					String barcodeNumber, String reorderQuantity, String orderQuantity) {
+				return true;
+			}
+			
+		};
 		productDialog.setVisible(true);
 
 	}

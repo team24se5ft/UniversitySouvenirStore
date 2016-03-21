@@ -8,7 +8,6 @@ import javax.swing.SwingUtilities;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.MemberDialog;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.IMemberDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.MemberPanel;
 
@@ -34,19 +33,19 @@ public class MemberController implements IMemberDelegate {
      */
 	@Override
 	public void addMember() {
-		new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "AddMember",
-				new IMemberDialogDelegate() {
-					@Override
-					public void MemberCallBack(String memberId, String memberName, String loyaltyPoints) {
-						// TODO Auto-generated method stub
-						Member member = new Member(memberId,memberName,Integer.valueOf(loyaltyPoints));
-						// TODO dataModify
-						memberList.add(member);
-						// UIupdate
-						memberPanel.onAddMember(member);
-					}
+		new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "AddMember"){
 
-				}, MemberDialog.ADD_TYPE).setVisible(true);
+			@Override
+			public boolean MemberCallBack(String memberId, String memberName, String loyaltyPoints) {
+				Member member = new Member(memberId,memberName,Integer.valueOf(loyaltyPoints));
+				// TODO dataModify
+				memberList.add(member);
+				// UIupdate
+				memberPanel.onAddMember(member);
+				return true;
+			}
+			
+		}.setVisible(true);
 	}
 
     /*
@@ -82,22 +81,21 @@ public class MemberController implements IMemberDelegate {
 		if (row < 0) {
 			return;
 		}
-		MemberDialog updateDlg=new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "UpdateMember",
-				new IMemberDialogDelegate() {
+		MemberDialog updateDlg=new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "UpdateMember"){
 
-					@Override
-					public void MemberCallBack(String memberId, String memberName, String loyaltyPoints) {
-						// TODO Auto-generated method stub
-						Member member = new Member(memberId, memberName, Integer.valueOf(loyaltyPoints));
-						// TODO dataModify
-						memberList.remove(row);
-						memberList.add(row,member);
-						// UIupdate
-						memberPanel.onUpdateMember(member, row);
-						
-					}
-
-				}, MemberDialog.UPDATE_TYPE);
+			@Override
+			public boolean MemberCallBack(String memberId, String memberName, String loyaltyPoints) {
+				// TODO Auto-generated method stub
+				Member member = new Member(memberId, memberName, Integer.valueOf(loyaltyPoints));
+				// TODO dataModify
+				memberList.remove(row);
+				memberList.add(row,member);
+				// UIupdate
+				memberPanel.onUpdateMember(member, row);
+				return true;
+			}
+			
+		};
 		updateDlg.setMemberData(memberList.get(row));
 		updateDlg.setVisible(true);
 		

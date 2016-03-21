@@ -2,21 +2,15 @@ package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridLayout;
 import java.awt.TextField;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import sg.edu.nus.iss.universitystore.view.dialog.intf.ProductScanDialogDelegate;
-
-public class ProductScanDialog extends BaseDialog {
+public abstract class ProductScanDialog extends BaseDialog {
 	private static final long serialVersionUID = -6976311071183139160L;
 	// textfield define
 	private TextField ProductCode;
-
-	private ProductScanDialogDelegate delegate;
 
 	/***********************************************************/
 	// Constructors
@@ -25,14 +19,21 @@ public class ProductScanDialog extends BaseDialog {
 		super(parent, "ScanProdcutCode");
 	}
 
-	public ProductScanDialog(JFrame parent, String title, ProductScanDialogDelegate delegate) {
+	public ProductScanDialog(JFrame parent, String title) {
 		super(parent, title);
-		this.delegate = delegate;
 		this.addWindowListener(this);
 		this.setSize(400, 80);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
+	
+	/***********************************************************/
+	// Abstract Methods definition
+	/***********************************************************/
+	/**
+	 * add member dialog call back function
+	 */
+	public abstract boolean onProductScanResult(String productCode);
 
 	/***********************************************************/
 	// override method
@@ -56,7 +57,7 @@ public class ProductScanDialog extends BaseDialog {
 	@Override
 	protected boolean confirmClicked() {
 		if (ProductCode.getText().length() != 0) {
-			delegate.onProductScanResult(ProductCode.getText());
+			onProductScanResult(ProductCode.getText());
 			return false;
 		}
 		return false;

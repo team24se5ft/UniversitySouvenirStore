@@ -7,14 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import sg.edu.nus.iss.universitystore.view.dialog.intf.MemberScanDialogDelegate;
-
-public class MemberScanDialog extends BaseDialog {
+public abstract class MemberScanDialog extends BaseDialog {
 	private static final long serialVersionUID = -6976311071183139160L;
 	// textfield define
 	private TextField MemberCode;
-
-	private MemberScanDialogDelegate delegate;
 
 	/***********************************************************/
 	// Constructors
@@ -23,14 +19,20 @@ public class MemberScanDialog extends BaseDialog {
 		super(parent, "ScanMemberCode");
 	}
 
-	public MemberScanDialog(JFrame parent, String title, MemberScanDialogDelegate delegate) {
+	public MemberScanDialog(JFrame parent, String title) {
 		super(parent, title);
-		this.delegate = delegate;
 		this.addWindowListener(this);
 		this.setSize(400, 80);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
+	
+	
+	/**
+	 * check the membercode and return result
+	 * @param MemberCode
+	 */
+	public abstract boolean onMemberLogin(String MemberCode);
 
 	/***********************************************************/
 	// override method
@@ -54,7 +56,7 @@ public class MemberScanDialog extends BaseDialog {
 	@Override
 	protected boolean confirmClicked() {
 		if (MemberCode.getText().length() != 0) {
-			delegate.onMemberLogin(MemberCode.getText());
+			onMemberLogin(MemberCode.getText());
 			return false;
 		}
 		return false;

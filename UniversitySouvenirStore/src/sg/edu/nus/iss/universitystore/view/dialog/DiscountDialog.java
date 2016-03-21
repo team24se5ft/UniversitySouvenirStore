@@ -12,7 +12,6 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
 import sg.edu.nus.iss.universitystore.model.Discount;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.IDiscountDialogDelegate;
 
 public abstract class DiscountDialog extends BaseDialog {
 	private static final long serialVersionUID = 3029306694712724442L;
@@ -28,8 +27,6 @@ public abstract class DiscountDialog extends BaseDialog {
 	JRadioButton randioButtonM;
 	JRadioButton randioButtonA;
 
-//	private IDiscountDialogDelegate delegate;
-
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
@@ -44,8 +41,10 @@ public abstract class DiscountDialog extends BaseDialog {
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
-	
-	public abstract void onDiscountCallBack(String code, String description, String startDate, String period, String percentage,
+	/***********************************************************/
+	// Abstract Methods Definition
+	/***********************************************************/
+	public abstract boolean onDiscountCallBack(String code, String description, String startDate, String period, String percentage,
 			String eligibilty);
 
 	/***********************************************************/

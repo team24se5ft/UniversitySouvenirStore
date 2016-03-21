@@ -9,8 +9,6 @@ import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.view.dialog.MemberScanDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ProductScanDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ReceiptDialog;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.MemberScanDialogDelegate;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.ProductScanDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.SalesPanel;
 
@@ -39,23 +37,24 @@ public class SalesController implements ISalesDelegate {
 	 */
 	@Override
 	public void AddProduct() {
-		productDialog= new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "scanProduct",
-				new ProductScanDialogDelegate() {
-					
-					@Override
-					public void onProductScanResult(String productCode) {
-						//TODO need to do product validation here
-						if (true) {
-							//add query product entity
-							Product product=new Product(productCode,"a product","it`s called a product","100","20","10","50");
-							productList.add(product);
-							//data input product
-							salesPanel.onAddProduct(product); 
-							productDialog.dispose();
-							productDialog.setVisible(false);
-						}
-					}
-				});
+		productDialog= new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "scanProduct"){
+
+			@Override
+			public boolean onProductScanResult(String productCode) {
+				//TODO need to do product validation here
+				if (true) {
+					//add query product entity
+					Product product=new Product(productCode,"a product","it`s called a product","100","20","10","50");
+					productList.add(product);
+					//data input product
+					salesPanel.onAddProduct(product); 
+					productDialog.dispose();
+					productDialog.setVisible(false);
+				}
+				return true;
+			}
+			
+		};
 		productDialog.setVisible(true);
 	}
 
@@ -79,20 +78,21 @@ public class SalesController implements ISalesDelegate {
 	@Override
 	public void LoginMember() {
 		// TODO Auto-generated method stub
-		memberDialog = new MemberScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "scanMember",
-				new MemberScanDialogDelegate() {
+		memberDialog = new MemberScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "scanMember"){
 
-					@Override
-					public void onMemberLogin(String MemberCode) {
-						//TODO need to do member validation here
-						if (true) {
-							//add query member name
-							salesPanel.onLoginMember(MemberCode);
-							memberDialog.dispose();
-							memberDialog.setVisible(false);
-						}
-					}
-				});
+			@Override
+			public boolean onMemberLogin(String MemberCode) {
+				//TODO need to do member validation here
+				if (true) {
+					//add query member name
+					salesPanel.onLoginMember(MemberCode);
+					memberDialog.dispose();
+					memberDialog.setVisible(false);
+				}
+				return true;
+			}
+			
+		};
 		memberDialog.setVisible(true);
 	}
 

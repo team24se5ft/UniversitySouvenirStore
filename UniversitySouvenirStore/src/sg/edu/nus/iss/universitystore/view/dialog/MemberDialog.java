@@ -3,19 +3,14 @@ package sg.edu.nus.iss.universitystore.view.dialog;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.TextField;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.model.Member;
-import sg.edu.nus.iss.universitystore.view.dialog.intf.IMemberDialogDelegate;
 
-public class MemberDialog extends BaseDialog {
+public abstract class MemberDialog extends BaseDialog {
 	private static final long serialVersionUID = 3029306694712724442L;
-	private int type;
-	private IMemberDialogDelegate delegate;
 
 	/***********************************************************/
 	// Constants
@@ -34,15 +29,16 @@ public class MemberDialog extends BaseDialog {
 		super(parent, "AddMember");
 	}
 
-	public MemberDialog(JFrame parent, String title, IMemberDialogDelegate delegate, int type) {
+	public MemberDialog(JFrame parent, String title) {
 		super(parent, title);
-		this.type = type;
-		this.delegate = delegate;
 		this.addWindowListener(this);
 		this.setSize(250, 250);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
+	
+	
+	public abstract boolean MemberCallBack(String memberId, String memberName, String loyaltyPoints);
 
 	/**
 	 * invoke this function when you need fill data into the dialog
@@ -88,7 +84,7 @@ public class MemberDialog extends BaseDialog {
 	@Override
 	protected boolean confirmClicked() {
 		if (tfMemberId.getText().length() != 0 && tfMemberName.getText().length() != 0) {
-			delegate.MemberCallBack(tfMemberId.getText(), tfMemberName.getText(), tfLoyaltyPoints.getText());
+			MemberCallBack(tfMemberId.getText(), tfMemberName.getText(), tfLoyaltyPoints.getText());
 			return true;
 		}
 		return false;
