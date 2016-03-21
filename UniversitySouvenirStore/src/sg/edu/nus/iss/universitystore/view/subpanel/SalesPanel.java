@@ -1,73 +1,70 @@
 package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
-import sg.edu.nus.iss.universitystore.constants.ViewConstants;
+import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
+import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
 
-public class SalesPanel extends JPanel {
-	private List productList;
+public class SalesPanel extends BaseTablePanel {
 
 	private JLabel memberOption;// add memberDialog to check member
 	private JTextField LoyalPointOption; // key in loyalPoint
 	private JLabel avaiLableLoyalPoint; // show avaliable loyalPoint
 	private JLabel discountOption;
 
-	private JButton addProductButton;
-	private JButton cancelButton;
-	private JButton checkOutButton;
-	
-	private ImageIcon addProductIcon;
-	private ImageIcon checkOutIcon;
-	private ImageIcon cancelIcon;
-
-	private JPanel buttonPanel;
 	private JPanel customerInfoPanel;
-	private JPanel saleContentPanel;
 
+	private ISalesDelegate delegate;
 
-	public SalesPanel() {
+	/***********************************************************/
+	// Constructors
+	/***********************************************************/
+	public SalesPanel(ISalesDelegate delegate) {
+		this.delegate = delegate;
 		BorderLayout borderLayout = new BorderLayout();
 		borderLayout.setHgap(20);
 		borderLayout.setVgap(20);
 		this.setLayout(borderLayout);
 		initSalePanel();
-		initButtonPanel();
+//		initButtonPanel();
 
 	}
 
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
 	private void initSalePanel() {
-		saleContentPanel = new JPanel();
-		productList = new List();
-		saleContentPanel.setBackground(Color.WHITE);
-		saleContentPanel.setLayout(new BoxLayout(saleContentPanel, BoxLayout.X_AXIS));
-//		saleContentPanel.setLayout(new GridLayout(1, 2));
-		saleContentPanel.add(productList);
+		initProductTable();
 		initCustomerInfoPabel();
-		add(saleContentPanel, "Center");
+	}
+
+	private void initProductTable() {
+		String[] headers = { "code", "Name", "price" };
+		String data[][] = {};
+		add(getScrollPaneWithTable(data, headers),BorderLayout.CENTER);
+		add(getButtonPanel(),BorderLayout.SOUTH);
 	}
 
 	private void initCustomerInfoPabel() {
 		customerInfoPanel = new JPanel();
 		customerInfoPanel.setBackground(Color.WHITE);
-		customerInfoPanel.setLayout(new GridLayout(6, 6));
-		customerInfoPanel.setPreferredSize(new Dimension(400, 300));
-		customerInfoPanel.setMaximumSize(new Dimension(400, 300));
+		customerInfoPanel.setLayout(new GridLayout(4, 4));
+		customerInfoPanel.setPreferredSize(new Dimension(400, 200));
+		customerInfoPanel.setMaximumSize(new Dimension(400, 250));
 		customerInfoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		customerInfoPanel.add(new JLabel("member:"));
 		memberOption = new JLabel("Public");
@@ -83,40 +80,148 @@ public class SalesPanel extends JPanel {
 		customerInfoPanel.add(new JLabel("loyalPoint:"));
 		LoyalPointOption = new JTextField(5);
 		customerInfoPanel.add(LoyalPointOption);
-		saleContentPanel.add(customerInfoPanel);
+		add(customerInfoPanel, BorderLayout.NORTH);
+		initButtonEvent();
 	}
 
-	private void initButtonPanel() {
-		buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout());
-		
-		addProductButton=initImageButton("Resources/add_icon.png",ViewConstants.Labels.STR_ADD_SALESPRODUCT);
-		checkOutButton=initImageButton("Resources/cart_icon.png",ViewConstants.Labels.STR_CHECKOUT_SALES);
-		cancelButton=initImageButton("Resources/delete_icon.png",ViewConstants.Labels.STR_CANCEL_SALES);
-		//buttonPanel.add(addProductButton);
-		buttonPanel.add(addProductButton);
-		buttonPanel.add(checkOutButton);
-		buttonPanel.add(cancelButton);
-		add(buttonPanel, "South");
-	}
-	
+//	private void initButtonPanel() {
+//		buttonPanel = new JPanel();
+//		buttonPanel.setLayout(new FlowLayout());
+//
+//		addProductButton = initImageButton("Resources/add_icon.png", ViewConstants.Labels.STR_ADD_SALESPRODUCT);
+//		checkOutButton = initImageButton("Resources/cart_icon.png", ViewConstants.Labels.STR_CHECKOUT_SALES);
+//		cancelButton = initImageButton("Resources/delete_icon.png", ViewConstants.Labels.STR_CANCEL_SALES);
+//		// addProductButton = new JButton(new
+//		// ImageIcon("Resources/add_icon.png"));
+//		// checkOutButton = new JButton(new
+//		// ImageIcon("Resources/edit_icon.png"));
+//		// cancelButton = new JButton(new
+//		// ImageIcon("Resources/delete_icon.png"));
+//		//
+//		// // setting border to empty
+//		// addProductButton.setBorder(BorderFactory.createEmptyBorder());
+//		// checkOutButton.setBorder(BorderFactory.createEmptyBorder());
+//		// cancelButton.setBorder(BorderFactory.createEmptyBorder());
+//		//
+//		// addProductButton.setPreferredSize(new Dimension(70, 70));
+//		// checkOutButton.setPreferredSize(new Dimension(70, 70));
+//		// cancelButton.setPreferredSize(new Dimension(70, 70));
+//		// buttonPanel.add(addProductButton);
+//		buttonPanel.add(addProductButton);
+//		buttonPanel.add(checkOutButton);
+//		buttonPanel.add(cancelButton);
+//		add(buttonPanel, "South");
+//		initButtonEvent();
+//	}
+
+//	/**
+//	 * imageButton init here
+//	 * 
+//	 * @param imageUrl
+//	 * @param btnText
+//	 * @return
+//	 */
+//	private JButton initImageButton(String imageUrl, String btnText) {
+//		ImageIcon icon = new ImageIcon(imageUrl);
+//		JButton btn = new JButton(btnText);
+//		btn.setIcon(icon);
+//		btn.setHorizontalTextPosition(JLabel.CENTER);
+//		btn.setVerticalTextPosition(JLabel.BOTTOM);
+//		btn.setBorderPainted(false);
+//		btn.setContentAreaFilled(false);
+//		btn.setFocusPainted(false);
+//		btn.setOpaque(false);
+//		return btn;
+//	}
+
 	/**
-	 * imageButton init here
-	 * @param imageUrl
-	 * @param btnText
-	 * @return
+	 * all the SalePanel button`s event init here
 	 */
-	private JButton initImageButton(String imageUrl,String btnText){
-		ImageIcon icon = new ImageIcon(imageUrl);
-		JButton btn = new JButton(btnText);
-		btn.setIcon(icon);
-		btn.setHorizontalTextPosition(JLabel.CENTER);
-		btn.setVerticalTextPosition(JLabel.BOTTOM);
-		btn.setBorderPainted(false);
-		btn.setContentAreaFilled(false);
-		btn.setFocusPainted(false);
-		btn.setOpaque(false);
-		return btn;
+	private void initButtonEvent() {
+		memberOption.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				delegate.LoginMember();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+	}
+
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
+	public void onLoginMember(String memberName) {
+		memberOption.setText(memberName);
+	}
+
+	public void onAddProduct(Product product) {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.addRow(new Object[] { product.getIdentifier(), product.getName(), product.getPrice() });
+	}
+
+	public void onCancel() {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		while (table.getRowCount() != 0) {
+			model.removeRow(0);
+		}
+	}
+
+	@Override
+	protected ActionListener addAction() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				delegate.AddProduct();
+			}
+		};
+	}
+
+	@Override
+	protected ActionListener editAction() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				delegate.CheckOut();
+			}
+		};
+	}
+
+	@Override
+	protected ActionListener deleteAction() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				delegate.Cancel();
+			}
+		};
 	}
 
 }

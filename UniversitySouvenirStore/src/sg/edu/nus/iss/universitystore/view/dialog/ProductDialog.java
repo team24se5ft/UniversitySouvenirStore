@@ -20,7 +20,7 @@ import sg.edu.nus.iss.universitystore.view.dialog.intf.IProductDialogDelegate;
  * @author Samrat
  *
  */
-public class ProductDialog extends BaseDialog implements WindowListener {
+public class ProductDialog extends BaseDialog {
 
 	/***********************************************************/
 	// Constants
@@ -156,49 +156,5 @@ public class ProductDialog extends BaseDialog implements WindowListener {
 		delegate.confirmClicked(productName.getText(), productDescription.getText(), quantity.getText(), price.getText(), barcodeNumber.getText(), reorderQuantity.getText(), orderQuantity.getText());
 		// TODO Auto-generated method stub
 		return false;
-	}
-	/***********************************************************/
-	// Window Listener Methods
-	/***********************************************************/
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		setVisible(false);
-		dispose();
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 }

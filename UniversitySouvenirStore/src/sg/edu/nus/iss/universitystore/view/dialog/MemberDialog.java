@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.IMemberDialogDelegate;
 
-public class MemberDialog extends BaseDialog implements WindowListener {
+public class MemberDialog extends BaseDialog {
 	private static final long serialVersionUID = 3029306694712724442L;
 	private int type;
 	private IMemberDialogDelegate delegate;
@@ -34,7 +34,7 @@ public class MemberDialog extends BaseDialog implements WindowListener {
 		super(parent, "AddMember");
 	}
 
-	public MemberDialog(JFrame parent, String title,IMemberDialogDelegate delegate, int type) {
+	public MemberDialog(JFrame parent, String title, IMemberDialogDelegate delegate, int type) {
 		super(parent, title);
 		this.type = type;
 		this.delegate = delegate;
@@ -43,19 +43,18 @@ public class MemberDialog extends BaseDialog implements WindowListener {
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
-	
+
 	/**
 	 * invoke this function when you need fill data into the dialog
+	 * 
 	 * @param member
 	 */
 	public void setMemberData(Member member) {
 		tfMemberId.setText(member.getIdentifier());
 		tfMemberName.setText(member.getName());
-		tfLoyaltyPoints.setText(member.getLoyaltyPoints()+ "");
-		
-		
+		tfLoyaltyPoints.setText(member.getLoyaltyPoints() + "");
+
 	}
-	
 
 	@Override
 	protected JPanel getPanelToAddToDialog() {
@@ -82,9 +81,10 @@ public class MemberDialog extends BaseDialog implements WindowListener {
 		jp.add(tfLoyaltyPoints);
 		return jp;
 	}
-    /**
-     * adding row to table onClick
-     */
+
+	/**
+	 * adding row to table onClick
+	 */
 	@Override
 	protected boolean confirmClicked() {
 		if (tfMemberId.getText().length() != 0 && tfMemberName.getText().length() != 0) {
@@ -92,48 +92,6 @@ public class MemberDialog extends BaseDialog implements WindowListener {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		setVisible(false);
-		dispose();
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
