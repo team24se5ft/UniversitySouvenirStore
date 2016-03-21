@@ -103,7 +103,7 @@ public class TransactionManager {
 	 * Add Transaction to Data file
 	 */
 	
-	public Transaction addTransaction() throws IOException,StoreException{
+	/*public Transaction addTransaction() throws IOException,StoreException{
 		Transaction trans=new Transaction(trans_id, prod_id, member_id, quantity, date);
-	}
+	}*/
 }

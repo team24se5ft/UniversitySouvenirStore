@@ -178,7 +178,7 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 	@Override
 	public void tearDown() throws Exception {
 		super.tearDown();
-		InventoryManager.deleteIntance();
+		InventoryManager.deleteInstance();
 
 		// Destroy all category content;
 		category1 = category2 = null;
