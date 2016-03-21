@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import sg.edu.nus.iss.universitystore.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.view.intf.IDashBoardOptionChangeDelegate;
 
@@ -70,7 +69,7 @@ public class DashboardOptionsPanel extends JPanel {
 		jpanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 		
 		JLabel label = new JLabel(labelText);
-		label.setFont(new Font(Constants.DEFAULT_FONT, 1, fontSize));
+		label.setFont(new Font(ViewConstants.Common.DEFAULT_FONT, 1, fontSize));
 		label.setForeground(Color.WHITE);
 		
 		jpanel.add(label);

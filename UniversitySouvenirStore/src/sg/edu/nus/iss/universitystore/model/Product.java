@@ -37,12 +37,6 @@ public class Product {
 		this.reorderQuantity = goods.getReorderQuantity();
 	}
 
-	/*
-	 * public Product(Object[] args){ this((String)args[0], (String)args[0],
-	 * (String)args[0], (Integer)args[0], (Double)args[0], (Integer)args[0],
-	 * (Integer)args[0]); }
-	 */
-
 	/***********************************************************/
 	// Getters & Setters
 	/***********************************************************/

@@ -5,6 +5,11 @@ package sg.edu.nus.iss.universitystore.constants;
  *
  */
 public class ViewConstants {
+	
+	public static final class Common {
+		//Default Font
+		public static final String DEFAULT_FONT = "Verdana";
+	}
 
 	public static final class Fonts {
 		//Fonts for LoginPanel
@@ -74,5 +79,24 @@ public class ViewConstants {
 		public static final String STR_DISCOUNT = "Discount";
 		public static final String STR_REPORTS = "Reports";
 		public static final String STR_LOGOUT = "Logout";
+	}
+	
+	public static final class MainFrame {
+		public static final class MenuBar {
+			public static final String FILE = "File";
+			public static final String EDIT = "Edit";
+			public static final String SOURCE = "Source";
+			public static final String EXIT = "Exit";
+			public static final String TRUE = "true";
+		}
+		public final static String APP_NAME = "NUS STORE MANAGER";
+		// Window width in pixels
+		public final static int WINDOW_WIDTH = 800;
+		// Window height in pixels
+		public final static int WINDOW_HEIGHT = 600;
+		//Menu Bar for Apple
+		public final static String APPLE_MENUBAR = "apple.laf.useScreenMenuBar";
+		//Empty String
+		public final static String STR_EMPTY = "";
 	}
 }

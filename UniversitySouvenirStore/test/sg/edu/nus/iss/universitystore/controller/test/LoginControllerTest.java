@@ -11,13 +11,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sg.edu.nus.iss.universitystore.data.DataFileManager;
+import sg.edu.nus.iss.universitystore.data.LoginManager;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.view.LoginPanel;
 
 public class LoginControllerTest {
-	DataFileManager dataFileManager1, dataFileManager2;
+	LoginManager loginManager1, loginManager2;
 	String username,password;
 	LoginPanel loginPanel;
 	JPanel  jPanel;
@@ -25,8 +25,8 @@ public class LoginControllerTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		dataFileManager1 = DataFileManager.getInstance();
-		dataFileManager2 = DataFileManager.getInstance();
+		loginManager1 = LoginManager.getInstance();
+		loginManager2 = LoginManager.getInstance();
 		storeKeeper = new StoreKeeper("LaBlah", "LaBlah1234");
 		username= storeKeeper.getUserName();
 		password = storeKeeper.getPassword();
@@ -34,17 +34,17 @@ public class LoginControllerTest {
 
 	@After
 	public void tearDown() throws Exception {
-		dataFileManager1 = null;
-		dataFileManager2 = null;
+		loginManager1 = null;
+		loginManager2 = null;
 		username = null;
 		password = null;
 	}
 
 	@Test
 	public void testLoginController(){
-		assertNotNull(DataFileManager.getInstance());
-		assertEquals(DataFileManager.getInstance(), dataFileManager1);
-		assertEquals(dataFileManager2, dataFileManager1);
+		assertNotNull(LoginManager.getInstance());
+		assertEquals(LoginManager.getInstance(), loginManager1);
+		assertEquals(loginManager2, loginManager1);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class LoginControllerTest {
 	@Test
 	public void testloginButtonClicked() throws IOException{
 		assertEquals(storeKeeper.toString(), (username+","+password));
-		assertNotNull(dataFileManager1.isValidCredentials(storeKeeper));
+		assertNotNull(loginManager1.isValidCredentials(storeKeeper));
 	}
 
 

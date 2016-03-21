@@ -24,6 +24,19 @@ import sg.edu.nus.iss.universitystore.utility.CommonUtils.MessageType;
 public class InventoryManager {
 
 	/**
+	 * Category Arguments
+	 */
+	public enum CategoryArg {
+		CODE(0), NAME(1);
+
+		private int position;
+
+		private CategoryArg(int position) {
+			this.position = position;
+		}
+	}
+
+	/**
 	 * Product Arguments
 	 */
 	public enum ProductArg {
@@ -97,6 +110,10 @@ public class InventoryManager {
 			}
 		}
 		return instance;
+	}
+
+	public static void deleteIntance() {
+		instance = null;
 	}
 
 	/***********************************************************/
@@ -173,7 +190,10 @@ public class InventoryManager {
 			if (categoryStr.isEmpty())
 				continue;
 
-			categoryList.add(new Category(categoryStr.split(Constants.Data.FILE_SEPTR)));
+			String[] categoryStrSplt = categoryStr.split(Constants.Data.FILE_SEPTR);
+
+			categoryList.add(new Category(categoryStrSplt[CategoryArg.CODE.ordinal()],
+					categoryStrSplt[CategoryArg.NAME.ordinal()]));
 		}
 
 		return categoryList;
@@ -211,11 +231,11 @@ public class InventoryManager {
 	public boolean deleteCategory(String categoryCode) throws IOException, StoreException {
 		// TODO: Good to Have
 		boolean status = false;
-		
-		if(hasCategory(categoryCode)){
+
+		if (hasCategory(categoryCode)) {
 			Category category = findCategory(categoryCode);
-			
-			if(categoryData.delete(category.toString())){
+
+			if (categoryData.delete(category.toString())) {
 				status = deleteAllVendors(categoryCode);
 			}
 		}
@@ -263,15 +283,17 @@ public class InventoryManager {
 	 */
 	public boolean hasCategory(String categoryCode) throws IOException, StoreException {
 		isValidCategory(categoryCode);
-		
+
 		return findCategory(categoryCode) != null;
 	}
-	
-	private void isValidCategory(String categoryCode) throws StoreException{
-		if(categoryCode.length() != 3)
-			throw new StoreException(MessageTitleType.ERROR, Messages.Error.Category.INVALID_CODE_LENGTH, MessageType.ERROR_MESSAGE);
-		else if(!categoryCode.matches("^[a-zA-Z]{3}$"))
-			throw new StoreException(MessageTitleType.ERROR, Messages.Error.Category.INVALID_CHARACTERS, MessageType.ERROR_MESSAGE);
+
+	private void isValidCategory(String categoryCode) throws StoreException {
+		if (categoryCode.length() != 3)
+			throw new StoreException(MessageTitleType.ERROR, Messages.Error.Category.INVALID_CODE_LENGTH,
+					MessageType.ERROR_MESSAGE);
+		else if (!categoryCode.matches("^[a-zA-Z]{3}$"))
+			throw new StoreException(MessageTitleType.ERROR, Messages.Error.Category.INVALID_CHARACTERS,
+					MessageType.ERROR_MESSAGE);
 	}
 
 	/***********************************************************/
@@ -311,15 +333,21 @@ public class InventoryManager {
 	 * 
 	 * @param goods
 	 * @throws IOException
+	 * @throws StoreException
 	 */
-	public void addProduct(Goods goods) throws IOException {
+	public Product addProduct(Goods goods) throws IOException, StoreException {
+
+		if (!hasCategory(goods.getCategory().getCode()))
+			return null;
 
 		StringBuffer productID = new StringBuffer();
 		productID.append(goods.getCategory().getCode());
 		productID.append(Constants.Data.ID_SEPTR);
 		productID.append(generateProductID());
 
-		productData.add(new Product(productID.toString(), goods));
+		Product product = new Product(productID.toString(), goods);
+
+		return productData.add(product) ? product : null;
 	}
 
 	/**
@@ -333,19 +361,108 @@ public class InventoryManager {
 	}
 
 	/**
+	 * (3.5.d) Find Product
+	 * 
+	 * @param productID
+	 * @return Product found
+	 * @throws IOException
+	 */
+	public Product findProduct(String productID) throws IOException {
+		ArrayList<Product> productList = getAllProducts();
+		Product productFound = null;
+
+		for (Product product : productList) {
+			if (product.getIdentifier().equals(productID)) {
+				productFound = product;
+				break;
+			}
+		}
+
+		return productFound;
+	}
+	
+	/**
+	 * (3.5.e) Check if the product id entered is valid.
+	 * 
+	 * @param productID
+	 * @return
+	 * @throws IOException
+	 * @throws StoreException
+	 */
+	public boolean isValidProduct(String productID) throws IOException, StoreException {
+		boolean status = false;
+
+		String categoryCode = productID.replaceAll(Constants.Data.Product.Pattern.ID_MATCH,
+				Constants.Data.Product.Pattern.ID_REPLACE);
+		if (hasCategory(categoryCode)) {
+			status = findProduct(productID) != null;
+		}
+
+		return status;
+	}
+	
+	/**
+	 * (3.5.f) Delete a Product from the store
+	 * 
+	 * @param product
+	 * @return
+	 * @throws IOException
+	 * @throws StoreException
+	 */
+	public boolean deleteProduct(Product product) throws IOException, StoreException {
+		boolean status = false;
+		
+		if(!isValidProduct(product.getIdentifier()))
+			return false;
+		
+		product = findProduct(product.getIdentifier());
+		if(productData.delete(product.toString())){
+			status = true;
+		}
+		
+		return status;
+	}
+	
+	/**
+	 * (3.5.g) Update details of the product
+	 * 
+	 * @param newProduct
+	 * @return
+	 * @throws IOException
+	 * @throws StoreException
+	 */
+	public boolean updateProduct(Product newProduct) throws IOException, StoreException {
+		boolean status = false;
+		
+		if(!isValidProduct(newProduct.getIdentifier()))
+			return status;
+		
+		Product existingProduct = findProduct(newProduct.getIdentifier());
+		if(deleteProduct(existingProduct)){
+			status = productData.add(newProduct);
+		}
+		
+		return status;
+	}
+
+	/**
 	 * (3.3.a, 3.3.b) Get List of Products below Threshold
 	 * 
 	 * @return List of Products
 	 * @throws IOException
+	 * @throws StoreException 
 	 */
-	public ArrayList<Product> getProductsBelowThreshold() throws IOException {
+	public ArrayList<Product> getProductsBelowThreshold() throws IOException, StoreException {
 		ArrayList<Product> productList = getAllProducts();
+		if(productList.size() == 0)
+			throw new StoreException(Messages.Error.Product.PRODUCT_ZERO);
+		
 		// List of Products below Threshold
 		ArrayList<Product> blwTheshProdList = new ArrayList<>();
 
 		for (Product product : productList) {
 			// Check if Quantity is less than Reorder Threshold
-			if (product.getQuantity() < product.getReorderThreshold())
+			if (product.getQuantity() <= product.getReorderThreshold())
 				blwTheshProdList.add(product);
 		}
 

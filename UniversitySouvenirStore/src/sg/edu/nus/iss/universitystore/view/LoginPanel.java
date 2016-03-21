@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import sg.edu.nus.iss.universitystore.Constants;
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
 
@@ -103,8 +103,8 @@ public class LoginPanel extends JPanel{
 	 * Allows clearing the username & password textfield.
 	 */
 	public void clearAllFields() {
-		txtUserName.setText(Constants.STR_EMPTY);
-		txtPassword.setText(Constants.STR_EMPTY);
+		txtUserName.setText(Constants.Common.EMPTY_STR);
+		txtPassword.setText(Constants.Common.EMPTY_STR);
 	}
 	
 	/***********************************************************/

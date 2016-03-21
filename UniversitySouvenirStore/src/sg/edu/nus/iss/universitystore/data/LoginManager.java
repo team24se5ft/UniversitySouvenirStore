@@ -5,15 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
-import sg.edu.nus.iss.universitystore.constants.DataConstants;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 
-/**************************************/
-/*
- *@author Joshua 
+/**
+ * Manager to handle Login for Store Keeper
+ * 
+ * @author Joshua
+ *
  */
-/**************************************/
-
 public class LoginManager {
 
 	private static LoginManager instance;
@@ -39,7 +38,7 @@ public class LoginManager {
 	 */
 	public static LoginManager getInstance() {
 		if (instance == null) {
-			synchronized (DataFileManager.class) {
+			synchronized (LoginManager.class) {
 				if (instance == null) {
 					instance = new LoginManager();
 				}
@@ -90,7 +89,7 @@ public class LoginManager {
 			if(strKprStr.isEmpty())
 			continue;
 			
-			storeKeeper.add(new StoreKeeper(strKprStr.split(DataConstants.DAT_FILE_SEPRTR)));
+			storeKeeper.add(new StoreKeeper(strKprStr.split(Constants.Data.FILE_SEPTR)));
 		}
 
 		return storeKeeper;

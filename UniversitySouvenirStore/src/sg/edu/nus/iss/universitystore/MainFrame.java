@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.controller.DashboardController;
 import sg.edu.nus.iss.universitystore.controller.LoginController;
 import sg.edu.nus.iss.universitystore.view.MainPanel;
@@ -20,11 +21,7 @@ public class MainFrame extends JFrame{
 	/***********************************************************/
 	//Constants
 	/***********************************************************/
-	public static final String STR_FILE = "File";
-	public static final String STR_EDIT = "Edit";
-	public static final String STR_SOURCE = "Source";
-	public static final String STR_EXIT = "Exit";
-	public static final String STR_TRUE = "true";
+	
 	
 	/***********************************************************/
 	//Instance Variables
@@ -45,18 +42,18 @@ public class MainFrame extends JFrame{
 	private void addMenuToFrame() {
 		JMenuBar menuBar = new JMenuBar();
 		//Add menus
-		JMenu fileMenu = new JMenu(STR_FILE);
+		JMenu fileMenu = new JMenu(ViewConstants.MainFrame.MenuBar.FILE);
 		menuBar.add(fileMenu);
 
 		//Add menus
-		JMenu editMenu = new JMenu(STR_EDIT);
+		JMenu editMenu = new JMenu(ViewConstants.MainFrame.MenuBar.EDIT);
 		menuBar.add(editMenu);
 
 		//Add menus
-		JMenu soureMenu = new JMenu(STR_SOURCE);
+		JMenu soureMenu = new JMenu(ViewConstants.MainFrame.MenuBar.SOURCE);
 		menuBar.add(soureMenu);
 
-		JMenuItem item = new JMenuItem(STR_EXIT);
+		JMenuItem item = new JMenuItem(ViewConstants.MainFrame.MenuBar.EXIT);
 		item.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -75,7 +72,7 @@ public class MainFrame extends JFrame{
 		//Initialize the content pane
 		this.mainPanel = new MainPanel();
 		//Setup the Frame
-		this.setSize (Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+		this.setSize (ViewConstants.MainFrame.WINDOW_WIDTH, ViewConstants.MainFrame.WINDOW_HEIGHT);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		//Add components and stuff
 		this.setContentPane(mainPanel);
@@ -91,7 +88,7 @@ public class MainFrame extends JFrame{
 	/***********************************************************/
 	public static void main(String[] args) {
 		//Take the menu bar off the frame
-		System.setProperty(Constants.APPLE_MENUBAR, STR_TRUE);
+		System.setProperty(ViewConstants.MainFrame.APPLE_MENUBAR, Boolean.TRUE.toString());
 
 		//Set the look and feel
 		try {

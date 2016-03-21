@@ -25,9 +25,7 @@ public class Category {
 		validate();
 		this.name = name;
 	}
-	public Category(String[] args) throws StoreException{
-		this(args[C_CODE], args[C_NAME]);
-	}
+	
 	/***********************************************************/
 	//Getters & Setters
 	/***********************************************************/
