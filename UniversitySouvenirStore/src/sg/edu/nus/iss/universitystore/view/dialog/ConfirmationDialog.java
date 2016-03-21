@@ -8,8 +8,10 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class ConfirmationDialog extends BaseDialog{
+public abstract class ConfirmationDialog extends BaseDialog{
 
+	private static final long serialVersionUID = 1L;
+	
 	private Label messageLabel;
 
 	public ConfirmationDialog(JFrame parent, String title, String message) {
@@ -28,10 +30,6 @@ public class ConfirmationDialog extends BaseDialog{
 		return jPanel;
 	}
 
-
 	@Override
-	protected boolean confirmClicked() {
-		return false;
-	}
-
+	protected abstract boolean confirmClicked();
 }

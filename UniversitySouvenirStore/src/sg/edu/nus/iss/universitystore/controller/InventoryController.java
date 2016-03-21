@@ -22,7 +22,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
  * @author Samrat
  *
  */
-public class InventoryController implements IInventoryDelegate{
+public class InventoryController implements IInventoryDelegate {
 
 	/***********************************************************/
 	// Constants
@@ -65,9 +65,9 @@ public class InventoryController implements IInventoryDelegate{
 	/***********************************************************/
 
 	/**
-	 * Inventory Controller Constructor 
+	 * Inventory Controller Constructor
 	 */
-	public InventoryController(){
+	public InventoryController() {
 		try {
 			inventoryManager = InventoryManager.getInstance();
 			arrCategory = inventoryManager.getAllCategories();
@@ -81,8 +81,10 @@ public class InventoryController implements IInventoryDelegate{
 		inventoryPanel = new InventoryPanel(this);
 
 		// Update Inventory Panel with retrieved data
-		inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory), TableDataUtils.getHeadersForCategoryTable());
-		inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct), TableDataUtils.getHeadersForProductTable());
+		inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
+				TableDataUtils.getHeadersForCategoryTable());
+		inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+				TableDataUtils.getHeadersForProductTable());
 
 		// Get main frame
 		topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
@@ -108,30 +110,32 @@ public class InventoryController implements IInventoryDelegate{
 			// The callback implementation
 			@Override
 			public boolean categoryCallback(String categoryCode, String categoryName) {
-				if(categoryCode.length() > 0 && categoryName.length() > 0) {
+				if (categoryCode.length() > 0 && categoryName.length() > 0) {
 					// Category Code client side validation.
-					if(categoryCode.length() == 3) {
+					if (categoryCode.length() == 3) {
 						try {
 							inventoryManager.addCategory(categoryCode, categoryName);
 							// Show the success dialog
-							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_SUCCESS, STR_SUCCESS_MESSAGE,
-									DialogType.INFORMATION_MESSAGE);
+							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_SUCCESS,
+									STR_SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
 							// Update the table
 							arrCategory = inventoryManager.getAllCategories();
-							inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory), TableDataUtils.getHeadersForCategoryTable());
+							inventoryPanel.setCategoryTableData(
+									TableDataUtils.getFormattedCategoryListForTable(arrCategory),
+									TableDataUtils.getHeadersForCategoryTable());
 							// Dismiss the add category dialog
 							return true;
 						} catch (Exception e) {
-							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-									DialogType.WARNING_MESSAGE);
+							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING,
+									e.getMessage(), DialogType.WARNING_MESSAGE);
 						}
 					} else {
-						UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_ERROR_CATEGORY_3_DIGIT,
-								DialogType.WARNING_MESSAGE);
+						UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING,
+								STR_ERROR_CATEGORY_3_DIGIT, DialogType.WARNING_MESSAGE);
 					}
 				} else {
-					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_ERROR_MESSAGE_CATEGORY_CODE_OR_NAME_EMPTY,
-							DialogType.WARNING_MESSAGE);
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING,
+							STR_ERROR_MESSAGE_CATEGORY_CODE_OR_NAME_EMPTY, DialogType.WARNING_MESSAGE);
 				}
 				return false;
 			}
@@ -154,9 +158,13 @@ public class InventoryController implements IInventoryDelegate{
 				// TODO : Do validation here
 				try {
 					// If the value is valid Update the value in the dB
-					inventoryManager.updateCategory(categoryCode, categoryName);
+					Category updatedCategory = new Category(categoryCode, categoryName);
+					inventoryManager.updateCategory(category, updatedCategory);
 					// Update the local copy
 					arrCategory = inventoryManager.getAllCategories();
+					// Update table
+					inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
+							TableDataUtils.getHeadersForCategoryTable());
 					// Dismiss the dialog OR show a success dialog
 					return true;
 				} catch (Exception e) {
@@ -176,7 +184,8 @@ public class InventoryController implements IInventoryDelegate{
 	@Override
 	public void deleteCategoryClicked(int index) {
 		// TODO Auto-generated method stub
-		new ConfirmationDialog(topFrame, "Delete Category", "Do u really want to delete the category?") {
+		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Category",
+				"Do u really want to delete the category?") {
 
 			private static final long serialVersionUID = 1L;
 
@@ -188,31 +197,32 @@ public class InventoryController implements IInventoryDelegate{
 					inventoryManager.deleteCategory(category.getCode());
 					// Update the local copy
 					arrCategory = inventoryManager.getAllCategories();
+					// Update the table
+					inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
+							TableDataUtils.getHeadersForCategoryTable());
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
-
-				// Update the table
-				inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory), TableDataUtils.getHeadersForCategoryTable());
 				// Remove the dialog
 				return true;
 			}
-		}.setVisible(true);
+		};
+		confirmationDialog.setVisible(true);
 	}
 
 	@Override
 	public void addProductClicked() {
-		ProductDialog productDialog = new ProductDialog(topFrame, "Add Product"){
+		ProductDialog productDialog = new ProductDialog(topFrame, "Add Product") {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean productCallback(String productName, String productDescription, String quantity, String price,
 					String barcodeNumber, String reorderQuantity, String orderQuantity) {
 				return true;
 			}
-			
 		};
 		productDialog.setVisible(true);
-
 	}
 
 	@Override
@@ -233,12 +243,4 @@ public class InventoryController implements IInventoryDelegate{
 		UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_ERROR_ROW_NOT_SELECTED,
 				DialogType.WARNING_MESSAGE);
 	}
-
-	/***********************************************************/
-	// IProductDialogDelegate Implementation
-	/***********************************************************/
-	public void confirmClicked(String productName, String productDescription, String quantity, String price, String barcodeNumber, String reorderQuantity, String orderQuantity) {
-		//inventoryManager.addProduct(goods);
-	}
-
 }
