@@ -14,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.IDiscountDialogDelegate;
 
-public class DiscountDialog extends BaseDialog {
+public abstract class DiscountDialog extends BaseDialog {
 	private static final long serialVersionUID = 3029306694712724442L;
 
 	// textfield define
@@ -28,7 +28,7 @@ public class DiscountDialog extends BaseDialog {
 	JRadioButton randioButtonM;
 	JRadioButton randioButtonA;
 
-	private IDiscountDialogDelegate delegate;
+//	private IDiscountDialogDelegate delegate;
 
 	/***********************************************************/
 	// Constructors
@@ -37,14 +37,16 @@ public class DiscountDialog extends BaseDialog {
 		super(parent, "AddDiscount");
 	}
 
-	public DiscountDialog(JFrame parent, String title, IDiscountDialogDelegate delegate) {
+	public DiscountDialog(JFrame parent, String title) {
 		super(parent, title);
-		this.delegate = delegate;
 		this.addWindowListener(this);
 		this.setSize(400, 300);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
+	
+	public abstract void onDiscountCallBack(String code, String description, String startDate, String period, String percentage,
+			String eligibilty);
 
 	/***********************************************************/
 	// Public Methods
@@ -145,7 +147,7 @@ public class DiscountDialog extends BaseDialog {
 		// return false;
 		// }
 		if (code.getText().length() != 0 && percentage.getText().length() != 0) {
-			delegate.onDiscountCallBack(code.getText(), description.getText(), startdate, period.getText(),
+			onDiscountCallBack(code.getText(), description.getText(), startdate, period.getText(),
 					percentage.getText(), eligibility);
 			return true;
 		}

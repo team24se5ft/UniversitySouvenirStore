@@ -41,23 +41,39 @@ public class DiscountController implements IDiscountDelegate {
 
 	@Override
 	public void addDiscount() {
-		new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "AddDiscount",
-				new IDiscountDialogDelegate() {
-
-					@Override
-					public void onDiscountCallBack(String code, String description, String startDate, String period,
-							String percentage, String eligibilty) {
-						Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
-								Float.valueOf(percentage), eligibilty);
-						// TODO dataModify
-						discountList.add(discount);
-						// UIupdate
-						discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
-								TableDataUtils.getHeadersForDiscountTable());
-					}
-
-				}).setVisible(true);
+//		new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "AddDiscount",
+//				new IDiscountDialogDelegate() {
+//
+//					@Override
+//					public void onDiscountCallBack(String code, String description, String startDate, String period,
+//							String percentage, String eligibilty) {
+//						Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
+//								Float.valueOf(percentage), eligibilty);
+//						// TODO dataModify
+//						discountList.add(discount);
+//						// UIupdate
+//						discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
+//								TableDataUtils.getHeadersForDiscountTable());
+//					}
+//
+//				}).setVisible(true);
+		DiscountDialog dlg=new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "addDiscount") {
+			
+			@Override
+			public void onDiscountCallBack(String code, String description, String startDate, String period, String percentage,
+					String eligibilty) {
+				Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
+						Float.valueOf(percentage), eligibilty);
+				// TODO dataModify
+				discountList.add(discount);
+				// UIupdate
+				discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
+						TableDataUtils.getHeadersForDiscountTable());
+			}
+		};
+		dlg.setVisible(true);
 	}
+	
 
 	// TODO keep a list of discount in the controller and modify according to
 	// given row.
