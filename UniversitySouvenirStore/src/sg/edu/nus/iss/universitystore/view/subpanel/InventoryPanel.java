@@ -44,6 +44,7 @@ public class InventoryPanel extends JPanel{
 	 * Delegate for informing the controller about the various events.
 	 */
 	private IInventoryDelegate delegate;
+	
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
@@ -61,6 +62,26 @@ public class InventoryPanel extends JPanel{
 		categoryPanel = new CategoryPanel(null, null,delegate);
 		productPanel = new ProductPanel(null, null, delegate);
 		createTabbedPane(categoryPanel, productPanel);
+	}
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
+	/**
+	 * Method to set the table data for Category Panel
+	 * @param content The table content to displayed as part of category panel.
+	 * @param headers The table headers to displayed as part of category panel.
+	 */
+	public void setCategoryTableData(String[][] content, String[] headers) {
+		categoryPanel.updateTable(content, headers);
+	}
+	
+	/**
+	 * Method to set the table data for Product Panel
+	 * @param content The table content to displayed as part of product panel.
+	 * @param headers The table headers to displayed as part of product panel.
+	 */
+	public void setProductTableData(String[][] content, String[] headers) {
+		productPanel.updateTable(content, headers);
 	}
 	/***********************************************************/
 	// Private Methods

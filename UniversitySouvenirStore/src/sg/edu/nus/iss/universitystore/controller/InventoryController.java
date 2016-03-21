@@ -82,8 +82,8 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 		inventoryPanel = new InventoryPanel(this);
 
 		// Update Inventory Panel with retrieved data
-		inventoryPanel.setCategoryTableData(TableDataUtils.getHeadersForCategoryTable()	, TableDataUtils.getFormattedCategoryListForTable(arrCategory));
-		inventoryPanel.setProductTableData(TableDataUtils.getHeadersForProductTable()	, TableDataUtils.getFormattedProductListForTable(arrProduct));
+		inventoryPanel.setCategoryTableData( TableDataUtils.getFormattedCategoryListForTable(arrCategory), TableDataUtils.getHeadersForCategoryTable());
+		inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct), TableDataUtils.getHeadersForProductTable());
 		
 		// Get main frame
 		topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
