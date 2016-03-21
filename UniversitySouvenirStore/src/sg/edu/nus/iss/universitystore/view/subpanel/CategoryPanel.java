@@ -68,12 +68,13 @@ public class CategoryPanel extends BaseTablePanel{
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public CategoryPanel(String[][] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
+	public CategoryPanel(IInventoryDelegate delegate) {
 		// Store the values.
 		this.delegate = delegate;
 		// Start with the GUI.
 		setLayout(new BorderLayout());
-		add(getScrollPaneWithTable(this.tableContent, this.tableHeaders),BorderLayout.CENTER);
+		// Initialize the tableview with null data. This will be updated when the data from table is available.
+		add(getScrollPaneWithTable(null, null),BorderLayout.CENTER);
 		add(getButtonPanel(),BorderLayout.SOUTH);
 	}
 }

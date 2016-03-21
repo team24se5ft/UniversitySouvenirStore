@@ -59,8 +59,8 @@ public class InventoryPanel extends JPanel{
 		setLayout(borderLayout);
 
 		// Start adding other components
-		categoryPanel = new CategoryPanel(null, null,delegate);
-		productPanel = new ProductPanel(null, null, delegate);
+		categoryPanel = new CategoryPanel(delegate);
+		productPanel = new ProductPanel(delegate);
 		createTabbedPane(categoryPanel, productPanel);
 	}
 	/***********************************************************/
