@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.IDiscountDialogDelegate;
 
-public class DiscountDialog extends BaseDialog implements WindowListener {
+public class DiscountDialog extends BaseDialog {
 	private static final long serialVersionUID = 3029306694712724442L;
 	private int type;// 0=add,1=update
 
@@ -157,48 +157,6 @@ public class DiscountDialog extends BaseDialog implements WindowListener {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		setVisible(false);
-		dispose();
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

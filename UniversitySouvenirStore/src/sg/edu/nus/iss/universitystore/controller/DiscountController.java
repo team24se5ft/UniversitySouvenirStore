@@ -16,6 +16,9 @@ public class DiscountController implements IDiscountDelegate {
 	private DiscountPanel discountPanel;
 	private ArrayList<Discount> discountList;
 
+	/***********************************************************/
+	// Constructors
+	/***********************************************************/
 	public DiscountController() {
 		discountPanel = new DiscountPanel(this);
 		discountList = new ArrayList<Discount>();
@@ -26,6 +29,9 @@ public class DiscountController implements IDiscountDelegate {
 		discountPanel.setDiscountTableData(discountList);
 	}
 
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
 	public DiscountPanel getDiscountPanel() {
 		return discountPanel;
 	}
