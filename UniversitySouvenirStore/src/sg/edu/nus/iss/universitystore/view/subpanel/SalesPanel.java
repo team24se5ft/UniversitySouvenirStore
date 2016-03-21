@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -71,7 +70,7 @@ public class SalesPanel extends BaseTablePanel {
 	private GridBagConstraints getConstraint(int xPosition, int yPosition) {
 		GridBagConstraints gridBagConstraint = new GridBagConstraints();
 		gridBagConstraint.fill = GridBagConstraints.BOTH;
-		gridBagConstraint.insets = new Insets(10, 20, 10, 20);
+		gridBagConstraint.insets = new Insets(10, 20, 10, 0);
 		gridBagConstraint.gridx = xPosition;
 		gridBagConstraint.gridy = yPosition;
 		return gridBagConstraint;
@@ -163,6 +162,7 @@ public class SalesPanel extends BaseTablePanel {
 
 	private void refreshDropDownData(String[] str) {
 		for (int i = 0; i < str.length; i++) {
+			discountOption.removeAllItems();
 			discountOption.addItem(str[i]);
 		}
 	}

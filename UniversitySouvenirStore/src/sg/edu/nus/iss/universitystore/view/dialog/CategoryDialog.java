@@ -3,14 +3,10 @@
  */
 package sg.edu.nus.iss.universitystore.view.dialog;
 
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -23,7 +19,7 @@ import sg.edu.nus.iss.universitystore.view.dialog.intf.ICategoryDialogDelegate;
  * @author Samrat
  *
  */
-public class CategoryDialog extends BaseDialog implements WindowListener {
+public class CategoryDialog extends BaseDialog {
 
 	/***********************************************************/
 	// Constants
@@ -120,48 +116,4 @@ public class CategoryDialog extends BaseDialog implements WindowListener {
 		return jPanel;
 	}
 
-	/***********************************************************/
-	// Window Listener Methods
-	/***********************************************************/
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		setVisible(false);
-		dispose();
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
 }
