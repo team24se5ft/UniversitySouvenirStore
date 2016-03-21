@@ -10,9 +10,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.universitystore.model.Product;
@@ -24,11 +28,13 @@ public class SalesPanel extends BaseTablePanel {
 	private JLabel memberOption;// add memberDialog to check member
 	private JTextField LoyalPointOption; // key in loyalPoint
 	private JLabel avaiLableLoyalPoint; // show avaliable loyalPoint
-	private JLabel discountOption;
+	private JComboBox<String> discountOption;
 
 	private JPanel customerInfoPanel;
 
 	private ISalesDelegate delegate;
+	
+	private String[] DropDownSelection;
 
 	/***********************************************************/
 	// Constructors
@@ -61,6 +67,9 @@ public class SalesPanel extends BaseTablePanel {
 
 	private void initCustomerInfoPabel() {
 		customerInfoPanel = new JPanel();
+		Border border = customerInfoPanel.getBorder();
+		Border margin = new EmptyBorder(10, 10, 10, 10);
+		customerInfoPanel.setBorder(new CompoundBorder(border,margin));
 		customerInfoPanel.setBackground(Color.WHITE);
 		customerInfoPanel.setLayout(new GridLayout(4, 4));
 		customerInfoPanel.setPreferredSize(new Dimension(400, 200));
@@ -71,7 +80,7 @@ public class SalesPanel extends BaseTablePanel {
 		memberOption.setForeground(Color.BLUE);
 		customerInfoPanel.add(memberOption);
 		customerInfoPanel.add(new JLabel("discount:"));
-		discountOption = new JLabel("null");
+		discountOption = new JComboBox<String>();
 		discountOption.setForeground(Color.BLUE);
 		customerInfoPanel.add(discountOption);
 		customerInfoPanel.add(new JLabel("AvailableLoyalPoint:"));
@@ -82,6 +91,9 @@ public class SalesPanel extends BaseTablePanel {
 		customerInfoPanel.add(LoyalPointOption);
 		add(customerInfoPanel, BorderLayout.NORTH);
 		initButtonEvent();
+		//FIXME query for eligibility discount
+		String[] activeDiscount={"Holiday","Halloween","Spring fesitive"};
+		refreshDropDownData(activeDiscount);
 	}
 
 //	private void initButtonPanel() {
@@ -133,6 +145,12 @@ public class SalesPanel extends BaseTablePanel {
 //		btn.setOpaque(false);
 //		return btn;
 //	}
+
+	private void refreshDropDownData(String[] str) {
+		for(int i=0;i<str.length;i++){
+			discountOption.addItem(str[i]);
+		}
+	}
 
 	/**
 	 * all the SalePanel button`s event init here
