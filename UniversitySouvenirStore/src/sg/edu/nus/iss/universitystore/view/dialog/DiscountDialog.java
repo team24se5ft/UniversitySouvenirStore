@@ -2,10 +2,7 @@ package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Panel;
 import java.awt.TextField;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -19,7 +16,6 @@ import sg.edu.nus.iss.universitystore.view.dialog.intf.IDiscountDialogDelegate;
 
 public class DiscountDialog extends BaseDialog {
 	private static final long serialVersionUID = 3029306694712724442L;
-	private int type;// 0=add,1=update
 
 	// textfield define
 	private TextField code;
@@ -35,21 +31,14 @@ public class DiscountDialog extends BaseDialog {
 	private IDiscountDialogDelegate delegate;
 
 	/***********************************************************/
-	// Constants
-	/***********************************************************/
-	public final static int ADD_TYPE = 0;
-	public final static int UPDATE_TYPE = 1;
-
-	/***********************************************************/
 	// Constructors
 	/***********************************************************/
 	public DiscountDialog(JFrame parent) {
 		super(parent, "AddDiscount");
 	}
 
-	public DiscountDialog(JFrame parent, String title, IDiscountDialogDelegate delegate, int type) {
+	public DiscountDialog(JFrame parent, String title, IDiscountDialogDelegate delegate) {
 		super(parent, title);
-		this.type = type;
 		this.delegate = delegate;
 		this.addWindowListener(this);
 		this.setSize(400, 300);
@@ -103,10 +92,13 @@ public class DiscountDialog extends BaseDialog {
 	/***********************************************************/
 	// override method
 	/***********************************************************/
+	/**
+	 * init discount Panel
+	 */
 	@Override
 	protected JPanel getPanelToAddToDialog() {
-		JPanel jp = new JPanel();
-		jp.setLayout(new GridLayout(6, 6));
+		JPanel jpanel = new JPanel();
+		jpanel.setLayout(new GridLayout(6, 6));
 
 		code = new TextField();
 		code.setColumns(1);
@@ -119,20 +111,21 @@ public class DiscountDialog extends BaseDialog {
 		period = new TextField();
 		period.setColumns(1);
 
-		jp.add(new JLabel("DiscountCode"));
-		jp.add(code);
-		jp.add(new JLabel("OffPercentage"));
-		jp.add(percentage);
-		jp.add(new JLabel("type"));
-		jp.add(initSingleButtonGroup());
-		jp.add(new JLabel("description"));
-		jp.add(description);
-		jp.add(new JLabel("startDate(dd/mm):"));
-		jp.add(startDate);
-		jp.add(new JLabel("period:"));
-		jp.add(period);
-		return jp;
+		jpanel.add(new JLabel("DiscountCode"));
+		jpanel.add(code);
+		jpanel.add(new JLabel("OffPercentage"));
+		jpanel.add(percentage);
+		jpanel.add(new JLabel("type"));
+		jpanel.add(initSingleButtonGroup());
+		jpanel.add(new JLabel("description"));
+		jpanel.add(description);
+		jpanel.add(new JLabel("startDate(dd/mm):"));
+		jpanel.add(startDate);
+		jpanel.add(new JLabel("period:"));
+		jpanel.add(period);
+		return jpanel;
 	}
+	
 
 	/**
 	 * when Ok button be clicked

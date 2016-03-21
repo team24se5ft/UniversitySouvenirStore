@@ -55,11 +55,18 @@ public class SalesPanel extends BaseTablePanel {
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/
+	
+	/**
+	 * salePanel include productTable and customerInfo
+	 */
 	private void initSalePanel() {
 		initProductTable();
-		initCustomerInfoPabel();
+		initCustomerInfoPanel();
 	}
 
+	/**
+	 * init productTable here
+	 */
 	private void initProductTable() {
 		String[] headers = { "code", "Name", "price" };
 		String data[][] = {};
@@ -67,6 +74,12 @@ public class SalesPanel extends BaseTablePanel {
 		add(getButtonPanel(), BorderLayout.SOUTH);
 	}
 
+	/**
+	 * extract gridbaglayout constraints  here
+	 * @param xPosition 
+	 * @param yPosition
+	 * @return
+	 */
 	private GridBagConstraints getConstraint(int xPosition, int yPosition) {
 		GridBagConstraints gridBagConstraint = new GridBagConstraints();
 		gridBagConstraint.fill = GridBagConstraints.BOTH;
@@ -76,7 +89,10 @@ public class SalesPanel extends BaseTablePanel {
 		return gridBagConstraint;
 	}
 
-	private void initCustomerInfoPabel() {
+	/**
+	 * 
+	 */
+	private void initCustomerInfoPanel() {
 		customerInfoPanel = new JPanel();
 		Border border = customerInfoPanel.getBorder();
 		Border margin = new EmptyBorder(10, 10, 10, 10);
@@ -109,8 +125,8 @@ public class SalesPanel extends BaseTablePanel {
 
 
 	private void refreshDropDownData(String[] str) {
+		discountOption.removeAllItems();
 		for (int i = 0; i < str.length; i++) {
-			discountOption.removeAllItems();
 			discountOption.addItem(str[i]);
 		}
 	}

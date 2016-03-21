@@ -56,7 +56,7 @@ public class DiscountController implements IDiscountDelegate {
 								TableDataUtils.getHeadersForDiscountTable());
 					}
 
-				}, DiscountDialog.ADD_TYPE).setVisible(true);
+				}).setVisible(true);
 	}
 
 	// TODO keep a list of discount in the controller and modify according to
@@ -102,7 +102,7 @@ public class DiscountController implements IDiscountDelegate {
 								TableDataUtils.getHeadersForDiscountTable());
 					}
 
-				}, DiscountDialog.UPDATE_TYPE);
+				});
 		updateDlg.setDiscountData(discountList.get(row));
 		updateDlg.setVisible(true);
 	}

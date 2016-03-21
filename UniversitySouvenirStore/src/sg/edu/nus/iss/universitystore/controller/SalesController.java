@@ -34,6 +34,9 @@ public class SalesController implements ISalesDelegate {
 		return salesPanel;
 	}
 
+	/**
+	 * after click addProduct btn,the function should generate a dialog for product code input
+	 */
 	@Override
 	public void AddProduct() {
 		productDialog= new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "scanProduct",
@@ -56,6 +59,10 @@ public class SalesController implements ISalesDelegate {
 		productDialog.setVisible(true);
 	}
 
+	/**
+	 * after click checkout,this function will 1.
+	 * 
+	 */
 	@Override
 	public void CheckOut() {
 		//generate a receipt
