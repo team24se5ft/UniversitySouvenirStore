@@ -3,9 +3,10 @@ package sg.edu.nus.iss.universitystore.view.dialog;
 import java.awt.Button;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -15,13 +16,14 @@ import javax.swing.JTextField;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 
-public abstract class BaseDialog extends JDialog {
+public abstract class BaseDialog extends JDialog implements WindowListener{
 
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
 	public BaseDialog (JFrame parent, String title) {
 		super (parent, title);
+		this.setModal(true);
 		add ("Center", getPanelToAddToDialog());
 		add ("South",  createButtonPanel());
 	}
@@ -125,5 +127,50 @@ public abstract class BaseDialog extends JDialog {
 	private void destroyDialog () {
 		setVisible (false);
 		dispose();
+	}
+	
+	/***********************************************************/
+	// Window Listener Methods
+	/***********************************************************/
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		setVisible(false);
+		dispose();
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }
