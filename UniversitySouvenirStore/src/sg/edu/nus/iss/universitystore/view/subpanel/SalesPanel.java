@@ -70,7 +70,7 @@ public class SalesPanel extends BaseTablePanel {
 	private GridBagConstraints getConstraint(int xPosition, int yPosition) {
 		GridBagConstraints gridBagConstraint = new GridBagConstraints();
 		gridBagConstraint.fill = GridBagConstraints.BOTH;
-		gridBagConstraint.insets = new Insets(10, 20, 10, 0);
+		gridBagConstraint.insets = new Insets(10, 20, 10, 20);
 		gridBagConstraint.gridx = xPosition;
 		gridBagConstraint.gridy = yPosition;
 		return gridBagConstraint;
@@ -89,17 +89,17 @@ public class SalesPanel extends BaseTablePanel {
 		customerInfoPanel.add(new JLabel("member:"), getConstraint(0, 0));
 		memberOption = new JLabel("Public");
 		memberOption.setForeground(Color.BLUE);
-		customerInfoPanel.add(memberOption,getConstraint(1,0));
-		customerInfoPanel.add(new JLabel("discount:"),getConstraint(0,1));
+		customerInfoPanel.add(memberOption, getConstraint(1, 0));
+		customerInfoPanel.add(new JLabel("discount:"), getConstraint(0, 1));
 		discountOption = new JComboBox<String>();
 		discountOption.setForeground(Color.BLUE);
-		customerInfoPanel.add(discountOption,getConstraint(1,1));
-		customerInfoPanel.add(new JLabel("AvailableLoyalPoint:"),getConstraint(0,2));
+		customerInfoPanel.add(discountOption, getConstraint(1, 1));
+		customerInfoPanel.add(new JLabel("AvailableLoyalPoint:"), getConstraint(0, 2));
 		avaiLableLoyalPoint = new JLabel("0");
-		customerInfoPanel.add(avaiLableLoyalPoint,getConstraint(1,2));
-		customerInfoPanel.add(new JLabel("loyalPoint:"),getConstraint(0,3));
+		customerInfoPanel.add(avaiLableLoyalPoint, getConstraint(1, 2));
+		customerInfoPanel.add(new JLabel("loyalPoint:"), getConstraint(0, 3));
 		LoyalPointOption = new JTextField(5);
-		customerInfoPanel.add(LoyalPointOption,getConstraint(1,3));
+		customerInfoPanel.add(LoyalPointOption, getConstraint(1, 3));
 		add(customerInfoPanel, BorderLayout.NORTH);
 		initButtonEvent();
 		// FIXME query for eligibility discount
@@ -107,58 +107,6 @@ public class SalesPanel extends BaseTablePanel {
 		refreshDropDownData(activeDiscount);
 	}
 
-	// private void initButtonPanel() {
-	// buttonPanel = new JPanel();
-	// buttonPanel.setLayout(new FlowLayout());
-	//
-	// addProductButton = initImageButton("Resources/add_icon.png",
-	// ViewConstants.Labels.STR_ADD_SALESPRODUCT);
-	// checkOutButton = initImageButton("Resources/cart_icon.png",
-	// ViewConstants.Labels.STR_CHECKOUT_SALES);
-	// cancelButton = initImageButton("Resources/delete_icon.png",
-	// ViewConstants.Labels.STR_CANCEL_SALES);
-	// // addProductButton = new JButton(new
-	// // ImageIcon("Resources/add_icon.png"));
-	// // checkOutButton = new JButton(new
-	// // ImageIcon("Resources/edit_icon.png"));
-	// // cancelButton = new JButton(new
-	// // ImageIcon("Resources/delete_icon.png"));
-	// //
-	// // // setting border to empty
-	// // addProductButton.setBorder(BorderFactory.createEmptyBorder());
-	// // checkOutButton.setBorder(BorderFactory.createEmptyBorder());
-	// // cancelButton.setBorder(BorderFactory.createEmptyBorder());
-	// //
-	// // addProductButton.setPreferredSize(new Dimension(70, 70));
-	// // checkOutButton.setPreferredSize(new Dimension(70, 70));
-	// // cancelButton.setPreferredSize(new Dimension(70, 70));
-	// // buttonPanel.add(addProductButton);
-	// buttonPanel.add(addProductButton);
-	// buttonPanel.add(checkOutButton);
-	// buttonPanel.add(cancelButton);
-	// add(buttonPanel, "South");
-	// initButtonEvent();
-	// }
-
-	// /**
-	// * imageButton init here
-	// *
-	// * @param imageUrl
-	// * @param btnText
-	// * @return
-	// */
-	// private JButton initImageButton(String imageUrl, String btnText) {
-	// ImageIcon icon = new ImageIcon(imageUrl);
-	// JButton btn = new JButton(btnText);
-	// btn.setIcon(icon);
-	// btn.setHorizontalTextPosition(JLabel.CENTER);
-	// btn.setVerticalTextPosition(JLabel.BOTTOM);
-	// btn.setBorderPainted(false);
-	// btn.setContentAreaFilled(false);
-	// btn.setFocusPainted(false);
-	// btn.setOpaque(false);
-	// return btn;
-	// }
 
 	private void refreshDropDownData(String[] str) {
 		for (int i = 0; i < str.length; i++) {

@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.model.Discount;
+import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.DiscountDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.IDiscountDialogDelegate;
@@ -20,13 +21,15 @@ public class DiscountController implements IDiscountDelegate {
 	// Constructors
 	/***********************************************************/
 	public DiscountController() {
-		discountPanel = new DiscountPanel(this);
 		discountList = new ArrayList<Discount>();
+		//FIXME after backend finished
 		for (int i = 0; i < 5; i++) {
-			Discount e=new Discount("Test", "lose my previous code TnT", "06/06", 10, 20, "A");
+			Discount e = new Discount("Test", "lose my previous code TnT", "06/06", 10, 20, "A");
 			discountList.add(e);
 		}
-		discountPanel.setDiscountTableData(discountList);
+		discountPanel = new DiscountPanel(this);
+		discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
+				TableDataUtils.getHeadersForDiscountTable());
 	}
 
 	/***********************************************************/
@@ -49,7 +52,8 @@ public class DiscountController implements IDiscountDelegate {
 						// TODO dataModify
 						discountList.add(discount);
 						// UIupdate
-						discountPanel.onAddDiscount(discount);
+						discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
+								TableDataUtils.getHeadersForDiscountTable());
 					}
 
 				}, DiscountDialog.ADD_TYPE).setVisible(true);
@@ -70,7 +74,8 @@ public class DiscountController implements IDiscountDelegate {
 				// TODO dataModify
 				discountList.remove(row);
 				// UIupdate
-				discountPanel.onRemoveDiscount(row);
+				discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
+						TableDataUtils.getHeadersForDiscountTable());
 				return true;
 			}
 		}.setVisible(true);
@@ -81,8 +86,8 @@ public class DiscountController implements IDiscountDelegate {
 		if (row < 0) {
 			return;
 		}
-		DiscountDialog updateDlg=new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "UpdateDiscount",
-				new IDiscountDialogDelegate() {
+		DiscountDialog updateDlg = new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel),
+				"UpdateDiscount", new IDiscountDialogDelegate() {
 
 					@Override
 					public void onDiscountCallBack(String code, String description, String startDate, String period,
@@ -91,9 +96,10 @@ public class DiscountController implements IDiscountDelegate {
 								Float.valueOf(percentage), eligibilty);
 						// TODO dataModify
 						discountList.remove(row);
-						discountList.add(row,discount);
+						discountList.add(row, discount);
 						// UIupdate
-						discountPanel.onUpdateDiscount(discount, row);
+						discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
+								TableDataUtils.getHeadersForDiscountTable());
 					}
 
 				}, DiscountDialog.UPDATE_TYPE);
