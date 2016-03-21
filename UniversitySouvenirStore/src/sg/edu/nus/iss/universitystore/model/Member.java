@@ -5,29 +5,19 @@ public class Member {
 	/***********************************************************/
 	//Instance Variables
 	/***********************************************************/
+	/**
+	 * The identifier of the member.
+	 */
 	private String identifier;
+	
+	/**
+	 * Name of the member.
+	 */
 	private String name;
+	
 	/**
-	 * @param identifier the identifier to set
+	 * Loyalty points accumulated for the member.
 	 */
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @param loyaltyPoints the loyaltyPoints to set
-	 */
-	public void setLoyaltyPoints(int loyaltyPoints) {
-		this.loyaltyPoints = loyaltyPoints;
-	}
-
 	private int loyaltyPoints;
 	
 	/***********************************************************/
@@ -50,12 +40,27 @@ public class Member {
 	/***********************************************************/
 	
 
-	/*public Member(String[] split) {
-		// TODO Auto-generated constructor stub
-	}*/
+	/**
+	 * @param identifier the identifier to set
+	 */
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
 
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
-
+	/**
+	 * @param loyaltyPoints the loyaltyPoints to set
+	 */
+	public void setLoyaltyPoints(int loyaltyPoints) {
+		this.loyaltyPoints = loyaltyPoints;
+	}
+	
 	/**
 	 * @return the identifier
 	 */
@@ -77,11 +82,6 @@ public class Member {
 		return loyaltyPoints;
 	}
 
-	@Override
-	public String toString() {
-		return name+","+identifier+","+loyaltyPoints;
-	}
-	
 	/***********************************************************/
 	//Public Methods
 	/***********************************************************/
@@ -89,6 +89,8 @@ public class Member {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	
-	
+	@Override
+	public String toString() {
+		return name+","+identifier+","+loyaltyPoints;
+	}
 }
