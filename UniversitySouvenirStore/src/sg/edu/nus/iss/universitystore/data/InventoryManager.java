@@ -329,7 +329,7 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.5.b, 3.5.c.2) Add Product
+	 * (3.5.i) Add Product for vendor
 	 * 
 	 * @param goods
 	 * @throws IOException
@@ -337,15 +337,31 @@ public class InventoryManager {
 	 */
 	public Product addProduct(Goods goods) throws IOException, StoreException {
 
-		if (!hasCategory(goods.getCategory().getCode()))
+		return addProduct(goods.getCategory().getCode(), goods.getName(), goods.getDescription(),
+				String.valueOf(goods.getQuantity()), String.valueOf(goods.getPrice()),
+				String.valueOf(goods.getReorderThreshold()), String.valueOf(goods.getReorderQuantity()));
+	}
+	
+	/**
+	 * (3.5.b, 3.5.c.2) Add Product
+	 * 
+	 * @param goods
+	 * @throws IOException
+	 * @throws StoreException
+	 */
+	public Product addProduct(String categoryCode, String name, String description, String quantity, String price,
+			String reorderThreshold, String reorderQuantity) throws IOException, StoreException {
+
+		if (!hasCategory(categoryCode))
 			return null;
 
 		StringBuffer productID = new StringBuffer();
-		productID.append(goods.getCategory().getCode());
+		productID.append(categoryCode);
 		productID.append(Constants.Data.ID_SEPTR);
 		productID.append(generateProductID());
 
-		Product product = new Product(productID.toString(), goods);
+		Product product = new Product(productID.toString(), name, description, quantity, price, reorderThreshold,
+				reorderQuantity);
 
 		return productData.add(product) ? product : null;
 	}
