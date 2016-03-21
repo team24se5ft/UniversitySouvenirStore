@@ -26,33 +26,11 @@ public class CategoryPanel extends BaseTablePanel{
 
 	/***********************************************************/
 	// Instance Variables
-	/***********************************************************/
-
-	/*
-	 * Array for storing the category table headers.
-	 */
-	private String[] tableHeaders;
-
-	/*
-	 * Array for storing the category content.
-	 */
-	private String[][] tableContent;
-	
+	/***********************************************************/	
 	/**
 	 * Delegate for calling the controller.
 	 */
 	private IInventoryDelegate delegate;
-	
-	/***********************************************************/
-	// Getters & Setters
-	/***********************************************************/
-	public void setTableHeader(String[] tableHeaders) {
-		this.tableHeaders = tableHeaders;
-	}
-
-	public void setTableContent(String[][] tableContent) {
-		this.tableContent = tableContent;
-	}
 
 	/***********************************************************/
 	// Abstract Methods Implementation
@@ -92,8 +70,6 @@ public class CategoryPanel extends BaseTablePanel{
 	/***********************************************************/
 	public CategoryPanel(String[][] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
 		// Store the values.
-		this.tableContent = tableContent;
-		this.tableHeaders = tableHeaders;
 		this.delegate = delegate;
 		// Start with the GUI.
 		setLayout(new BorderLayout());

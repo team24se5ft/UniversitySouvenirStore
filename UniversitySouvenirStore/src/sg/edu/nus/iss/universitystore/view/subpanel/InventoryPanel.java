@@ -44,7 +44,6 @@ public class InventoryPanel extends JPanel{
 	 * Delegate for informing the controller about the various events.
 	 */
 	private IInventoryDelegate delegate;
-
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
@@ -59,39 +58,13 @@ public class InventoryPanel extends JPanel{
 		setLayout(borderLayout);
 
 		// Start adding other components
-		createGUI();
-	}
-
-	/***********************************************************/
-	// Public Methods
-	/***********************************************************/
-	public void setCategoryTableData(String[] header, String[][] content) {
-		// Store the values
-		categoryPanel.setTableHeader(header);
-		categoryPanel.setTableContent(content);
-	}
-
-	public void setProductTableData(String[] header, String[][] content) {
-		// Store the values
-		productPanel.setTableHeader(header);
-		productPanel.setTableContent(content);
+		categoryPanel = new CategoryPanel(null, null,delegate);
+		productPanel = new ProductPanel(null, null, delegate);
+		createTabbedPane(categoryPanel, productPanel);
 	}
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/
-	private void createGUI() {
-		// TEST
-		String[] categoryTableHeaders = new String[]{ "Category Name", "Category Code" };
-		String[][] categoryTableContent = new String[][]{ 
-			{"Phones", "PHO"}, {"Cars", "CAR"}, {"Chargers", "CHR"} 
-			};
-		categoryPanel = new CategoryPanel(categoryTableContent, categoryTableHeaders,delegate);
-		// TEST
-		//categoryTableHeaders = new String[]{ "Product Name", "Quantity" , "Price"};
-		//String[] productContent = new String[]{ "Samsung Galaxy", "65", "999" };
-		productPanel = new ProductPanel(categoryTableContent, categoryTableHeaders, delegate);
-		createTabbedPane(categoryPanel, productPanel);
-	}
 
 	private void createTabbedPane(JPanel categoryPanel, JPanel productPanel) {
 		tabbedPane = new JTabbedPane();

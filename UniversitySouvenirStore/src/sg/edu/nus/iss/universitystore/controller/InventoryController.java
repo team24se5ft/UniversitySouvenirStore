@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.constants.Constants.TableData;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.dialog.CategoryDialog;
@@ -76,13 +78,13 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 			// TODO: handle exception
 			System.out.println(e.getStackTrace());
 		}
-
-		// Initialize the panel
+		// Initialize the panel associated with this controller
 		inventoryPanel = new InventoryPanel(this);
-		
-		// Update Inventory Panel with retrieved data
-		
 
+		// Update Inventory Panel with retrieved data
+		inventoryPanel.setCategoryTableData(TableDataUtils.getHeadersForCategoryTable()	, TableDataUtils.getFormattedCategoryListForTable(arrCategory));
+		inventoryPanel.setProductTableData(TableDataUtils.getHeadersForProductTable()	, TableDataUtils.getFormattedProductListForTable(arrProduct));
+		
 		// Get main frame
 		topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
 		// TODO: Setup the various components of the panel with the data retrieved from the manager.
@@ -138,7 +140,7 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 	/***********************************************************/
 	// ICategoryDialogDelegate Implementation
 	/***********************************************************/
-	
+
 	// TODO - Speak to Choo about the validation.
 	public void confirmClicked(String categoryCode, String categoryName) {
 		// Client side validation
@@ -162,22 +164,11 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 					DialogType.WARNING_MESSAGE);
 		}
 	}
-	
+
 	/***********************************************************/
 	// IProductDialogDelegate Implementation
 	/***********************************************************/
 	public void confirmClicked(String productName, String productDescription, String quantity, String price, String barcodeNumber, String reorderQuantity, String orderQuantity) {
 		//inventoryManager.addProduct(goods);
-	}
-	
-	/***********************************************************/
-	// Private Methods
-	/***********************************************************/
-	private void updateInventoryPanel() {// TODO : documentation
-		// Here we first traverse through the arraylist & create the String array.
-		String[] categoryList = new String[arrCategory.size()];
-		for(int count = 0; count < arrCategory.size(); count++) {
-			//categoryList[count] = 
-		}
 	}
 }
