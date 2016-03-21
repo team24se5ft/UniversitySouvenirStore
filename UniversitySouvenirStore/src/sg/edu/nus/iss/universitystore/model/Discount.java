@@ -26,6 +26,16 @@ public class Discount {
 		this.percentage = percentage;
 		this.eligibilty = eligibilty;
 	}
+	
+	public Discount(String code, String description, String startDate, String period, String percentage,
+			String eligibilty) {
+		this.code = code;
+		this.description = description;
+		this.startDate = startDate;
+		this.period = Integer.parseInt(period);
+		this.percentage = Float.parseFloat(percentage);
+		this.eligibilty = eligibilty;
+	}
 
 	/***********************************************************/
 	// Getters & Setters
