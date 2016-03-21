@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -33,7 +36,7 @@ public class SalesPanel extends BaseTablePanel {
 	private JPanel customerInfoPanel;
 
 	private ISalesDelegate delegate;
-	
+
 	private String[] DropDownSelection;
 
 	/***********************************************************/
@@ -46,7 +49,7 @@ public class SalesPanel extends BaseTablePanel {
 		borderLayout.setVgap(20);
 		this.setLayout(borderLayout);
 		initSalePanel();
-//		initButtonPanel();
+		// initButtonPanel();
 
 	}
 
@@ -61,93 +64,105 @@ public class SalesPanel extends BaseTablePanel {
 	private void initProductTable() {
 		String[] headers = { "code", "Name", "price" };
 		String data[][] = {};
-		add(getScrollPaneWithTable(data, headers),BorderLayout.CENTER);
-		add(getButtonPanel(),BorderLayout.SOUTH);
+		add(getScrollPaneWithTable(data, headers), BorderLayout.CENTER);
+		add(getButtonPanel(), BorderLayout.SOUTH);
+	}
+
+	private GridBagConstraints getConstraint(int xPosition, int yPosition) {
+		GridBagConstraints gridBagConstraint = new GridBagConstraints();
+		gridBagConstraint.fill = GridBagConstraints.BOTH;
+		gridBagConstraint.insets = new Insets(10, 20, 10, 20);
+		gridBagConstraint.gridx = xPosition;
+		gridBagConstraint.gridy = yPosition;
+		return gridBagConstraint;
 	}
 
 	private void initCustomerInfoPabel() {
 		customerInfoPanel = new JPanel();
 		Border border = customerInfoPanel.getBorder();
 		Border margin = new EmptyBorder(10, 10, 10, 10);
-		customerInfoPanel.setBorder(new CompoundBorder(border,margin));
+		customerInfoPanel.setBorder(new CompoundBorder(border, margin));
 		customerInfoPanel.setBackground(Color.WHITE);
-		customerInfoPanel.setLayout(new GridLayout(4, 4));
+		customerInfoPanel.setLayout(new GridBagLayout());
 		customerInfoPanel.setPreferredSize(new Dimension(400, 200));
 		customerInfoPanel.setMaximumSize(new Dimension(400, 250));
 		customerInfoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		customerInfoPanel.add(new JLabel("member:"));
+		customerInfoPanel.add(new JLabel("member:"), getConstraint(0, 0));
 		memberOption = new JLabel("Public");
 		memberOption.setForeground(Color.BLUE);
-		customerInfoPanel.add(memberOption);
-		customerInfoPanel.add(new JLabel("discount:"));
+		customerInfoPanel.add(memberOption,getConstraint(1,0));
+		customerInfoPanel.add(new JLabel("discount:"),getConstraint(0,1));
 		discountOption = new JComboBox<String>();
 		discountOption.setForeground(Color.BLUE);
-		customerInfoPanel.add(discountOption);
-		customerInfoPanel.add(new JLabel("AvailableLoyalPoint:"));
+		customerInfoPanel.add(discountOption,getConstraint(1,1));
+		customerInfoPanel.add(new JLabel("AvailableLoyalPoint:"),getConstraint(0,2));
 		avaiLableLoyalPoint = new JLabel("0");
-		customerInfoPanel.add(avaiLableLoyalPoint);
-		customerInfoPanel.add(new JLabel("loyalPoint:"));
+		customerInfoPanel.add(avaiLableLoyalPoint,getConstraint(1,2));
+		customerInfoPanel.add(new JLabel("loyalPoint:"),getConstraint(0,3));
 		LoyalPointOption = new JTextField(5);
-		customerInfoPanel.add(LoyalPointOption);
+		customerInfoPanel.add(LoyalPointOption,getConstraint(1,3));
 		add(customerInfoPanel, BorderLayout.NORTH);
 		initButtonEvent();
-		//FIXME query for eligibility discount
-		String[] activeDiscount={"Holiday","Halloween","Spring fesitive"};
+		// FIXME query for eligibility discount
+		String[] activeDiscount = { "Holiday", "Halloween", "Spring fesitive" };
 		refreshDropDownData(activeDiscount);
 	}
 
-//	private void initButtonPanel() {
-//		buttonPanel = new JPanel();
-//		buttonPanel.setLayout(new FlowLayout());
-//
-//		addProductButton = initImageButton("Resources/add_icon.png", ViewConstants.Labels.STR_ADD_SALESPRODUCT);
-//		checkOutButton = initImageButton("Resources/cart_icon.png", ViewConstants.Labels.STR_CHECKOUT_SALES);
-//		cancelButton = initImageButton("Resources/delete_icon.png", ViewConstants.Labels.STR_CANCEL_SALES);
-//		// addProductButton = new JButton(new
-//		// ImageIcon("Resources/add_icon.png"));
-//		// checkOutButton = new JButton(new
-//		// ImageIcon("Resources/edit_icon.png"));
-//		// cancelButton = new JButton(new
-//		// ImageIcon("Resources/delete_icon.png"));
-//		//
-//		// // setting border to empty
-//		// addProductButton.setBorder(BorderFactory.createEmptyBorder());
-//		// checkOutButton.setBorder(BorderFactory.createEmptyBorder());
-//		// cancelButton.setBorder(BorderFactory.createEmptyBorder());
-//		//
-//		// addProductButton.setPreferredSize(new Dimension(70, 70));
-//		// checkOutButton.setPreferredSize(new Dimension(70, 70));
-//		// cancelButton.setPreferredSize(new Dimension(70, 70));
-//		// buttonPanel.add(addProductButton);
-//		buttonPanel.add(addProductButton);
-//		buttonPanel.add(checkOutButton);
-//		buttonPanel.add(cancelButton);
-//		add(buttonPanel, "South");
-//		initButtonEvent();
-//	}
+	// private void initButtonPanel() {
+	// buttonPanel = new JPanel();
+	// buttonPanel.setLayout(new FlowLayout());
+	//
+	// addProductButton = initImageButton("Resources/add_icon.png",
+	// ViewConstants.Labels.STR_ADD_SALESPRODUCT);
+	// checkOutButton = initImageButton("Resources/cart_icon.png",
+	// ViewConstants.Labels.STR_CHECKOUT_SALES);
+	// cancelButton = initImageButton("Resources/delete_icon.png",
+	// ViewConstants.Labels.STR_CANCEL_SALES);
+	// // addProductButton = new JButton(new
+	// // ImageIcon("Resources/add_icon.png"));
+	// // checkOutButton = new JButton(new
+	// // ImageIcon("Resources/edit_icon.png"));
+	// // cancelButton = new JButton(new
+	// // ImageIcon("Resources/delete_icon.png"));
+	// //
+	// // // setting border to empty
+	// // addProductButton.setBorder(BorderFactory.createEmptyBorder());
+	// // checkOutButton.setBorder(BorderFactory.createEmptyBorder());
+	// // cancelButton.setBorder(BorderFactory.createEmptyBorder());
+	// //
+	// // addProductButton.setPreferredSize(new Dimension(70, 70));
+	// // checkOutButton.setPreferredSize(new Dimension(70, 70));
+	// // cancelButton.setPreferredSize(new Dimension(70, 70));
+	// // buttonPanel.add(addProductButton);
+	// buttonPanel.add(addProductButton);
+	// buttonPanel.add(checkOutButton);
+	// buttonPanel.add(cancelButton);
+	// add(buttonPanel, "South");
+	// initButtonEvent();
+	// }
 
-//	/**
-//	 * imageButton init here
-//	 * 
-//	 * @param imageUrl
-//	 * @param btnText
-//	 * @return
-//	 */
-//	private JButton initImageButton(String imageUrl, String btnText) {
-//		ImageIcon icon = new ImageIcon(imageUrl);
-//		JButton btn = new JButton(btnText);
-//		btn.setIcon(icon);
-//		btn.setHorizontalTextPosition(JLabel.CENTER);
-//		btn.setVerticalTextPosition(JLabel.BOTTOM);
-//		btn.setBorderPainted(false);
-//		btn.setContentAreaFilled(false);
-//		btn.setFocusPainted(false);
-//		btn.setOpaque(false);
-//		return btn;
-//	}
+	// /**
+	// * imageButton init here
+	// *
+	// * @param imageUrl
+	// * @param btnText
+	// * @return
+	// */
+	// private JButton initImageButton(String imageUrl, String btnText) {
+	// ImageIcon icon = new ImageIcon(imageUrl);
+	// JButton btn = new JButton(btnText);
+	// btn.setIcon(icon);
+	// btn.setHorizontalTextPosition(JLabel.CENTER);
+	// btn.setVerticalTextPosition(JLabel.BOTTOM);
+	// btn.setBorderPainted(false);
+	// btn.setContentAreaFilled(false);
+	// btn.setFocusPainted(false);
+	// btn.setOpaque(false);
+	// return btn;
+	// }
 
 	private void refreshDropDownData(String[] str) {
-		for(int i=0;i<str.length;i++){
+		for (int i = 0; i < str.length; i++) {
 			discountOption.addItem(str[i]);
 		}
 	}
@@ -212,7 +227,7 @@ public class SalesPanel extends BaseTablePanel {
 	@Override
 	protected ActionListener addAction() {
 		return new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				delegate.AddProduct();
@@ -223,7 +238,7 @@ public class SalesPanel extends BaseTablePanel {
 	@Override
 	protected ActionListener editAction() {
 		return new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				delegate.CheckOut();
@@ -234,7 +249,7 @@ public class SalesPanel extends BaseTablePanel {
 	@Override
 	protected ActionListener deleteAction() {
 		return new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				delegate.Cancel();
