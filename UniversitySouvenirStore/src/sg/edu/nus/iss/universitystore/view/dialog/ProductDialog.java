@@ -4,6 +4,7 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,17 +31,21 @@ public abstract class ProductDialog extends BaseDialog {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
+
 	/**
 	 * Constructor to create the dialog.
-	 * @param parent The parent frame on top of which this dialog will be created.
-	 * @param title The title of this dialog.
+	 * 
+	 * @param parent
+	 *            The parent frame on top of which this dialog will be created.
+	 * @param title
+	 *            The title of this dialog.
 	 */
 	public ProductDialog(JFrame parent, String title) {
 		// Call the parent
 		super(parent, title);
 		// Customize this dialog
 		this.addWindowListener(this);
-		this.setSize(400, 300);//TODO: Move to constants
+		this.setSize(400, 350);// TODO: Move to constants
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
@@ -48,6 +53,7 @@ public abstract class ProductDialog extends BaseDialog {
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
+
 	/**
 	 * The panel associated with this dialog.
 	 */
@@ -72,7 +78,7 @@ public abstract class ProductDialog extends BaseDialog {
 	 * Textfield for holding the price for the particular product.
 	 */
 	private JTextField price;
-	
+
 	/**
 	 * Textfield for holding the bar code number for the particular product.
 	 */
@@ -81,24 +87,64 @@ public abstract class ProductDialog extends BaseDialog {
 	/**
 	 * Textfield for holding the reorder quantity of the particular product.
 	 */
-	private JTextField reorderQuantity;
+	private JTextField thresholdQuantity;
 
 	/**
 	 * Textfield for holding the order quantity of the particular product.
 	 */
-	private JTextField orderQuantity;
+	private JTextField reorderQuantity;
 
+	/**
+	 * Arraylist to hold the list of category codes
+	 */
+	private ArrayList<String> arrCategoryCode;
 	/***********************************************************/
 	// Abstract Method Definition
 	/***********************************************************/
+
+	public abstract boolean productCallback(String categoryCode, String name, String description, String quantity,
+			String price, String barcodeNumber, String reorderThreshold, String reorderQuantity);
+
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
+
+	public void setCategoryCodeList(ArrayList<String> arrCategoryCode) {
+		this.arrCategoryCode = arrCategoryCode;
+	}
 	
-	public abstract boolean productCallback(String name, String description, String quantity, String price, String barcodeNumber, String reorderThreshold, String reorderQuantity);
-	
+	public void setProductName(String productName) {
+		this.productName.setText(productName);
+	}
+
+	public void setProductDescription(String productDescription) {
+		this.productDescription.setText(productDescription);
+	}
+
+	public void setProductQuantity(String quantity) {
+		this.quantity.setText(quantity);
+	}
+
+	public void setProductPrice(String price) {
+		this.price.setText(price);
+	}
+
+	public void setThresholdQuantity(String thresholdQuantity) {
+		this.thresholdQuantity.setText(thresholdQuantity);
+	}
+
+	public void setReorderQuantity(String reorderQuantity) {
+		this.reorderQuantity.setText(reorderQuantity);
+	}
+
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
-	/* (non-Javadoc)
-	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#getPanelToAddToDialog()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#
+	 * getPanelToAddToDialog()
 	 */
 	@Override
 	protected JPanel getPanelToAddToDialog() {
@@ -122,33 +168,40 @@ public abstract class ProductDialog extends BaseDialog {
 		createLabelOnPanel(jPanel, "Product Name:", 0);// Move to constants
 		productName = createTextFieldOnPanel(jPanel, 0);
 
-		createLabelOnPanel(jPanel, "Product Description:", 1);// Move to constants
+		createLabelOnPanel(jPanel, "Product Description:", 1);// Move to
+																// constants
 		productDescription = createTextFieldOnPanel(jPanel, 1);
-		
+
 		createLabelOnPanel(jPanel, "Product Quantity:", 2);// Move to constants
 		quantity = createTextFieldOnPanel(jPanel, 2);
-		
+
 		createLabelOnPanel(jPanel, "Product Price:", 3);// Move to constants
 		price = createTextFieldOnPanel(jPanel, 3);
-		
+
 		createLabelOnPanel(jPanel, "Bar Code Number:", 4);// Move to constants
 		barcodeNumber = createTextFieldOnPanel(jPanel, 4);
-		
-		createLabelOnPanel(jPanel, "Reorder Quantity (Threshold):", 5);// Move to constants
-		reorderQuantity = createTextFieldOnPanel(jPanel, 5);
-		
+
+		createLabelOnPanel(jPanel, "Reorder Quantity (Threshold):", 5);// Move
+																		// to
+																		// constants
+		thresholdQuantity = createTextFieldOnPanel(jPanel, 5);
+
 		createLabelOnPanel(jPanel, "Order Quantity:", 6);// Move to constants
-		orderQuantity = createTextFieldOnPanel(jPanel, 6);
-		
+		reorderQuantity = createTextFieldOnPanel(jPanel, 6);
+
 		return jPanel;
 	}
 
-	/* (non-Javadoc)
-	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#confirmClicked()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#confirmClicked()
 	 */
 	@Override
 	protected boolean confirmClicked() {
-		productCallback(productName.getText(), productDescription.getText(), quantity.getText(), price.getText(), barcodeNumber.getText(), reorderQuantity.getText(), orderQuantity.getText());
+		productCallback(null,productName.getText(), productDescription.getText(), quantity.getText(), price.getText(),
+				barcodeNumber.getText(), thresholdQuantity.getText(), reorderQuantity.getText());
 		// TODO Auto-generated method stub
 		return false;
 	}

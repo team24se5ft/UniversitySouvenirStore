@@ -215,7 +215,7 @@ public class InventoryController implements IInventoryDelegate {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean productCallback(String name, String description, String quantity, String price,
+			public boolean productCallback(String categoryCode, String name, String description, String quantity, String price,
 					String barcodeNumber, String reorderThreshold, String reorderQuantity) {
 				try {
 					// Add the new product
