@@ -153,6 +153,7 @@ public class ProductDialog extends BaseDialog implements WindowListener {
 	 */
 	@Override
 	protected boolean confirmClicked() {
+		delegate.confirmClicked(productName.getText(), productDescription.getText(), quantity.getText(), price.getText(), barcodeNumber.getText(), reorderQuantity.getText(), orderQuantity.getText());
 		// TODO Auto-generated method stub
 		return false;
 	}

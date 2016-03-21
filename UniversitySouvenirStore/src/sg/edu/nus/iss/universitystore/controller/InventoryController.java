@@ -159,4 +159,11 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 					DialogType.WARNING_MESSAGE);
 		}
 	}
+	
+	/***********************************************************/
+	// IProductDialogDelegate Implementation
+	/***********************************************************/
+	public void confirmClicked(String productName, String productDescription, String quantity, String price, String barcodeNumber, String reorderQuantity, String orderQuantity) {
+		//inventoryManager.addProduct(goods);
+	}
 }
