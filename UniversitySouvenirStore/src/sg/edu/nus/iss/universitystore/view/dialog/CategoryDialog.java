@@ -70,7 +70,35 @@ public abstract class CategoryDialog extends BaseDialog {
 	/***********************************************************/
 	// Abstract Method Definition
 	/***********************************************************/
-	public abstract void categoryCallback(String categoryCode, String categoryName);
+	/**
+	 * The callback which will be called when the Confirm button is tapped on the dialog.
+	 * @param categoryCode The category code that was added/edited.
+	 * @param categoryName The category name that was added/edited.
+	 * @return Boolean to indicate whether the dialog needs to be removed from the frame or not. 
+	 * If true, then the dialog will be removed.
+	 */
+	public abstract boolean categoryCallback(String categoryCode, String categoryName);
+	
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
+	
+	/**
+	 * Method to set the category code of the dialog
+	 * @param categoryCode The string which needs to be set as the text for the category code textfield.
+	 */
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode.setText(categoryCode);
+	}
+	
+	/**
+	 * Method to set the category name of the dialog
+	 * @param categoryName The string which needs to be set as the text for the category name textfield.
+	 */
+	public void setCategoryName(String categoryName) {
+		this.categoryName.setText(categoryName);
+	}
+	
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
@@ -79,9 +107,7 @@ public abstract class CategoryDialog extends BaseDialog {
 	 */
 	@Override
 	protected boolean confirmClicked() {
-		// TODO - Add validation
-		categoryCallback(categoryCode.getText(), categoryName.getText());
-		return false;
+		return categoryCallback(categoryCode.getText(), categoryName.getText());
 	}
 	
 	/* (non-Javadoc)
