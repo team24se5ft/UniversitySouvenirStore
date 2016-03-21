@@ -70,6 +70,7 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 		try {
 			inventoryManager = InventoryManager.getInstance();
 			arrCategory = inventoryManager.getAllCategories();
+			System.out.println(arrCategory);
 			arrProduct = inventoryManager.getAllProducts();
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -78,6 +79,9 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 
 		// Initialize the panel
 		inventoryPanel = new InventoryPanel(this);
+		
+		// Update Inventory Panel with retrieved data
+		
 
 		// Get main frame
 		topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
@@ -164,5 +168,16 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 	/***********************************************************/
 	public void confirmClicked(String productName, String productDescription, String quantity, String price, String barcodeNumber, String reorderQuantity, String orderQuantity) {
 		//inventoryManager.addProduct(goods);
+	}
+	
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+	private void updateInventoryPanel() {// TODO : documentation
+		// Here we first traverse through the arraylist & create the String array.
+		String[] categoryList = new String[arrCategory.size()];
+		for(int count = 0; count < arrCategory.size(); count++) {
+			//categoryList[count] = 
+		}
 	}
 }

@@ -49,7 +49,7 @@ public abstract class BaseTablePanel extends JPanel{
 	/**
 	 * Table for displaying the elements.
 	 */
-	private JTable table;
+	protected JTable table;
 	
 	/***********************************************************/
 	// Abstract Methods
@@ -70,12 +70,10 @@ public abstract class BaseTablePanel extends JPanel{
 	 * @param headers The headers of the table.
 	 * @return The JScrollPane with an embedded table with all the values populated.
 	 */
-	protected JScrollPane getScrollPaneWithTable(String[] data, String[] headers) {
-
-		String tableData[][] = { data };
+	protected JScrollPane getScrollPaneWithTable(String[][] data, String[] headers) {
 
 		// Complete the abstract class & create a new instance
-		DefaultTableModel categoryModel = new DefaultTableModel(tableData, headers) {
+		DefaultTableModel categoryModel = new DefaultTableModel(data, headers) {
 
 			private static final long serialVersionUID = 1L;
 

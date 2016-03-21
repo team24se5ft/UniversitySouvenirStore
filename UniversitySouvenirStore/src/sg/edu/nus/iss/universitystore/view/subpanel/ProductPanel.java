@@ -36,7 +36,7 @@ public class ProductPanel extends BaseTablePanel{
 	/*
 	 * Array for storing the product content.
 	 */
-	private String[] tableContent;
+	private String[][] tableContent;
 
 	/**
 	 * Delegate for calling the controller.
@@ -50,14 +50,14 @@ public class ProductPanel extends BaseTablePanel{
 		this.tableHeaders = tableHeaders;
 	}
 
-	public void setTableContent(String[] tableContent) {
+	public void setTableContent(String[][] tableContent) {
 		this.tableContent = tableContent;
 	}
 
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public ProductPanel(String[] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
+	public ProductPanel(String[][] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
 		// Store the values.
 		this.tableContent = tableContent;
 		this.tableHeaders = tableHeaders;

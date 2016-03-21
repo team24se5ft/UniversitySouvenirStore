@@ -65,13 +65,13 @@ public class InventoryPanel extends JPanel{
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
-	public void setCategoryTableData(String[] header, String[] content) {
+	public void setCategoryTableData(String[] header, String[][] content) {
 		// Store the values
 		categoryPanel.setTableHeader(header);
 		categoryPanel.setTableContent(content);
 	}
 
-	public void setProductTableData(String[] header, String[] content) {
+	public void setProductTableData(String[] header, String[][] content) {
 		// Store the values
 		productPanel.setTableHeader(header);
 		productPanel.setTableContent(content);
@@ -82,11 +82,13 @@ public class InventoryPanel extends JPanel{
 	private void createGUI() {
 		// TEST
 		String[] categoryTableHeaders = new String[]{ "Category Name", "Category Code" };
-		String[] categoryTableContent = new String[]{ "Phones", "PHO" };
+		String[][] categoryTableContent = new String[][]{ 
+			{"Phones", "PHO"}, {"Cars", "CAR"}, {"Chargers", "CHR"} 
+			};
 		categoryPanel = new CategoryPanel(categoryTableContent, categoryTableHeaders,delegate);
 		// TEST
-		categoryTableHeaders = new String[]{ "Product Name", "Quantity" , "Price"};
-		categoryTableContent = new String[]{ "Samsung Galaxy", "65", "999" };
+		//categoryTableHeaders = new String[]{ "Product Name", "Quantity" , "Price"};
+		//String[] productContent = new String[]{ "Samsung Galaxy", "65", "999" };
 		productPanel = new ProductPanel(categoryTableContent, categoryTableHeaders, delegate);
 		createTabbedPane(categoryPanel, productPanel);
 	}

@@ -36,7 +36,7 @@ public class CategoryPanel extends BaseTablePanel{
 	/*
 	 * Array for storing the category content.
 	 */
-	private String[] tableContent;
+	private String[][] tableContent;
 	
 	/**
 	 * Delegate for calling the controller.
@@ -50,7 +50,7 @@ public class CategoryPanel extends BaseTablePanel{
 		this.tableHeaders = tableHeaders;
 	}
 
-	public void setTableContent(String[] tableContent) {
+	public void setTableContent(String[][] tableContent) {
 		this.tableContent = tableContent;
 	}
 
@@ -90,7 +90,7 @@ public class CategoryPanel extends BaseTablePanel{
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public CategoryPanel(String[] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
+	public CategoryPanel(String[][] tableContent,String[] tableHeaders, IInventoryDelegate delegate) {
 		// Store the values.
 		this.tableContent = tableContent;
 		this.tableHeaders = tableHeaders;
