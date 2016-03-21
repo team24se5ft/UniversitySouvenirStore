@@ -8,11 +8,11 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class ConfirmDialog extends BaseDialog{
+public class ConfirmationDialog extends BaseDialog{
 
 	private Label messageLabel;
 
-	public ConfirmDialog(JFrame parent, String title, String message) {
+	public ConfirmationDialog(JFrame parent, String title, String message) {
 		super(parent, title);
 		messageLabel.setText(message);
 		this.addWindowListener(this);

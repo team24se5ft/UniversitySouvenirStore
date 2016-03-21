@@ -10,6 +10,14 @@ package sg.edu.nus.iss.universitystore.view.intf;
 public interface IInventoryDelegate {
 
 	/***********************************************************/
+	// Common
+	/***********************************************************/
+	/**
+	 * Method will be called if the edit/delete are tapped without selecting a row of the table.
+	 */
+	public void rowNotSelected();
+	
+	/***********************************************************/
 	// CRUD operations for Category
 	/***********************************************************/
 	
@@ -21,12 +29,12 @@ public interface IInventoryDelegate {
 	/**
 	 * Edit a category.
 	 */
-	public void editCategoryClicked();
+	public void editCategoryClicked(int index);
 	
 	/**
 	 * Delete a category.
 	 */
-	public void deleteCategoryClicked();
+	public void deleteCategoryClicked(int index);
 	
 	/***********************************************************/
 	// CRUD operations for Product

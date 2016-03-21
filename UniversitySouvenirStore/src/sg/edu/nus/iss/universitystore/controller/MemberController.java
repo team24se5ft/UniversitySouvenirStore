@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.model.Member;
-import sg.edu.nus.iss.universitystore.view.dialog.ConfirmDialog;
+import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.MemberDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.IMemberDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate;
@@ -58,7 +58,7 @@ public class MemberController implements IMemberDelegate {
 		if (row < 0) {
 			return;
 		}
-		new ConfirmDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "ConfirmDialog",
+		new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "ConfirmDialog",
 				"Do u really want to delete row " + (row + 1)) {
 					private static final long serialVersionUID = 1L;
 

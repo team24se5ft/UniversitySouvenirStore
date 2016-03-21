@@ -50,7 +50,12 @@ public class CategoryPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.editCategoryClicked();
+				if (table.getSelectedRow() != -1) {
+					delegate.editCategoryClicked(table.getSelectedRow());
+				}
+				else {
+					delegate.rowNotSelected();
+				}
 			}
 		};
 	}
@@ -60,7 +65,12 @@ public class CategoryPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.deleteCategoryClicked();
+				if (table.getSelectedRow() != -1) {
+					delegate.deleteCategoryClicked(table.getSelectedRow());
+				}
+				else {
+					delegate.rowNotSelected();
+				}
 			}
 		};
 	}

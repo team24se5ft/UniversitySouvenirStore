@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import sg.edu.nus.iss.universitystore.constants.Constants.TableData;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.model.Category;
@@ -14,11 +13,11 @@ import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.dialog.CategoryDialog;
+import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ProductDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.ICategoryDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.IProductDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
-import sg.edu.nus.iss.universitystore.view.subpanel.CategoryPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
 
 /**
@@ -34,6 +33,7 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 	public static final String STR_ERROR_FAILED = "The category was not added.";
 	public static final String STR_SUCCESS_MESSAGE = "The category was successfully added.";
 	public static final String STR_ERROR_CATEGORY_3_DIGIT = "The category code should only consist of three alphabets without any spaces.";
+	public static final String STR_ERROR_ROW_NOT_SELECTED = "Please select a row of the table for completing this operation.";
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
@@ -61,6 +61,11 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 	 * The reference to the main frame on which the current panel is added.
 	 */
 	private JFrame topFrame;
+	
+	/**
+	 * The reference for the category dialog.
+	 */
+	private CategoryDialog categoryDialog;
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
@@ -103,20 +108,41 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 
 	@Override
 	public void addCategoryClicked() {
-		CategoryDialog categoryDialog = new CategoryDialog(topFrame, "Add Category", this);
+		categoryDialog = new CategoryDialog(topFrame, "Add Category", this);
 		categoryDialog.setVisible(true);
 	}
 
 	@Override
-	public void editCategoryClicked() {
+	public void editCategoryClicked(int index) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void deleteCategoryClicked() {
+	public void deleteCategoryClicked(int index) {
 		// TODO Auto-generated method stub
+		new ConfirmationDialog(topFrame, "Delete Category", "Do u really want to delete the category?") {
 
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected boolean confirmClicked() {
+				Category category = arrCategory.get(index);
+				try {
+					// Update the backend
+					inventoryManager.deleteCategory(category.getCode());
+					// Update the local copy
+					arrCategory = inventoryManager.getAllCategories();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				// Update the table
+				inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory), TableDataUtils.getHeadersForCategoryTable());
+				// Remove the dialog
+				return true;
+			}
+		}.setVisible(true);
 	}
 
 	@Override
@@ -135,7 +161,14 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 	@Override
 	public void deleteProductClicked() {
 		// TODO Auto-generated method stub
-
+		
+	}
+	
+	@Override
+	public void rowNotSelected() {
+		// Display message for error.
+		UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_ERROR_ROW_NOT_SELECTED,
+				DialogType.WARNING_MESSAGE);
 	}
 	/***********************************************************/
 	// ICategoryDialogDelegate Implementation
@@ -149,8 +182,14 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 			if(categoryCode.length() == 3) {
 				try {
 					inventoryManager.addCategory(categoryCode, categoryName);
+					// Dismiss the add category dialog
+					categoryDialog.setVisible(false);
+					// Show the success dialog
 					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_SUCCESS, STR_SUCCESS_MESSAGE,
 							DialogType.INFORMATION_MESSAGE);
+					// Update the table
+					arrCategory = inventoryManager.getAllCategories();
+					inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory), TableDataUtils.getHeadersForCategoryTable());
 				} catch (Exception e) {
 					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
 							DialogType.WARNING_MESSAGE);
@@ -171,4 +210,5 @@ public class InventoryController implements IInventoryDelegate, ICategoryDialogD
 	public void confirmClicked(String productName, String productDescription, String quantity, String price, String barcodeNumber, String reorderQuantity, String orderQuantity) {
 		//inventoryManager.addProduct(goods);
 	}
+	
 }

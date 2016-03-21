@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.model.Discount;
-import sg.edu.nus.iss.universitystore.view.dialog.ConfirmDialog;
+import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.DiscountDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.intf.IDiscountDialogDelegate;
 import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
@@ -62,7 +62,7 @@ public class DiscountController implements IDiscountDelegate {
 		if (row < 0) {
 			return;
 		}
-		new ConfirmDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "ConfirmDialog",
+		new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "ConfirmDialog",
 				"Do u really want to delete row " + (row + 1)) {
 
 			@Override
