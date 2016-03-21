@@ -112,7 +112,7 @@ public class InventoryManager {
 		return instance;
 	}
 
-	public static void deleteIntance() {
+	public static void deleteInstance() {
 		instance = null;
 	}
 

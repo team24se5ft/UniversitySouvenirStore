@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.universitystore.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
 
@@ -16,7 +17,16 @@ public class Transaction {
 	/***********************************************************/
 	//Constructors
 	/***********************************************************/
-	
+	public Transaction(String identifier,String productId,String memberId,String quantity,String date){
+		this.identifier=identifier;
+		this.productId=productId;
+		this.memberId=memberId;
+		this.quantity=Integer.parseInt(quantity);
+		
+		//Convert String to LocalDate. Remove if unnecessary.
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+		this.date = LocalDate.parse(date, formatter);
+	}
 	
 	/***********************************************************/
 	//Getters & Setters
