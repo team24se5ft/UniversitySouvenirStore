@@ -4,7 +4,6 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridBagLayout;
-import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,13 +12,11 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-import sg.edu.nus.iss.universitystore.view.dialog.intf.ICategoryDialogDelegate;
-
 /**
  * @author Samrat
  *
  */
-public class CategoryDialog extends BaseDialog {
+public abstract class CategoryDialog extends BaseDialog {
 
 	/***********************************************************/
 	// Constants
@@ -39,11 +36,10 @@ public class CategoryDialog extends BaseDialog {
 	 * @param title The title of this dialog.
 	 * @param delegate The delegate(controller reference) which enables communication to the controller.
 	 */
-	public CategoryDialog(JFrame parent, String title, ICategoryDialogDelegate delegate) {
+	public CategoryDialog(JFrame parent, String title) {
 		// Call the parent
 		super(parent, title);
 		// Set the delegate
-		this.delegate = delegate;
 		// Customize this dialog
 		this.addWindowListener(this);
 		this.setSize(400, 200);//TODO: Move to constants
@@ -59,10 +55,6 @@ public class CategoryDialog extends BaseDialog {
 	 */
 	private JPanel jPanel;
 
-	/**
-	 * Delegate for communicating with the controller.
-	 */
-	private ICategoryDialogDelegate delegate;
 
 	/**
 	 * Text field for holding the category name entered by the user.
@@ -73,6 +65,12 @@ public class CategoryDialog extends BaseDialog {
 	 * Textfield for holding the category code entered by the user.
 	 */
 	private JTextField categoryCode;
+	
+	
+	/***********************************************************/
+	// Abstract Method Definition
+	/***********************************************************/
+	public abstract void categoryCallback(String categoryCode, String categoryName);
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
@@ -82,7 +80,7 @@ public class CategoryDialog extends BaseDialog {
 	@Override
 	protected boolean confirmClicked() {
 		// TODO - Add validation
-		delegate.confirmClicked(categoryCode.getText(), categoryName.getText());
+		categoryCallback(categoryCode.getText(), categoryName.getText());
 		return false;
 	}
 	
