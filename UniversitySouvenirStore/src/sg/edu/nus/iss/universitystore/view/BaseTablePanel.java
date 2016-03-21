@@ -51,6 +51,11 @@ public abstract class BaseTablePanel extends JPanel{
 	 */
 	protected JTable table;
 	
+	/**
+	 * The table model used for populating the table.
+	 */
+	protected DefaultTableModel tableModel;
+	
 	/***********************************************************/
 	// Abstract Methods
 	/***********************************************************/
@@ -73,16 +78,14 @@ public abstract class BaseTablePanel extends JPanel{
 	protected JScrollPane getScrollPaneWithTable(String[][] data, String[] headers) {
 
 		// Complete the abstract class & create a new instance
-		DefaultTableModel categoryModel = new DefaultTableModel(data, headers) {
-
+		tableModel = new DefaultTableModel(data, headers) {
 			private static final long serialVersionUID = 1L;
-
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
 		// Create the table
-		table = new JTable(categoryModel);
+		table = new JTable(tableModel);
 		table.setRowHeight(30);//TODO - Move to constants
 		table.setBorder(BorderFactory.createEtchedBorder());
 		table.setGridColor(Color.BLACK);
@@ -130,5 +133,14 @@ public abstract class BaseTablePanel extends JPanel{
 
 		// Return the panel.
 		return jPanel;
+	}
+	
+	/**
+	 * Method to update the UI of the table. 
+	 * @param data The data that needs to be populated in the table.
+	 * @param headers The headers of the table.
+	 */
+	protected void updateTable(String[][] data, String[] headers) {
+		tableModel.setDataVector(data, headers);
 	}
 }
