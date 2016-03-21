@@ -183,7 +183,6 @@ public class InventoryController implements IInventoryDelegate {
 
 	@Override
 	public void deleteCategoryClicked(int index) {
-		// TODO Auto-generated method stub
 		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Category",
 				"Do u really want to delete the category?") {
 
@@ -213,12 +212,23 @@ public class InventoryController implements IInventoryDelegate {
 	@Override
 	public void addProductClicked() {
 		ProductDialog productDialog = new ProductDialog(topFrame, "Add Product") {
-
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean productCallback(String productName, String productDescription, String quantity, String price,
-					String barcodeNumber, String reorderQuantity, String orderQuantity) {
+			public boolean productCallback(String name, String description, String quantity, String price,
+					String barcodeNumber, String reorderThreshold, String reorderQuantity) {
+				try {
+					// Add the new product
+					inventoryManager.addProduct("LPC", name, description, quantity, price, reorderThreshold,
+							reorderQuantity);
+					// Update the local copy
+					arrProduct = inventoryManager.getAllProducts();
+					// Update the table
+					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+							TableDataUtils.getHeadersForProductTable());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 				return true;
 			}
 		};
@@ -226,15 +236,37 @@ public class InventoryController implements IInventoryDelegate {
 	}
 
 	@Override
-	public void editProductClicked() {
+	public void editProductClicked(int index) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void deleteProductClicked() {
-		// TODO Auto-generated method stub
+	public void deleteProductClicked(int index) {
+		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Product",
+				"Do u really want to delete the product?") {
 
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected boolean confirmClicked() {
+				Product product = arrProduct.get(index);
+				try {
+					// Update the backend
+					inventoryManager.deleteProduct(product);
+					// Update the local copy
+					arrProduct = inventoryManager.getAllProducts();
+					// Update the table
+					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+							TableDataUtils.getHeadersForProductTable());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				// Remove the dialog
+				return true;
+			}
+		};
+		confirmationDialog.setVisible(true);
 	}
 
 	@Override

@@ -64,7 +64,12 @@ public class ProductPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.editProductClicked();
+				if (table.getSelectedRow() != -1) {
+					delegate.editProductClicked(table.getSelectedRow());
+				}
+				else {
+					delegate.rowNotSelected();
+				}
 			}
 		};
 	}
@@ -74,8 +79,12 @@ public class ProductPanel extends BaseTablePanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.deleteProductClicked();
-
+				if (table.getSelectedRow() != -1) {
+					delegate.deleteProductClicked(table.getSelectedRow());
+				}
+				else {
+					delegate.rowNotSelected();
+				}
 			}
 		};
 	}

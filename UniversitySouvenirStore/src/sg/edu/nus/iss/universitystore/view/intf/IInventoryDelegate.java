@@ -48,10 +48,10 @@ public interface IInventoryDelegate {
 	/**
 	 * Edit a category.
 	 */
-	public void editProductClicked();
+	public void editProductClicked(int index);
 	
 	/**
 	 * Delete a category.
 	 */
-	public void deleteProductClicked();
+	public void deleteProductClicked(int index);
 }

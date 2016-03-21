@@ -91,7 +91,9 @@ public abstract class ProductDialog extends BaseDialog {
 	/***********************************************************/
 	// Abstract Method Definition
 	/***********************************************************/
-	public abstract boolean productCallback(String productName, String productDescription, String quantity, String price, String barcodeNumber, String reorderQuantity, String orderQuantity);
+	
+	public abstract boolean productCallback(String name, String description, String quantity, String price, String barcodeNumber, String reorderThreshold, String reorderQuantity);
+	
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
