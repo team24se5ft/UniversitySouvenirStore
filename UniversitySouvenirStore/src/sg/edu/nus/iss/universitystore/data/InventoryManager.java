@@ -246,12 +246,18 @@ public class InventoryManager {
 	/**
 	 * (3.6.f) Update a Category
 	 * 
-	 * @param category
+	 * @param oldCategory The category object that needs to be updated.
+	 * @param updatedCategory The new category object.
 	 * @throws StoreException
 	 */
-	public void updateCategory(String categoryCode, String categoryName) throws StoreException {
-		Category category = new Category(categoryCode, categoryName);
-		// TODO: Good to Have
+	public void updateCategory(Category oldCategory, Category updatedCategory) throws IOException, StoreException {
+		// Check if the category exists
+		if(hasCategory(oldCategory.getCode())) {
+			// First, delete the category
+			deleteCategory(oldCategory.getCode());
+			// Next up, add the new category
+			addCategory(updatedCategory.getCode(), updatedCategory.getName());
+		}
 	}
 
 	/**
