@@ -10,9 +10,11 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -87,6 +89,11 @@ public abstract class BaseTablePanel extends JPanel{
 		table.setBorder(BorderFactory.createEtchedBorder());
 		table.setGridColor(Color.BLACK);
 		table.setIntercellSpacing(new Dimension(1, 1));
+		
+		// Make the header of the table centered
+		((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer())
+	    .setHorizontalAlignment(JLabel.CENTER);
+		
 		JScrollPane scrollPane = new JScrollPane(table);
 		return scrollPane;
 	}

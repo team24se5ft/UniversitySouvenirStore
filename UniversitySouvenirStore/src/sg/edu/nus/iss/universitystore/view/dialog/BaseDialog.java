@@ -106,7 +106,7 @@ public abstract class BaseDialog extends JDialog {
 
 		// Cancel button
 		Button btnCancel = new Button(ViewConstants.Labels.STR_CANCEL);
-		btnConfirm.addActionListener(new ActionListener () {
+		btnCancel.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent e) {
 				destroyDialog ();
 			}
