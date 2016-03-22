@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -72,6 +73,7 @@ public abstract class BaseDialog extends JDialog implements WindowListener{
 
 	/**
 	 * Method to create a textfield on a provided panel based on Grid Bag Layout
+	 * @param jPanel The panel on which the textfield will be added.
 	 * @param yPosition The position of the textfield on the panel.
 	 * @return Return a reference to the textfield that was added to the panel.
 	 */
@@ -86,6 +88,24 @@ public abstract class BaseDialog extends JDialog implements WindowListener{
 		return jTextField;
 	}
 	
+	/**
+	 * Method to create a combo box on a provided panel based on Grid Bag Layout
+	 * @param list The list that will be passed to the combo box.
+	 * @param jPanel The panel on which the combo box will be added.
+	 * @param yPosition The position of the combo box on the panel.
+	 * @return Return a reference to the combo box that was added to the panel.
+	 */
+	protected JComboBox<String> createComboBoxOnPanel(String[]list, JPanel panel, int yPosition) {
+		JComboBox<String> comboBox = new JComboBox<String>(list);
+		GridBagConstraints gridBagConstraintForComboBox = new GridBagConstraints();
+		gridBagConstraintForComboBox.fill = GridBagConstraints.BOTH;
+		gridBagConstraintForComboBox.insets = new Insets(0, 0, 5, 0);
+		gridBagConstraintForComboBox.gridx = 1;
+		gridBagConstraintForComboBox.gridy = yPosition;
+		panel.add(comboBox, gridBagConstraintForComboBox);
+		return comboBox;
+	}
+
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/

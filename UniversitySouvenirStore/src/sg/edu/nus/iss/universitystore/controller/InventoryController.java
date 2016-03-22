@@ -88,7 +88,7 @@ public class InventoryController implements IInventoryDelegate {
 		inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
 				TableDataUtils.getHeadersForProductTable());
 
-		// Get main frame
+		// Get main frame reference
 		topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
 	}
 
@@ -213,6 +213,7 @@ public class InventoryController implements IInventoryDelegate {
 
 	@Override
 	public void addProductClicked() {
+		// Add a new Product Dialog
 		ProductDialog productDialog = new ProductDialog(topFrame, "Add Product") {
 			private static final long serialVersionUID = 1L;
 
@@ -231,9 +232,13 @@ public class InventoryController implements IInventoryDelegate {
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
+				// Hide the dialog after execution.
 				return true;
 			}
 		};
+		// Set the list of categories that need to be displayed.
+		productDialog.setCategoryCodeList(getCategoryCode(arrCategory));
+		// Finally show the dialog.
 		productDialog.setVisible(true);
 	}
 
@@ -276,5 +281,21 @@ public class InventoryController implements IInventoryDelegate {
 		// Display message for error.
 		UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_ERROR_ROW_NOT_SELECTED,
 				DialogType.WARNING_MESSAGE);
+	}
+	
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+	/**
+	 * Method to get the list of category code from a list of category objects.
+	 * @param arrayList The arraylist containing category objects.
+	 * @return The array containing only category codes.
+	 */
+	private String[] getCategoryCode(ArrayList<Category> arrayList) {
+		String[] codes =  new String[arrayList.size()];
+		for(int count = 0; count < arrayList.size(); count++) {
+			codes[count] = arrayList.get(count).getCode();
+		}
+		return codes;
 	}
 }

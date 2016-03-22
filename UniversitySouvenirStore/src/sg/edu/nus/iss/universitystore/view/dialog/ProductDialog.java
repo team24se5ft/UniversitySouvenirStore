@@ -4,8 +4,8 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -95,25 +95,39 @@ public abstract class ProductDialog extends BaseDialog {
 	private JTextField reorderQuantity;
 
 	/**
-	 * Arraylist to hold the list of category codes
+	 * Combo box displaying the list of available categories.
 	 */
-	private ArrayList<String> arrCategoryCode;
+	private JComboBox<String> categoryList;
+	/**
+	 * String array to hold the list of category codes
+	 */
+	private String[] arrCategoryCode;
+
 	/***********************************************************/
 	// Abstract Method Definition
 	/***********************************************************/
 
 	/**
 	 * Callback method for confirm clicked on the dialog.
-	 * @param categoryCode The category code that selected.
-	 * @param name The name of the product.
-	 * @param description The description of the product.
-	 * @param quantity The quantity of the product.
-	 * @param price The price of the product.
-	 * @param barcodeNumber The barcode number associated with the product.
-	 * @param reorderThreshold The threshold quantity of the product.
-	 * @param reorderQuantity The reorder quantity of the product.
-	 * @return Boolean to indicate whether the dialog needs to be removed from the frame or not. 
-	 * If true, then the dialog will be removed.
+	 * 
+	 * @param categoryCode
+	 *            The category code that selected.
+	 * @param name
+	 *            The name of the product.
+	 * @param description
+	 *            The description of the product.
+	 * @param quantity
+	 *            The quantity of the product.
+	 * @param price
+	 *            The price of the product.
+	 * @param barcodeNumber
+	 *            The barcode number associated with the product.
+	 * @param reorderThreshold
+	 *            The threshold quantity of the product.
+	 * @param reorderQuantity
+	 *            The reorder quantity of the product.
+	 * @return Boolean to indicate whether the dialog needs to be removed from
+	 *         the frame or not. If true, then the dialog will be removed.
 	 */
 	public abstract boolean productCallback(String categoryCode, String name, String description, String quantity,
 			String price, String barcodeNumber, String reorderThreshold, String reorderQuantity);
@@ -124,15 +138,20 @@ public abstract class ProductDialog extends BaseDialog {
 
 	/**
 	 * Method to set the category code list.
-	 * @param arrCategoryCode The array containing the list of category codes.
+	 * 
+	 * @param arrCategoryCode
+	 *            The array containing the list of category codes.
 	 */
-	public void setCategoryCodeList(ArrayList<String> arrCategoryCode) {
+	public void setCategoryCodeList(String[] arrCategoryCode) {
 		this.arrCategoryCode = arrCategoryCode;
+		updateComboBox(arrCategoryCode);
 	}
-	
+
 	/**
 	 * Set the product name
-	 * @param productName The product name.
+	 * 
+	 * @param productName
+	 *            The product name.
 	 */
 	public void setProductName(String productName) {
 		this.productName.setText(productName);
@@ -140,7 +159,9 @@ public abstract class ProductDialog extends BaseDialog {
 
 	/**
 	 * Set the product description
-	 * @param productName The product description.
+	 * 
+	 * @param productName
+	 *            The product description.
 	 */
 	public void setProductDescription(String productDescription) {
 		this.productDescription.setText(productDescription);
@@ -148,7 +169,9 @@ public abstract class ProductDialog extends BaseDialog {
 
 	/**
 	 * Set the product quantity
-	 * @param productName The product quantity.
+	 * 
+	 * @param productName
+	 *            The product quantity.
 	 */
 	public void setProductQuantity(String quantity) {
 		this.quantity.setText(quantity);
@@ -156,7 +179,9 @@ public abstract class ProductDialog extends BaseDialog {
 
 	/**
 	 * Set the product price
-	 * @param productName The product price.
+	 * 
+	 * @param productName
+	 *            The product price.
 	 */
 	public void setProductPrice(String price) {
 		this.price.setText(price);
@@ -164,7 +189,9 @@ public abstract class ProductDialog extends BaseDialog {
 
 	/**
 	 * Set the product threshold quantity
-	 * @param productName The product threshold quantity.
+	 * 
+	 * @param productName
+	 *            The product threshold quantity.
 	 */
 	public void setThresholdQuantity(String thresholdQuantity) {
 		this.thresholdQuantity.setText(thresholdQuantity);
@@ -172,7 +199,9 @@ public abstract class ProductDialog extends BaseDialog {
 
 	/**
 	 * Set the product reorder quantity.
-	 * @param productName The product reorder quantity..
+	 * 
+	 * @param productName
+	 *            The product reorder quantity..
 	 */
 	public void setReorderQuantity(String reorderQuantity) {
 		this.reorderQuantity.setText(reorderQuantity);
@@ -206,26 +235,7 @@ public abstract class ProductDialog extends BaseDialog {
 		jPanel.setLayout(panelGridBagLayout);
 
 		// Finally add the elements
-		createLabelOnPanel(jPanel, "Product Name:", 0);// Move to constants
-		productName = createTextFieldOnPanel(jPanel, 0);
-
-		createLabelOnPanel(jPanel, "Product Description:", 1);// Move to constants
-		productDescription = createTextFieldOnPanel(jPanel, 1);
-
-		createLabelOnPanel(jPanel, "Product Quantity:", 2);// Move to constants
-		quantity = createTextFieldOnPanel(jPanel, 2);
-
-		createLabelOnPanel(jPanel, "Product Price:", 3);// Move to constants
-		price = createTextFieldOnPanel(jPanel, 3);
-
-		createLabelOnPanel(jPanel, "Bar Code Number:", 4);// Move to constants
-		barcodeNumber = createTextFieldOnPanel(jPanel, 4);
-
-		createLabelOnPanel(jPanel, "Reorder Quantity (Threshold):", 5);// Move to constants
-		thresholdQuantity = createTextFieldOnPanel(jPanel, 5);
-
-		createLabelOnPanel(jPanel, "Order Quantity:", 6);// Move to constants
-		reorderQuantity = createTextFieldOnPanel(jPanel, 6);
+		addElements(jPanel);
 
 		return jPanel;
 	}
@@ -238,7 +248,66 @@ public abstract class ProductDialog extends BaseDialog {
 	 */
 	@Override
 	protected boolean confirmClicked() {
-		return productCallback(null,productName.getText(), productDescription.getText(), quantity.getText(), price.getText(),
-				barcodeNumber.getText(), thresholdQuantity.getText(), reorderQuantity.getText());
+		return productCallback(null, productName.getText(), productDescription.getText(), quantity.getText(),
+				price.getText(), barcodeNumber.getText(), thresholdQuantity.getText(), reorderQuantity.getText());
+	}
+
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+
+	/**
+	 * Method to create the various textfields and their labels.
+	 * 
+	 * @param panel
+	 *            The panel on which the textfields & labels need to be placed.
+	 */
+	private void addElements(JPanel panel) {
+		int index = 0;
+		// Now create the label & combo box
+		createLabelOnPanel(jPanel, "Category", index);
+		
+		// While initializing the array will be null
+		if(arrCategoryCode == null) {
+			arrCategoryCode = new String[]{};
+		}
+		categoryList = createComboBoxOnPanel(arrCategoryCode, jPanel, index++);
+
+		// Start adding the products
+		createLabelOnPanel(jPanel, "Product Name:", index);// Move to constants
+		productName = createTextFieldOnPanel(jPanel, index++);
+
+		createLabelOnPanel(jPanel, "Product Description:", index);// Move to
+																	// constants
+		productDescription = createTextFieldOnPanel(jPanel, index++);
+
+		createLabelOnPanel(jPanel, "Product Quantity:", index);// Move to
+																// constants
+		quantity = createTextFieldOnPanel(jPanel, index++);
+
+		createLabelOnPanel(jPanel, "Product Price:", index);// Move to constants
+		price = createTextFieldOnPanel(jPanel, index++);
+
+		createLabelOnPanel(jPanel, "Bar Code Number:", index);// Move to
+																// constants
+		barcodeNumber = createTextFieldOnPanel(jPanel, index++);
+
+		createLabelOnPanel(jPanel, "Reorder Quantity (Threshold):", index);// Move
+																			// to
+																			// constants
+		thresholdQuantity = createTextFieldOnPanel(jPanel, index++);
+
+		createLabelOnPanel(jPanel, "Order Quantity:", index);// Move to
+																// constants
+		reorderQuantity = createTextFieldOnPanel(jPanel, index++);
+	}
+	
+	private void updateComboBox(String[] array) {
+		// Remove all the components
+		categoryList.removeAllItems();
+		// Start adding from start
+		for(int count = 0;count < array.length; count++) {
+			categoryList.addItem(array[count]);
+		}
 	}
 }
