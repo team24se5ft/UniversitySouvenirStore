@@ -72,7 +72,6 @@ public class InventoryController implements IInventoryDelegate {
 			// Initialize the instance variables.
 			inventoryManager = InventoryManager.getInstance();
 			arrCategory = inventoryManager.getAllCategories();
-			System.out.println(arrCategory);
 			arrProduct = inventoryManager.getAllProducts();
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -158,7 +158,7 @@ public class MemberManager {
 		return storedMembers;
 
 	}
-
+	
 	/**
 	 * (3.4.f.1)updating name in file
 	 * 

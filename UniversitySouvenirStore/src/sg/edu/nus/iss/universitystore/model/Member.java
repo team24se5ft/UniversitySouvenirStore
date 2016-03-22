@@ -35,6 +35,13 @@ public class Member {
 		
 	}
 	
+	public Member(String identifier, String name, String loyaltyPoints) {
+		this.identifier = identifier;
+		this.name = name;
+		this.loyaltyPoints = Integer.parseInt(loyaltyPoints);
+		
+	}
+	
 	/***********************************************************/
 	//Getters & Setters
 	/***********************************************************/

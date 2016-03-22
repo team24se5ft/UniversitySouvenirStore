@@ -30,11 +30,14 @@ public abstract class CategoryDialog extends BaseDialog {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
+
 	/**
 	 * Constructor to create the dialog.
-	 * @param parent The parent frame on top of which this dialog will be created.
-	 * @param title The title of this dialog.
-	 * @param delegate The delegate(controller reference) which enables communication to the controller.
+	 * 
+	 * @param parent
+	 *            The parent frame on top of which this dialog will be created.
+	 * @param title
+	 *            The title of this dialog.
 	 */
 	public CategoryDialog(JFrame parent, String title) {
 		// Call the parent
@@ -42,7 +45,7 @@ public abstract class CategoryDialog extends BaseDialog {
 		// Set the delegate
 		// Customize this dialog
 		this.addWindowListener(this);
-		this.setSize(400, 200);//TODO: Move to constants
+		this.setSize(400, 200);// TODO: Move to constants
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
@@ -50,11 +53,11 @@ public abstract class CategoryDialog extends BaseDialog {
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
+
 	/**
 	 * The panel associated with this dialog.
 	 */
 	private JPanel jPanel;
-
 
 	/**
 	 * Text field for holding the category name entered by the user.
@@ -65,53 +68,69 @@ public abstract class CategoryDialog extends BaseDialog {
 	 * Textfield for holding the category code entered by the user.
 	 */
 	private JTextField categoryCode;
-	
-	
+
 	/***********************************************************/
 	// Abstract Method Definition
 	/***********************************************************/
+
 	/**
-	 * The callback which will be called when the Confirm button is tapped on the dialog.
-	 * @param categoryCode The category code that was added/edited.
-	 * @param categoryName The category name that was added/edited.
-	 * @return Boolean to indicate whether the dialog needs to be removed from the frame or not. 
-	 * If true, then the dialog will be removed.
+	 * The callback which will be called when the Confirm button is tapped on
+	 * the dialog.
+	 * 
+	 * @param categoryCode
+	 *            The category code that was added/edited.
+	 * @param categoryName
+	 *            The category name that was added/edited.
+	 * @return Boolean to indicate whether the dialog needs to be removed from
+	 *         the frame or not. If true, then the dialog will be removed.
 	 */
 	public abstract boolean categoryCallback(String categoryCode, String categoryName);
-	
+
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
-	
+
 	/**
 	 * Method to set the category code of the dialog
-	 * @param categoryCode The string which needs to be set as the text for the category code textfield.
+	 * 
+	 * @param categoryCode
+	 *            The string which needs to be set as the text for the category
+	 *            code textfield.
 	 */
 	public void setCategoryCode(String categoryCode) {
 		this.categoryCode.setText(categoryCode);
 	}
-	
+
 	/**
 	 * Method to set the category name of the dialog
-	 * @param categoryName The string which needs to be set as the text for the category name textfield.
+	 * 
+	 * @param categoryName
+	 *            The string which needs to be set as the text for the category
+	 *            name textfield.
 	 */
 	public void setCategoryName(String categoryName) {
 		this.categoryName.setText(categoryName);
 	}
-	
+
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
-	/* (non-Javadoc)
-	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#getPanelToAddToDialog()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#
+	 * getPanelToAddToDialog()
 	 */
 	@Override
 	protected boolean confirmClicked() {
 		return categoryCallback(categoryCode.getText(), categoryName.getText());
 	}
-	
-	/* (non-Javadoc)
-	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#getPanelToAddToDialog()
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#
+	 * getPanelToAddToDialog()
 	 */
 	@Override
 	protected JPanel getPanelToAddToDialog() {
@@ -131,12 +150,15 @@ public abstract class CategoryDialog extends BaseDialog {
 		panelGridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		jPanel.setLayout(panelGridBagLayout);
 
+		// Keep track of the index.
+		int index = 0;
+
 		// Finally add the elements
-		createLabelOnPanel(jPanel, "Category Code:", 0);// Move to constants
-		categoryCode = createTextFieldOnPanel(jPanel, 0);
-		
-		createLabelOnPanel(jPanel, "Category Name:", 1);// Move to constants
-		categoryName = createTextFieldOnPanel(jPanel, 1);
+		createLabelOnPanel(jPanel, "Category Code:", index);// Move to constants
+		categoryCode = createTextFieldOnPanel(jPanel, index++);
+
+		createLabelOnPanel(jPanel, "Category Name:", index);// Move to constants
+		categoryName = createTextFieldOnPanel(jPanel, index++);
 		return jPanel;
 	}
 

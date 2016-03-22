@@ -5,99 +5,186 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
+import sg.edu.nus.iss.universitystore.data.MemberManager;
 import sg.edu.nus.iss.universitystore.model.Member;
+import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
+import sg.edu.nus.iss.universitystore.utility.UIUtils;
+import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.MemberDialog;
 import sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.MemberPanel;
 
 public class MemberController implements IMemberDelegate {
-	private MemberPanel memberPanel;
-	private ArrayList<Member> memberList;
 
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
+	/**
+	 * Instance of the Member Manager for retrieving the data from the dB.
+	 */
+	private MemberManager memberManager;
+
+	/**
+	 * Holds the reference to the view associated to show the inventory.
+	 */
+	private MemberPanel memberPanel;
+
+	/**
+	 * The list of all member.
+	 */
+	private ArrayList<Member> arrMember;
+
+	/**
+	 * The reference to the main frame on which the current panel is added.
+	 */
+	private JFrame topFrame;
+
+	/***********************************************************/
+	// Constructors
+	/***********************************************************/
+
+	/**
+	 * Inventory Controller Constructor
+	 */
 	public MemberController() {
-		memberPanel = new MemberPanel(this);
-		memberList = new ArrayList<Member>();
-		for (int i = 0; i < 2; i++) {
-			Member e=new Member("A12345", "Sample", -1);
-			memberList.add(e);
+		try {
+			// Initialize the instance variables.
+			memberManager = MemberManager.getInstance();
+			arrMember = memberManager.getMembers();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getStackTrace());
 		}
-		memberPanel.setMemberTableData(memberList);
+
+		// Initialize the panel associated with this controller
+		memberPanel = new MemberPanel(this);
+
+		// Update Member Panel with retrieved data
+		memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
+				TableDataUtils.getHeadersForMemberTable());
+
+		// Get main frame reference
+		topFrame = (JFrame) SwingUtilities.getWindowAncestor(memberPanel);
 	}
+
+	/***********************************************************/
+	// Getters & setters
+	/***********************************************************/
 
 	public MemberPanel getMemberPanel() {
 		return memberPanel;
 	}
-    /**
-     * Implementing addMember from IMemberDelegate
-     */
-	@Override
-	public void addMember() {
-		new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "AddMember"){
 
-			@Override
-			public boolean MemberCallBack(String memberId, String memberName, String loyaltyPoints) {
-				Member member = new Member(memberId,memberName,Integer.valueOf(loyaltyPoints));
-				// TODO dataModify
-				memberList.add(member);
-				// UIupdate
-				memberPanel.onAddMember(member);
-				return true;
-			}
+	/***********************************************************/
+	// IMemberDelegate Implementation
+	/***********************************************************/
+
+	@Override
+	public void addMemberClicked() {
+		MemberDialog memberDialog = new MemberDialog(topFrame, "Add Member") {
 			
-		}.setVisible(true);
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public boolean memberCallBack(String memberId, String memberName, String loyaltyPoints) {
+				// TODO Auto-generated method stub
+				// TODO Validations
+				try {
+					memberManager.addNewMember(memberName, memberId);
+					// Show the success dialog
+					UIUtils.showMessageDialog(memberPanel, ViewConstants.ErrorMessages.STR_SUCCESS,
+							"Successfully added.", DialogType.INFORMATION_MESSAGE);
+					// Update Table
+					arrMember = memberManager.getMembers();
+					memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
+							TableDataUtils.getHeadersForMemberTable());
+					return true;
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				return false;
+			}
+		};
+		// Make the category dialog visible.
+		memberDialog.setVisible(true);
 	}
 
-    /*
-     * Implementing deleteMember from IMemberDelegate
-     * @see sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate#deleteMember(int)
-     */
+	/*
+	 * Implementing deleteMember from IMemberDelegate
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate#deleteMember(
+	 * int)
+	 */
 	@Override
-	public void deleteMember(int row) {
-		if (row < 0) {
-			return;
-		}
-		new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "ConfirmDialog",
-				"Do u really want to delete row " + (row + 1)) {
-					private static final long serialVersionUID = 1L;
+	public void deleteMemberClicked(int index) {
+		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Category",
+				"Do u really want to delete the member?") {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected boolean confirmClicked() {
-				// TODO dataModify
-				memberList.remove(row);
-				// UIupdate
-				memberPanel.onRemoveMember(row);
+				Member member = arrMember.get(index);
+				try {
+					// Update the backend
+					memberManager.removeMember(member.getIdentifier());
+					// Update Table
+					arrMember = memberManager.getMembers();
+					memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
+							TableDataUtils.getHeadersForMemberTable());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				// Remove the dialog
 				return true;
 			}
-		}.setVisible(true);
+		};
+		confirmationDialog.setVisible(true);
 	}
 
-	/**
-	 * Implementing updateMember from IMemberDelegate
-	 */
 	@Override
-	public void updateMember(int row) {
-		// TODO Auto-generated method stub
-		if (row < 0) {
-			return;
-		}
-		MemberDialog updateDlg=new MemberDialog((JFrame) SwingUtilities.getWindowAncestor(memberPanel), "UpdateMember"){
+	public void editMemberClicked(int index) {
+//		// Get the object at the index
+//				Member member = arrMember.get(index);
+//				// Implement an instance of the member dialog
+//				MemberDialog memberDialog = new MemberDialog(topFrame, "Edit Member") {
+//
+//					private static final long serialVersionUID = 1L;
+//
+//					@Override
+//					public boolean memberCallBack(String memberId, String memberName, String loyaltyPoints) {
+//						// TODO : Do validation here
+//						try {
+//							// If the value is valid Update the value in the dB
+//							Member updatedMember = new Member(memberId, memberName, loyaltyPoints);
+//							memberManager.up(category, updatedMember);
+//							// Update the local copy
+//							arrCategory = inventoryManager.getAllCategories();
+//							// Update table
+//							inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
+//									TableDataUtils.getHeadersForCategoryTable());
+//							// Dismiss the dialog OR show a success dialog
+//							return true;
+//						} catch (Exception e) {
+//							// TODO: handle exception
+//						}
+//						return false;
+//					}
+//				};
+//
+//				// Set the text of the dialog as per the object
+//				categoryDialog.setCategoryName(category.getName());
+//				categoryDialog.setCategoryCode(category.getCode());
+//				// Make the dialog visible.
+//				categoryDialog.setVisible(true);
 
-			@Override
-			public boolean MemberCallBack(String memberId, String memberName, String loyaltyPoints) {
-				// TODO Auto-generated method stub
-				Member member = new Member(memberId, memberName, Integer.valueOf(loyaltyPoints));
-				// TODO dataModify
-				memberList.remove(row);
-				memberList.add(row,member);
-				// UIupdate
-				memberPanel.onUpdateMember(member, row);
-				return true;
-			}
-			
-		};
-		updateDlg.setMemberData(memberList.get(row));
-		updateDlg.setVisible(true);
-		
+	}
+	
+	@Override
+	public void rowNotSelected() {
+		// TODO - Implement the same.
 	}
 }
