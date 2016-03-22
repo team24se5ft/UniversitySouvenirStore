@@ -1,10 +1,15 @@
 package sg.edu.nus.iss.universitystore.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.data.DiscountManager;
+import sg.edu.nus.iss.universitystore.exception.StoreException;
+import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
@@ -14,17 +19,25 @@ import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
 
 public class DiscountController implements IDiscountDelegate {
 	private DiscountPanel discountPanel;
+	private DiscountManager discountManager;
 	private ArrayList<Discount> discountList;
 
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
 	public DiscountController() {
-		discountList = new ArrayList<Discount>();
-		// FIXME after backend finished
-		for (int i = 0; i < 5; i++) {
-			Discount e = new Discount("Test", "lose my previous code TnT", "06/06", 10, 20, "A");
-			discountList.add(e);
+		try {
+			discountManager = DiscountManager.getInstance();
+			discountList = discountManager.getAllDiscounts();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (StoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		discountPanel = new DiscountPanel(this);
 		discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
@@ -68,7 +81,17 @@ public class DiscountController implements IDiscountDelegate {
 				Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
 						Float.valueOf(percentage), eligibilty);
 				// TODO dataModify
-				discountList.add(discount);
+				
+				try {
+					discountManager.addDiscount(discount);
+					discountList = discountManager.getAllDiscounts();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				// UIupdate
 				discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
 						TableDataUtils.getHeadersForDiscountTable());
@@ -87,11 +110,20 @@ public class DiscountController implements IDiscountDelegate {
 		}
 		new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "ConfirmDialog",
 				"Do u really want to delete row " + (row + 1)) {
-
+			Discount discount = discountList.get(row);
 			@Override
 			protected boolean confirmClicked() {
 				// TODO dataModify
-				discountList.remove(row);
+				try {
+					discountManager.deleteDiscount(discount.getCode());
+					discountList = discountManager.getAllDiscounts();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				// UIupdate
 				discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
 						TableDataUtils.getHeadersForDiscountTable());
@@ -105,17 +137,26 @@ public class DiscountController implements IDiscountDelegate {
 		if (row < 0) {
 			return;
 		}
+		
+		// Get the object at the index
+		Discount oldDiscount = discountList.get(row);
+		
 		DiscountDialog updateDlg = new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel),
 				"UpdateDiscount") {
 
 			@Override
 			public boolean onDiscountCallBack(String code, String description, String startDate, String period,
 					String percentage, String eligibilty) {
-				Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
+				Discount newDiscount = new Discount(code, description, startDate, Integer.valueOf(period),
 						Float.valueOf(percentage), eligibilty);
-				// TODO dataModify
-				discountList.remove(row);
-				discountList.add(row, discount);
+				
+				try {
+					discountManager.updateDiscount(oldDiscount, newDiscount);
+					discountList = discountManager.getAllDiscounts();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				// UIupdate
 				discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
 						TableDataUtils.getHeadersForDiscountTable());

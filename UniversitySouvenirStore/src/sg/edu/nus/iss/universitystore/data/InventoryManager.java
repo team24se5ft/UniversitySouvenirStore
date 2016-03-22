@@ -112,6 +112,9 @@ public class InventoryManager {
 		return instance;
 	}
 
+	/**
+	 * Delete instance of Data File Manager
+	 */
 	public static void deleteInstance() {
 		instance = null;
 	}
@@ -170,7 +173,7 @@ public class InventoryManager {
 	}
 
 	/***********************************************************/
-	// Category
+	// Public Methods for Category
 	/***********************************************************/
 
 	/**
@@ -246,17 +249,25 @@ public class InventoryManager {
 	/**
 	 * (3.6.f) Update a Category
 	 * 
-	 * @param oldCategory The category object that needs to be updated.
-	 * @param updatedCategory The new category object.
+	 * @param oldCategory
+	 *            The category object that needs to be updated.
+	 * @param updatedCategory
+	 *            The new category object.
 	 * @throws StoreException
 	 */
 	public void updateCategory(Category oldCategory, Category updatedCategory) throws IOException, StoreException {
 		// Check if the category exists
-		if(hasCategory(oldCategory.getCode())) {
+		if (hasCategory(oldCategory.getCode())) {
+			// Get existing Vendor list
+			ArrayList<Vendor> existingVendorLst = getAllVendors(oldCategory.getCode());
 			// First, delete the category
 			deleteCategory(oldCategory.getCode());
 			// Next up, add the new category
 			addCategory(updatedCategory.getCode(), updatedCategory.getName());
+			// Add Vendors to new category
+			for (Vendor vendor : existingVendorLst) {
+				addVendor(updatedCategory.getCode(), vendor.getName(), vendor.getDescription());
+			}
 		}
 	}
 
@@ -303,7 +314,7 @@ public class InventoryManager {
 	}
 
 	/***********************************************************/
-	// Product
+	// Public Methods for Product
 	/***********************************************************/
 
 	/**
@@ -347,7 +358,7 @@ public class InventoryManager {
 				String.valueOf(goods.getQuantity()), String.valueOf(goods.getPrice()),
 				String.valueOf(goods.getReorderThreshold()), String.valueOf(goods.getReorderQuantity()));
 	}
-	
+
 	/**
 	 * (3.5.b, 3.5.c.2) Add Product
 	 * 
@@ -373,16 +384,6 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.5.c.1) Generate Product ID
-	 * 
-	 * @return Product ID
-	 */
-	private int generateProductID() {
-		// TODO: Generate Random Number
-		return productID++;
-	}
-
-	/**
 	 * (3.5.d) Find Product
 	 * 
 	 * @param productID
@@ -402,7 +403,7 @@ public class InventoryManager {
 
 		return productFound;
 	}
-	
+
 	/**
 	 * (3.5.e) Check if the product id entered is valid.
 	 * 
@@ -422,7 +423,7 @@ public class InventoryManager {
 
 		return status;
 	}
-	
+
 	/**
 	 * (3.5.f) Delete a Product from the store
 	 * 
@@ -433,18 +434,18 @@ public class InventoryManager {
 	 */
 	public boolean deleteProduct(Product product) throws IOException, StoreException {
 		boolean status = false;
-		
-		if(!isValidProduct(product.getIdentifier()))
+
+		if (!isValidProduct(product.getIdentifier()))
 			return false;
-		
+
 		product = findProduct(product.getIdentifier());
-		if(productData.delete(product.toString())){
+		if (productData.delete(product.toString())) {
 			status = true;
 		}
-		
+
 		return status;
 	}
-	
+
 	/**
 	 * (3.5.g) Update details of the product
 	 * 
@@ -455,15 +456,15 @@ public class InventoryManager {
 	 */
 	public boolean updateProduct(Product newProduct) throws IOException, StoreException {
 		boolean status = false;
-		
-		if(!isValidProduct(newProduct.getIdentifier()))
+
+		if (!isValidProduct(newProduct.getIdentifier()))
 			return status;
-		
+
 		Product existingProduct = findProduct(newProduct.getIdentifier());
-		if(deleteProduct(existingProduct)){
+		if (deleteProduct(existingProduct)) {
 			status = productData.add(newProduct);
 		}
-		
+
 		return status;
 	}
 
@@ -472,13 +473,13 @@ public class InventoryManager {
 	 * 
 	 * @return List of Products
 	 * @throws IOException
-	 * @throws StoreException 
+	 * @throws StoreException
 	 */
 	public ArrayList<Product> getProductsBelowThreshold() throws IOException, StoreException {
 		ArrayList<Product> productList = getAllProducts();
-		if(productList.size() == 0)
+		if (productList.size() == 0)
 			throw new StoreException(Messages.Error.Product.PRODUCT_ZERO);
-		
+
 		// List of Products below Threshold
 		ArrayList<Product> blwTheshProdList = new ArrayList<>();
 
@@ -492,7 +493,21 @@ public class InventoryManager {
 	}
 
 	/***********************************************************/
-	// Vendor
+	// Private Methods for Product
+	/***********************************************************/
+
+	/**
+	 * (3.5.c.1) Generate Product ID
+	 * 
+	 * @return Product ID
+	 */
+	private int generateProductID() {
+		// TODO: Generate Random Number
+		return productID++;
+	}
+
+	/***********************************************************/
+	// Public Methods for Vendor
 	/***********************************************************/
 
 	/**
@@ -528,11 +543,12 @@ public class InventoryManager {
 	 * @param vendorName
 	 * @param vendorDescription
 	 * @return Status
+	 * @throws IOException
 	 */
-	public boolean addVendor(String categoryCode, String vendorName, String vendorDescription) {
-		boolean status = false;
+	public boolean addVendor(String categoryCode, String vendorName, String vendorDescription) throws IOException {
 		// TODO: Good to have - Add a vendor to vendor list
-		return false;
+		DataFile<Vendor> vendorList = vendorMap.get(categoryCode);
+		return vendorList.add(new Vendor(vendorName, vendorDescription));
 	}
 
 	/**

@@ -26,15 +26,10 @@ public class Discount {
 		this.percentage = percentage;
 		this.eligibilty = eligibilty;
 	}
-	
+
 	public Discount(String code, String description, String startDate, String period, String percentage,
 			String eligibilty) {
-		this.code = code;
-		this.description = description;
-		this.startDate = startDate;
-		this.period = Integer.parseInt(period);
-		this.percentage = Float.parseFloat(percentage);
-		this.eligibilty = eligibilty;
+		this(code, description, startDate, Integer.parseInt(period), Float.parseFloat(percentage), eligibilty);
 	}
 
 	/***********************************************************/
@@ -94,7 +89,6 @@ public class Discount {
 	 */
 	@Override
 	public String toString() {
-		return "Discount [code=" + code + ", description=" + description + ", startDate=" + startDate + ", period="
-				+ period + ", percentage=" + percentage + ", eligibilty=" + eligibilty + "]";
+		return code + "," + description + "," + startDate + ","	+ period + "," + percentage + "," + eligibilty;
 	}
 }

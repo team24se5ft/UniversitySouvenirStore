@@ -1,8 +1,15 @@
 package sg.edu.nus.iss.universitystore.constants;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import sg.edu.nus.iss.universitystore.model.Category;
 
 public final class Constants {
+
+	public static final class DateTime {
+		public static final LocalDate CURRENT_DATE = LocalDate.now();
+	}
 
 	public static final class Common {
 		public static final String EMPTY_STR = "";
@@ -12,21 +19,24 @@ public final class Constants {
 	public static final class Data {
 
 		// TODO: Is this the best solution
-		public enum FILE_FOLDER { TEST,DATA;}
+		public enum FILE_FOLDER {
+			TEST, DATA;
+		}
 
 		// TODO: Come up with better solution
-		public static final String FILE_PATH_SEPTR = System.getProperty("os.name").toUpperCase().startsWith("WIN")?"\\":"//";
+		public static final String FILE_PATH_SEPTR = System.getProperty("os.name").toUpperCase().startsWith("WIN")
+				? "\\" : "//";
 		public static final String FILE_EXT = ".dat";
 		public static final String FILE_SEPTR = ",";
 		public static final String FILE_FLDR = "data";
-		public static final String FILE_PATH = System.getProperty("user.dir") + 
-				FILE_PATH_SEPTR + FILE_FOLDER.DATA.toString().toLowerCase() + FILE_PATH_SEPTR;
+		public static final String FILE_PATH = System.getProperty("user.dir") + FILE_PATH_SEPTR
+				+ FILE_FOLDER.DATA.toString().toLowerCase() + FILE_PATH_SEPTR;
 
 		public static final String ID_SEPTR = "/";
 
-		public static final String TEST_FILE_PATH = System.getProperty("user.dir") + 
-				FILE_PATH_SEPTR + FILE_FOLDER.TEST.toString().toLowerCase() + 
-				FILE_PATH_SEPTR + FILE_FOLDER.DATA.toString().toLowerCase() + FILE_PATH_SEPTR;
+		public static final String TEST_FILE_PATH = System.getProperty("user.dir") + FILE_PATH_SEPTR
+				+ FILE_FOLDER.TEST.toString().toLowerCase() + FILE_PATH_SEPTR
+				+ FILE_FOLDER.DATA.toString().toLowerCase() + FILE_PATH_SEPTR;
 
 		public static final class FileName {
 			public static final String CATEGORY_DAT = "Category";
@@ -48,6 +58,38 @@ public final class Constants {
 
 		public static final class Member {
 			public static final int LOYALTY_NEW_MEMBER = -1;
+		}
+
+		public static final class Discount {
+			public static final class Pattern {
+				public static final String LINE_MATCH = "^[A-Z]+\\,.*?\\,\\d{4}\\-\\d{2}\\-\\d{2}\\,\\d{1,3},\\d{1,3}(\\.\\d{1,2})?\\,[A|M]$";
+			}
+
+			public static final class Eligibility {
+				public static final String MEMBER = "M";
+				public static final String ALL = "A";
+			}
+
+			public static final class Member {
+				public static final class New {
+					public static final String CODE = "NEWMEMBER";
+					public static final String DESCRIPTION = "Discount for New Member";
+					public static final int PERIOD = 0;
+					public static final float DEFAULT_DISCOUNT = 20;
+				}
+				public static final class Existing {
+					public static final String CODE = "EXTGMEMBER";
+					public static final String DESCRIPTION = "Discount for Member";
+					public static final int PERIOD = 365;
+					public static final float DEFAULT_DISCOUNT = 10;
+				}
+				public static final class Public {
+					public static final String CODE = "NONMEMBER";
+					public static final String DESCRIPTION = "No Discount applicable for Non-Member";
+					public static final int PERIOD = 0;
+					public static final float DEFAULT_DISCOUNT = 0;
+				}
+			}
 		}
 	}
 
@@ -86,7 +128,7 @@ public final class Constants {
 		// Member
 		public static final int NUMBER_OF_MEMBER_TABLE_COLUMNS = 3;
 		public static final String STR_MEMBER_IDENTIFIER = "Identifier";
-		public static final String STR_MEMBER_NAME= "Name";
+		public static final String STR_MEMBER_NAME = "Name";
 		public static final String STR_MEMBER_LOYALTY_POINTS = "Loyalty Points";
 	}
 }
