@@ -29,7 +29,7 @@ public class InventoryController implements IInventoryDelegate {
 	/***********************************************************/
 	public static final String STR_ERROR_MESSAGE_CATEGORY_CODE_OR_NAME_EMPTY = "The category code or name cannot be left empty.";
 	public static final String STR_ERROR_FAILED = "The category was not added.";
-	public static final String STR_SUCCESS_MESSAGE = "The category was successfully added.";
+	public static final String STR_SUCCESS_MESSAGE = "Successfully added.";
 	public static final String STR_ERROR_CATEGORY_3_DIGIT = "The category code should only consist of three alphabets without any spaces.";
 	public static final String STR_ERROR_ROW_NOT_SELECTED = "Please select a row of the table for completing this operation.";
 	/***********************************************************/
@@ -78,7 +78,7 @@ public class InventoryController implements IInventoryDelegate {
 			// TODO: handle exception
 			System.out.println(e.getStackTrace());
 		}
-		
+
 		// Initialize the panel associated with this controller
 		inventoryPanel = new InventoryPanel(this);
 
@@ -103,6 +103,9 @@ public class InventoryController implements IInventoryDelegate {
 	// IInventoryDelegate Implementation
 	/***********************************************************/
 
+	/***********************************************************/
+	// CRUD operations for Categories
+	/***********************************************************/
 	@Override
 	public void addCategoryClicked() {
 		CategoryDialog categoryDialog = new CategoryDialog(topFrame, "Add Category") {
@@ -211,6 +214,10 @@ public class InventoryController implements IInventoryDelegate {
 		confirmationDialog.setVisible(true);
 	}
 
+	/***********************************************************/
+	// CRUD operations for Products
+	/***********************************************************/
+
 	@Override
 	public void addProductClicked() {
 		// Add a new Product Dialog
@@ -218,12 +225,15 @@ public class InventoryController implements IInventoryDelegate {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean productCallback(String categoryCode, String name, String description, String quantity, String price,
-					String barcodeNumber, String reorderThreshold, String reorderQuantity) {
+			public boolean productCallback(String categoryCode, String name, String description, String quantity,
+					String price, String barcodeNumber, String reorderThreshold, String reorderQuantity) {
 				try {
 					// Add the new product
-					inventoryManager.addProduct("LPC", name, description, quantity, price, reorderThreshold,
+					inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
 							reorderQuantity);
+					// Show the success dialog
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_SUCCESS,
+							STR_SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
 					// Update the local copy
 					arrProduct = inventoryManager.getAllProducts();
 					// Update the table
@@ -238,14 +248,54 @@ public class InventoryController implements IInventoryDelegate {
 		};
 		// Set the list of categories that need to be displayed.
 		productDialog.setCategoryCodeList(getCategoryCode(arrCategory));
-		// Finally show the dialog.
+
+		// Show the dialog.
 		productDialog.setVisible(true);
 	}
 
 	@Override
 	public void editProductClicked(int index) {
-		// TODO Auto-generated method stub
+		// Get the object at the index
+		Product product = arrProduct.get(index);
 
+		ProductDialog productDialog = new ProductDialog(topFrame, "Edit Product") {
+
+			@Override
+			public boolean productCallback(String categoryCode, String name, String description, String quantity,
+					String price, String barcodeNumber, String reorderThreshold, String reorderQuantity) {
+				try {
+					Product updatedProduct = new Product(categoryCode, name, description, quantity, price,
+							reorderThreshold, reorderQuantity);
+					inventoryManager.updateProduct(updatedProduct);
+					// Update the local copy
+					arrProduct = inventoryManager.getAllProducts();
+					// Update table
+					// Update the table
+					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+							TableDataUtils.getHeadersForProductTable());
+					// Dismiss the dialog OR show a success dialog
+					return true;
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
+		// Set all the values now
+		productDialog.setProductName(product.getName());
+		productDialog.setProductDescription(product.getDescription());
+		productDialog.setProductPrice(String.valueOf(product.getPrice()));
+		productDialog.setProductQuantity(String.valueOf(product.getQuantity()));
+		productDialog.setThresholdQuantity(String.valueOf(product.getReorderThreshold()));
+		productDialog.setReorderQuantity(String.valueOf(product.getReorderQuantity()));
+		
+		// Since the user cannot edit the category type, we only pass the
+		// current category.
+		productDialog.setCategoryCodeList(new String[] { product.getIdentifier() });
+
+		// Show the dialog.
+		productDialog.setVisible(true);
 	}
 
 	@Override
@@ -282,18 +332,21 @@ public class InventoryController implements IInventoryDelegate {
 		UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_ERROR_ROW_NOT_SELECTED,
 				DialogType.WARNING_MESSAGE);
 	}
-	
+
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/
+
 	/**
 	 * Method to get the list of category code from a list of category objects.
-	 * @param arrayList The arraylist containing category objects.
+	 * 
+	 * @param arrayList
+	 *            The arraylist containing category objects.
 	 * @return The array containing only category codes.
 	 */
 	private String[] getCategoryCode(ArrayList<Category> arrayList) {
-		String[] codes =  new String[arrayList.size()];
-		for(int count = 0; count < arrayList.size(); count++) {
+		String[] codes = new String[arrayList.size()];
+		for (int count = 0; count < arrayList.size(); count++) {
 			codes[count] = arrayList.get(count).getCode();
 		}
 		return codes;

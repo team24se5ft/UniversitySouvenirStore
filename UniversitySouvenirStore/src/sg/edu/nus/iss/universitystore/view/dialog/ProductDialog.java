@@ -248,7 +248,7 @@ public abstract class ProductDialog extends BaseDialog {
 	 */
 	@Override
 	protected boolean confirmClicked() {
-		return productCallback(null, productName.getText(), productDescription.getText(), quantity.getText(),
+		return productCallback(String.valueOf(categoryList.getSelectedItem()), productName.getText(), productDescription.getText(), quantity.getText(),
 				price.getText(), barcodeNumber.getText(), thresholdQuantity.getText(), reorderQuantity.getText());
 	}
 
@@ -277,12 +277,10 @@ public abstract class ProductDialog extends BaseDialog {
 		createLabelOnPanel(jPanel, "Product Name:", index);// Move to constants
 		productName = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, "Product Description:", index);// Move to
-																	// constants
+		createLabelOnPanel(jPanel, "Product Description:", index);// Move to constants
 		productDescription = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, "Product Quantity:", index);// Move to
-																// constants
+		createLabelOnPanel(jPanel, "Product Quantity:", index);// Move to constants
 		quantity = createTextFieldOnPanel(jPanel, index++);
 
 		createLabelOnPanel(jPanel, "Product Price:", index);// Move to constants
@@ -302,6 +300,10 @@ public abstract class ProductDialog extends BaseDialog {
 		reorderQuantity = createTextFieldOnPanel(jPanel, index++);
 	}
 	
+	/**
+	 * Method to update the contents of the combo box.
+	 * @param array The array of new items that needs to be populated.
+	 */
 	private void updateComboBox(String[] array) {
 		// Remove all the components
 		categoryList.removeAllItems();
