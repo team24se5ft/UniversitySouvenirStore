@@ -69,6 +69,7 @@ public class InventoryController implements IInventoryDelegate {
 	 */
 	public InventoryController() {
 		try {
+			// Initialize the instance variables.
 			inventoryManager = InventoryManager.getInstance();
 			arrCategory = inventoryManager.getAllCategories();
 			System.out.println(arrCategory);
@@ -77,6 +78,7 @@ public class InventoryController implements IInventoryDelegate {
 			// TODO: handle exception
 			System.out.println(e.getStackTrace());
 		}
+		
 		// Initialize the panel associated with this controller
 		inventoryPanel = new InventoryPanel(this);
 

@@ -102,6 +102,19 @@ public abstract class ProductDialog extends BaseDialog {
 	// Abstract Method Definition
 	/***********************************************************/
 
+	/**
+	 * Callback method for confirm clicked on the dialog.
+	 * @param categoryCode The category code that selected.
+	 * @param name The name of the product.
+	 * @param description The description of the product.
+	 * @param quantity The quantity of the product.
+	 * @param price The price of the product.
+	 * @param barcodeNumber The barcode number associated with the product.
+	 * @param reorderThreshold The threshold quantity of the product.
+	 * @param reorderQuantity The reorder quantity of the product.
+	 * @return Boolean to indicate whether the dialog needs to be removed from the frame or not. 
+	 * If true, then the dialog will be removed.
+	 */
 	public abstract boolean productCallback(String categoryCode, String name, String description, String quantity,
 			String price, String barcodeNumber, String reorderThreshold, String reorderQuantity);
 
@@ -109,30 +122,58 @@ public abstract class ProductDialog extends BaseDialog {
 	// Public Methods
 	/***********************************************************/
 
+	/**
+	 * Method to set the category code list.
+	 * @param arrCategoryCode The array containing the list of category codes.
+	 */
 	public void setCategoryCodeList(ArrayList<String> arrCategoryCode) {
 		this.arrCategoryCode = arrCategoryCode;
 	}
 	
+	/**
+	 * Set the product name
+	 * @param productName The product name.
+	 */
 	public void setProductName(String productName) {
 		this.productName.setText(productName);
 	}
 
+	/**
+	 * Set the product description
+	 * @param productName The product description.
+	 */
 	public void setProductDescription(String productDescription) {
 		this.productDescription.setText(productDescription);
 	}
 
+	/**
+	 * Set the product quantity
+	 * @param productName The product quantity.
+	 */
 	public void setProductQuantity(String quantity) {
 		this.quantity.setText(quantity);
 	}
 
+	/**
+	 * Set the product price
+	 * @param productName The product price.
+	 */
 	public void setProductPrice(String price) {
 		this.price.setText(price);
 	}
 
+	/**
+	 * Set the product threshold quantity
+	 * @param productName The product threshold quantity.
+	 */
 	public void setThresholdQuantity(String thresholdQuantity) {
 		this.thresholdQuantity.setText(thresholdQuantity);
 	}
 
+	/**
+	 * Set the product reorder quantity.
+	 * @param productName The product reorder quantity..
+	 */
 	public void setReorderQuantity(String reorderQuantity) {
 		this.reorderQuantity.setText(reorderQuantity);
 	}
@@ -168,8 +209,7 @@ public abstract class ProductDialog extends BaseDialog {
 		createLabelOnPanel(jPanel, "Product Name:", 0);// Move to constants
 		productName = createTextFieldOnPanel(jPanel, 0);
 
-		createLabelOnPanel(jPanel, "Product Description:", 1);// Move to
-																// constants
+		createLabelOnPanel(jPanel, "Product Description:", 1);// Move to constants
 		productDescription = createTextFieldOnPanel(jPanel, 1);
 
 		createLabelOnPanel(jPanel, "Product Quantity:", 2);// Move to constants
@@ -181,9 +221,7 @@ public abstract class ProductDialog extends BaseDialog {
 		createLabelOnPanel(jPanel, "Bar Code Number:", 4);// Move to constants
 		barcodeNumber = createTextFieldOnPanel(jPanel, 4);
 
-		createLabelOnPanel(jPanel, "Reorder Quantity (Threshold):", 5);// Move
-																		// to
-																		// constants
+		createLabelOnPanel(jPanel, "Reorder Quantity (Threshold):", 5);// Move to constants
 		thresholdQuantity = createTextFieldOnPanel(jPanel, 5);
 
 		createLabelOnPanel(jPanel, "Order Quantity:", 6);// Move to constants
@@ -200,9 +238,7 @@ public abstract class ProductDialog extends BaseDialog {
 	 */
 	@Override
 	protected boolean confirmClicked() {
-		productCallback(null,productName.getText(), productDescription.getText(), quantity.getText(), price.getText(),
+		return productCallback(null,productName.getText(), productDescription.getText(), quantity.getText(), price.getText(),
 				barcodeNumber.getText(), thresholdQuantity.getText(), reorderQuantity.getText());
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

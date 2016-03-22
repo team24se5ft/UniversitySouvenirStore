@@ -28,11 +28,13 @@ public interface IInventoryDelegate {
 	
 	/**
 	 * Edit a category.
+	 * @param index The selected index of the category table.
 	 */
 	public void editCategoryClicked(int index);
 	
 	/**
 	 * Delete a category.
+	 * @param index The selected index of the category table.
 	 */
 	public void deleteCategoryClicked(int index);
 	
@@ -41,17 +43,19 @@ public interface IInventoryDelegate {
 	/***********************************************************/
 	
 	/**
-	 * Method to add a category.
+	 * Method to add a product.
 	 */
 	public void addProductClicked();
 	
 	/**
-	 * Edit a category.
+	 * Edit a product.
+	 * @param index The selected index of the product table.
 	 */
 	public void editProductClicked(int index);
 	
 	/**
-	 * Delete a category.
+	 * Delete a product.
+	 * @param index The selected index of the product table.
 	 */
 	public void deleteProductClicked(int index);
 }
