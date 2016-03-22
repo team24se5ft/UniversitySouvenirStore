@@ -12,9 +12,27 @@ import javax.swing.JLabel;
 import sg.edu.nus.iss.universitystore.model.Product;
 
 public class ReceiptDialog extends JDialog {
+	/***********************************************************/
+	// Constants
+	/***********************************************************/
+	private static final long serialVersionUID = 1L;
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
 	private List receiptList;
 	ArrayList<Product> receiptDataList;
 
+	/***********************************************************/
+	// Constructors
+	/***********************************************************/
+	/**
+	 * @param parent
+	 *            Parent component for this dialog
+	 * @param title
+	 *            dialog title
+	 * @param receiptDataList
+	 *            product data List
+	 */
 	public ReceiptDialog(JFrame parent, String title, ArrayList<Product> receiptDataList) {
 		super(parent, title);
 		this.setLayout(new BorderLayout());
@@ -26,6 +44,9 @@ public class ReceiptDialog extends JDialog {
 		initReceipt();
 	}
 
+	/**
+	 * init North part of panel
+	 */
 	private void initTitlePanel() {
 		JLabel titleLabel = new JLabel("NUS SOUVENIR STORE");
 		titleLabel.setPreferredSize(new Dimension(300, 50));
@@ -33,6 +54,9 @@ public class ReceiptDialog extends JDialog {
 		this.add(titleLabel, "North");
 	}
 
+	/**
+	 * init receipt table
+	 */
 	private void initReceipt() {
 		JLabel receiptHeaderLabel = new JLabel();
 		receiptHeaderLabel.setLayout(new BorderLayout());
@@ -40,12 +64,12 @@ public class ReceiptDialog extends JDialog {
 		JLabel receiptHeader = new JLabel(header);
 		receiptHeader.setPreferredSize(new Dimension(300, 60));
 		receiptList = new List();
-		receiptList.setPreferredSize(new Dimension(300,200));
+		receiptList.setPreferredSize(new Dimension(300, 200));
 		for (Product receiptItem : receiptDataList) {
 			receiptList.add(receiptItem.getName() + "\t\t" + receiptItem.getPrice());
 		}
-		receiptHeaderLabel.add(receiptHeader,"North");
-		receiptHeaderLabel.add(receiptList,"Center");
+		receiptHeaderLabel.add(receiptHeader, "North");
+		receiptHeaderLabel.add(receiptList, "Center");
 		this.add(receiptHeaderLabel, "Center");
 	}
 

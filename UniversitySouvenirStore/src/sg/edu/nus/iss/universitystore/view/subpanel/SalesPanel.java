@@ -90,7 +90,7 @@ public class SalesPanel extends BaseTablePanel {
 	}
 
 	/**
-	 * 
+	 * customer info include 
 	 */
 	private void initCustomerInfoPanel() {
 		customerInfoPanel = new JPanel();

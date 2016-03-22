@@ -16,6 +16,9 @@ import sg.edu.nus.iss.universitystore.model.Discount;
 public abstract class DiscountDialog extends BaseDialog {
 	private static final long serialVersionUID = 3029306694712724442L;
 
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
 	// textfield define
 	private TextField code;
 	private TextField percentage;
@@ -30,10 +33,15 @@ public abstract class DiscountDialog extends BaseDialog {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public DiscountDialog(JFrame parent) {
-		super(parent, "AddDiscount");
-	}
 
+	/**
+	 * Constructor to create the dialog.
+	 * 
+	 * @param parent
+	 *            The parent frame on top of which this dialog will be created.
+	 * @param title
+	 *            The title of this dialog.
+	 */
 	public DiscountDialog(JFrame parent, String title) {
 		super(parent, title);
 		this.addWindowListener(this);
@@ -44,19 +52,32 @@ public abstract class DiscountDialog extends BaseDialog {
 	/***********************************************************/
 	// Abstract Methods Definition
 	/***********************************************************/
-	public abstract boolean onDiscountCallBack(String code, String description, String startDate, String period, String percentage,
-			String eligibilty);
+
+	/**
+	 * The callback which will be called when the Confirm button is tapped on the dialog.
+	 * @param code The codeText to recognize the discount
+	 * @param description The description for the discount
+	 * @param startDate The startDate of the discount
+	 * @param period   The period of the discount
+	 * @param percentage   The percentage of the discount
+	 * @param eligibilty  for member or for all
+	 * @return
+	 */
+	public abstract boolean onDiscountCallBack(String code, String description, String startDate, String period,
+			String percentage, String eligibilty);
 
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
+
 	/**
 	 * invoke this function when you need fill data into the dialog
-	 * @param discount
+	 * 
+	 * @param discount use discount object as parameter
 	 */
 	public void setDiscountData(Discount discount) {
 		code.setText(discount.getCode());
-		percentage.setText(discount.getPercentage()+"");
+		percentage.setText(discount.getPercentage() + "");
 		description.setText(discount.getDescription());
 		startDate.setText(discount.getStartDate());
 		period.setText(discount.getPeriod() + "");
@@ -91,10 +112,11 @@ public abstract class DiscountDialog extends BaseDialog {
 	}
 
 	/***********************************************************/
-	// override method
+	// Abstract Method Implementation
 	/***********************************************************/
-	/**
-	 * init discount Panel
+
+	/* (non-Javadoc)
+	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#getPanelToAddToDialog()
 	 */
 	@Override
 	protected JPanel getPanelToAddToDialog() {
@@ -126,7 +148,6 @@ public abstract class DiscountDialog extends BaseDialog {
 		jpanel.add(period);
 		return jpanel;
 	}
-	
 
 	/**
 	 * when Ok button be clicked
@@ -146,8 +167,8 @@ public abstract class DiscountDialog extends BaseDialog {
 		// return false;
 		// }
 		if (code.getText().length() != 0 && percentage.getText().length() != 0) {
-			onDiscountCallBack(code.getText(), description.getText(), startdate, period.getText(),
-					percentage.getText(), eligibility);
+			onDiscountCallBack(code.getText(), description.getText(), startdate, period.getText(), percentage.getText(),
+					eligibility);
 			return true;
 		}
 		return false;

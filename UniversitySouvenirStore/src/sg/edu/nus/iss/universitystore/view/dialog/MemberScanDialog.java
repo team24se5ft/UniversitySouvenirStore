@@ -8,17 +8,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public abstract class MemberScanDialog extends BaseDialog {
+	/***********************************************************/
+	// Constants
+	/***********************************************************/
 	private static final long serialVersionUID = -6976311071183139160L;
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
 	// textfield define
 	private TextField MemberCode;
 
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public MemberScanDialog(JFrame parent) {
-		super(parent, "ScanMemberCode");
-	}
-
+	/**
+	 * Constructor to create the dialog.
+	 * 
+	 * @param parent
+	 *            The parent frame on top of which this dialog will be created.
+	 * @param title
+	 *            The title of this dialog.
+	 */
 	public MemberScanDialog(JFrame parent, String title) {
 		super(parent, title);
 		this.addWindowListener(this);
@@ -29,14 +39,17 @@ public abstract class MemberScanDialog extends BaseDialog {
 	
 	
 	/**
-	 * check the membercode and return result
-	 * @param MemberCode
+	 * check the memberCode and return result
+	 * @param MemberCode 
 	 */
 	public abstract boolean onMemberLogin(String MemberCode);
 
 	/***********************************************************/
-	// override method
+	// Abstract Method Implementation
 	/***********************************************************/
+	/* (non-Javadoc)
+	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#getPanelToAddToDialog()
+	 */
 	@Override
 	protected JPanel getPanelToAddToDialog() {
 		JPanel jp = new JPanel();

@@ -8,17 +8,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public abstract class ProductScanDialog extends BaseDialog {
+	/***********************************************************/
+	// Constants
+	/***********************************************************/
 	private static final long serialVersionUID = -6976311071183139160L;
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
 	// textfield define
 	private TextField ProductCode;
 
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public ProductScanDialog(JFrame parent) {
-		super(parent, "ScanProdcutCode");
-	}
-
 	public ProductScanDialog(JFrame parent, String title) {
 		super(parent, title);
 		this.addWindowListener(this);
@@ -31,12 +33,14 @@ public abstract class ProductScanDialog extends BaseDialog {
 	// Abstract Methods definition
 	/***********************************************************/
 	/**
-	 * add member dialog call back function
+	 * add product scan call back function
+	 * @param productCode gain the productCode to add product
+	 * @return
 	 */
 	public abstract boolean onProductScanResult(String productCode);
 
 	/***********************************************************/
-	// override method
+	// Abstract Methods Implementation
 	/***********************************************************/
 	@Override
 	protected JPanel getPanelToAddToDialog() {

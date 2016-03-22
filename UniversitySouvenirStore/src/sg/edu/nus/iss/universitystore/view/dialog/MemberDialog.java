@@ -10,14 +10,14 @@ import javax.swing.JPanel;
 import sg.edu.nus.iss.universitystore.model.Member;
 
 public abstract class MemberDialog extends BaseDialog {
-	private static final long serialVersionUID = 3029306694712724442L;
-
 	/***********************************************************/
 	// Constants
 	/***********************************************************/
-	public final static int ADD_TYPE = 0;
-	public final static int UPDATE_TYPE = 1;
+	private static final long serialVersionUID = 3029306694712724442L;
 
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
 	private Label labelMemberName;
 	private Label labelLoyaltyPoints;
 	private Label labelMemberId;
@@ -25,10 +25,14 @@ public abstract class MemberDialog extends BaseDialog {
 	private TextField tfLoyaltyPoints;
 	private TextField tfMemberId;
 
-	public MemberDialog(JFrame parent) {
-		super(parent, "AddMember");
-	}
-
+	/**
+	 * Constructor to create the dialog.
+	 * 
+	 * @param parent
+	 *            The parent frame on top of which this dialog will be created.
+	 * @param title
+	 *            The title of this dialog.
+	 */
 	public MemberDialog(JFrame parent, String title) {
 		super(parent, title);
 		this.addWindowListener(this);
@@ -36,8 +40,17 @@ public abstract class MemberDialog extends BaseDialog {
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
-	
-	
+
+	/**
+	 * The callback which will be called when the Confirm button is tapped on
+	 * the dialog.
+	 * 
+	 * @param memberId
+	 *            memberId to recognize the member
+	 * @param memberName
+	 * @param loyaltyPoints
+	 * @return
+	 */
 	public abstract boolean MemberCallBack(String memberId, String memberName, String loyaltyPoints);
 
 	/**
@@ -52,6 +65,15 @@ public abstract class MemberDialog extends BaseDialog {
 
 	}
 
+	/***********************************************************/
+	// Abstract Method Implementation
+	/***********************************************************/
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#
+	 * getPanelToAddToDialog()
+	 */
 	@Override
 	protected JPanel getPanelToAddToDialog() {
 		JPanel jp = new JPanel();
@@ -79,7 +101,7 @@ public abstract class MemberDialog extends BaseDialog {
 	}
 
 	/**
-	 * adding row to table onClick
+	 * when Ok button be clicked
 	 */
 	@Override
 	protected boolean confirmClicked() {
