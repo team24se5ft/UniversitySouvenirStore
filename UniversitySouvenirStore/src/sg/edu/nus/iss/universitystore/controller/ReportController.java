@@ -22,7 +22,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.ReportPanel;
  * @author Samrat
  *
  */
-public class ReportController implements IReportDelegate{
+public class ReportController implements IReportDelegate {
 
 	/***********************************************************/
 	// Instance Variables
@@ -36,7 +36,7 @@ public class ReportController implements IReportDelegate{
 	 * Instance of the Member Manager for retrieving the data from the dB.
 	 */
 	private MemberManager memberManager;
-	
+
 	/**
 	 * Holds the reference to the view associated to show the report.
 	 */
@@ -56,7 +56,7 @@ public class ReportController implements IReportDelegate{
 	 * The list of all products.
 	 */
 	private ArrayList<Member> arrMember;
-	
+
 	/**
 	 * The reference to the main frame on which the current panel is added.
 	 */
@@ -65,11 +65,29 @@ public class ReportController implements IReportDelegate{
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	
+
 	/**
 	 * Inventory Controller Constructor
 	 */
 	public ReportController() {
+		// Initialize the panel associated with this controller
+		reportPanel = new ReportPanel(this);
+
+		// Get main frame reference
+		topFrame = (JFrame) SwingUtilities.getWindowAncestor(reportPanel);
+	}
+
+	/***********************************************************/
+	// Getters & setters
+	/***********************************************************/
+	public ReportPanel getReportPanel() {
+		return reportPanel;
+	}
+
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+	private void initializeComponents() {
 		try {
 			// Initialize the instance variables.
 			inventoryManager = InventoryManager.getInstance();
@@ -82,9 +100,6 @@ public class ReportController implements IReportDelegate{
 			System.out.println(e.getStackTrace());
 		}
 
-		// Initialize the panel associated with this controller
-		reportPanel = new ReportPanel(this);
-
 		// Update Inventory Panel with retrieved data
 		reportPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
 				TableDataUtils.getHeadersForCategoryTable());
@@ -92,15 +107,16 @@ public class ReportController implements IReportDelegate{
 				TableDataUtils.getHeadersForProductTable());
 		reportPanel.setMemberTableData(TableDataUtils.getFormattedMemberListForTable(arrMember),
 				TableDataUtils.getHeadersForMemberTable());
-		
-		// Get main frame reference
-		topFrame = (JFrame) SwingUtilities.getWindowAncestor(reportPanel);
 	}
 
 	/***********************************************************/
-	// Getters & setters
+	// IReportDelegate
 	/***********************************************************/
-	public ReportPanel getReportPanel() {
-		return reportPanel;
+	/**
+	 * Will be called when the report panel is visble.
+	 */
+	public void reportPanelVisible() {
+		// Everytime the view is visible we will initialize the components.
+		initializeComponents();
 	}
 }
