@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -50,6 +51,10 @@ public abstract class BaseTablePanel extends JPanel{
 	 * Table for displaying the elements.
 	 */
 	protected JTable table;
+	/**
+	 * Table for displaying the elements.
+	 */
+	protected JPanel buttonPanel;
 
 	/**
 	 * The table model used for populating the table.
@@ -108,6 +113,9 @@ public abstract class BaseTablePanel extends JPanel{
 		((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer())
 		.setHorizontalAlignment(JLabel.CENTER);
 
+		// Disable multiple selection
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		JScrollPane scrollPane = new JScrollPane(table);
 		return scrollPane;
 	}
@@ -118,7 +126,7 @@ public abstract class BaseTablePanel extends JPanel{
 	 * @return The panel containing all the three buttons.
 	 */
 	protected JPanel getButtonPanel() {
-		JPanel jPanel = new JPanel();
+		buttonPanel = new JPanel();
 
 		// Initialize the button.
 		btnAdd = new JButton(new ImageIcon("Resources/add_icon.png"));
@@ -140,12 +148,12 @@ public abstract class BaseTablePanel extends JPanel{
 		btnDelete.addActionListener(deleteAction());
 
 		// Add the buttons to the panel.
-		jPanel.add(btnAdd);
-		jPanel.add(btnEdit);
-		jPanel.add(btnDelete);
+		buttonPanel.add(btnAdd);
+		buttonPanel.add(btnEdit);
+		buttonPanel.add(btnDelete);
 
 		// Return the panel.
-		return jPanel;
+		return buttonPanel;
 	}
 
 	/***********************************************************/
@@ -162,5 +170,12 @@ public abstract class BaseTablePanel extends JPanel{
 		this.tableHeaders = headers;
 		// Update the UI.
 		tableModel.setDataVector(data, headers);
+	}
+	
+	/**
+	 * Method to remove the button panel, if present.
+	 */
+	public void removeButtonPanel() {
+		remove(buttonPanel);
 	}
 }

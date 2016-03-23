@@ -11,6 +11,7 @@ import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.controller.DiscountController;
 import sg.edu.nus.iss.universitystore.controller.InventoryController;
 import sg.edu.nus.iss.universitystore.controller.MemberController;
+import sg.edu.nus.iss.universitystore.controller.ReportController;
 import sg.edu.nus.iss.universitystore.controller.SalesController;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.view.intf.IDashBoardOptionChangeDelegate;
@@ -88,7 +89,7 @@ public class DashboardPanel extends JPanel implements IDashBoardOptionChangeDele
 		mainContentPanel.add(ViewConstants.MenuOptions.STR_MEMBER, new MemberController().getMemberPanel());
 		// TODO: To be resolved
 		 mainContentPanel.add(ViewConstants.MenuOptions.STR_DISCOUNT, new DiscountController().getDiscountPanel());
-		mainContentPanel.add(ViewConstants.MenuOptions.STR_REPORTS, new ReportPanel());
+		mainContentPanel.add(ViewConstants.MenuOptions.STR_REPORTS, new ReportController().getReportPanel());
 		add(mainContentPanel, BorderLayout.CENTER);
 	}
 }
