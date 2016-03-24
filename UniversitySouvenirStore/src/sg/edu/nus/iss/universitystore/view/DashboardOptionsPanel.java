@@ -2,13 +2,15 @@ package sg.edu.nus.iss.universitystore.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -51,27 +53,28 @@ public class DashboardOptionsPanel extends JPanel {
 	}
 
 	private void addButtons() {
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_SALES, 25));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_INVENTORY, 25));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_MEMBER, 25));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_DISCOUNT, 25));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_REPORTS, 25));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_LOGOUT, 25));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_SALES, 20,"Resources/sale_icon.png"));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_INVENTORY, 20,"Resources/inventory_icon.png"));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_MEMBER, 20,"Resources/member_icon.png"));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_DISCOUNT, 20,"Resources/discount_icon.png"));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_REPORTS, 20,"Resources/report_icon.png"));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_LOGOUT, 20,"Resources/logout_icon.png"));
 	}
 
 	//option Button configure here
-	private JPanel configureOptionButton(String labelText, int fontSize) {
+	private JPanel configureOptionButton(String labelText, int fontSize,String iconUrl) {
 		JPanel jpanel = new JPanel();
-		jpanel.setLayout(new GridBagLayout());
+		jpanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jpanel.setPreferredSize(new Dimension(200, 50));
 		jpanel.setMaximumSize(new Dimension(200, 50));
 		jpanel.setBackground(Color.DARK_GRAY);
 		jpanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-		
+		Image image=new ImageIcon(iconUrl).getImage();
+		JLabel iconLabel=new JLabel(new ImageIcon(image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH)));
 		JLabel label = new JLabel(labelText);
 		label.setFont(new Font(ViewConstants.Common.DEFAULT_FONT, 1, fontSize));
 		label.setForeground(Color.WHITE);
-		
+		jpanel.add(iconLabel);
 		jpanel.add(label);
 		jpanel.addMouseListener(new MouseListener() {
 
