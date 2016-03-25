@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.model.Discount;
 
 public abstract class DiscountDialog extends BaseDialog {
@@ -134,17 +135,17 @@ public abstract class DiscountDialog extends BaseDialog {
 		period = new TextField();
 		period.setColumns(1);
 
-		jpanel.add(new JLabel("DiscountCode"));
+		jpanel.add(new JLabel(ViewConstants.DialogHeaders.DISC_CODE));
 		jpanel.add(code);
-		jpanel.add(new JLabel("OffPercentage"));
+		jpanel.add(new JLabel(ViewConstants.DialogHeaders.OFF_PERC));
 		jpanel.add(percentage);
-		jpanel.add(new JLabel("type"));
+		jpanel.add(new JLabel(ViewConstants.DialogHeaders.TYPE));
 		jpanel.add(initSingleButtonGroup());
-		jpanel.add(new JLabel("description"));
+		jpanel.add(new JLabel(ViewConstants.DialogHeaders.DESCRIPTION));
 		jpanel.add(description);
-		jpanel.add(new JLabel("startDate(dd/mm):"));
+		jpanel.add(new JLabel(ViewConstants.DialogHeaders.START_DATE));
 		jpanel.add(startDate);
-		jpanel.add(new JLabel("period:"));
+		jpanel.add(new JLabel(ViewConstants.DialogHeaders.PERIOD));
 		jpanel.add(period);
 		return jpanel;
 	}

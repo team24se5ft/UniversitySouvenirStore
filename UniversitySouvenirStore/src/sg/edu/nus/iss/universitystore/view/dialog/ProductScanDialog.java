@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
+
 public abstract class ProductScanDialog extends BaseDialog {
 	/***********************************************************/
 	// Constants
@@ -50,7 +52,7 @@ public abstract class ProductScanDialog extends BaseDialog {
 		ProductCode = new TextField();
 		ProductCode.setColumns(1);
 
-		jp.add(new JLabel("productCode:"));
+		jp.add(new JLabel(ViewConstants.DialogHeaders.PROD_CODE));
 		jp.add(ProductCode);
 		return jp;
 	}

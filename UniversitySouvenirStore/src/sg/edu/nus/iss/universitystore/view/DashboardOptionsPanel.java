@@ -53,12 +53,12 @@ public class DashboardOptionsPanel extends JPanel {
 	}
 
 	private void addButtons() {
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_SALES, 20,"Resources/sale_icon.png"));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_INVENTORY, 20,"Resources/inventory_icon.png"));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_MEMBER, 20,"Resources/member_icon.png"));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_DISCOUNT, 20,"Resources/discount_icon.png"));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_REPORTS, 20,"Resources/report_icon.png"));
-		add(configureOptionButton(ViewConstants.MenuOptions.STR_LOGOUT, 20,"Resources/logout_icon.png"));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_SALES, 20,ViewConstants.PanelHeaders.SALE_ICON_IMG));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_INVENTORY, 20,ViewConstants.PanelHeaders.INVENTORY_ICON_IMG));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_MEMBER, 20,ViewConstants.PanelHeaders.MEMBER_ICON_IMG));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_DISCOUNT, 20,ViewConstants.PanelHeaders.DISCOUNT_ICON_IMG));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_REPORTS, 20,ViewConstants.PanelHeaders.REPORT_ICON_IMG));
+		add(configureOptionButton(ViewConstants.MenuOptions.STR_LOGOUT, 20,ViewConstants.PanelHeaders.LOGOUT_ICON_IMG));
 	}
 
 	//option Button configure here
@@ -117,7 +117,7 @@ public class DashboardOptionsPanel extends JPanel {
 		JTextArea textArea = new JTextArea();
 		textArea.setLineWrap(true);
 		//TODO - This input needs to be received. 
-		textArea.setText("03/03: Linc Pen stock low.\n\n27/02: Member A001482497 successfully created."); 
+		textArea.setText(ViewConstants.PanelHeaders.ANNOUNCEMENT_DEMO); 
 		textArea.setEditable(false);
 		textArea.setHighlighter(null);
 		

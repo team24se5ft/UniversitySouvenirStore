@@ -24,9 +24,8 @@ public class JUnitUtility {
 	 * @throws IOException
 	 */
 	public static void copyFile(String fileName, String directoryPath) throws IOException {
-		Files.copy(
-				new File(JUnitConstants.Data.BACKUP_FILE_PATH + directoryPath + fileName + Constants.Data.FILE_EXT)
-						.toPath(),
+		Files.copy(new File(JUnitConstants.Data.BACKUP_FILE_PATH + directoryPath + fileName + 
+				Constants.Data.FILE_EXT).toPath(),
 				new File(JUnitConstants.Data.TEST_FILE_PATH + fileName + Constants.Data.FILE_EXT).toPath(),
 				StandardCopyOption.REPLACE_EXISTING);
 	}

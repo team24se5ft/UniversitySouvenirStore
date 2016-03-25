@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 
 /**
@@ -90,10 +91,10 @@ public class InventoryPanel extends JPanel{
 	private void createTabbedPane(JPanel categoryPanel, JPanel productPanel) {
 		tabbedPane = new JTabbedPane();
 		// TODO - Add image to the tabbed pane?
-		tabbedPane.addTab("Category", null, categoryPanel,
-				"All functionalities related to the categories.");
-		tabbedPane.addTab("Product", null, productPanel,
-				"All functionalities related to the products.");
+		tabbedPane.addTab(ViewConstants.PaneHeaders.INV_CATEGORY_PANE, null, categoryPanel,
+				ViewConstants.PaneHeaders.INV_CATEGORY_PANE_DESC);
+		tabbedPane.addTab(ViewConstants.PaneHeaders.INV_PRODUCT_PANE, null, productPanel,
+				ViewConstants.PaneHeaders.INV_PRODUCT_PANE_DESC);
 		add(tabbedPane, BorderLayout.CENTER);
 	}
 }

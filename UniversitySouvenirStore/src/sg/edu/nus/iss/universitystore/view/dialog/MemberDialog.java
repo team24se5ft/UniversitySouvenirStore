@@ -12,6 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.model.Member;
 
 public abstract class MemberDialog extends BaseDialog {
@@ -140,13 +141,13 @@ public abstract class MemberDialog extends BaseDialog {
 		int index = 0;
 		
 		// Finally add the elements
-		createLabelOnPanel(jPanel, "Member ID:", index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.MEMBER_ID, index);// Move to constants
 		memberId = createTextFieldOnPanel(jPanel, index++);
 		
-		createLabelOnPanel(jPanel, "Member Name:", index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.MEMBER_NAME, index);// Move to constants
 		memberName = createTextFieldOnPanel(jPanel, index++);
 		
-		createLabelOnPanel(jPanel, "Loyalty Points:", index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.LOYALTY_POINTS, index);// Move to constants
 		loyaltyPoints = createTextFieldOnPanel(jPanel, index++);
 		
 		return jPanel;

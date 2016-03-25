@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
+
 public abstract class MemberScanDialog extends BaseDialog {
 	/***********************************************************/
 	// Constants
@@ -58,7 +60,7 @@ public abstract class MemberScanDialog extends BaseDialog {
 		MemberCode = new TextField();
 		MemberCode.setColumns(1);
 
-		jp.add(new JLabel("MemberCode:"));
+		jp.add(new JLabel(ViewConstants.DialogHeaders.MEMBER_CODE));
 		jp.add(MemberCode);
 		return jp;
 	}
