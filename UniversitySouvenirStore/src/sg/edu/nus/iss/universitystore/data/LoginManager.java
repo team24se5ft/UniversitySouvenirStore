@@ -58,6 +58,13 @@ public class LoginManager {
 	}
 	
 	/**
+	 * Delete instance of Data File Manager
+	 */
+	public static void deleteInstance() {
+		instance = null;
+	}
+	
+	/**
 	 * Checks if Entered Credentials are Valid
 	 * 
 	 * @param enteredCredentials
