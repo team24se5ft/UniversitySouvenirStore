@@ -6,14 +6,22 @@ import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
+import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Transaction;
+import sg.edu.nus.iss.universitystore.model.TransactionItem;
 
+/**
+ * Manager class for handling the payment & transaction functionality.
+ * 
+ * @author Samrat
+ *
+ */
 public class TransactionManager {
 
-	private static TransactionManager instance;
-	
-	private DataFile<Transaction> transactionData;
-	
+	/***********************************************************/
+	// Enums
+	/***********************************************************/
+
 	/**
 	 * Transaction Arguments
 	 */
@@ -26,10 +34,37 @@ public class TransactionManager {
 			this.position = position;
 		}
 	}
-	
+
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
+
+	/**
+	 * The singleton instance of this class
+	 */
+	private static TransactionManager instance;
+
+	/**
+	 * The data file where the transactions will be written.
+	 */
+	private DataFile<Transaction> transactionData;
+
+	/**
+	 * Instance of Inventory Manager.
+	 */
+	private InventoryManager inventoryManager;
 	
 	/**
-	 * Constructor
+	 * Instance of Discount Manager.
+	 */
+	private DiscountManager discountManager;
+	
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+
+	/**
+	 * Make the constructor private, since we provide the singleton instance.
 	 */
 	private TransactionManager() {
 		try {
@@ -40,16 +75,34 @@ public class TransactionManager {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (StoreException e){
+		} catch (StoreException e) {
 			// TODO Auto-generated Catch block
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Initialize all Data Files
+	 * 
+	 * @throws FileNotFoundException
+	 * 
+	 * @throws StoreException
+	 * @throws IOException
+	 */
+	private void initialize() throws FileNotFoundException, IOException, StoreException {
+		transactionData = new DataFile<>(Constants.Data.FileName.TRANSACTION_DAT);
+		discountManager = new DiscountManager();
+		inventoryManager = new InventoryManager();
+	}
 	
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
+
 	/**
 	 * Get a single instance of TransactionManager
 	 * 
-	 * @return DataFileManager
+	 * @return TransactionManager The singleton instance of this class.
 	 */
 	public static TransactionManager getInstance() {
 		if (instance == null) {
@@ -61,18 +114,6 @@ public class TransactionManager {
 		}
 		return instance;
 	}
-	
-	/**
-	 * Initialize all Data Files
-	 * @throws FileNotFoundException 
-	 * 
-	 * @throws StoreException
-	 * @throws IOException
-	 */
-	private void initialize() throws FileNotFoundException, IOException, StoreException {
-		transactionData = new DataFile<>(Constants.Data.FileName.TRANSACTION_DAT);
-	}
-
 
 	/**
 	 * (3.3.d) Get All Transactions from Data File
@@ -85,25 +126,48 @@ public class TransactionManager {
 		String[] transactionStrList = transactionData.getAll();
 
 		for (String transactionStr : transactionStrList) {
-
 			// If line in Data file is empty, skip line
 			if (transactionStr.isEmpty())
 				continue;
 
 			String[] transactionStrSplt = transactionStr.split(Constants.Data.FILE_SEPTR);
 
-			transactionList.add(
-					new Transaction(transactionStrSplt[TransactionArg.IDENTIFIER.ordinal()],transactionStrSplt[TransactionArg.PRODUCT_ID.ordinal()] ,transactionStrSplt[TransactionArg.MEMBER_ID.ordinal()],transactionStrSplt[TransactionArg.QUANTITY.ordinal()],transactionStrSplt[TransactionArg.DATE.ordinal()]));
+			transactionList.add(new Transaction(transactionStrSplt[TransactionArg.IDENTIFIER.ordinal()],
+					transactionStrSplt[TransactionArg.PRODUCT_ID.ordinal()],
+					transactionStrSplt[TransactionArg.MEMBER_ID.ordinal()],
+					transactionStrSplt[TransactionArg.QUANTITY.ordinal()],
+					transactionStrSplt[TransactionArg.DATE.ordinal()]));
 		}
-
 		return transactionList;
 	}
 
 	/**
+	 * Method to get the total amount of an array of transaction items after the discount.
+	 * @param arrTransactionItem The list of transaction items.
+	 * @param discountId The discount that is being offered.
+	 * @return
+	 */
+	public float getTotal(ArrayList<TransactionItem> arrTransactionItem ,String discountId) throws IOException{
+		// Get the total sum first
+		float total = 0;
+		for(TransactionItem transactionItem : arrTransactionItem) {
+			total += transactionItem.getTotal();
+		}
+		
+		// It is possible that no discount is applicable.
+		Discount discount = discountManager.findDiscount(discountId);
+		if(discount != null) {
+			
+		}
+		return total;
+	}
+	/**
 	 * Add Transaction to Data file
 	 */
-	
-	/*public Transaction addTransaction() throws IOException,StoreException{
-		Transaction trans=new Transaction(trans_id, prod_id, member_id, quantity, date);
-	}*/
+
+	/*
+	 * public Transaction addTransaction() throws IOException,StoreException{
+	 * Transaction trans=new Transaction(trans_id, prod_id, member_id, quantity,
+	 * date); }
+	 */
 }
