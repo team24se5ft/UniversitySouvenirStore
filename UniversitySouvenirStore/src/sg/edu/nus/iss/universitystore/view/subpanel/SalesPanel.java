@@ -68,7 +68,7 @@ public class SalesPanel extends BaseTablePanel {
 	 * init productTable here
 	 */
 	private void initProductTable() {
-		String[] headers = { "code", "Name", "price" };
+		String[] headers = { "Code", "Name", "Price" };
 		String data[][] = {};
 		add(getScrollPaneWithTable(data, headers), BorderLayout.CENTER);
 		add(getButtonPanel(), BorderLayout.SOUTH);
@@ -102,15 +102,15 @@ public class SalesPanel extends BaseTablePanel {
 		customerInfoPanel.setPreferredSize(new Dimension(400, 200));
 		customerInfoPanel.setMaximumSize(new Dimension(400, 250));
 		customerInfoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		customerInfoPanel.add(new JLabel("member:"), getConstraint(0, 0));
+		customerInfoPanel.add(new JLabel("Member:"), getConstraint(0, 0));
 		memberOption = new JLabel("Public");
 		memberOption.setForeground(Color.BLUE);
 		customerInfoPanel.add(memberOption, getConstraint(1, 0));
-		customerInfoPanel.add(new JLabel("discount:"), getConstraint(0, 1));
+		customerInfoPanel.add(new JLabel("Discount:"), getConstraint(0, 1));
 		discountOption = new JComboBox<String>();
 		discountOption.setForeground(Color.BLUE);
 		customerInfoPanel.add(discountOption, getConstraint(1, 1));
-		customerInfoPanel.add(new JLabel("AvailableLoyalPoint:"), getConstraint(0, 2));
+		customerInfoPanel.add(new JLabel("Available Loyalty Point:"), getConstraint(0, 2));
 		avaiLableLoyalPoint = new JLabel("0");
 		customerInfoPanel.add(avaiLableLoyalPoint, getConstraint(1, 2));
 		customerInfoPanel.add(new JLabel("loyalPoint:"), getConstraint(0, 3));

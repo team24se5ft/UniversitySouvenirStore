@@ -52,6 +52,49 @@ public class ViewConstants {
 		public final static String STR_SUCCESS = "Success";
 	}
 	
+	public class DialogHeaders{
+		
+		//Category Dialog Headers
+		public static final String CATEGORY_CODE="Category Code:";
+		public static final String CATEGORY_NAME="Category Name:";
+		
+		//Discount Dialog Headers
+		public static final String DISC_CODE="Discount Code";
+		public static final String OFF_PERC="Percent Off";
+		public static final String TYPE="Type";
+		public static final String DESCRIPTION="Description";
+		public static final String START_DATE="Start Date (DD/MM):";
+		public static final String PERIOD="Period";
+		
+		//Member Dialog Headers
+		public static final String MEMBER_ID="Member ID";
+		public static final String MEMBER_NAME="Member Name";
+		public static final String LOYALTY_POINTS="Loyalty Points";
+		
+		//Member Scan Dialog Headers
+		public static final String MEMBER_CODE="Member Code";
+		
+		//Product Dialog Headers
+		public static final String CATEGORY="Category :";
+		public static final String PROD_NAME="Product Name :";
+		public static final String PROD_DESC="Product Description :";
+		public static final String PROD_QUANTITY="Product Quantity :";
+		public static final String PROD_PRICE="Product Price :";
+		public static final String BARCODE_NO="Bar Code Number :";
+		public static final String REORDER_QUANTITY="Reorder Quantity (Threshold):";
+		public static final String ORDER_QUANTITY="Order Quantity :";
+		
+		//Product Scan Dialog Headers
+		public static final String PROD_CODE="Product Code :";
+		
+		//Receipt Dialog Headers
+		public static final String STORE_HEADER="NUS SOUVENIR STORE";
+		public static final String HEADER="Bill\t\tQuantity\t\tPrice";
+		public static final String NORTH="North";
+		public static final String CENTER="Center";
+	}
+	
+	
 	public class TableHeaders {
 		//Discount Table Headers
 		public static final String DISCOUNT_CODE = "Code";
@@ -69,6 +112,19 @@ public class ViewConstants {
 	
 	public static final class PaneHeaders {
 		
+		//Inventory Pane Headers
+		public static final String INV_CATEGORY_PANE="Category";
+		public static final String INV_CATEGORY_PANE_DESC="All functionalities related to the categories.";
+		public static final String INV_PRODUCT_PANE="Product";
+		public static final String INV_PRODUCT_PANE_DESC="All functionalities related to the products.";
+		
+		//Report Pane Headers
+		public static final String REP_CATEGORY_PANE="Category";
+		public static final String REP_CATEGORY_PANE_DESC="Get all categories.";
+		public static final String REP_PRODUCT_PANE="Product";
+		public static final String REP_PRODUCT_PANE_DESC="Get all products.";
+		public static final String REP_MEMBER_PANE="Member";
+		public static final String REP_MEMBER_PANE_DESC="Get all members.";
 	}
 	
 	//Dashboard options

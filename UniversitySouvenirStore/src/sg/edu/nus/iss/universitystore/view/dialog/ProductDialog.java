@@ -13,6 +13,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
+
 /**
  * @author Samrat
  *
@@ -265,7 +267,7 @@ public abstract class ProductDialog extends BaseDialog {
 	private void addElements(JPanel panel) {
 		int index = 0;
 		// Now create the label & combo box
-		createLabelOnPanel(jPanel, "Category", index);
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.CATEGORY, index);
 		
 		// While initializing the array will be null
 		if(arrCategoryCode == null) {
@@ -274,28 +276,28 @@ public abstract class ProductDialog extends BaseDialog {
 		categoryList = createComboBoxOnPanel(arrCategoryCode, jPanel, index++);
 
 		// Start adding the products
-		createLabelOnPanel(jPanel, "Product Name:", index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_NAME, index);// Move to constants
 		productName = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, "Product Description:", index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_DESC, index);// Move to constants
 		productDescription = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, "Product Quantity:", index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_QUANTITY, index);// Move to constants
 		quantity = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, "Product Price:", index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_PRICE, index);// Move to constants
 		price = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, "Bar Code Number:", index);// Move to
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.BARCODE_NO, index);// Move to
 																// constants
 		barcodeNumber = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, "Reorder Quantity (Threshold):", index);// Move
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.REORDER_QUANTITY, index);// Move
 																			// to
 																			// constants
 		thresholdQuantity = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, "Order Quantity:", index);// Move to
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.ORDER_QUANTITY, index);// Move to
 																// constants
 		reorderQuantity = createTextFieldOnPanel(jPanel, index++);
 	}

@@ -6,7 +6,9 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.text.View;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.view.intf.IReportDelegate;
 
 public class ReportPanel extends JPanel{
@@ -119,12 +121,12 @@ public class ReportPanel extends JPanel{
 	private void createTabbedPane(JPanel categoryPanel, JPanel productPanel, JPanel memberPanel) {
 		tabbedPane = new JTabbedPane();
 		// TODO - Add image to the tabbed pane?
-		tabbedPane.addTab("Category", null, categoryPanel,
-				"Get all categories.");
-		tabbedPane.addTab("Product", null, productPanel,
-				"Get all products.");
-		tabbedPane.addTab("Member", null, memberPanel,
-				"Get all members.");
+		tabbedPane.addTab(ViewConstants.PaneHeaders.REP_CATEGORY_PANE, null, categoryPanel,
+				ViewConstants.PaneHeaders.REP_CATEGORY_PANE_DESC);
+		tabbedPane.addTab(ViewConstants.PaneHeaders.REP_PRODUCT_PANE, null, productPanel,
+				ViewConstants.PaneHeaders.REP_PRODUCT_PANE_DESC);
+		tabbedPane.addTab(ViewConstants.PaneHeaders.REP_MEMBER_PANE, null, memberPanel,
+				ViewConstants.PaneHeaders.REP_MEMBER_PANE_DESC);
 		add(tabbedPane, BorderLayout.CENTER);
 	}
 }

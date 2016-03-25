@@ -12,6 +12,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
+
 /**
  * @author Samrat
  *
@@ -154,10 +156,10 @@ public abstract class CategoryDialog extends BaseDialog {
 		int index = 0;
 
 		// Finally add the elements
-		createLabelOnPanel(jPanel, "Category Code:", index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.CATEGORY_CODE, index);// Move to constants
 		categoryCode = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, "Category Name:", index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.CATEGORY_NAME, index);// Move to constants
 		categoryName = createTextFieldOnPanel(jPanel, index++);
 		return jPanel;
 	}
