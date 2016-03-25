@@ -78,7 +78,7 @@ public class LoginPanel extends JPanel{
 	{
 		try
 		{
-			imgbackground = javax.imageio.ImageIO.read(new File("Resources/main_background.jpg"));
+			imgbackground = javax.imageio.ImageIO.read(new File(ViewConstants.PanelHeaders.BACKGRND_IMG));
 		}
 		catch (Exception e) { /*handled in paintComponent()*/ }
 		setLayout(new GridBagLayout());
@@ -158,7 +158,7 @@ public class LoginPanel extends JPanel{
 		overlayPanel.add(txtPassword);
 		
 		//Submit button
-		btnSubmit = new JButton(new ImageIcon("Resources/login_icon.jpg"));
+		btnSubmit = new JButton(new ImageIcon(ViewConstants.PanelHeaders.LOGIN_ICON_IMG));
 		btnSubmit.setBorderPainted(false);
 		btnSubmit.setContentAreaFilled(false);
 		btnSubmit.setFocusPainted(false);

@@ -52,6 +52,30 @@ public class ViewConstants {
 		public final static String STR_SUCCESS = "Success";
 	}
 	
+	public class PanelHeaders{
+		//Login Panel Headers
+		public static final String BACKGRND_IMG="Resources/main_background.jpg";
+		public static final String LOGIN_ICON_IMG="Resources/login_icon.jpg";
+		
+		//Dashboard Panel Headers
+		public static final String LOGOUT_CONFIRM_MSG="Are you sure you wish to logout?";
+		
+		//Dashboard Options Panel Headers
+		public static final String SALE_ICON_IMG="Resources/sale_icon.png";
+		public static final String INVENTORY_ICON_IMG="Resources/inventory_icon.png";
+		public static final String MEMBER_ICON_IMG="Resources/member_icon.png";
+		public static final String DISCOUNT_ICON_IMG="Resources/discount_icon.png";
+		public static final String REPORT_ICON_IMG="Resources/report_icon.png";
+		public static final String LOGOUT_ICON_IMG="Resources/logout_icon.png";
+		public static final String ANNOUNCEMENT_DEMO="03/03: Linc Pen stock low.\n\n27/02: Member A001482497 successfully created.";
+		
+		//Base Table Panel Headers
+		public static final String ADD_ICON_IMG="Resources/add_icon.png";
+		public static final String EDIT_ICON_IMG="Resources/edit_icon.png";
+		public static final String DELETE_ICON_IMG="Resources/delete_icon.png";
+		
+	}
+	
 	public class DialogHeaders{
 		
 		//Category Dialog Headers

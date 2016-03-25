@@ -69,7 +69,7 @@ public class DashboardPanel extends JPanel implements IDashBoardOptionChangeDele
 		if (option.equals(ViewConstants.MenuOptions.STR_LOGOUT)) {
 			//TODO - Do we keep it here or move to controller?
 			int result = JOptionPane.showConfirmDialog(null, 
-					   "Are you sure you wish to logout?",null, JOptionPane.YES_NO_OPTION);
+					   ViewConstants.PanelHeaders.LOGOUT_CONFIRM_MSG,null, JOptionPane.YES_NO_OPTION);
 			if(result == JOptionPane.YES_OPTION) {
 						UIUtils.navigateToLogin(this);
 					}
