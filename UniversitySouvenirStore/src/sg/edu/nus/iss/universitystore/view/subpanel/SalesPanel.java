@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -21,22 +20,28 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
 
+/**
+ * 
+ * @author linby
+ *
+ */
 public class SalesPanel extends BaseTablePanel {
 
 	private JLabel memberOption;// add memberDialog to check member
 	private JTextField LoyalPointOption; // key in loyalPoint
-	private JLabel avaiLableLoyalPoint; // show avaliable loyalPoint
-	private JComboBox<String> discountOption;
+	private JLabel discountOption; // show current discount
+	JLabel availableLabel;
+	JLabel avaiLableLoyalPoint;
+	JLabel loyalPointLabel;
 
 	private JPanel customerInfoPanel;
 
 	private ISalesDelegate delegate;
-
-	private String[] DropDownSelection;
 
 	/***********************************************************/
 	// Constructors
@@ -55,7 +60,7 @@ public class SalesPanel extends BaseTablePanel {
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/
-	
+
 	/**
 	 * salePanel include productTable and customerInfo
 	 */
@@ -75,14 +80,16 @@ public class SalesPanel extends BaseTablePanel {
 	}
 
 	/**
-	 * extract gridbaglayout constraints  here
-	 * @param xPosition 
+	 * extract gridbaglayout constraints here
+	 * 
+	 * @param xPosition
 	 * @param yPosition
 	 * @return
 	 */
 	private GridBagConstraints getConstraint(int xPosition, int yPosition) {
 		GridBagConstraints gridBagConstraint = new GridBagConstraints();
 		gridBagConstraint.fill = GridBagConstraints.BOTH;
+		gridBagConstraint.ipadx = 80;
 		gridBagConstraint.insets = new Insets(10, 20, 10, 20);
 		gridBagConstraint.gridx = xPosition;
 		gridBagConstraint.gridy = yPosition;
@@ -90,7 +97,7 @@ public class SalesPanel extends BaseTablePanel {
 	}
 
 	/**
-	 * customer info include 
+	 * customer info include
 	 */
 	private void initCustomerInfoPanel() {
 		customerInfoPanel = new JPanel();
@@ -99,35 +106,46 @@ public class SalesPanel extends BaseTablePanel {
 		customerInfoPanel.setBorder(new CompoundBorder(border, margin));
 		customerInfoPanel.setBackground(Color.WHITE);
 		customerInfoPanel.setLayout(new GridBagLayout());
-		customerInfoPanel.setPreferredSize(new Dimension(400, 200));
-		customerInfoPanel.setMaximumSize(new Dimension(400, 250));
+		customerInfoPanel.setPreferredSize(new Dimension(500, 200));
+		customerInfoPanel.setMaximumSize(new Dimension(500, 250));
 		customerInfoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		customerInfoPanel.add(new JLabel("Member:"), getConstraint(0, 0));
-		memberOption = new JLabel("Public");
-		memberOption.setForeground(Color.BLUE);
-		customerInfoPanel.add(memberOption, getConstraint(1, 0));
-		customerInfoPanel.add(new JLabel("Discount:"), getConstraint(0, 1));
-		discountOption = new JComboBox<String>();
+
+		memberOption = new JLabel(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL);
+		discountOption = new JLabel();
 		discountOption.setForeground(Color.BLUE);
+		discountOption.setPreferredSize(new Dimension(100, 50));
+
+		customerInfoPanel.add(new JLabel(ViewConstants.SalesPanel.MEMBER_LABEL), getConstraint(0, 0));
+		customerInfoPanel.add(memberOption, getConstraint(1, 0));
+		customerInfoPanel.add(new JLabel(ViewConstants.SalesPanel.DISCOUNT_LABEL), getConstraint(0, 1));
 		customerInfoPanel.add(discountOption, getConstraint(1, 1));
-		customerInfoPanel.add(new JLabel("Available Loyalty Point:"), getConstraint(0, 2));
+
+		availableLabel = new JLabel(ViewConstants.SalesPanel.AVAILABLE_LOYALPOINT_LABEL);
 		avaiLableLoyalPoint = new JLabel("0");
-		customerInfoPanel.add(avaiLableLoyalPoint, getConstraint(1, 2));
-		customerInfoPanel.add(new JLabel("loyalPoint:"), getConstraint(0, 3));
+		loyalPointLabel = new JLabel(ViewConstants.SalesPanel.LOYALPOINT_LABEL);
 		LoyalPointOption = new JTextField(5);
+
+		customerInfoPanel.add(availableLabel, getConstraint(0, 2));
+		customerInfoPanel.add(avaiLableLoyalPoint, getConstraint(1, 2));
+		customerInfoPanel.add(loyalPointLabel, getConstraint(0, 3));
 		customerInfoPanel.add(LoyalPointOption, getConstraint(1, 3));
 		add(customerInfoPanel, BorderLayout.NORTH);
 		initButtonEvent();
-		// FIXME query for eligibility discount
-		String[] activeDiscount = { "Holiday", "Halloween", "Spring fesitive" };
-		refreshDropDownData(activeDiscount);
+		toggleLoyalPanel(false);// set loyal panel unavailable in the beginning
 	}
 
-
-	private void refreshDropDownData(String[] str) {
-		discountOption.removeAllItems();
-		for (int i = 0; i < str.length; i++) {
-			discountOption.addItem(str[i]);
+	public void toggleLoyalPanel(boolean flag) {
+		if (flag) {
+			availableLabel.setVisible(true);
+			avaiLableLoyalPoint.setVisible(true);
+			loyalPointLabel.setVisible(true);
+			LoyalPointOption.setVisible(true);
+		} else {
+			availableLabel.setVisible(false);
+			avaiLableLoyalPoint.setVisible(false);
+			;
+			loyalPointLabel.setVisible(false);
+			LoyalPointOption.setVisible(false);
 		}
 	}
 
@@ -145,7 +163,7 @@ public class SalesPanel extends BaseTablePanel {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				delegate.LoginMember();
+				delegate.MemberIdentification();
 			}
 
 			@Override
@@ -172,8 +190,12 @@ public class SalesPanel extends BaseTablePanel {
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
-	public void onLoginMember(String memberName) {
+	public void onMemberIdentification(String memberName,String discountCode,String availableloyalPoint) {
+		//TODO show highest discount,show availableloyalPoint,show MemberName
 		memberOption.setText(memberName);
+		discountOption.setText(discountCode);
+		avaiLableLoyalPoint.setText(availableloyalPoint);
+		toggleLoyalPanel(true);
 	}
 
 	public void onAddProduct(Product product) {

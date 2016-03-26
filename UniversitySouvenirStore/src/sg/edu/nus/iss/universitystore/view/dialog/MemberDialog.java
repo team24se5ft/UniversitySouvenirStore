@@ -1,9 +1,6 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.TextField;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,7 +10,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
-import sg.edu.nus.iss.universitystore.model.Member;
 
 public abstract class MemberDialog extends BaseDialog {
 	/***********************************************************/

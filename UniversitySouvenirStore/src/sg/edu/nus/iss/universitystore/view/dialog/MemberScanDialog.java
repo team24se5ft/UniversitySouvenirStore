@@ -44,7 +44,7 @@ public abstract class MemberScanDialog extends BaseDialog {
 	 * check the memberCode and return result
 	 * @param MemberCode 
 	 */
-	public abstract boolean onMemberLogin(String MemberCode);
+	public abstract boolean onMemberIdentification(String MemberCode);
 
 	/***********************************************************/
 	// Abstract Method Implementation
@@ -71,7 +71,7 @@ public abstract class MemberScanDialog extends BaseDialog {
 	@Override
 	protected boolean confirmClicked() {
 		if (MemberCode.getText().length() != 0) {
-			onMemberLogin(MemberCode.getText());
+			onMemberIdentification(MemberCode.getText());
 			return false;
 		}
 		return false;
