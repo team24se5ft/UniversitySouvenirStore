@@ -131,7 +131,7 @@ public class InventoryManager {
 	 * @throws StoreException
 	 */
 	public InventoryManager() throws FileNotFoundException, IOException, StoreException {
-		productID = (productID == null) ? 1 : productID;
+		productID = (productID == null) ? Constants.Data.Product.INITIALIZED_COUNT : productID;
 		initialize();
 	}
 
@@ -151,6 +151,9 @@ public class InventoryManager {
 		productData = new DataFile<>(Constants.Data.FileName.PRODUCT_DAT);
 
 		initializeVendors();
+		if(productID == Constants.Data.Product.INITIALIZED_COUNT){
+			initializeProductCounter();			
+		}
 	}
 
 	/**
@@ -166,10 +169,26 @@ public class InventoryManager {
 		ArrayList<Category> categoriesList = getAllCategories();
 
 		for (Category category : categoriesList) {
-			vendorMap.put(category.getCode(),
-					new DataFile<Vendor>(Constants.Data.FileName.VENDOR_DAT + category.getCode()));
+			addVendorDataFile(category.getCode());
 		}
 
+	}
+	
+	/**
+	 * Initializes Product Counter based on the highest value in the Product
+	 * Data File
+	 * 
+	 * @throws IOException
+	 */
+	private void initializeProductCounter() throws IOException {
+		ArrayList<Product> productList = getAllProducts();
+
+		for (Product product : productList) {
+			int rowCount = Integer.parseInt(product.getIdentifier().replaceAll(Constants.Data.Product.Pattern.ID_MATCH,
+					Constants.Data.Product.Pattern.COUNT_REPLACE));
+			if(rowCount > productID)
+				productID = rowCount;
+		}
 	}
 
 	/***********************************************************/
@@ -218,8 +237,7 @@ public class InventoryManager {
 		categoryData.add(category);
 
 		// Add Vendor Data file
-		vendorMap.put(category.getCode(),
-				new DataFile<Vendor>(Constants.Data.FileName.VENDOR_DAT + category.getCode()));
+		addVendorDataFile(category.getCode());
 
 		return true;
 	}
@@ -416,7 +434,7 @@ public class InventoryManager {
 		boolean status = false;
 
 		String categoryCode = productID.replaceAll(Constants.Data.Product.Pattern.ID_MATCH,
-				Constants.Data.Product.Pattern.ID_REPLACE);
+				Constants.Data.Product.Pattern.CATEGORY_REPLACE);
 		if (hasCategory(categoryCode)) {
 			status = findProduct(productID) != null;
 		}
@@ -503,7 +521,7 @@ public class InventoryManager {
 	 */
 	private int generateProductID() {
 		// TODO: Generate Random Number
-		return productID++;
+		return ++productID;
 	}
 
 	/***********************************************************/
@@ -534,6 +552,18 @@ public class InventoryManager {
 		}
 
 		return vendorList;
+	}
+	/**
+	 * Add New Vendor Data File
+	 * 
+	 * @param categoryCode
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public void addVendorDataFile(String categoryCode) throws FileNotFoundException, IOException{
+		// Add Vendor Data file
+		vendorMap.put(categoryCode,
+				new DataFile<Vendor>(Constants.Data.FileName.VENDOR_DAT + categoryCode));
 	}
 
 	/**

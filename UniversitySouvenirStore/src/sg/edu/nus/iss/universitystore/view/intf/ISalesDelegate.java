@@ -17,10 +17,6 @@ public interface ISalesDelegate {
 	/**
 	 * click member btn form the view
 	 */
-	public void LoginMember();
-	/**
-	 * click discount btn form the view,can be made to drop-down box 
-	 */
-	public void ChoseDiscount();
+	public void MemberIdentification();
 	
 }
