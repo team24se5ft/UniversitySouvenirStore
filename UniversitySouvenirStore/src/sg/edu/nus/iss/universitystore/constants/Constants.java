@@ -57,7 +57,7 @@ public final class Constants {
 		}
 
 		public static final class Member {
-			public static final int LOYALTY_NEW_MEMBER = -1;
+			public static final int LOYALTY_NEW_MEMBER = 0;
 		}
 
 		public static final class Discount {

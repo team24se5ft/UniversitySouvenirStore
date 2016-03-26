@@ -3,26 +3,27 @@ package sg.edu.nus.iss.universitystore.model;
 public class Member {
 
 	/***********************************************************/
-	//Instance Variables
+	// Instance Variables
 	/***********************************************************/
 	/**
 	 * The identifier of the member.
 	 */
 	private String identifier;
-	
+
 	/**
 	 * Name of the member.
 	 */
 	private String name;
-	
+
 	/**
 	 * Loyalty points accumulated for the member.
 	 */
 	private int loyaltyPoints;
-	
+
 	/***********************************************************/
-	//Constructors
+	// Constructors
 	/***********************************************************/
+
 	/**
 	 * @param identifier
 	 * @param name
@@ -32,42 +33,53 @@ public class Member {
 		this.identifier = identifier;
 		this.name = name;
 		this.loyaltyPoints = loyaltyPoints;
-		
+
 	}
-	
+
 	public Member(String identifier, String name, String loyaltyPoints) {
 		this.identifier = identifier;
 		this.name = name;
 		this.loyaltyPoints = Integer.parseInt(loyaltyPoints);
-		
+
 	}
-	
-	/***********************************************************/
-	//Getters & Setters
-	/***********************************************************/
-	
 
 	/**
-	 * @param identifier the identifier to set
+	 * Constructor for creating a new member instance.
+	 * This will be used when creating a new member.
+	 * @param identifier The identifier of the member
+	 * @param name The name of the member
+	 */
+	public Member(String identifier, String name) {
+		this(identifier, name, 0);
+	}
+	/***********************************************************/
+	// Getters & Setters
+	/***********************************************************/
+
+	/**
+	 * @param identifier
+	 *            the identifier to set
 	 */
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @param loyaltyPoints the loyaltyPoints to set
+	 * @param loyaltyPoints
+	 *            the loyaltyPoints to set
 	 */
 	public void setLoyaltyPoints(int loyaltyPoints) {
 		this.loyaltyPoints = loyaltyPoints;
 	}
-	
+
 	/**
 	 * @return the identifier
 	 */
@@ -90,14 +102,16 @@ public class Member {
 	}
 
 	/***********************************************************/
-	//Public Methods
+	// Public Methods
 	/***********************************************************/
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return name+","+identifier+","+loyaltyPoints;
+		return name + "," + identifier + "," + loyaltyPoints;
 	}
 }

@@ -52,7 +52,7 @@ public class MemberController implements IMemberDelegate {
 		try {
 			// Initialize the instance variables.
 			memberManager = MemberManager.getInstance();
-			arrMember = memberManager.getMembers();
+			arrMember = memberManager.getAllMembers();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getStackTrace());
@@ -92,12 +92,12 @@ public class MemberController implements IMemberDelegate {
 				// TODO Auto-generated method stub
 				// TODO Validations
 				try {
-					memberManager.addNewMember(memberName, memberId);
+					memberManager.addNewMember(memberId, memberName);
 					// Show the success dialog
 					UIUtils.showMessageDialog(memberPanel, ViewConstants.ErrorMessages.STR_SUCCESS,
 							"Successfully added.", DialogType.INFORMATION_MESSAGE);
 					// Update Table
-					arrMember = memberManager.getMembers();
+					arrMember = memberManager.getAllMembers();
 					memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
 							TableDataUtils.getHeadersForMemberTable());
 					return true;
@@ -132,7 +132,7 @@ public class MemberController implements IMemberDelegate {
 					// Update the backend
 					memberManager.removeMember(member.getIdentifier());
 					// Update Table
-					arrMember = memberManager.getMembers();
+					arrMember = memberManager.getAllMembers();
 					memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
 							TableDataUtils.getHeadersForMemberTable());
 				} catch (Exception e) {
@@ -147,40 +147,41 @@ public class MemberController implements IMemberDelegate {
 
 	@Override
 	public void editMemberClicked(int index) {
-//		// Get the object at the index
-//				Member member = arrMember.get(index);
-//				// Implement an instance of the member dialog
-//				MemberDialog memberDialog = new MemberDialog(topFrame, "Edit Member") {
-//
-//					private static final long serialVersionUID = 1L;
-//
-//					@Override
-//					public boolean memberCallBack(String memberId, String memberName, String loyaltyPoints) {
-//						// TODO : Do validation here
-//						try {
-//							// If the value is valid Update the value in the dB
-//							Member updatedMember = new Member(memberId, memberName, loyaltyPoints);
-//							memberManager.up(category, updatedMember);
-//							// Update the local copy
-//							arrCategory = inventoryManager.getAllCategories();
-//							// Update table
-//							inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
-//									TableDataUtils.getHeadersForCategoryTable());
-//							// Dismiss the dialog OR show a success dialog
-//							return true;
-//						} catch (Exception e) {
-//							// TODO: handle exception
-//						}
-//						return false;
-//					}
-//				};
-//
-//				// Set the text of the dialog as per the object
-//				categoryDialog.setCategoryName(category.getName());
-//				categoryDialog.setCategoryCode(category.getCode());
-//				// Make the dialog visible.
-//				categoryDialog.setVisible(true);
+		// Get the object at the index
+				Member member = arrMember.get(index);
+				// Implement an instance of the member dialog
+				MemberDialog memberDialog = new MemberDialog(topFrame, "Edit Member") {
 
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public boolean memberCallBack(String memberId, String memberName, String loyaltyPoints) {
+						// TODO : Do validation here
+						try {
+							// If the value is valid Update the value in the dB
+							Member updatedMember = new Member(memberId, memberName, loyaltyPoints);
+							memberManager.updateMember(member, updatedMember);
+							// Update the local copy
+							arrMember = memberManager.getAllMembers();
+							// Update table
+							memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
+									TableDataUtils.getHeadersForMemberTable());
+							// Dismiss the dialog OR show a success dialog
+							return true;
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+						return false;
+					}
+				};
+
+				// Set the text of the dialog as per the object
+				memberDialog.setMemberId(member.getIdentifier());
+				memberDialog.setMemberName(member.getName());
+				memberDialog.setLoyaltyPoints(String.valueOf(member.getLoyaltyPoints()));
+				// Make the dialog visible.
+				memberDialog.setDisplayLoyaltyPoints(true);
+				memberDialog.setVisible(true);
 	}
 	
 	@Override

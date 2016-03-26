@@ -94,7 +94,7 @@ public class ReportController implements IReportDelegate {
 			memberManager = MemberManager.getInstance();
 			arrCategory = inventoryManager.getAllCategories();
 			arrProduct = inventoryManager.getAllProducts();
-			arrMember = memberManager.getMembers();
+			arrMember = memberManager.getAllMembers();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getStackTrace());

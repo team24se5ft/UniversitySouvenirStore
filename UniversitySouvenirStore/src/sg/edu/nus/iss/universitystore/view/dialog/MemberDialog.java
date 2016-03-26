@@ -6,12 +6,14 @@ import java.awt.Label;
 import java.awt.TextField;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.model.Member;
 
@@ -47,6 +49,16 @@ public abstract class MemberDialog extends BaseDialog {
 	 * Textfield for holding the loyalty points that was entered by the user.
 	 */
 	private JTextField loyaltyPoints;
+	
+	/**
+	 * Label for loyalty points
+	 */
+	private JLabel lblLoyaltyPoints;
+	
+	/**
+	 * Bool to check if loyaltyPoints panel needs to be displayed or not.
+	 */
+	private boolean displayLoyaltyPoints;
 	
 	/***********************************************************/
 	// Constructors
@@ -105,6 +117,14 @@ public abstract class MemberDialog extends BaseDialog {
 		this.loyaltyPoints.setText(loyaltyPoints);
 	}
 
+	/**
+	 * Setter to show the loyalty points textfield & label.
+	 * @param displayLoyaltyPoints "true" if the textfield & label needs to be displayed, else "false".
+	 */
+	public void setDisplayLoyaltyPoints(boolean displayLoyaltyPoints) {
+		this.displayLoyaltyPoints = displayLoyaltyPoints;
+		displayOrHideLoyaltyPoints();
+	}
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
@@ -113,6 +133,9 @@ public abstract class MemberDialog extends BaseDialog {
 	 */
 	@Override
 	protected boolean confirmClicked() {
+		if(!displayLoyaltyPoints) {
+			return memberCallBack(memberId.getText(), memberName.getText(), Constants.Common.EMPTY_STR);
+		}
 		return memberCallBack(memberId.getText(), memberName.getText(), loyaltyPoints.getText());
 	}
 	
@@ -141,15 +164,24 @@ public abstract class MemberDialog extends BaseDialog {
 		int index = 0;
 		
 		// Finally add the elements
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.MEMBER_ID, index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.MEMBER_ID, index);
 		memberId = createTextFieldOnPanel(jPanel, index++);
 		
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.MEMBER_NAME, index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.MEMBER_NAME, index);
 		memberName = createTextFieldOnPanel(jPanel, index++);
 		
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.LOYALTY_POINTS, index);// Move to constants
-		loyaltyPoints = createTextFieldOnPanel(jPanel, index++);
+		lblLoyaltyPoints = createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.LOYALTY_POINTS, index);
+		loyaltyPoints = createTextFieldOnPanel(jPanel, index++);	
+		displayOrHideLoyaltyPoints();
 		
 		return jPanel;
+	}
+	
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+	private void displayOrHideLoyaltyPoints() {
+		loyaltyPoints.setVisible(displayLoyaltyPoints);
+		lblLoyaltyPoints.setVisible(displayLoyaltyPoints);
 	}
 }

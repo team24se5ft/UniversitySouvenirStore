@@ -49,7 +49,7 @@ public class MemberManager {
 	/**
 	 * Get a single instance of MemberManager
 	 * 
-	 * @return
+	 * @return The instance of MemberManager
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -85,10 +85,10 @@ public class MemberManager {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean addNewMember(String name, String identifier) throws MemberNotFound, IOException, StoreException {
+	public boolean addNewMember(String identifier, String name) throws MemberNotFound, IOException, StoreException {
 		if (isMember(identifier))
 			return false;
-		Member newMember = new Member(name, identifier, Constants.Data.Member.LOYALTY_NEW_MEMBER);
+		Member newMember = new Member(identifier, name, Constants.Data.Member.LOYALTY_NEW_MEMBER);
 		memberData.add(newMember);
 		return true;
 	}
@@ -102,7 +102,7 @@ public class MemberManager {
 	 */
 	public Member getMember(String identifier) throws MemberNotFound, IOException, StoreException {
 		Member memberResult = null;
-		Iterator<Member> list = getMembers().iterator();
+		Iterator<Member> list = getAllMembers().iterator();
 		while (list.hasNext()) {
 			Member memberFound = list.next();
 			if (memberFound.getIdentifier().equals(identifier)) {
@@ -118,20 +118,19 @@ public class MemberManager {
 	 * @return
 	 * @throws IOException
 	 */
-	public ArrayList<Member> getMembers() throws MemberNotFound, IOException, StoreException {
+	public ArrayList<Member> getAllMembers() throws MemberNotFound, IOException, StoreException {
 		String[] membersList = memberData.getAll();
-		ArrayList<Member> storedMembers = new ArrayList<>();
+		ArrayList<Member> storedMembers = new ArrayList<Member>();
 		for (String singleMember : membersList) {
 			if (singleMember.isEmpty())
 				continue;
 			String[] memberSeperator = singleMember.split(Constants.Data.FILE_SEPTR);
-			storedMembers.add(new Member(memberSeperator[0], memberSeperator[1], Integer.parseInt(memberSeperator[2])));
-
+			String memberName = memberSeperator[0];
+			String memberId = memberSeperator[1];
+			int loyaltyPoints = Integer.parseInt(memberSeperator[2]);
+			storedMembers.add(new Member(memberId,memberName,loyaltyPoints));
 		}
-		ArrayList<Member> sortedMember;
-		sortedMember = sortMember(storedMembers);
-		return sortedMember;
-
+		return storedMembers;
 	}
 
 	/**
@@ -156,6 +155,22 @@ public class MemberManager {
 		Collections.sort(storedMembers, Comparator.comparing(Member::getName).thenComparing(Member::getName));
 		return storedMembers;
 
+	}
+	
+	/**
+	 * Method to update an existing member. The update will only take place if the member is already present.
+	 * @param oldMember The old member object that needs to be updated. 
+	 * @param updatedMember The new member object.
+	 * @return true if successful, else false
+	 */
+	public boolean updateMember(Member oldMember, Member updatedMember) throws MemberNotFound, IOException, StoreException {
+		if(getMember(oldMember.getIdentifier()) != null) {
+			removeMember(oldMember.getIdentifier());
+			memberData.add(updatedMember);
+			return true;
+		}else {
+			throw new MemberNotFound("The member does not exist.");
+		}
 	}
 	
 	/**
@@ -201,7 +216,6 @@ public class MemberManager {
 			status = true;
 		}
 		return status;
-
 	}
 
 	/**
