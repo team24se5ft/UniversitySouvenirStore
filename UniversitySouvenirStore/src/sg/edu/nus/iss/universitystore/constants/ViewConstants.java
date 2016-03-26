@@ -86,7 +86,7 @@ public class ViewConstants {
 		public static final String OFF_PERC="Percent Off";
 		public static final String TYPE="Type";
 		public static final String DESCRIPTION="Description";
-		public static final String START_DATE="Start Date (DD/MM):";
+		public static final String START_DATE="Start Date (yyyy-MM-dd):";
 		public static final String PERIOD="Period";
 		
 		//Member Dialog Headers
@@ -182,6 +182,7 @@ public class ViewConstants {
 
 	public static final class SalesPanel {
 		public static final String MEMBER_OPTION_LABEL = "Public";
+		public static final String NONE_DISCOUNT = "none discount";
 		public static final String MEMBER_LABEL = "member:";
 		public static final String DISCOUNT_LABEL = "discount:";
 		public static final String AVAILABLE_LOYALPOINT_LABEL = "AvailableLoyalPoint:";
