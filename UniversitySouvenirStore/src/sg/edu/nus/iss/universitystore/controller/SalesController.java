@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.universitystore.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -8,12 +9,14 @@ import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.DiscountManager;
+import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
 import sg.edu.nus.iss.universitystore.exception.MemberNotFound;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.dialog.MemberScanDialog;
@@ -53,16 +56,25 @@ public class SalesController implements ISalesDelegate {
 
 			@Override
 			public boolean onProductScanResult(String productCode) {
-				// TODO need to do product validation here
-				if (true) {
-					// add query product entity
-					Product product = new Product(productCode, "a product", "it`s called a product", "100", "20", "10",
-							"50");
-					productList.add(product);
-					// data input product
-					salesPanel.onAddProduct(product);
-					productDialog.dispose();
-					productDialog.setVisible(false);
+				// add query product entity
+				try {
+					Product product = InventoryManager.getInstance().findProduct(productCode);
+					if (product == null) {
+						UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING,
+								ViewConstants.ValidationMessage.PRODUCT_ID_NotExist, DialogType.WARNING_MESSAGE);
+					} else {
+						productList.add(product);
+						salesPanel.updateTable(TableDataUtils.getFormattedProductListForTable(productList),
+								TableDataUtils.getHeadersForProductTable());
+						productDialog.dispose();
+						productDialog.setVisible(false);
+					}
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (StoreException e) {
+					e.printStackTrace();
 				}
 				return true;
 			}
@@ -86,9 +98,14 @@ public class SalesController implements ISalesDelegate {
 	@Override
 	public void Cancel() {
 		productList.clear();
-		salesPanel.onCancel();
+		salesPanel.updateTable(TableDataUtils.getFormattedProductListForTable(productList),
+				TableDataUtils.getHeadersForProductTable());
 	}
 
+	/**
+	 * after scan memberCode,show memberName,max discount,available loyalPoint
+	 * in customInfo Panel
+	 */
 	@Override
 	public void MemberIdentification() {
 		// TODO Auto-generated method stub
@@ -103,8 +120,8 @@ public class SalesController implements ISalesDelegate {
 						Member member = MemberManager.getInstance().getMember(MemberCode);
 						if (member == null) {
 							UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING,
-									ViewConstants.ValidationMessage.memberNotExist, DialogType.WARNING_MESSAGE);
-						}else{
+									ViewConstants.ValidationMessage.MEMBER_NotExist, DialogType.WARNING_MESSAGE);
+						} else {
 							salesPanel.onMemberIdentification(member.getName(),
 									DiscountManager.getInstance().getDiscount(MemberCode).getCode(),
 									String.valueOf(member.getLoyaltyPoints()));

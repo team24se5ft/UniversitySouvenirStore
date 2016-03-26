@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
 
@@ -73,9 +74,9 @@ public class SalesPanel extends BaseTablePanel {
 	 * init productTable here
 	 */
 	private void initProductTable() {
-		String[] headers = { "Code", "Name", "Price" };
+//		String[] headers = { "Code", "Name", "Price" };
 		String data[][] = {};
-		add(getScrollPaneWithTable(data, headers), BorderLayout.CENTER);
+		add(getScrollPaneWithTable(data, TableDataUtils.getHeadersForProductTable()), BorderLayout.CENTER);
 		add(getButtonPanel(), BorderLayout.SOUTH);
 	}
 
@@ -134,6 +135,10 @@ public class SalesPanel extends BaseTablePanel {
 		toggleLoyalPanel(false);// set loyal panel unavailable in the beginning
 	}
 
+	/**
+	 * only showing after memberIdentificaiton
+	 * @param flag
+	 */
 	public void toggleLoyalPanel(boolean flag) {
 		if (flag) {
 			availableLabel.setVisible(true);
@@ -143,7 +148,6 @@ public class SalesPanel extends BaseTablePanel {
 		} else {
 			availableLabel.setVisible(false);
 			avaiLableLoyalPoint.setVisible(false);
-			;
 			loyalPointLabel.setVisible(false);
 			LoyalPointOption.setVisible(false);
 		}
@@ -196,18 +200,6 @@ public class SalesPanel extends BaseTablePanel {
 		discountOption.setText(discountCode);
 		avaiLableLoyalPoint.setText(availableloyalPoint);
 		toggleLoyalPanel(true);
-	}
-
-	public void onAddProduct(Product product) {
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		model.addRow(new Object[] { product.getIdentifier(), product.getName(), product.getPrice() });
-	}
-
-	public void onCancel() {
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		while (table.getRowCount() != 0) {
-			model.removeRow(0);
-		}
 	}
 
 	@Override

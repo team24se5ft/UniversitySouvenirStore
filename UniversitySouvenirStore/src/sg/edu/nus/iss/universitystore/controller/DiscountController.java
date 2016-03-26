@@ -170,7 +170,7 @@ public class DiscountController implements IDiscountDelegate {
 			return true;
 		} else {
 			UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING,
-					ViewConstants.ValidationMessage.validatedFailed, DialogType.WARNING_MESSAGE);
+					ViewConstants.ValidationMessage.VALIDATION_Failed, DialogType.WARNING_MESSAGE);
 			return false;
 		}
 	}

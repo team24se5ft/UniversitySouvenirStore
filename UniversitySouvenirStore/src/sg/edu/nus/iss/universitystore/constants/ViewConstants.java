@@ -190,8 +190,9 @@ public class ViewConstants {
 
 	public static final class ValidationMessage {
 		// all uncatch exception use this failed
-		public static final String validatedFailed = "some unexception problem occur!";
-		public static final String memberNotExist = "the input member ID is not exist!";
+		public static final String VALIDATION_Failed = "some unexception problem occur!";
+		public static final String MEMBER_NotExist = "the input member ID is not exist!";
+		public static final String PRODUCT_ID_NotExist = "the input product ID is not exist!";
 		
 	}
 }
