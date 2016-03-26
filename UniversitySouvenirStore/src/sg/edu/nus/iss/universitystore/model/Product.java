@@ -45,6 +45,9 @@ public class Product {
 		this.identifier = identifier;
 	}
 
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 	/**
 	 * @return the identifier
 	 */

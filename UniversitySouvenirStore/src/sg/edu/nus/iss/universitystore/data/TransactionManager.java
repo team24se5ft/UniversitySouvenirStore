@@ -67,7 +67,7 @@ public class TransactionManager {
 	 * Instance of Member Manager
 	 */
 	private MemberManager memberManager;
-	
+
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/
@@ -105,6 +105,52 @@ public class TransactionManager {
 		memberManager = MemberManager.getInstance();
 	}
 
+	/**
+	 * Method to get the current transaction id that will be newly created.
+	 * @return The transaction id.
+	 * @throws IOException 
+	 * @throws StoreException
+	 */
+	private int getTransactionId() throws IOException, StoreException {
+		// Get the transactionId
+		int transactionId = 1;
+		ArrayList<Transaction> allTransactions = getAllTransactions();
+
+		if (allTransactions.size() != 0) {
+			Transaction lastTransaction = allTransactions.get(allTransactions.size() - 1);
+			transactionId = (Integer.valueOf(lastTransaction.getIdentifier())) + 1;
+		}
+		return transactionId;
+	}
+
+	/**
+	 * Checks if the requested quantity exists or not.
+	 * @param arrTransactionItem The list of transaction items that have been added to the cart.
+	 * @throws IOException
+	 * @throws StoreException
+	 */
+	private void checkIfRequestedQuantityExistsInInventory(ArrayList<TransactionItem> arrTransactionItem)
+			throws IOException, StoreException {
+		// Check the quantities using inventory manager
+		for (TransactionItem transactionItem : arrTransactionItem) {
+			Product product = inventoryManager.findProduct(transactionItem.getProduct().getIdentifier());
+			int availableQuantity = product.getQuantity();
+
+			if (availableQuantity < transactionItem.getQuantity()) {
+				// TODO - Move to constants
+				throw new StoreException(CommonUtils.MessageTitleType.ERROR,
+						"Requested quantity more than that available in the store",
+						CommonUtils.MessageType.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private void updateInventoryAfterSale(TransactionItem transactionItem) throws IOException, StoreException{
+		Product product = transactionItem.getProduct();
+		int updatedQuantity = product.getQuantity() - transactionItem.getQuantity();
+		product.setQuantity(updatedQuantity);
+		inventoryManager.updateProduct(product);
+	}
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
@@ -187,39 +233,27 @@ public class TransactionManager {
 	 *            The member who is associated with the transaction.
 	 * @return true is successfully written to file, else false.
 	 */
-	public boolean addTransaction(ArrayList<TransactionItem> arrTransactionItem, String discountId, String memberId) throws StoreException, IOException {
+	public boolean addTransaction(ArrayList<TransactionItem> arrTransactionItem, String discountId, String memberId)
+			throws StoreException, IOException {
 		// Get the transactionId
-		int transactionId = 1;
-		ArrayList<Transaction> allTransactions = getAllTransactions();
-		 
-		if(allTransactions.size() != 0) {
-			Transaction lastTransaction = allTransactions.get(allTransactions.size() - 1);
-			transactionId = (Integer.valueOf(lastTransaction.getIdentifier())) + 1;
-		}
+		int transactionId = getTransactionId();
+		// Check if the requested item exists
+		checkIfRequestedQuantityExistsInInventory(arrTransactionItem);
 
-		// Check the quantities using inventory manager
-		for (TransactionItem transactionItem : arrTransactionItem) {
-			Product product = inventoryManager.findProduct(transactionItem.getProduct().getIdentifier());
-			int availableQuantity = product.getQuantity();
-			
-			if(availableQuantity < transactionItem.getQuantity()) {
-				// TODO - Move to constants
-				throw new StoreException(CommonUtils.MessageTitleType.ERROR, "Requested quantity more than that available in the store", CommonUtils.MessageType.ERROR_MESSAGE);
-			}
-		}
-		
 		// Check Discount Id
-		if(discountManager.findDiscount(discountId) == null) {
+		if (discountManager.findDiscount(discountId) == null) {
 			// TODO - Move to constants
-			throw new StoreException(CommonUtils.MessageTitleType.ERROR, "Invalid discount ID.", CommonUtils.MessageType.ERROR_MESSAGE);
+			throw new StoreException(CommonUtils.MessageTitleType.ERROR, "Invalid discount ID.",
+					CommonUtils.MessageType.ERROR_MESSAGE);
 		}
 
 		try {// TODO - Remove this.
-			// Check member Id
-			if(memberManager.getMember(memberId) == null) {
-				if(!memberId.equals("PUBLIC")) {//TODO - Move to constants
+				// Check member Id
+			if (memberManager.getMember(memberId) == null) {
+				if (!memberId.equals("PUBLIC")) {// TODO - Move to constants
 					// TODO - Move to constants
-					throw new StoreException(CommonUtils.MessageTitleType.ERROR, "Invalid Member ID.", CommonUtils.MessageType.ERROR_MESSAGE);
+					throw new StoreException(CommonUtils.MessageTitleType.ERROR, "Invalid Member ID.",
+							CommonUtils.MessageType.ERROR_MESSAGE);
 				}
 			}
 		} catch (Exception e) {
@@ -236,6 +270,7 @@ public class TransactionManager {
 					memberId, transactionItem.getQuantity(), LocalDate.now());
 			try {
 				returnValue = transactionData.add(transaction);
+				updateInventoryAfterSale(transactionItem);
 			} catch (Exception e) {
 				// TODO : Remove all the items that have been written because
 				// something went wrong
@@ -249,14 +284,4 @@ public class TransactionManager {
 		}
 		return returnValue;
 	}
-
-	/**
-	 * Add Transaction to Data file
-	 */
-
-	/*
-	 * public Transaction addTransaction() throws IOException,StoreException{
-	 * Transaction trans=new Transaction(trans_id, prod_id, member_id, quantity,
-	 * date); }
-	 */
 }
