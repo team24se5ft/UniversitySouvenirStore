@@ -11,6 +11,7 @@ import sg.edu.nus.iss.universitystore.exception.MemberNotFound;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
+import sg.edu.nus.iss.universitystore.utility.DateUtils;
 
 /**
  * Class Manages Discount Data File
@@ -24,7 +25,7 @@ public class DiscountManager {
 	 * Discount Arguments
 	 */
 	public enum DiscountArg {
-		CODE(0), DESCRIPTION(1), START_DATE(2), PERIOD(3), PERCENTAGE(4), ELIGIBILITY(5);
+		CODE(0), START_DATE(1), PERIOD(2), PERCENTAGE(3), ELIGIBILITY(4), DESCRIPTION(5);
 
 		private int position;
 
@@ -171,6 +172,52 @@ public class DiscountManager {
 				Constants.Data.Discount.Member.Existing.PERIOD, this.memberDiscount,
 				Constants.Data.Discount.Eligibility.MEMBER);
 	}
+	
+	/***********************************************************/
+	// Validation for Discount
+	/***********************************************************/
+	
+	/**
+	 * Validates the format of Data in a row of Data File
+	 * 
+	 * @param dataLine
+	 * @return Boolean
+	 */
+	private boolean isValidFormat(String discountRow) {
+		return discountRow.matches(Constants.Data.Discount.Pattern.LINE_MATCH);
+	}
+	
+	/**
+	 * Validates if the period is <=365 and if percentage is < 100
+	 * 
+	 * @param dataLine
+	 * @return Boolean
+	 */
+	private boolean isValidData(String[] discountList) {
+		int period = Integer.parseInt(discountList[DiscountArg.PERIOD.ordinal()]);
+		float percentage = Float.parseFloat(discountList[DiscountArg.PERCENTAGE.ordinal()]);
+
+		// Is Valid if period within range 0 to 365
+		// Is Valid if percentage is within range 1 to 100
+		return (period >= 0 && period <= 365) && (percentage > 0 && percentage <= 100);
+	}
+
+	/***********************************************************/
+	// Private Methods for Discount
+	/***********************************************************/
+
+	/**
+	 * Splits Row of Data File into a list of Strings
+	 * 
+	 * @param line
+	 * @return Boolean
+	 */
+	private String[] splitDiscountData(String discountRow) {
+
+		return DateUtils.extractContent(discountRow, Constants.Data.Discount.Pattern.LINE_MATCH,
+				Constants.Data.Discount.Pattern.DESCRIPTION_REPLACE,
+				Constants.Data.Discount.Pattern.OTHER_CNTNT_REPLACE);
+	}
 
 	/***********************************************************/
 	// Public Methods for Discount for Transaction Page
@@ -188,44 +235,26 @@ public class DiscountManager {
 
 		for (String discountStr : discountStrLst) {
 
-			// Checks if line in Data file is invalid, skip line
-			if (!isValidData(discountStr))
+			// Checks if line in Data file is of valid format, if not skips line
+			if (!isValidFormat(discountStr))
 				continue;
 
-			String[] discountStrSplt = discountStr.split(Constants.Data.FILE_SEPTR);
+			String[] discountStrSpltLst = splitDiscountData(discountStr);
+
+			// Checks if valid data, if not skips line
+			if (!isValidData(discountStrSpltLst))
+				continue;
 
 			// Add Discount
-			discountList.add(new Discount(discountStrSplt[DiscountArg.CODE.ordinal()],
-					discountStrSplt[DiscountArg.DESCRIPTION.ordinal()],
-					discountStrSplt[DiscountArg.START_DATE.ordinal()], discountStrSplt[DiscountArg.PERIOD.ordinal()],
-					discountStrSplt[DiscountArg.PERCENTAGE.ordinal()],
-					discountStrSplt[DiscountArg.ELIGIBILITY.ordinal()]));
+			discountList.add(new Discount(discountStrSpltLst[DiscountArg.CODE.ordinal()],
+					discountStrSpltLst[DiscountArg.DESCRIPTION.ordinal()],
+					discountStrSpltLst[DiscountArg.START_DATE.ordinal()],
+					discountStrSpltLst[DiscountArg.PERIOD.ordinal()],
+					discountStrSpltLst[DiscountArg.PERCENTAGE.ordinal()],
+					discountStrSpltLst[DiscountArg.ELIGIBILITY.ordinal()]));
 		}
 
 		return discountList;
-	}
-
-	/**
-	 * Checks if the data line is of valid format and if the period is <=365 and
-	 * if percentage is < 100
-	 * 
-	 * @param dataLine
-	 * @return Boolean
-	 */
-	private boolean isValidData(String dataLine) {
-		boolean isValid = false;
-
-		// If data line matches format
-		if (dataLine.matches(Constants.Data.Discount.Pattern.LINE_MATCH)) {
-			String[] dataLineSplt = dataLine.split(Constants.Data.FILE_SEPTR);
-			int period = Integer.parseInt(dataLineSplt[DiscountArg.PERIOD.ordinal()]);
-			float percentage = Float.parseFloat(dataLineSplt[DiscountArg.PERCENTAGE.ordinal()]);
-
-			// Is Valid if period within range 0 to 365
-			// Is Valid if percentage is within range 1 to 100
-			isValid = (period >= 0 && period <= 365) && (percentage > 0 && percentage <= 100);
-		}
-		return isValid;
 	}
 
 	/**

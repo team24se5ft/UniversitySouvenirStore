@@ -89,6 +89,6 @@ public class Discount {
 	 */
 	@Override
 	public String toString() {
-		return code + "," + description + "," + startDate + ","	+ period + "," + percentage + "," + eligibilty;
+		return code + ",\"" + description + "\"," + startDate + ","	+ period + "," + percentage + "," + eligibilty;
 	}
 }

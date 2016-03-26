@@ -48,12 +48,18 @@ public final class Constants {
 			public static final String VENDOR_DAT = "Vendor";
 
 		}
+		
+		public static final class Pattern {
+			public static final String DESCRIPTION_MATCH = "(\\\"(?!\\\")(.*?)\\\"\\,)";
+		}
 
 		public static final class Product {
 			public static final class Pattern {
-				public static final String ID_MATCH = "(\\w+)" + ID_SEPTR + "\\d+";
-				public static final String ID_REPLACE = "$1";
+				public static final String ID_MATCH = "(\\w+)" + ID_SEPTR + "(\\d+)";
+				public static final String CATEGORY_REPLACE = "$1";
+				public static final String COUNT_REPLACE = "$2";
 			}
+			public static final int INITIALIZED_COUNT = 0;
 		}
 
 		public static final class Member {
@@ -62,7 +68,9 @@ public final class Constants {
 
 		public static final class Discount {
 			public static final class Pattern {
-				public static final String LINE_MATCH = "^[A-Z]+\\,.*?\\,\\d{4}\\-\\d{2}\\-\\d{2}\\,\\d{1,3},\\d{1,3}(\\.\\d{1,2})?\\,[A|M]$";
+				public static final String LINE_MATCH = "^([A-Z]+\\,)"+Data.Pattern.DESCRIPTION_MATCH+"(\\d{4}\\-\\d{2}\\-\\d{2}\\,\\d{1,3},\\d{1,3}\\.\\d{1,2}\\,[A|M])$";
+				public static final String DESCRIPTION_REPLACE = "$3";
+				public static final String OTHER_CNTNT_REPLACE = "$1$4";
 			}
 
 			public static final class Eligibility {
