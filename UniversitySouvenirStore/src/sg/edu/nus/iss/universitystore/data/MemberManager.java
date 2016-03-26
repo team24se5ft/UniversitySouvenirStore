@@ -108,7 +108,6 @@ public class MemberManager {
 			if (memberFound.getIdentifier().equals(identifier)) {
 				memberResult = memberFound;
 			}
-
 		}
 		return memberResult;
 	}
