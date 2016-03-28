@@ -29,5 +29,11 @@ public final class Messages {
 			public static final String MEMBER_IDENTIFIER_ALREADY_PRESENT = "The member identifier already exists.";
 			public static final String MEMBER_NOT_PRESENT_IN_FILE = "The member does not exist.";
 		}
+		
+		public static final class Discount {
+			public static final String EMPTY_DISCOUNT_FIELDS = "All fields are mandatory.";
+			public static final String DISCOUNT_NOT_PRESENT_IN_FILE = "The discount does not exist.";
+			public static final String DISCOUNT_ALREADY_PRESENT = "The discount code already exists.";
+		}
 	}
 }

@@ -7,7 +7,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
-import sg.edu.nus.iss.universitystore.exception.MemberNotFound;
+import sg.edu.nus.iss.universitystore.exception.DiscountException;
+import sg.edu.nus.iss.universitystore.exception.MemberException;
+import sg.edu.nus.iss.universitystore.exception.DiscountException.DiscountError;
+import sg.edu.nus.iss.universitystore.exception.MemberException.MemberError;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
@@ -75,7 +78,7 @@ public class DiscountManager {
 	 * @throws FileNotFoundException
 	 * @throws StoreException
 	 */
-	public static DiscountManager getInstance() throws FileNotFoundException, IOException, StoreException {
+	public static DiscountManager getInstance() throws DiscountException {
 		if (instance == null) {
 			synchronized (DiscountManager.class) {
 				if (instance == null) {
@@ -105,9 +108,14 @@ public class DiscountManager {
 	 * @throws StoreException
 	 * @throws MemberNotFound
 	 */
-	public DiscountManager() throws FileNotFoundException, IOException, MemberNotFound, StoreException {
-		initialize();
-		memberManager = MemberManager.getInstance();
+	private DiscountManager() throws DiscountException {
+		try {
+			initialize();
+			memberManager = MemberManager.getInstance();
+		} catch (Exception e) {
+			throw new DiscountException(DiscountError.UNKNOWN_ERROR);
+		}
+		
 		this.newMemberDiscount = Constants.Data.Discount.Member.New.DEFAULT_DISCOUNT;
 		this.memberDiscount = Constants.Data.Discount.Member.Existing.DEFAULT_DISCOUNT;
 	}
@@ -229,10 +237,15 @@ public class DiscountManager {
 	 * @return Discount List
 	 * @throws IOException
 	 */
-	public ArrayList<Discount> getAllDiscounts() throws IOException {
+	public ArrayList<Discount> getAllDiscounts() throws DiscountException {
 		ArrayList<Discount> discountList = new ArrayList<>();
-		String[] discountStrLst = discountData.getAll();
-
+		String[] discountStrLst = null;
+		try {
+			discountStrLst = discountData.getAll();
+		} catch (Exception e) {
+			throw new DiscountException(DiscountError.UNKNOWN_ERROR);
+		}
+		
 		for (String discountStr : discountStrLst) {
 
 			// Checks if line in Data file is of valid format, if not skips line
@@ -263,7 +276,7 @@ public class DiscountManager {
 	 * @return List of Discounts
 	 * @throws IOException
 	 */
-	public ArrayList<Discount> getAllMemberDiscounts() throws IOException {
+	public ArrayList<Discount> getAllMemberDiscounts() throws DiscountException {
 		ArrayList<Discount> discountList = getAllDiscounts();
 		ArrayList<Discount> memberDiscountList = new ArrayList<>();
 
@@ -306,7 +319,7 @@ public class DiscountManager {
 	 * @return List of Discounts applicable to the Public
 	 * @throws IOException
 	 */
-	public ArrayList<Discount> getAllPublicDiscounts() throws IOException {
+	public ArrayList<Discount> getAllPublicDiscounts() throws DiscountException {
 		ArrayList<Discount> discountList = getAllMemberDiscounts();
 		ArrayList<Discount> publicDiscountList = new ArrayList<>();
 
@@ -327,7 +340,7 @@ public class DiscountManager {
 	 * @throws IOException
 	 * @throws MemberNotFound
 	 */
-	public Discount getCustomerDiscount(String memberID) throws MemberNotFound, IOException, StoreException {
+	public Discount getCustomerDiscount(String memberID) throws DiscountException {
 		// Customer who is not a Member will not get a discount
 		Discount discount = new Discount(Constants.Data.Discount.Member.Public.CODE,
 				Constants.Data.Discount.Member.Public.DESCRIPTION,
@@ -337,13 +350,18 @@ public class DiscountManager {
 
 		// Check if member is valid
 		if (memberManager.isMember(memberID)) {
-			Member member = memberManager.getMember(memberID);
-
+			Member member;
+			try {
+				member = memberManager.getMember(memberID);
+			} catch (Exception e) {
+				throw new DiscountException(DiscountError.MEMBER_NOT_PRESENT_IN_FILE);
+			}
 			// Get Discount for New or Existing Member
 			discount = member.getLoyaltyPoints() == Constants.Data.Member.LOYALTY_NEW_MEMBER ? getNewMemberDiscount()
 					: getMemberDiscount();
+		}else {
+			throw new DiscountException(DiscountError.MEMBER_NOT_PRESENT_IN_FILE);
 		}
-
 		return discount;
 	}
 
@@ -356,7 +374,7 @@ public class DiscountManager {
 	 * @throws IOException
 	 * @throws MemberNotFound
 	 */
-	public Discount getDiscount(String memberID) throws MemberNotFound, IOException, StoreException {
+	public Discount getDiscount(String memberID) throws DiscountException {
 		Discount maxDiscount = getCustomerDiscount(memberID);
 		ArrayList<Discount> discountList = memberManager.isMember(memberID) ? getAllMemberDiscounts()
 				: getAllPublicDiscounts();
@@ -380,7 +398,7 @@ public class DiscountManager {
 	 * @return Discount
 	 * @throws IOException
 	 */
-	public Discount findDiscount(String code) throws IOException {
+	public Discount findDiscount(String code) throws DiscountException {
 		ArrayList<Discount> discountList = getAllDiscounts();
 		Discount discountFound = null;
 
@@ -390,7 +408,11 @@ public class DiscountManager {
 				break;
 			}
 		}
-
+		// If the discount is not found, then throw an exception
+		if(discountFound == null) {
+			throw new DiscountException(DiscountError.DISCOUNT_NOT_PRESENT_IN_FILE);
+		}
+		
 		return discountFound;
 	}
 
@@ -401,8 +423,13 @@ public class DiscountManager {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean hasDiscount(String code) throws IOException {
-		return findDiscount(code) != null;
+	public boolean hasDiscount(String code) {
+		try {
+			findDiscount(code);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	/**
@@ -417,13 +444,18 @@ public class DiscountManager {
 	 * @return Status
 	 * @throws IOException
 	 */
-	public boolean addDiscount(Discount discount) throws IOException {
+	public boolean addDiscount(Discount discount) throws DiscountException {
 
-		if (hasDiscount(discount.getCode()))
-			return false;
-
-		return discountData.add(new Discount(discount.getCode(), discount.getDescription(), discount.getStartDate(),
-				discount.getPeriod(), discount.getPercentage(), discount.getEligibilty()));
+		if (hasDiscount(discount.getCode())) {
+			throw new DiscountException(DiscountError.DISCOUNT_ALREADY_PRESENT);
+		}else {
+			try {
+				return discountData.add(new Discount(discount.getCode(), discount.getDescription(), discount.getStartDate(),
+						discount.getPeriod(), discount.getPercentage(), discount.getEligibilty()));
+			} catch (IOException e) {
+				throw new DiscountException(DiscountError.UNKNOWN_ERROR);
+			}	
+		}
 	}
 
 	/**
@@ -433,36 +465,30 @@ public class DiscountManager {
 	 * @return Status
 	 * @throws IOException
 	 */
-	public boolean deleteDiscount(String code) throws IOException {
+	public boolean deleteDiscount(String code) throws DiscountException {
 
-		if (!hasDiscount(code))
-			return false;
-
-		Discount discount = findDiscount(code);
-
-		return discountData.delete(discount.toString());
+		if (hasDiscount(code)){
+			Discount discount = findDiscount(code);
+			try {
+				return discountData.delete(discount.toString());
+			} catch (IOException e) {
+				throw new DiscountException(DiscountError.UNKNOWN_ERROR);
+			}
+		}else {
+			throw new DiscountException(DiscountError.DISCOUNT_NOT_PRESENT_IN_FILE);
+		}
 	}
 
 	/**
 	 * Update Discount
 	 * 
-	 * @param code
-	 * @param description
-	 * @param startDate
-	 * @param period
-	 * @param percentage
-	 * @param eligibilty
-	 * @return Status
-	 * @throws IOException
 	 */
-	public boolean updateDiscount(Discount oldDiscount, Discount newDiscount) throws IOException {
-		boolean status = false;
-
-		if (deleteDiscount(oldDiscount.getCode())) {
-			status = addDiscount(newDiscount);
+	public boolean updateDiscount(Discount oldDiscount, Discount newDiscount) throws DiscountException {
+		if(hasDiscount(oldDiscount.getCode())) {
+			deleteDiscount(oldDiscount.getCode());
+			return true;
+		}else {
+			throw new DiscountException(DiscountError.DISCOUNT_NOT_PRESENT_IN_FILE);
 		}
-
-		return status;
 	}
-
 }

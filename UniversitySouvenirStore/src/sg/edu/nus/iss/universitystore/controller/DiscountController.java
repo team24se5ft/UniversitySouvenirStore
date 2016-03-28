@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.universitystore.controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -9,7 +8,7 @@ import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.DiscountManager;
-import sg.edu.nus.iss.universitystore.exception.StoreException;
+import sg.edu.nus.iss.universitystore.exception.DiscountException;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
@@ -31,18 +30,10 @@ public class DiscountController implements IDiscountDelegate {
 		try {
 			discountManager = DiscountManager.getInstance();
 			discountList = discountManager.getAllDiscounts();
-		} catch (FileNotFoundException e) {
+		} catch (DiscountException e) {
 			e.printStackTrace();
 			UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-					DialogType.WARNING_MESSAGE);
-		} catch (IOException e) {
-			e.printStackTrace();
-			UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-					DialogType.WARNING_MESSAGE);
-		} catch (StoreException e) {
-			UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-					DialogType.WARNING_MESSAGE);
-			e.printStackTrace();
+					DialogType.ERROR_MESSAGE);
 		}
 		discountPanel = new DiscountPanel(this);
 		discountPanel.updateTable(TableDataUtils.getFormattedDiscountListForTable(discountList),
@@ -76,16 +67,10 @@ public class DiscountController implements IDiscountDelegate {
 				try {
 					flag = discountManager.addDiscount(discount);
 					discountList = discountManager.getAllDiscounts();
-				} catch (NumberFormatException e) {
+				} catch (DiscountException e) {
 					e.printStackTrace();
 					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-							DialogType.WARNING_MESSAGE);
-					return false;
-				} catch (IOException e) {
-					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-							DialogType.WARNING_MESSAGE);
-					e.printStackTrace();
-					return false;
+							DialogType.ERROR_MESSAGE);
 				}
 				return isUpdateUI(flag);
 			}
@@ -112,14 +97,10 @@ public class DiscountController implements IDiscountDelegate {
 				try {
 					flag = discountManager.deleteDiscount(discount.getCode());
 					discountList = discountManager.getAllDiscounts();
-				} catch (NumberFormatException e) {
-					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-							DialogType.WARNING_MESSAGE);
+				} catch (DiscountException e) {
 					e.printStackTrace();
-				} catch (IOException e) {
 					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-							DialogType.WARNING_MESSAGE);
-					e.printStackTrace();
+							DialogType.ERROR_MESSAGE);
 				}
 				return isUpdateUI(flag);
 			}
@@ -147,10 +128,10 @@ public class DiscountController implements IDiscountDelegate {
 				try {
 					flag = discountManager.updateDiscount(oldDiscount, newDiscount);
 					discountList = discountManager.getAllDiscounts();
-				} catch (IOException e) {
-					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-							DialogType.WARNING_MESSAGE);
+				} catch (DiscountException e) {
 					e.printStackTrace();
+					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+							DialogType.ERROR_MESSAGE);
 				}
 				return isUpdateUI(flag);
 			}

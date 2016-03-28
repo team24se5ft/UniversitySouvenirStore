@@ -11,7 +11,8 @@ import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.DiscountManager;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
-import sg.edu.nus.iss.universitystore.exception.MemberNotFound;
+import sg.edu.nus.iss.universitystore.exception.DiscountException;
+import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
@@ -113,28 +114,21 @@ public class SalesController implements ISalesDelegate {
 
 			@Override
 			public boolean onMemberIdentification(String MemberCode) {
-				// TODO need to do member validation here
-				if (true) {
-					// TODO query Member
-					try {
-						Member member = MemberManager.getInstance().getMember(MemberCode);
-						if (member == null) {
-							UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING,
-									ViewConstants.ValidationMessage.MEMBER_NotExist, DialogType.WARNING_MESSAGE);
-						} else {
-							salesPanel.onMemberIdentification(member.getName(),
-									DiscountManager.getInstance().getDiscount(MemberCode).getCode(),
-									String.valueOf(member.getLoyaltyPoints()));
-							memberDialog.dispose();
-							memberDialog.setVisible(false);
-						}
-					} catch (MemberNotFound e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (StoreException e) {
-						e.printStackTrace();
-					}
+				// TODO query Member
+				try {
+					Member member = MemberManager.getInstance().getMember(MemberCode);
+					
+					salesPanel.onMemberIdentification(member.getName(),
+							DiscountManager.getInstance().getDiscount(MemberCode).getCode(),
+							String.valueOf(member.getLoyaltyPoints()));
+					memberDialog.dispose();
+					memberDialog.setVisible(false);
+				} catch (MemberException e) {
+					UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+							DialogType.WARNING_MESSAGE);
+				} catch (DiscountException e) {
+					UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+							DialogType.WARNING_MESSAGE);
 				}
 				return true;
 			}
