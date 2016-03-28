@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.LoginManager;
+import sg.edu.nus.iss.universitystore.exception.UniversityStoreLoginException;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
@@ -38,7 +39,12 @@ public class LoginController implements ILoginDelegate {
 		loginPanel.setDelegate(this);
 
 		// Instantiate Data File Manager
-		loginManager = LoginManager.getInstance();
+		try {
+			loginManager = LoginManager.getInstance();
+		} catch (UniversityStoreLoginException e) {
+			// TODO Auto-generated catch block
+			UIUtils.showMessageDialog(loginPanel, "Error", e.getMessage(), DialogType.ERROR_MESSAGE);
+		}
 	}
 
 	/***********************************************************/
@@ -54,22 +60,13 @@ public class LoginController implements ILoginDelegate {
 	@Override
 	public void loginButtonClicked(String username, String password) {
 		StoreKeeper storeKeeper = new StoreKeeper(username, password);
-		if (username.length() > 0 && password.length() > 0) {
-			try {
-				// Validate Credentials
-				if (loginManager.isValidCredentials(storeKeeper)) {
-					UIUtils.navigateToDashboard(loginPanel);
-				} else {
-					UIUtils.showMessageDialog(loginPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_INCORRECT_LOGIN_MESSAGE,
-							DialogType.WARNING_MESSAGE);
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		
+		try {
+			if(loginManager.isValidCredentials(storeKeeper)) {
+				UIUtils.navigateToDashboard(loginPanel);
 			}
-		} else {
-			UIUtils.showMessageDialog(loginPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_USERNAME_CANNOT_BE_EMPTY,
-					DialogType.WARNING_MESSAGE);
+		} catch (UniversityStoreLoginException exception) {
+			UIUtils.showMessageDialog(loginPanel,"Error",exception.getMessage(),DialogType.ERROR_MESSAGE);
 		}
 	}
 

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
+import sg.edu.nus.iss.universitystore.exception.UniversityStoreLoginException;
+import sg.edu.nus.iss.universitystore.exception.UniversityStoreLoginException.LoginError;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 
 /**
@@ -16,27 +18,23 @@ import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 public class LoginManager {
 
 	private static LoginManager instance;
-	
+
 	private DataFile<StoreKeeper> storeKeeperData;
 
-	private LoginManager() {
+	private LoginManager() throws UniversityStoreLoginException {
 		try {
 			initialize();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) { 
+			throw new UniversityStoreLoginException(LoginError.UNKNOWN_ERROR);
 		}
 	}
-	
+
 	/**
 	 * Get a single instance of Data File Manager
 	 * 
 	 * @return DataFileManager
 	 */
-	public static LoginManager getInstance() {
+	public static LoginManager getInstance() throws UniversityStoreLoginException {
 		if (instance == null) {
 			synchronized (LoginManager.class) {
 				if (instance == null) {
@@ -46,7 +44,7 @@ public class LoginManager {
 		}
 		return instance;
 	}
-	
+
 	/**
 	 * Initialize all Date Files
 	 * 
@@ -56,14 +54,14 @@ public class LoginManager {
 	private void initialize() throws FileNotFoundException, IOException {
 		storeKeeperData = new DataFile<>(Constants.Data.FileName.STORE_KEEPER_DAT);
 	}
-	
+
 	/**
 	 * Delete instance of Data File Manager
 	 */
 	public static void deleteInstance() {
 		instance = null;
 	}
-	
+
 	/**
 	 * Checks if Entered Credentials are Valid
 	 * 
@@ -72,30 +70,48 @@ public class LoginManager {
 	 * @return Boolean
 	 * @throws IOException
 	 */
-	public boolean isValidCredentials(StoreKeeper enteredCredentials) throws IOException {
+	public boolean isValidCredentials(StoreKeeper enteredCredentials) throws UniversityStoreLoginException {
+		// Check if valid data has been provided by the user.
+		if (enteredCredentials.getUserName().length() == 0 && enteredCredentials.getPassword().length() == 0) {
+			throw new UniversityStoreLoginException(LoginError.EMPTY_USERNAME_AND_PASSWORD);
+		} else if (enteredCredentials.getUserName().length() == 0) {
+			throw new UniversityStoreLoginException(LoginError.EMPTY_USERNAME);
+		} else if (enteredCredentials.getPassword().length() == 0) {
+			throw new UniversityStoreLoginException(LoginError.EMPTY_PASSWORD);
+		}
+
+		// Check if the data matches as in dB
 		ArrayList<StoreKeeper> credentials = getLoginCredentials();
 		for (StoreKeeper credentailsData : credentials) {
-			if (credentailsData.equals(enteredCredentials))
+			if(credentailsData.equals(enteredCredentials)) {
 				return true;
+			}
 		}
-		return false;
+		// Throw an exception.
+		throw new UniversityStoreLoginException(LoginError.INVALID_CREDENTIALS);
 	}
 
 	/**
 	 * Get All Login credentials
 	 * 
 	 * @return All Store Keeper Credentials
-	 * @throws IOException
+	 * @throws UniversityStoreLoginException
 	 */
-	private ArrayList<StoreKeeper> getLoginCredentials() throws IOException {
-		String[] storeKprStrList = storeKeeperData.getAll();
-		ArrayList<StoreKeeper> storeKeeper = new ArrayList<>();
+	private ArrayList<StoreKeeper> getLoginCredentials() throws UniversityStoreLoginException {
+		// Catch the exception from parent & inform the controller.
+		String[] storeKprStrList;
+		try {
+			storeKprStrList = storeKeeperData.getAll();
+		} catch (Exception e) {
+			throw new UniversityStoreLoginException(LoginError.UNKNOWN_ERROR);
+		}
 
+		ArrayList<StoreKeeper> storeKeeper = new ArrayList<>();
 		for (String strKprStr : storeKprStrList) {
-			
-			if(strKprStr.isEmpty())
-			continue;
-			
+
+			if (strKprStr.isEmpty())
+				continue;
+
 			storeKeeper.add(new StoreKeeper(strKprStr.split(Constants.Data.FILE_SEPTR)));
 		}
 
