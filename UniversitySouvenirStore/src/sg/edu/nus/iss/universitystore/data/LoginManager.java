@@ -24,7 +24,7 @@ public class LoginManager {
 	private LoginManager() throws UniversityStoreLoginException {
 		try {
 			initialize();
-		} catch (Exception e) { 
+		} catch (IOException e) { 
 			throw new UniversityStoreLoginException(LoginError.UNKNOWN_ERROR);
 		}
 	}
@@ -102,7 +102,7 @@ public class LoginManager {
 		String[] storeKprStrList;
 		try {
 			storeKprStrList = storeKeeperData.getAll();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			throw new UniversityStoreLoginException(LoginError.UNKNOWN_ERROR);
 		}
 
