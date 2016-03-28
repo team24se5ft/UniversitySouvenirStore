@@ -19,7 +19,7 @@ import sg.edu.nus.iss.universitystore.view.dialog.DiscountDialog;
 import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
 
-public class DiscountController extends BaseController implements IDiscountDelegate {
+public class DiscountController implements IDiscountDelegate {
 	private DiscountPanel discountPanel;
 	private DiscountManager discountManager;
 	private ArrayList<Discount> discountList;

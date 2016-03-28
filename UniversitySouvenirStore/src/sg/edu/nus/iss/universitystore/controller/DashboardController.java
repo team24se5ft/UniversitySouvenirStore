@@ -9,7 +9,7 @@ import sg.edu.nus.iss.universitystore.view.DashboardPanel;
  * @author Samrat
  *
  */
-public class DashboardController extends BaseController{
+public class DashboardController {
 
 	/***********************************************************/
 	//Instance Variables

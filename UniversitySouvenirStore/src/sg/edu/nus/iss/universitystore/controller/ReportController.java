@@ -22,7 +22,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.ReportPanel;
  * @author Samrat
  *
  */
-public class ReportController extends BaseController implements IReportDelegate {
+public class ReportController implements IReportDelegate {
 
 	/***********************************************************/
 	// Instance Variables

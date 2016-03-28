@@ -24,7 +24,7 @@ import javax.swing.table.TableCellRenderer;
  * @author Samrat
  *
  */
-public abstract class BaseTablePanel extends BasePanel {
+public abstract class BaseTablePanel extends JPanel {
 
 	/***********************************************************/
 	// Constants

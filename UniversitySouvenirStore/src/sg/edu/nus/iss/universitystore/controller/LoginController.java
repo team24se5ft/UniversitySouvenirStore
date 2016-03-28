@@ -16,7 +16,7 @@ import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
  * @author Samrat
  *
  */
-public class LoginController extends BaseController implements ILoginDelegate {
+public class LoginController implements ILoginDelegate {
 
 	/***********************************************************/
 	// Constants

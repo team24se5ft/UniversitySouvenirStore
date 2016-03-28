@@ -9,10 +9,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.text.View;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
-import sg.edu.nus.iss.universitystore.view.BasePanel;
 import sg.edu.nus.iss.universitystore.view.intf.IReportDelegate;
 
-public class ReportPanel extends BasePanel{
+public class ReportPanel extends JPanel{
 	
 	/***********************************************************/
 	// Constants

@@ -6,7 +6,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
-import sg.edu.nus.iss.universitystore.view.BasePanel;
 import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
 
 /**
@@ -14,7 +13,7 @@ import sg.edu.nus.iss.universitystore.view.intf.IInventoryDelegate;
  *
  */
 
-public class InventoryPanel extends BasePanel{
+public class InventoryPanel extends JPanel{
 
 	/***********************************************************/
 	// Constants

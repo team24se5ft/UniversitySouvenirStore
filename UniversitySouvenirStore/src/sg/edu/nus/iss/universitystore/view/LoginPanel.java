@@ -36,7 +36,7 @@ import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
  * @author Samrat
  *
  */
-public class LoginPanel extends BasePanel{
+public class LoginPanel extends JPanel{
 	
 	/***********************************************************/
 	//Constants
