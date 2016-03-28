@@ -25,7 +25,7 @@ import sg.edu.nus.iss.universitystore.view.dialog.ReceiptDialog;
 import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.SalesPanel;
 
-public class SalesController implements ISalesDelegate {
+public class SalesController extends BaseController implements ISalesDelegate {
 	private SalesPanel salesPanel;
 	private ArrayList<Product> productList = new ArrayList<Product>();
 	private ArrayList<Discount> discountList = new ArrayList<Discount>();

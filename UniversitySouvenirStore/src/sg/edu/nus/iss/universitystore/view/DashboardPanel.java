@@ -25,7 +25,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.SalesPanel;
  * @author Samrat
  *
  */
-public class DashboardPanel extends JPanel implements IDashBoardOptionChangeDelegate {
+public class DashboardPanel extends BasePanel implements IDashBoardOptionChangeDelegate {
 
 	/***********************************************************/
 	// Instance Variables

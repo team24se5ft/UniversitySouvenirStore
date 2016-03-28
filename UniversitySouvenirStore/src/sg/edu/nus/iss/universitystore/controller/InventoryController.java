@@ -22,7 +22,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
  * @author Samrat
  *
  */
-public class InventoryController implements IInventoryDelegate {
+public class InventoryController extends BaseController implements IInventoryDelegate {
 
 	/***********************************************************/
 	// Constants

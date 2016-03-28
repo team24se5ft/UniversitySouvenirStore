@@ -16,7 +16,7 @@ import sg.edu.nus.iss.universitystore.view.dialog.MemberDialog;
 import sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.MemberPanel;
 
-public class MemberController implements IMemberDelegate {
+public class MemberController extends BaseController implements IMemberDelegate {
 
 	/***********************************************************/
 	// Instance Variables
