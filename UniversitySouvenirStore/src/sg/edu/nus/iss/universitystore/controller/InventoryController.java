@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
+import sg.edu.nus.iss.universitystore.messages.MessageHandler;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
@@ -73,22 +74,22 @@ public class InventoryController implements IInventoryDelegate {
 			inventoryManager = InventoryManager.getInstance();
 			arrCategory = inventoryManager.getAllCategories();
 			arrProduct = inventoryManager.getAllProducts();
+			
+			// Initialize the panel associated with this controller
+			inventoryPanel = new InventoryPanel(this);
+
+			// Update Inventory Panel with retrieved data
+			inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
+					TableDataUtils.getHeadersForCategoryTable());
+			inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+					TableDataUtils.getHeadersForProductTable());
+
+			// Get main frame reference
+			topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getStackTrace());
 		}
-
-		// Initialize the panel associated with this controller
-		inventoryPanel = new InventoryPanel(this);
-
-		// Update Inventory Panel with retrieved data
-		inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
-				TableDataUtils.getHeadersForCategoryTable());
-		inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
-				TableDataUtils.getHeadersForProductTable());
-
-		// Get main frame reference
-		topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
 	}
 
 	/***********************************************************/

@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.universitystore.exception;
 
+import sg.edu.nus.iss.universitystore.exception.MemberException.MemberError;
 import sg.edu.nus.iss.universitystore.messages.Messages;
 
 /**
@@ -16,6 +17,13 @@ public class DiscountException extends Exception {
 	    DISCOUNT_NOT_PRESENT_IN_FILE(Messages.Error.Discount.DISCOUNT_NOT_PRESENT_IN_FILE),
 	    DISCOUNT_ALREADY_PRESENT(Messages.Error.Discount.DISCOUNT_ALREADY_PRESENT),
 	    MEMBER_NOT_PRESENT_IN_FILE(Messages.Error.Member.MEMBER_NOT_PRESENT_IN_FILE),
+	    INVALID_START_DATE(Messages.Error.Discount.INVALID_START_DATE),
+	    INVALID_PERIOD(Messages.Error.Discount.INVALID_PERIOD),
+	    INVALID_PERCENTAGE(Messages.Error.Discount.INVALID_PERCENTAGE),
+	    INVALID_CODE(Messages.Error.Discount.INVALID_CODE),
+	    INVALID_ELIGIBILITY(Messages.Error.Discount.INVALID_ELIGIBILITY),
+	    INVALID_PERIOD_RANGE(Messages.Error.Discount.INVALID_PERIOD_RANGE),
+	    INVALID_PERCENTAGE_RANGE(Messages.Error.Discount.INVALID_PERCENTAGE_RANGE),
 	    UNKNOWN_ERROR(Messages.Error.Common.UNKNOWN_ERROR)
 	    ;
 		

@@ -2,6 +2,7 @@ package sg.edu.nus.iss.universitystore.constants;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import sg.edu.nus.iss.universitystore.model.Category;
 
@@ -14,6 +15,12 @@ public final class Constants {
 	public static final class Common {
 		public static final String EMPTY_STR = "";
 		public static final String NEW_LINE = "\n";
+		public static final class Validation {
+			public static final String NUMBER_MATCH = "\\d+";
+			public static final String FLOAT_MATCH = "\\d+\\.\\d+";
+			public static final String DATE_MATCH = "\\d{4}\\-\\d{2}\\-\\d{2}";
+		}
+		public static final DateTimeFormatter YYYY_MM_DD_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	}
 
 	public static final class Data {
@@ -48,9 +55,10 @@ public final class Constants {
 			public static final String VENDOR_DAT = "Vendor";
 
 		}
-		
+
 		public static final class Pattern {
-			public static final String DESCRIPTION_MATCH = "(\\\"(?!\\\")(.*?)\\\"\\,)";
+			public static final String FILE_SEPTR_MATCH = "\\" + FILE_SEPTR;
+			public static final String DESCRIPTION_MATCH = "(\\\"(?!\\\")(.*?)\\\"" + FILE_SEPTR_MATCH + ")";
 		}
 
 		public static final class Product {
@@ -59,6 +67,7 @@ public final class Constants {
 				public static final String CATEGORY_REPLACE = "$1";
 				public static final String COUNT_REPLACE = "$2";
 			}
+
 			public static final int INITIALIZED_COUNT = 0;
 		}
 
@@ -68,7 +77,15 @@ public final class Constants {
 
 		public static final class Discount {
 			public static final class Pattern {
-				public static final String LINE_MATCH = "^([A-Z]+\\,)"+Data.Pattern.DESCRIPTION_MATCH+"(\\d{4}\\-\\d{2}\\-\\d{2}\\,\\d{1,3},\\d{1,3}\\.\\d{1,2}\\,[A|M])$";
+				public static final String CODE_MATCH = "[A-Z]+";
+				public static final String START_DATE_MATCH = "\\d{4}\\-\\d{2}\\-\\d{2}";
+				public static final String PERIOD_MATCH = "\\d{1,3}";
+				public static final String PERCENTAGE_MATCH = "\\d{1,3}\\.\\d{1,2}";
+				public static final String ELIGIBILITY_MATCH = "[A|M]";
+				public static final String LINE_MATCH = "^(" + CODE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + ")"
+						+ Data.Pattern.DESCRIPTION_MATCH + "(" + START_DATE_MATCH + Data.Pattern.FILE_SEPTR_MATCH
+						+ PERIOD_MATCH + Data.Pattern.FILE_SEPTR_MATCH + PERCENTAGE_MATCH
+						+ Data.Pattern.FILE_SEPTR_MATCH + ELIGIBILITY_MATCH + ")$";
 				public static final String DESCRIPTION_REPLACE = "$3";
 				public static final String OTHER_CNTNT_REPLACE = "$1$4";
 			}
@@ -85,12 +102,14 @@ public final class Constants {
 					public static final int PERIOD = 0;
 					public static final float DEFAULT_DISCOUNT = 20;
 				}
+
 				public static final class Existing {
 					public static final String CODE = "EXTGMEMBER";
 					public static final String DESCRIPTION = "Discount for Member";
 					public static final int PERIOD = 365;
 					public static final float DEFAULT_DISCOUNT = 10;
 				}
+
 				public static final class Public {
 					public static final String CODE = "NONMEMBER";
 					public static final String DESCRIPTION = "No Discount applicable for Non-Member";

@@ -13,6 +13,7 @@ import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
+import sg.edu.nus.iss.universitystore.validation.DiscountValidation;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.DiscountDialog;
 import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
@@ -31,7 +32,6 @@ public class DiscountController implements IDiscountDelegate {
 			discountManager = DiscountManager.getInstance();
 			discountList = discountManager.getAllDiscounts();
 		} catch (DiscountException e) {
-			e.printStackTrace();
 			UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
 					DialogType.ERROR_MESSAGE);
 		}
@@ -55,22 +55,20 @@ public class DiscountController implements IDiscountDelegate {
 			@Override
 			public boolean onDiscountCallBack(String code, String description, String startDate, String period,
 					String percentage, String eligibilty) {
+				
 				boolean flag = false;
-				Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
-						Float.valueOf(percentage), eligibilty);
-				if (code.length() == 0 && description.length() == 0 && percentage.length() == 0
-						&& startDate.length() == 0) {
-					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING,
-							"please fullfill all the required information.", DialogType.WARNING_MESSAGE);
-					return false;
-				}
+				
 				try {
-					flag = discountManager.addDiscount(discount);
-					discountList = discountManager.getAllDiscounts();
+					if(DiscountValidation.isValidData(code, description, startDate, period, percentage, eligibilty)) {
+						Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
+								Float.valueOf(percentage), eligibilty);
+						flag = discountManager.addDiscount(discount);
+						discountList = discountManager.getAllDiscounts();
+					}
 				} catch (DiscountException e) {
-					e.printStackTrace();
 					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
 							DialogType.ERROR_MESSAGE);
+					return false;
 				}
 				return isUpdateUI(flag);
 			}
@@ -86,9 +84,9 @@ public class DiscountController implements IDiscountDelegate {
 		if (row < 0) {
 			return;
 		}
+		Discount discount = discountList.get(row);
 		new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "ConfirmDialog",
-				"Do u really want to delete row " + (row + 1)) {
-			Discount discount = discountList.get(row);
+				"Do u really want to delete discount: " + discount.getCode()) {			
 
 			@Override
 			protected boolean confirmClicked() {
@@ -98,7 +96,6 @@ public class DiscountController implements IDiscountDelegate {
 					flag = discountManager.deleteDiscount(discount.getCode());
 					discountList = discountManager.getAllDiscounts();
 				} catch (DiscountException e) {
-					e.printStackTrace();
 					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
 							DialogType.ERROR_MESSAGE);
 				}
@@ -123,15 +120,21 @@ public class DiscountController implements IDiscountDelegate {
 			public boolean onDiscountCallBack(String code, String description, String startDate, String period,
 					String percentage, String eligibilty) {
 				boolean flag = false;
-				Discount newDiscount = new Discount(code, description, startDate, Integer.valueOf(period),
-						Float.valueOf(percentage), eligibilty);
+				
 				try {
-					flag = discountManager.updateDiscount(oldDiscount, newDiscount);
-					discountList = discountManager.getAllDiscounts();
+					if(DiscountValidation.isValidData(code, description, startDate, period, percentage, eligibilty)) {
+						
+						Discount newDiscount = new Discount(code, description, startDate, Integer.valueOf(period),
+								Float.valueOf(percentage), eligibilty);
+						
+						flag = discountManager.updateDiscount(oldDiscount, newDiscount);
+						discountList = discountManager.getAllDiscounts();
+					}
 				} catch (DiscountException e) {
-					e.printStackTrace();
 					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
 							DialogType.ERROR_MESSAGE);
+					
+					return false;
 				}
 				return isUpdateUI(flag);
 			}

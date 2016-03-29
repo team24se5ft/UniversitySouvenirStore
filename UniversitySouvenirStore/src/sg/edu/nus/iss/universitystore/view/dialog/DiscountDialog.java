@@ -55,13 +55,21 @@ public abstract class DiscountDialog extends BaseDialog {
 	/***********************************************************/
 
 	/**
-	 * The callback which will be called when the Confirm button is tapped on the dialog.
-	 * @param code The codeText to recognize the discount
-	 * @param description The description for the discount
-	 * @param startDate The startDate of the discount
-	 * @param period   The period of the discount
-	 * @param percentage   The percentage of the discount
-	 * @param eligibilty  for member or for all
+	 * The callback which will be called when the Confirm button is tapped on
+	 * the dialog.
+	 * 
+	 * @param code
+	 *            The codeText to recognize the discount
+	 * @param description
+	 *            The description for the discount
+	 * @param startDate
+	 *            The startDate of the discount
+	 * @param period
+	 *            The period of the discount
+	 * @param percentage
+	 *            The percentage of the discount
+	 * @param eligibilty
+	 *            for member or for all
 	 * @return
 	 */
 	public abstract boolean onDiscountCallBack(String code, String description, String startDate, String period,
@@ -74,7 +82,8 @@ public abstract class DiscountDialog extends BaseDialog {
 	/**
 	 * invoke this function when you need fill data into the dialog
 	 * 
-	 * @param discount use discount object as parameter
+	 * @param discount
+	 *            use discount object as parameter
 	 */
 	public void setDiscountData(Discount discount) {
 		code.setText(discount.getCode());
@@ -116,8 +125,11 @@ public abstract class DiscountDialog extends BaseDialog {
 	// Abstract Method Implementation
 	/***********************************************************/
 
-	/* (non-Javadoc)
-	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#getPanelToAddToDialog()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#
+	 * getPanelToAddToDialog()
 	 */
 	@Override
 	protected JPanel getPanelToAddToDialog() {
@@ -167,12 +179,8 @@ public abstract class DiscountDialog extends BaseDialog {
 		// if (!DateUtils.checkDate()) {
 		// return false;
 		// }
-		if (code.getText().length() != 0 && percentage.getText().length() != 0) {
-			onDiscountCallBack(code.getText(), description.getText(), startdate, period.getText(), percentage.getText(),
-					eligibility);
-			return true;
-		}
-		return false;
+		return onDiscountCallBack(code.getText(), description.getText(), startdate, period.getText(), percentage.getText(),
+				eligibility);
 	}
 
 }

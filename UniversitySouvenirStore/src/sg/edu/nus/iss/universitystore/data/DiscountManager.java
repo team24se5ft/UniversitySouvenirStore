@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
+import sg.edu.nus.iss.universitystore.data.DiscountManager.DiscountArg;
 import sg.edu.nus.iss.universitystore.exception.DiscountException;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.DiscountException.DiscountError;
@@ -15,6 +16,7 @@ import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.utility.DateUtils;
+import sg.edu.nus.iss.universitystore.validation.DiscountValidation;
 
 /**
  * Class Manages Discount Data File
@@ -112,10 +114,10 @@ public class DiscountManager {
 		try {
 			initialize();
 			memberManager = MemberManager.getInstance();
-		} catch (Exception e) {
+		} catch (MemberException | IOException memberExp) {
 			throw new DiscountException(DiscountError.UNKNOWN_ERROR);
 		}
-		
+
 		this.newMemberDiscount = Constants.Data.Discount.Member.New.DEFAULT_DISCOUNT;
 		this.memberDiscount = Constants.Data.Discount.Member.Existing.DEFAULT_DISCOUNT;
 	}
@@ -180,34 +182,34 @@ public class DiscountManager {
 				Constants.Data.Discount.Member.Existing.PERIOD, this.memberDiscount,
 				Constants.Data.Discount.Eligibility.MEMBER);
 	}
-	
+
 	/***********************************************************/
 	// Validation for Discount
 	/***********************************************************/
-	
+
 	/**
-	 * Validates the format of Data in a row of Data File
-	 * 
-	 * @param dataLine
-	 * @return Boolean
-	 */
-	private boolean isValidFormat(String discountRow) {
-		return discountRow.matches(Constants.Data.Discount.Pattern.LINE_MATCH);
-	}
-	
-	/**
-	 * Validates if the period is <=365 and if percentage is < 100
+	 * Validates the format of Data in a row of Data File and
+	 * if the period is <=365 and if percentage is < 100
 	 * 
 	 * @param dataLine
 	 * @return Boolean
 	 */
 	private boolean isValidData(String[] discountList) {
-		int period = Integer.parseInt(discountList[DiscountArg.PERIOD.ordinal()]);
-		float percentage = Float.parseFloat(discountList[DiscountArg.PERCENTAGE.ordinal()]);
+		boolean status = false;
 
-		// Is Valid if period within range 0 to 365
-		// Is Valid if percentage is within range 1 to 100
-		return (period >= 0 && period <= 365) && (percentage > 0 && percentage <= 100);
+		try {
+			if (discountList.length == 6) {
+				status = DiscountValidation.isValidData(discountList[DiscountArg.CODE.ordinal()],
+						discountList[DiscountArg.DESCRIPTION.ordinal()],
+						discountList[DiscountArg.START_DATE.ordinal()], discountList[DiscountArg.PERIOD.ordinal()],
+						discountList[DiscountArg.PERCENTAGE.ordinal()],
+						discountList[DiscountArg.ELIGIBILITY.ordinal()]);
+			}
+		} catch (DiscountException exception) {
+			status = false;
+		}
+
+		return status;
 	}
 
 	/***********************************************************/
@@ -242,19 +244,15 @@ public class DiscountManager {
 		String[] discountStrLst = null;
 		try {
 			discountStrLst = discountData.getAll();
-		} catch (Exception e) {
+		} catch (IOException ioExp) {
 			throw new DiscountException(DiscountError.UNKNOWN_ERROR);
 		}
-		
+
 		for (String discountStr : discountStrLst) {
 
-			// Checks if line in Data file is of valid format, if not skips line
-			if (!isValidFormat(discountStr))
-				continue;
-
 			String[] discountStrSpltLst = splitDiscountData(discountStr);
-
-			// Checks if valid data, if not skips line
+			
+			// Checks if line in Data file is of valid
 			if (!isValidData(discountStrSpltLst))
 				continue;
 
@@ -353,15 +351,14 @@ public class DiscountManager {
 			Member member;
 			try {
 				member = memberManager.getMember(memberID);
-			} catch (Exception e) {
+			} catch (MemberException exp) {
 				throw new DiscountException(DiscountError.MEMBER_NOT_PRESENT_IN_FILE);
 			}
 			// Get Discount for New or Existing Member
 			discount = member.getLoyaltyPoints() == Constants.Data.Member.LOYALTY_NEW_MEMBER ? getNewMemberDiscount()
 					: getMemberDiscount();
-		}else {
-			throw new DiscountException(DiscountError.MEMBER_NOT_PRESENT_IN_FILE);
 		}
+
 		return discount;
 	}
 
@@ -409,10 +406,10 @@ public class DiscountManager {
 			}
 		}
 		// If the discount is not found, then throw an exception
-		if(discountFound == null) {
+		if (discountFound == null) {
 			throw new DiscountException(DiscountError.DISCOUNT_NOT_PRESENT_IN_FILE);
 		}
-		
+
 		return discountFound;
 	}
 
@@ -427,7 +424,7 @@ public class DiscountManager {
 		try {
 			findDiscount(code);
 			return true;
-		} catch (Exception e) {
+		} catch (DiscountException discountExp) {
 			return false;
 		}
 	}
@@ -448,13 +445,14 @@ public class DiscountManager {
 
 		if (hasDiscount(discount.getCode())) {
 			throw new DiscountException(DiscountError.DISCOUNT_ALREADY_PRESENT);
-		}else {
+		} else {
 			try {
-				return discountData.add(new Discount(discount.getCode(), discount.getDescription(), discount.getStartDate(),
-						discount.getPeriod(), discount.getPercentage(), discount.getEligibilty()));
-			} catch (IOException e) {
+				return discountData
+						.add(new Discount(discount.getCode(), discount.getDescription(), discount.getStartDate(),
+								discount.getPeriod(), discount.getPercentage(), discount.getEligibilty()));
+			} catch (IOException ioExp) {
 				throw new DiscountException(DiscountError.UNKNOWN_ERROR);
-			}	
+			}
 		}
 	}
 
@@ -467,28 +465,29 @@ public class DiscountManager {
 	 */
 	public boolean deleteDiscount(String code) throws DiscountException {
 
-		if (hasDiscount(code)){
+		if (hasDiscount(code)) {
 			Discount discount = findDiscount(code);
 			try {
 				return discountData.delete(discount.toString());
-			} catch (IOException e) {
+			} catch (IOException ioExp) {
 				throw new DiscountException(DiscountError.UNKNOWN_ERROR);
 			}
-		}else {
-			throw new DiscountException(DiscountError.DISCOUNT_NOT_PRESENT_IN_FILE);
 		}
+		return false;
 	}
 
 	/**
 	 * Update Discount
 	 * 
+	 * @param oldDiscount
+	 * @param newDiscount
+	 * @return Boolean
+	 * @throws DiscountException
 	 */
 	public boolean updateDiscount(Discount oldDiscount, Discount newDiscount) throws DiscountException {
-		if(hasDiscount(oldDiscount.getCode())) {
-			deleteDiscount(oldDiscount.getCode());
-			return true;
-		}else {
-			throw new DiscountException(DiscountError.DISCOUNT_NOT_PRESENT_IN_FILE);
+		if (deleteDiscount(oldDiscount.getCode())) {
+			return addDiscount(newDiscount);
 		}
+		return false;
 	}
 }
