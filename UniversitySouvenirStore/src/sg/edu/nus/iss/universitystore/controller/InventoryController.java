@@ -7,7 +7,6 @@ import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
-import sg.edu.nus.iss.universitystore.messages.MessageHandler;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;

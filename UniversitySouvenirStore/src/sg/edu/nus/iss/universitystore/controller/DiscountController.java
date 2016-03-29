@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.universitystore.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -20,6 +19,9 @@ import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
 
 public class DiscountController implements IDiscountDelegate {
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
 	private DiscountPanel discountPanel;
 	private DiscountManager discountManager;
 	private ArrayList<Discount> discountList;
@@ -55,7 +57,6 @@ public class DiscountController implements IDiscountDelegate {
 			@Override
 			public boolean onDiscountCallBack(String code, String description, String startDate, String period,
 					String percentage, String eligibilty) {
-				
 				boolean flag = false;
 				
 				try {
@@ -142,8 +143,10 @@ public class DiscountController implements IDiscountDelegate {
 		updateDlg.setDiscountData(discountList.get(row));
 		updateDlg.setVisible(true);
 	}
+
 	/**
 	 * judge whether updateUI according to flag
+	 * 
 	 * @param flag
 	 * @return
 	 */

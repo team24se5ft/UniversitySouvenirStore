@@ -157,5 +157,12 @@ public final class Constants {
 		public static final String STR_MEMBER_IDENTIFIER = "Identifier";
 		public static final String STR_MEMBER_NAME = "Name";
 		public static final String STR_MEMBER_LOYALTY_POINTS = "Loyalty Points";
+		// Transaction
+		public static final int NUMBER_OF_TRANSACTION_TABLE_COLUMNS = 5;
+		public static final String STR_TRANSACTION_PRODUCT_IDENTIFIER = "Product Id";
+		public static final String STR_TRANSACTION_PRODUCT_NAME = "Product Name";
+		public static final String STR_TRANSACTION_PURCHASE_QUANTITY = "Purchased Quantity";
+		public static final String STR_TRANSACTION_PRICE = "Price";
+		public static final String STR_TRANSACTION_TOTAL = "Total";
 	}
 }

@@ -185,6 +185,7 @@ public class ViewConstants {
 		public static final String NONE_DISCOUNT = "none discount";
 		public static final String MEMBER_LABEL = "member:";
 		public static final String DISCOUNT_LABEL = "discount:";
+		public static final String DISCOUNT_PERCENTAGE_LABEL = "off:";
 		public static final String AVAILABLE_LOYALPOINT_LABEL = "AvailableLoyalPoint:";
 		public static final String LOYALPOINT_LABEL = "loyalPoint:";
 	}
