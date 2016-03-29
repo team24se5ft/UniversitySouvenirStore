@@ -1,13 +1,16 @@
 package sg.edu.nus.iss.universitystore.data;
 
-import java.awt.TrayIcon.MessageType;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
+import sg.edu.nus.iss.universitystore.exception.DiscountException;
+import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
+import sg.edu.nus.iss.universitystore.exception.TransactionException;
+import sg.edu.nus.iss.universitystore.exception.TransactionException.TransactionError;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.model.Transaction;
@@ -75,18 +78,11 @@ public class TransactionManager {
 	/**
 	 * Make the constructor private, since we provide the singleton instance.
 	 */
-	private TransactionManager() {
+	private TransactionManager() throws TransactionException{
 		try {
 			initialize();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (StoreException e) {
-			// TODO Auto-generated Catch block
-			e.printStackTrace();
+		} catch (IOException | DiscountException | MemberException e) { 
+			throw new TransactionException(TransactionError.UNKNOWN_ERROR);
 		}
 	}
 
@@ -98,7 +94,7 @@ public class TransactionManager {
 	 * @throws StoreException
 	 * @throws IOException
 	 */
-	private void initialize() throws FileNotFoundException, IOException, StoreException {
+	private void initialize() throws IOException,DiscountException,MemberException {
 		transactionData = new DataFile<>(Constants.Data.FileName.TRANSACTION_DAT);
 		discountManager = DiscountManager.getInstance();
 		inventoryManager = InventoryManager.getInstance();
