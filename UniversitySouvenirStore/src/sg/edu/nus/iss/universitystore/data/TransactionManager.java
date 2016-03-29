@@ -81,7 +81,7 @@ public class TransactionManager {
 	private TransactionManager() throws TransactionException{
 		try {
 			initialize();
-		} catch (IOException | DiscountException | MemberException e) { 
+		} catch (IOException | DiscountException | MemberException | StoreException e) { 
 			throw new TransactionException(TransactionError.UNKNOWN_ERROR);
 		}
 	}
@@ -94,7 +94,7 @@ public class TransactionManager {
 	 * @throws StoreException
 	 * @throws IOException
 	 */
-	private void initialize() throws IOException,DiscountException,MemberException {
+	private void initialize() throws IOException,DiscountException,MemberException, StoreException {
 		transactionData = new DataFile<>(Constants.Data.FileName.TRANSACTION_DAT);
 		discountManager = DiscountManager.getInstance();
 		inventoryManager = InventoryManager.getInstance();
@@ -103,8 +103,9 @@ public class TransactionManager {
 
 	/**
 	 * Method to get the current transaction id that will be newly created.
+	 * 
 	 * @return The transaction id.
-	 * @throws IOException 
+	 * @throws IOException
 	 * @throws StoreException
 	 */
 	private int getTransactionId() throws IOException, StoreException {
@@ -121,7 +122,10 @@ public class TransactionManager {
 
 	/**
 	 * Checks if the requested quantity exists or not.
-	 * @param arrTransactionItem The list of transaction items that have been added to the cart.
+	 * 
+	 * @param arrTransactionItem
+	 *            The list of transaction items that have been added to the
+	 *            cart.
 	 * @throws IOException
 	 * @throws StoreException
 	 */
@@ -140,8 +144,8 @@ public class TransactionManager {
 			}
 		}
 	}
-	
-	private void updateInventoryAfterSale(TransactionItem transactionItem) throws IOException, StoreException{
+
+	private void updateInventoryAfterSale(TransactionItem transactionItem) throws IOException, StoreException {
 		Product product = transactionItem.getProduct();
 		int updatedQuantity = product.getQuantity() - transactionItem.getQuantity();
 		product.setQuantity(updatedQuantity);
@@ -155,8 +159,9 @@ public class TransactionManager {
 	 * Get a single instance of TransactionManager
 	 * 
 	 * @return TransactionManager The singleton instance of this class.
+	 * @throws TransactionException 
 	 */
-	public static TransactionManager getInstance() {
+	public static TransactionManager getInstance() throws TransactionException {
 		if (instance == null) {
 			synchronized (TransactionManager.class) {
 				if (instance == null) {
@@ -211,9 +216,28 @@ public class TransactionManager {
 		}
 
 		// It is possible that no discount is applicable.
-		Discount discount = discountManager.findDiscount(discountId);
-		if (discount != null) {
-			total *= (discount.getPercentage() * 0.01);
+		Discount discount;
+		try {
+			discount = discountManager.findDiscount(discountId);
+			if (discount != null) {
+				total *= ((1-discount.getPercentage() * 0.01));
+			}
+		} catch (DiscountException e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+	/**
+	 * calculate total without discount
+	 * @param arrTransactionItem
+	 * @return
+	 * @throws IOException
+	 */
+	public float getTotal(ArrayList<TransactionItem> arrTransactionItem) throws IOException {
+		// Get the total sum first
+		float total = 0;
+		for (TransactionItem transactionItem : arrTransactionItem) {
+			total += transactionItem.getTotal();
 		}
 		return total;
 	}
@@ -237,10 +261,14 @@ public class TransactionManager {
 		checkIfRequestedQuantityExistsInInventory(arrTransactionItem);
 
 		// Check Discount Id
-		if (discountManager.findDiscount(discountId) == null) {
-			// TODO - Move to constants
-			throw new StoreException(CommonUtils.MessageTitleType.ERROR, "Invalid discount ID.",
-					CommonUtils.MessageType.ERROR_MESSAGE);
+		try {
+			if (discountManager.findDiscount(discountId) == null) {
+				// TODO - Move to constants
+				throw new StoreException(CommonUtils.MessageTitleType.ERROR, "Invalid discount ID.",
+						CommonUtils.MessageType.ERROR_MESSAGE);
+			}
+		} catch (DiscountException e1) {
+			e1.printStackTrace();
 		}
 
 		try {// TODO - Remove this.

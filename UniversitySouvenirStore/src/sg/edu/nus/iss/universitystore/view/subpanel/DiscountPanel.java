@@ -1,14 +1,9 @@
 package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-import javax.swing.table.DefaultTableModel;
-
-import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
 
@@ -18,12 +13,13 @@ import sg.edu.nus.iss.universitystore.view.intf.IDiscountDelegate;
  *
  */
 public class DiscountPanel extends BaseTablePanel {
-
-	/**
-	 * 
-	 */
+	/***********************************************************/
+	// Constants
+	/***********************************************************/
 	private static final long serialVersionUID = 1L;
-	
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
 	private IDiscountDelegate delegate;// to communicate with Discount
 										// controller
 

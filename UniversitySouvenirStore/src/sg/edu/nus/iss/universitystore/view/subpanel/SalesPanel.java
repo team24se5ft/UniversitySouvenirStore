@@ -9,19 +9,20 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
-import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
@@ -32,17 +33,25 @@ import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
  *
  */
 public class SalesPanel extends BaseTablePanel {
-
-	private JLabel memberOption;// add memberDialog to check member
-	private JTextField LoyalPointOption; // key in loyalPoint
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
+	private JButton memberOption;// add memberDialog to check member
 	private JLabel discountOption; // show current discount
+	JLabel discountPercentage; //show current discount percentage
 	JLabel availableLabel;
 	JLabel avaiLableLoyalPoint;
-	JLabel loyalPointLabel;
+
+	private JLabel totalText; // automatic calculate the total cost
+	private JTextField cashText; // key in received cash
+	private JTextField LoyalPointText; // key in limit loyalPoint
+	private JLabel ChangeText; // automatic calculate the changes
 
 	private JPanel customerInfoPanel;
 
 	private ISalesDelegate delegate;
+
+	private String memberText = "PUBLIC";
 
 	/***********************************************************/
 	// Constructors
@@ -74,10 +83,117 @@ public class SalesPanel extends BaseTablePanel {
 	 * init productTable here
 	 */
 	private void initProductTable() {
-//		String[] headers = { "Code", "Name", "Price" };
+		// FIXME determine product columns
+		// String[] headers = { "Code", "Name", "Price" };
 		String data[][] = {};
-		add(getScrollPaneWithTable(data, TableDataUtils.getHeadersForProductTable()), BorderLayout.CENTER);
+		JPanel jpanel = new JPanel();
+		jpanel.setLayout(new BorderLayout());
+		jpanel.add(getScrollPaneWithTable(data, TableDataUtils.getHeadersForTransactionTable()), BorderLayout.CENTER);
+		jpanel.add(getCalculationPanel(), BorderLayout.SOUTH);
+		add(jpanel, BorderLayout.CENTER);
 		add(getButtonPanel(), BorderLayout.SOUTH);
+		initCalculationEvent();
+	}
+
+	/**
+	 * 1.set loyalPoint and cash can only be input as digit
+	 * 
+	 */
+	private void initCalculationEvent() {
+		LoyalPointText.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				int keyChar = e.getKeyChar();
+				// only digit
+				if (keyChar < KeyEvent.VK_0 || keyChar > KeyEvent.VK_9) {
+					e.consume();
+					return;
+				}
+				//calculate whether loyalPoint will over available Point
+				int loyalPoint = LoyalPointText.getText().isEmpty() ? e.getKeyChar() - 48
+						: Integer.valueOf(String.valueOf(LoyalPointText.getText() + e.getKeyChar()));
+				int availableLoyalPoint = avaiLableLoyalPoint.getText().isEmpty() ? 0
+						: Integer.valueOf(avaiLableLoyalPoint.getText());
+				if (availableLoyalPoint < loyalPoint) {
+					e.consume();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				refreshCalculation();
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		cashText.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				int keyChar = e.getKeyChar();
+				// only digit
+				if (keyChar < KeyEvent.VK_0 || keyChar > KeyEvent.VK_9) {
+					e.consume();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				refreshCalculation();
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+	}
+
+	/**
+	 * calculate the changeText and refreshUI
+	 * 
+	 * @param cashText
+	 * @param totalText
+	 * @param LoyalPointText
+	 */
+	private void refreshCalculation() {
+		float cash = cashText.getText().isEmpty() ? 0 : Float.valueOf(cashText.getText());
+		float total = totalText.getText().isEmpty() ? 0 : Float.valueOf(totalText.getText());
+		float loyal = LoyalPointText.getText().isEmpty() ? 0 : Float.valueOf(LoyalPointText.getText());
+		ChangeText.setText(String.valueOf(cash + loyal - total));
+	}
+
+	/**
+	 * show total cash loyalPoint change
+	 * 
+	 * @return
+	 */
+	private JPanel getCalculationPanel() {
+		totalText = new JLabel("0.0");
+		cashText = new JTextField();
+		LoyalPointText = new JTextField();
+		ChangeText = new JLabel("0.0");
+
+		JPanel jpanel = new JPanel();
+		jpanel.setLayout(new GridBagLayout());
+		jpanel.add(new JLabel("Total:"), getConstraint(0, 0));
+		jpanel.add(new JLabel("Cash:"), getConstraint(2, 0));
+		jpanel.add(new JLabel("LoyalPoint:"), getConstraint(0, 1));
+		jpanel.add(new JLabel("Change:"), getConstraint(2, 1));
+
+		jpanel.add(totalText, getConstraint(1, 0));
+		jpanel.add(cashText, getConstraint(3, 0));
+		jpanel.add(LoyalPointText, getConstraint(1, 1));
+		jpanel.add(ChangeText, getConstraint(3, 1));
+		return jpanel;
 	}
 
 	/**
@@ -90,7 +206,7 @@ public class SalesPanel extends BaseTablePanel {
 	private GridBagConstraints getConstraint(int xPosition, int yPosition) {
 		GridBagConstraints gridBagConstraint = new GridBagConstraints();
 		gridBagConstraint.fill = GridBagConstraints.BOTH;
-		gridBagConstraint.ipadx = 80;
+		gridBagConstraint.ipadx = 60;
 		gridBagConstraint.insets = new Insets(10, 20, 10, 20);
 		gridBagConstraint.gridx = xPosition;
 		gridBagConstraint.gridy = yPosition;
@@ -111,46 +227,29 @@ public class SalesPanel extends BaseTablePanel {
 		customerInfoPanel.setMaximumSize(new Dimension(500, 250));
 		customerInfoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		memberOption = new JLabel(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL);
-		discountOption = new JLabel();
-		discountOption.setForeground(Color.BLUE);
-		discountOption.setPreferredSize(new Dimension(100, 50));
+		memberOption = new JButton(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL);
+		memberOption.setPreferredSize(new Dimension(80, 40));
+		discountOption = new JLabel(ViewConstants.SalesPanel.NONE_DISCOUNT);
 
 		customerInfoPanel.add(new JLabel(ViewConstants.SalesPanel.MEMBER_LABEL), getConstraint(0, 0));
 		customerInfoPanel.add(memberOption, getConstraint(1, 0));
 		customerInfoPanel.add(new JLabel(ViewConstants.SalesPanel.DISCOUNT_LABEL), getConstraint(0, 1));
 		customerInfoPanel.add(discountOption, getConstraint(1, 1));
 
+		discountPercentage=new JLabel("0%");
+		
+		customerInfoPanel.add(new JLabel(ViewConstants.SalesPanel.DISCOUNT_PERCENTAGE_LABEL), getConstraint(0, 2));
+		customerInfoPanel.add(discountPercentage, getConstraint(1, 2));
+		
 		availableLabel = new JLabel(ViewConstants.SalesPanel.AVAILABLE_LOYALPOINT_LABEL);
 		avaiLableLoyalPoint = new JLabel("0");
-		loyalPointLabel = new JLabel(ViewConstants.SalesPanel.LOYALPOINT_LABEL);
-		LoyalPointOption = new JTextField(5);
 
-		customerInfoPanel.add(availableLabel, getConstraint(0, 2));
-		customerInfoPanel.add(avaiLableLoyalPoint, getConstraint(1, 2));
-		customerInfoPanel.add(loyalPointLabel, getConstraint(0, 3));
-		customerInfoPanel.add(LoyalPointOption, getConstraint(1, 3));
+		customerInfoPanel.add(availableLabel, getConstraint(0, 3));
+		customerInfoPanel.add(avaiLableLoyalPoint, getConstraint(1, 3));
+
 		add(customerInfoPanel, BorderLayout.NORTH);
 		initButtonEvent();
 		toggleLoyalPanel(false);// set loyal panel unavailable in the beginning
-	}
-
-	/**
-	 * only showing after memberIdentificaiton
-	 * @param flag
-	 */
-	public void toggleLoyalPanel(boolean flag) {
-		if (flag) {
-			availableLabel.setVisible(true);
-			avaiLableLoyalPoint.setVisible(true);
-			loyalPointLabel.setVisible(true);
-			LoyalPointOption.setVisible(true);
-		} else {
-			availableLabel.setVisible(false);
-			avaiLableLoyalPoint.setVisible(false);
-			loyalPointLabel.setVisible(false);
-			LoyalPointOption.setVisible(false);
-		}
 	}
 
 	/**
@@ -167,19 +266,18 @@ public class SalesPanel extends BaseTablePanel {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				delegate.MemberIdentification();
+				delegate.memberIdentification();
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-
+				memberOption.setText(memberText);
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
+				memberOption.setText("change member");
 			}
 
 			@Override
@@ -194,12 +292,44 @@ public class SalesPanel extends BaseTablePanel {
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
-	public void onMemberIdentification(String memberName,String discountCode,String availableloyalPoint) {
-		//TODO show highest discount,show availableloyalPoint,show MemberName
+
+	/**
+	 * only showing after memberIdentificaiton
+	 * 
+	 * @param flag
+	 */
+	private void toggleLoyalPanel(boolean flag) {
+		if (flag) {
+			availableLabel.setVisible(true);
+			avaiLableLoyalPoint.setVisible(true);
+		} else {
+			availableLabel.setVisible(false);
+			avaiLableLoyalPoint.setVisible(false);
+		}
+	}
+
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
+	public void onMemberIdentification(String memberName, String discountCode,String off, String availableloyalPoint) {
+		// TODO show highest discount,show availableloyalPoint,show MemberName
 		memberOption.setText(memberName);
 		discountOption.setText(discountCode);
 		avaiLableLoyalPoint.setText(availableloyalPoint);
+		discountPercentage.setText(off);
+		memberText = memberName;
 		toggleLoyalPanel(true);
+		refreshCalculation();
+	}
+
+	/**
+	 * show total cost
+	 * 
+	 * @param total
+	 */
+	public void setTotal(float total) {
+		totalText.setText(String.valueOf(total));
+		refreshCalculation();
 	}
 
 	@Override
@@ -208,7 +338,7 @@ public class SalesPanel extends BaseTablePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.AddProduct();
+				delegate.addProduct();
 			}
 		};
 	}
@@ -219,7 +349,7 @@ public class SalesPanel extends BaseTablePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.CheckOut();
+				delegate.checkOut();
 			}
 		};
 	}
@@ -230,7 +360,7 @@ public class SalesPanel extends BaseTablePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.Cancel();
+				delegate.cancel();
 			}
 		};
 	}

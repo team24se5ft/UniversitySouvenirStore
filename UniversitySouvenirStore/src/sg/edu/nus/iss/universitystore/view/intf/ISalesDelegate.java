@@ -5,18 +5,18 @@ public interface ISalesDelegate {
 	/**
 	 * click add product btn from the view
 	 */
-	public void AddProduct();
+	public void addProduct();
 	/**
 	 * click check out btn form the view
 	 */
-	public void CheckOut();
+	public void checkOut();
 	/**
 	 * click cancel btn form the view
 	 */
-	public void Cancel();
+	public void cancel();
 	/**
 	 * click member btn form the view
 	 */
-	public void MemberIdentification();
+	public void memberIdentification();
 	
 }

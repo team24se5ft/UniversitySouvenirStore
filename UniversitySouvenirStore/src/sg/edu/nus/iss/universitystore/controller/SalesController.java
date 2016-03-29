@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.universitystore.controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -11,12 +9,11 @@ import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.DiscountManager;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
-import sg.edu.nus.iss.universitystore.exception.DiscountException;
-import sg.edu.nus.iss.universitystore.exception.MemberException;
-import sg.edu.nus.iss.universitystore.exception.StoreException;
+import sg.edu.nus.iss.universitystore.data.TransactionManager;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.model.TransactionItem;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
@@ -27,9 +24,13 @@ import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.SalesPanel;
 
 public class SalesController implements ISalesDelegate {
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
 	private SalesPanel salesPanel;
-	private ArrayList<Product> productList = new ArrayList<Product>();
-	private ArrayList<Discount> discountList = new ArrayList<Discount>();
+	private ArrayList<TransactionItem> transactionItemList = new ArrayList<TransactionItem>();
+	private Discount currentDiscount;
+	private Member currentMember;
 	MemberScanDialog memberDialog;
 	ProductScanDialog productDialog;
 
@@ -52,31 +53,13 @@ public class SalesController implements ISalesDelegate {
 	 * product code input
 	 */
 	@Override
-	public void AddProduct() {
+	public void addProduct() {
 		productDialog = new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "scanProduct") {
 
 			@Override
-			public boolean onProductScanResult(String productCode) {
+			public boolean onProductScanResult(String productCode, int quantity) {
 				// add query product entity
-				try {
-					Product product = InventoryManager.getInstance().findProduct(productCode);
-					if (product == null) {
-						UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING,
-								ViewConstants.ValidationMessage.PRODUCT_ID_NotExist, DialogType.WARNING_MESSAGE);
-					} else {
-						productList.add(product);
-						salesPanel.updateTable(TableDataUtils.getFormattedProductListForTable(productList),
-								TableDataUtils.getHeadersForProductTable());
-						productDialog.dispose();
-						productDialog.setVisible(false);
-					}
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (StoreException e) {
-					e.printStackTrace();
-				}
+				addProductByBarCode(productCode, quantity);
 				return true;
 			}
 
@@ -85,21 +68,71 @@ public class SalesController implements ISalesDelegate {
 	}
 
 	/**
+	 * test space in barcode
+	 */
+	public void scanBarCode() {
+		String productCode = "test";
+		addProductByBarCode(productCode, 1);
+
+	}
+
+	/**
+	 * AddProduct by barCode in this case
+	 * 
+	 * @param productCode
+	 * @param quantity
+	 */
+	private void addProductByBarCode(String productCode, int quantity) {
+		try {
+			Product product = InventoryManager.getInstance().findProduct(productCode);
+			if (product == null) {
+				UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING,
+						ViewConstants.ValidationMessage.PRODUCT_ID_NotExist, DialogType.WARNING_MESSAGE);
+			} else {
+				// add transaction Item and show
+				TransactionItem item = new TransactionItem(product, quantity);
+				transactionItemList.add(item);
+				// calculate total and setText
+				float total;
+				if (currentDiscount == null) {
+					total = TransactionManager.getInstance().getTotal(transactionItemList);
+				} else {
+					total = TransactionManager.getInstance().getTotal(transactionItemList, currentDiscount.getCode());
+				}
+				// modify UI
+				salesPanel.updateTable(TableDataUtils.getFormattedTransactionListForTable(transactionItemList),
+						TableDataUtils.getHeadersForTransactionTable());
+				salesPanel.setTotal(total);
+				// dispose dialog if no exception
+				productDialog.dispose();
+				productDialog.setVisible(false);
+			}
+		} catch (Exception e) {
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+					DialogType.WARNING_MESSAGE);
+		}
+	}
+
+	/**
 	 * after click checkout,this function will 1.
 	 * 
 	 */
 	@Override
-	public void CheckOut() {
+	public void checkOut() {
 		// generate a receipt
 		ReceiptDialog dialog = new ReceiptDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Receipt",
-				productList);
+				transactionItemList);
 		dialog.setVisible(true);
+		// FIXME test to finish
+		if (currentMember != null) {
+		}
 	}
 
 	@Override
-	public void Cancel() {
-		productList.clear();
-		salesPanel.updateTable(TableDataUtils.getFormattedProductListForTable(productList),
+	public void cancel() {
+		transactionItemList.clear();
+		salesPanel.setTotal((float) 0.0);
+		salesPanel.updateTable(TableDataUtils.getFormattedTransactionListForTable(transactionItemList),
 				TableDataUtils.getHeadersForProductTable());
 	}
 
@@ -108,7 +141,7 @@ public class SalesController implements ISalesDelegate {
 	 * in customInfo Panel
 	 */
 	@Override
-	public void MemberIdentification() {
+	public void memberIdentification() {
 		// TODO Auto-generated method stub
 		memberDialog = new MemberScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "scanMember") {
 
@@ -117,16 +150,20 @@ public class SalesController implements ISalesDelegate {
 				// TODO query Member
 				try {
 					Member member = MemberManager.getInstance().getMember(MemberCode);
-					
-					salesPanel.onMemberIdentification(member.getName(),
-							DiscountManager.getInstance().getDiscount(MemberCode).getCode(),
-							String.valueOf(member.getLoyaltyPoints()));
+					Discount discount = DiscountManager.getInstance().getDiscount(MemberCode);
+					if (discount == null) {
+						salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList));
+						salesPanel.onMemberIdentification(member.getName(), "none discount", "0%",
+								String.valueOf(member.getLoyaltyPoints()));
+					} else {
+						salesPanel.onMemberIdentification(member.getName(), discount.getCode(),
+								String.valueOf(discount.getPercentage()+"%"), String.valueOf(member.getLoyaltyPoints()));
+						salesPanel.setTotal(
+								TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode()));
+					}
 					memberDialog.dispose();
 					memberDialog.setVisible(false);
-				} catch (MemberException e) {
-					UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-							DialogType.WARNING_MESSAGE);
-				} catch (DiscountException e) {
+				} catch (Exception e) {
 					UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
 							DialogType.WARNING_MESSAGE);
 				}

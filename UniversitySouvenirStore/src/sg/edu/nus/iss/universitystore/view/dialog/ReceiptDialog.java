@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.model.TransactionItem;
 
 public class ReceiptDialog extends JDialog {
 	/***********************************************************/
@@ -21,7 +22,7 @@ public class ReceiptDialog extends JDialog {
 	// Instance Variables
 	/***********************************************************/
 	private List receiptList;
-	ArrayList<Product> receiptDataList;
+	ArrayList<TransactionItem> receiptDataList;
 
 	/***********************************************************/
 	// Constructors
@@ -34,7 +35,7 @@ public class ReceiptDialog extends JDialog {
 	 * @param receiptDataList
 	 *            product data List
 	 */
-	public ReceiptDialog(JFrame parent, String title, ArrayList<Product> receiptDataList) {
+	public ReceiptDialog(JFrame parent, String title, ArrayList<TransactionItem> receiptDataList) {
 		super(parent, title);
 		this.setLayout(new BorderLayout());
 		this.setSize(300, 400);
@@ -66,8 +67,8 @@ public class ReceiptDialog extends JDialog {
 		receiptHeader.setPreferredSize(new Dimension(300, 60));
 		receiptList = new List();
 		receiptList.setPreferredSize(new Dimension(300, 200));
-		for (Product receiptItem : receiptDataList) {
-			receiptList.add(receiptItem.getName() + "\t\t" + receiptItem.getPrice());
+		for (TransactionItem receiptItem : receiptDataList) {
+			receiptList.add(receiptItem.getProduct().getName() + "\t\t" + receiptItem.getProduct().getPrice());
 		}
 		receiptHeaderLabel.add(receiptHeader, ViewConstants.DialogHeaders.NORTH);
 		receiptHeaderLabel.add(receiptList, ViewConstants.DialogHeaders.CENTER);
