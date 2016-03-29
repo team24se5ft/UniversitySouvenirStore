@@ -65,6 +65,13 @@ public class MemberManager {
 		}
 		return instance;
 	}
+	
+	/**
+	 * Delete instance of Data File Manager
+	 */
+	public static void deleteInstance() {
+		instance = null;
+	}
 
 	/**
 	 * 
