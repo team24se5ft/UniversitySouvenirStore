@@ -1,11 +1,11 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridLayout;
-import java.awt.TextField;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 
@@ -18,7 +18,7 @@ public abstract class MemberScanDialog extends BaseDialog {
 	// Instance Variables
 	/***********************************************************/
 	// textfield define
-	private TextField MemberCode;
+	private JTextField MemberCode;
 
 	/***********************************************************/
 	// Constructors
@@ -34,7 +34,7 @@ public abstract class MemberScanDialog extends BaseDialog {
 	public MemberScanDialog(JFrame parent, String title) {
 		super(parent, title);
 		this.addWindowListener(this);
-		this.setSize(400, 80);
+		this.setSize(400, 100);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
@@ -57,7 +57,7 @@ public abstract class MemberScanDialog extends BaseDialog {
 		JPanel jp = new JPanel();
 		jp.setLayout(new GridLayout(1, 2));
 
-		MemberCode = new TextField();
+		MemberCode = new JTextField();
 		MemberCode.setColumns(1);
 
 		jp.add(new JLabel(ViewConstants.DialogHeaders.MEMBER_CODE));
