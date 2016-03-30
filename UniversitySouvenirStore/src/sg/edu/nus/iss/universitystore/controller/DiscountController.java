@@ -90,7 +90,7 @@ public class DiscountController implements IDiscountDelegate {
 		}
 		Discount discount = discountList.get(row);
 		new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "ConfirmDialog",
-				"Do u really want to delete discount: " + discount.getCode()) {			
+				ViewConstants.Controller.Discount.DELETE_DISCOUNT + discount.getCode()) {			
 
 			@Override
 			protected boolean confirmClicked() {
@@ -150,7 +150,7 @@ public class DiscountController implements IDiscountDelegate {
 	@Override
 	public void rowNotSelected() {
 		// Display message for error.
-		UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, "Please select a row of the table for completing this operation.",
+		UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, ViewConstants.Controller.PLEASE_SELECT_ROW,
 				DialogType.WARNING_MESSAGE);
 	}
 	

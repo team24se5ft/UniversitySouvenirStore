@@ -25,15 +25,7 @@ import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
  *
  */
 public class InventoryController implements IInventoryDelegate {
-
-	/***********************************************************/
-	// Constants
-	/***********************************************************/
-	public static final String STR_ERROR_MESSAGE_CATEGORY_CODE_OR_NAME_EMPTY = "The category code or name cannot be left empty.";
-	public static final String STR_ERROR_FAILED = "The category was not added.";
-	public static final String STR_SUCCESS_MESSAGE = "Successfully added.";
-	public static final String STR_ERROR_CATEGORY_3_DIGIT = "The category code should only consist of three alphabets without any spaces.";
-	public static final String STR_ERROR_ROW_NOT_SELECTED = "Please select a row of the table for completing this operation.";
+	
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
@@ -121,7 +113,7 @@ public class InventoryController implements IInventoryDelegate {
 							inventoryManager.addCategory(categoryCode, categoryName);
 							// Show the success dialog
 							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
-									STR_SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
+									ViewConstants.Controller.SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
 							// Update the table
 							arrCategory = inventoryManager.getAllCategories();
 							inventoryPanel.setCategoryTableData(
@@ -228,7 +220,7 @@ public class InventoryController implements IInventoryDelegate {
 							reorderQuantity);
 					// Show the success dialog
 					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
-							STR_SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
+							ViewConstants.Controller.SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
 					// Update the local copy
 					arrProduct = inventoryManager.getAllProducts();
 					// Update the table
@@ -324,7 +316,7 @@ public class InventoryController implements IInventoryDelegate {
 	@Override
 	public void rowNotSelected() {
 		// Display message for error.
-		UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR, STR_ERROR_ROW_NOT_SELECTED,
+		UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR, ViewConstants.Controller.PLEASE_SELECT_ROW,
 				DialogType.WARNING_MESSAGE);
 	}
 

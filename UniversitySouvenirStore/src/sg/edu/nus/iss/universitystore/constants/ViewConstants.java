@@ -212,4 +212,12 @@ public class ViewConstants {
 		public static final String PRODUCT_ID_NotExist = "the input product ID is not exist!";
 		
 	}
+	
+	public static final class Controller {
+		public static final String PLEASE_SELECT_ROW = "Please select a row of the table for completing this operation.";
+		public static final String SUCCESS_MESSAGE = "Successfully added.";
+		public static final class Discount {			
+			public static final String DELETE_DISCOUNT = "Do u really want to delete discount: ";
+		}
+	}
 }
