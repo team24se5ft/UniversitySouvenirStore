@@ -186,6 +186,14 @@ public class MemberController implements IMemberDelegate {
 	
 	@Override
 	public void rowNotSelected() {
-		// TODO - Implement the same.
+		// Display message for error.
+				UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.ERROR, ViewConstants.Controller.PLEASE_SELECT_ROW,
+						DialogType.WARNING_MESSAGE);
+	}
+	
+	@Override
+	public void onMemberPanelVisible() {
+		memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
+									TableDataUtils.getHeadersForMemberTable());
 	}
 }

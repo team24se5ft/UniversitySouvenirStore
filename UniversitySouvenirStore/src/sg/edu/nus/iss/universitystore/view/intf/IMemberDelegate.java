@@ -27,4 +27,9 @@ public interface IMemberDelegate {
 	 * @param index The selected index of the member table.
 	 */
 	public void deleteMemberClicked(int index);
+	
+	/**
+	 * Method to inform controller that the member panel is visible.
+	 */
+	public void onMemberPanelVisible();
 }
