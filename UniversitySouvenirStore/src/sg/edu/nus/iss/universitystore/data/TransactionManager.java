@@ -255,15 +255,14 @@ public class TransactionManager {
 		// Check if the requested item exists
 		checkIfRequestedQuantityExistsInInventory(arrTransactionItem);
 
-		// Check Discount Id
-		try {
-			if (discountManager.findDiscount(discountId) == null) {
-				// TODO - Move to constants
+		if(discountId != null || discountId.length() != 0) {
+			// Check Discount Id
+			try {
+				discountManager.findDiscount(discountId);
+			} catch (DiscountException e1) {
 				throw new StoreException(CommonUtils.MessageTitleType.ERROR, "Invalid discount ID.",
 						CommonUtils.MessageType.ERROR_MESSAGE);
 			}
-		} catch (DiscountException e1) {
-			e1.printStackTrace();
 		}
 
 		try {// TODO - Remove this.
