@@ -237,7 +237,7 @@ public class TransactionManager {
 	 * @return
 	 * @throws IOException
 	 */
-	public float getTotal(ArrayList<TransactionItem> arrTransactionItem) throws IOException {
+	public float getTotal(ArrayList<TransactionItem> arrTransactionItem) {
 		// Get the total sum first
 		float total = 0;
 		for (TransactionItem transactionItem : arrTransactionItem) {

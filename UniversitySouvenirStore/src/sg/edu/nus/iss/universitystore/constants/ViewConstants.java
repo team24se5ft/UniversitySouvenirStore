@@ -183,13 +183,19 @@ public class ViewConstants {
 	}
 
 	public static final class SalesPanel {
-		public static final String MEMBER_OPTION_LABEL = "Public";
+		public static final String MEMBER_OPTION_LABEL = "PUBLIC";
 		public static final String NONE_DISCOUNT = "none discount";
 		public static final String MEMBER_LABEL = "member:";
 		public static final String DISCOUNT_LABEL = "discount:";
 		public static final String DISCOUNT_PERCENTAGE_LABEL = "off:";
 		public static final String AVAILABLE_LOYALPOINT_LABEL = "AvailableLoyalPoint:";
+		
 		public static final String LOYALPOINT_LABEL = "loyalPoint:";
+		public static final String TOTAL_LABEL = "Total:";
+		public static final String CASH_LABEL = "Cash:";
+		public static final String CHANGE_LABEL = "Change:";
+		
+		
 	}
 
 	public static final class ValidationMessage {

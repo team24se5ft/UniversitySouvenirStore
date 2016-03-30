@@ -6,8 +6,8 @@ public final class Messages {
 	public static final class Error {
 		public static final class Common {
 			public static final String UNKNOWN_ERROR = "Something went wrong! Please try again.";
-			public static final String INVALID_NUMBER = "Please Enter a Valid Number. Eg 123";
-			public static final String INVALID_FLOAT = "Please Enter a Valid Number with a maximum of two decimals. Eg 50.0 or 30.25";
+			public static final String INVALID_NUMBER = "Please Enter a Valid Number. For example, \"123\"";
+			public static final String INVALID_FLOAT = "Please Enter a Valid Number with a maximum of two decimals. For example, \"50.0\" or \"30.25\"";
 			public static final String INVALID_DATE = "Please Enter a Valid Date. Eg. 2000-10-20";
 			public static final String INVALID_CODE = "Code must consist of only alphabets and in Capitals";
 			public static final String EMPTY_FIELDS = "All fields are mandatory.";
@@ -46,9 +46,9 @@ public final class Messages {
 			public static final String INVALID_PERIOD = new StringBuffer().append("Period: ").append(Common.INVALID_NUMBER).toString();
 			public static final String INVALID_START_DATE = new StringBuffer().append("Start Date: ").append(Common.INVALID_DATE).toString();
 			public static final String INVALID_PERCENTAGE = new StringBuffer().append("Percentage: ").append(Common.INVALID_FLOAT).toString();
-			public static final String INVALID_CODE = "Code should only contain alphabets";
-			public static final String INVALID_ELIGIBILITY = "Eligibility should be selected as M or A";
-			public static final String INVALID_PERIOD_RANGE = "Period should be between 0 to 365";
+			public static final String INVALID_CODE = "Code should only contain alphabet characters!";
+			public static final String INVALID_ELIGIBILITY = "Eligibility should be selected as \"M\" or \"A\"";
+			public static final String INVALID_PERIOD_RANGE = "Period should be between 0 and 365";
 			public static final String INVALID_PERCENTAGE_RANGE = "Percentage should be bewteen 1 and 100";
 		}
 	}
