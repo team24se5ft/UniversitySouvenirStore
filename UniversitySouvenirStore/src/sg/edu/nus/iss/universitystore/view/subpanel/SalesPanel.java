@@ -9,6 +9,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -51,7 +53,8 @@ public class SalesPanel extends BaseTablePanel {
 
 	private ISalesDelegate delegate;
 
-	private String memberText = "PUBLIC";
+	//used for changeMember tip switch
+	private String memberText = ViewConstants.SalesPanel.MEMBER_OPTION_LABEL;
 
 	/***********************************************************/
 	// Constructors
@@ -63,7 +66,14 @@ public class SalesPanel extends BaseTablePanel {
 		borderLayout.setVgap(20);
 		this.setLayout(borderLayout);
 		initSalePanel();
-		// initButtonPanel();
+		addComponentListener( new ComponentAdapter ()
+	    {
+	        public void componentShown(ComponentEvent e )
+	        {
+	        	// Inform the controller that the panel is visible.
+	            delegate.onSalesPanelVisible();
+	        }
+	    });
 
 	}
 
@@ -97,7 +107,7 @@ public class SalesPanel extends BaseTablePanel {
 
 	/**
 	 * 1.set loyalPoint and cash can only be input as digit
-	 * 
+	 * 2.make loyalPoint not over avaliablePoint
 	 */
 	private void initCalculationEvent() {
 		LoyalPointText.addKeyListener(new KeyListener() {
@@ -184,10 +194,10 @@ public class SalesPanel extends BaseTablePanel {
 
 		JPanel jpanel = new JPanel();
 		jpanel.setLayout(new GridBagLayout());
-		jpanel.add(new JLabel("Total:"), getConstraint(0, 0));
-		jpanel.add(new JLabel("Cash:"), getConstraint(2, 0));
-		jpanel.add(new JLabel("LoyalPoint:"), getConstraint(0, 1));
-		jpanel.add(new JLabel("Change:"), getConstraint(2, 1));
+		jpanel.add(new JLabel(ViewConstants.SalesPanel.TOTAL_LABEL), getConstraint(0, 0));
+		jpanel.add(new JLabel(ViewConstants.SalesPanel.CASH_LABEL), getConstraint(2, 0));
+		jpanel.add(new JLabel(ViewConstants.SalesPanel.LOYALPOINT_LABEL), getConstraint(0, 1));
+		jpanel.add(new JLabel(ViewConstants.SalesPanel.CHANGE_LABEL), getConstraint(2, 1));
 
 		jpanel.add(totalText, getConstraint(1, 0));
 		jpanel.add(cashText, getConstraint(3, 0));
@@ -223,8 +233,8 @@ public class SalesPanel extends BaseTablePanel {
 		customerInfoPanel.setBorder(new CompoundBorder(border, margin));
 		customerInfoPanel.setBackground(Color.WHITE);
 		customerInfoPanel.setLayout(new GridBagLayout());
-		customerInfoPanel.setPreferredSize(new Dimension(500, 200));
-		customerInfoPanel.setMaximumSize(new Dimension(500, 250));
+		customerInfoPanel.setPreferredSize(new Dimension(500, 190));
+		customerInfoPanel.setMaximumSize(new Dimension(500, 190));
 		customerInfoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		memberOption = new JButton(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL);
@@ -242,7 +252,7 @@ public class SalesPanel extends BaseTablePanel {
 		customerInfoPanel.add(discountPercentage, getConstraint(1, 2));
 		
 		availableLabel = new JLabel(ViewConstants.SalesPanel.AVAILABLE_LOYALPOINT_LABEL);
-		avaiLableLoyalPoint = new JLabel("0");
+		avaiLableLoyalPoint = new JLabel("0.0");
 
 		customerInfoPanel.add(availableLabel, getConstraint(0, 3));
 		customerInfoPanel.add(avaiLableLoyalPoint, getConstraint(1, 3));

@@ -71,8 +71,7 @@ public abstract class MemberScanDialog extends BaseDialog {
 	@Override
 	protected boolean confirmClicked() {
 		if (MemberCode.getText().length() != 0) {
-			onMemberIdentification(MemberCode.getText());
-			return false;
+			return onMemberIdentification(MemberCode.getText());
 		}
 		return false;
 	}

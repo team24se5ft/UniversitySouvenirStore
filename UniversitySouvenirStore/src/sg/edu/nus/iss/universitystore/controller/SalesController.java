@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.universitystore.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -10,6 +11,9 @@ import sg.edu.nus.iss.universitystore.data.DiscountManager;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
 import sg.edu.nus.iss.universitystore.data.TransactionManager;
+import sg.edu.nus.iss.universitystore.exception.InventoryException;
+import sg.edu.nus.iss.universitystore.exception.StoreException;
+import sg.edu.nus.iss.universitystore.exception.TransactionException;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
@@ -141,6 +145,14 @@ public class SalesController implements ISalesDelegate {
 		dialog.setVisible(true);
 		// FIXME test to finish
 		if (currentMember != null) {
+
+			try {
+				TransactionManager.getInstance().addTransaction(transactionItemList,
+						currentDiscount == null ? null : currentDiscount.getCode(),
+						currentMember == null ? null : currentMember.getIdentifier());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -182,6 +194,11 @@ public class SalesController implements ISalesDelegate {
 		}
 	}
 
+	/**
+	 * refresh member infomation and calculation result
+	 * 
+	 * @param Membercode
+	 */
 	private void refreshSalesData(String Membercode) {
 		try {
 			Member member = MemberManager.getInstance().getMember(Membercode);
