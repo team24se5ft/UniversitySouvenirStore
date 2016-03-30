@@ -14,10 +14,10 @@ import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException.TransactionError;
 import sg.edu.nus.iss.universitystore.model.Discount;
+import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.model.Transaction;
 import sg.edu.nus.iss.universitystore.model.TransactionItem;
-import sg.edu.nus.iss.universitystore.utility.CommonUtils;
 
 /**
  * Manager class for handling the payment & transaction functionality.
@@ -135,7 +135,8 @@ public class TransactionManager {
 	 * @throws IOException
 	 * @throws StoreException
 	 */
-	private void checkIfRequestedQuantityExistsInInventory(ArrayList<TransactionItem> arrTransactionItem) throws TransactionException {
+	private void checkIfRequestedQuantityExistsInInventory(ArrayList<TransactionItem> arrTransactionItem)
+			throws TransactionException {
 		// Check the quantities using inventory manager
 		for (TransactionItem transactionItem : arrTransactionItem) {
 			Product product = null;
@@ -153,12 +154,39 @@ public class TransactionManager {
 		}
 	}
 
+	/**
+	 * Method to update the inventory quantity after the sale has taken place.
+	 * 
+	 * @param transactionItem
+	 *            The transaction item that needs to be updated.
+	 * @throws IOException
+	 * @throws StoreException
+	 * @throws InventoryException
+	 */
 	private void updateInventoryAfterSale(TransactionItem transactionItem)
 			throws IOException, StoreException, InventoryException {
 		Product product = transactionItem.getProduct();
 		int updatedQuantity = product.getQuantity() - transactionItem.getQuantity();
 		product.setQuantity(updatedQuantity);
 		inventoryManager.updateProduct(product);
+	}
+
+	private void updateLoyaltyPointsOfMemberAfterSale(String memberId, float totalAmount) throws TransactionException{
+		// Update the member loyalty points
+		if (!memberId.equals(ViewConstants.Labels.STR_PUBLIC)) {
+			try {
+				// Get member to update the loyalty point
+				Member updatedMember = memberManager.getMember(memberId);
+				// Calculate the loyalty points earned
+				int earnedLoyaltyPoints = (int) totalAmount / 10;
+				// Set the loyalty points to the new member
+				updatedMember.setLoyaltyPoints(updatedMember.getLoyaltyPoints() + earnedLoyaltyPoints);
+				// Update the dB
+				memberManager.updateMember(memberManager.getMember(memberId), updatedMember);
+			} catch (MemberException e) {
+				throw new TransactionException(TransactionError.UNABLE_TO_UPDATE_LOYALTY_POINTS);
+			}
+		}
 	}
 	/***********************************************************/
 	// Public Methods
@@ -190,7 +218,7 @@ public class TransactionManager {
 	 */
 	public ArrayList<Transaction> getAllTransactions() throws TransactionException {
 		ArrayList<Transaction> transactionList = new ArrayList<>();
-		
+
 		String[] transactionStrList;
 		try {
 			transactionStrList = transactionData.getAll();
@@ -232,10 +260,10 @@ public class TransactionManager {
 		}
 
 		// It is possible that no discount is applicable.
-		if(discountId == null || discountId.length() == 0) {
+		if (discountId == null || discountId.length() == 0) {
 			return total;
 		}
-		
+
 		Discount discount;
 		try {
 			discount = discountManager.findDiscount(discountId);
@@ -265,7 +293,7 @@ public class TransactionManager {
 		checkIfRequestedQuantityExistsInInventory(arrTransactionItem);
 
 		// Check if it valid discount
-		if(discountId != null || discountId.length() != 0) {
+		if (discountId != null || discountId.length() != 0) {
 			// Check Discount Id
 			try {
 				discountManager.findDiscount(discountId);
@@ -273,17 +301,17 @@ public class TransactionManager {
 				throw new TransactionException(TransactionError.INVALID_DISCOUNT_ID);
 			}
 		}
-		
+
 		// Check if it is a valid member
-		if(memberId != null || memberId.length() != 0) {
-			if(!memberId.equals(ViewConstants.Labels.STR_PUBLIC)) {
+		if (memberId != null || memberId.length() != 0) {
+			if (!memberId.equals(ViewConstants.Labels.STR_PUBLIC)) {
 				try {
 					memberManager.getMember(memberId);
 				} catch (MemberException e) {
 					throw new TransactionException(TransactionError.INVALID_MEMBER_ID);
 				}
 			}
-		}else {
+		} else {
 			throw new TransactionException(TransactionError.INVALID_MEMBER_ID);
 		}
 
@@ -304,11 +332,17 @@ public class TransactionManager {
 				// Revert the constant value as well.
 			}
 		}
-		// If something went wrong, then we clear up all the contents that have
-		// been written for this transaction.
-		if (!returnValue) {
-			// Revert the constant value as well
+
+		if (returnValue) {
+			try {
+				updateLoyaltyPointsOfMemberAfterSale(memberId, getTotal(arrTransactionItem, discountId));
+			} catch (TransactionException e) {
+				// TODO : Remove all the items that have been written because
+				// something went wrong
+				// Revert the constant value as well.
+			}
 		}
+		
 		return returnValue;
 	}
 }

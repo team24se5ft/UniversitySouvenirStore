@@ -18,6 +18,7 @@ public class TransactionException extends Exception{
 		INVALID_DISCOUNT_ID(Messages.Error.Transaction.INVALID_DISCOUNT_ID),
 		REQUESTED_QUANTITY_MORE_THAN_AVAILABLE(Messages.Error.Transaction.REQUESTED_QUANTITY_MORE_THAN_AVAILABLE),
 		INVALID_MEMBER_ID(Messages.Error.Transaction.INVALID_MEMBER_ID),
+		UNABLE_TO_UPDATE_LOYALTY_POINTS(Messages.Error.Transaction.UNABLE_TO_UPDATE_LOYALTY_POINTS),
 	    UNKNOWN_ERROR(Messages.Error.Common.UNKNOWN_ERROR)
 	    ;
 		

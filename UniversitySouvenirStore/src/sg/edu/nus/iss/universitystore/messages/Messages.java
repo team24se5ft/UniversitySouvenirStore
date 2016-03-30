@@ -56,6 +56,7 @@ public final class Messages {
 			public static final String INVALID_DISCOUNT_ID = "Invalid discount Id.";
 			public static final String INVALID_MEMBER_ID = "Invalid member Id.";
 			public static final String REQUESTED_QUANTITY_MORE_THAN_AVAILABLE = "Requested quantity of one or more items more than that available in the store";
+			public static final String UNABLE_TO_UPDATE_LOYALTY_POINTS = "Something went wrong while updating loyalty points.";
 		}
 	}
 }
