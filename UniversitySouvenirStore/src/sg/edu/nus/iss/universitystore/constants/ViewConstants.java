@@ -215,8 +215,17 @@ public class ViewConstants {
 	public static final class Controller {
 		public static final String PLEASE_SELECT_ROW = "Please select a row of the table for completing this operation.";
 		public static final String SUCCESS_MESSAGE = "Successfully added.";
+		
 		public static final class Discount {			
-			public static final String DELETE_DISCOUNT = "Do u really want to delete discount: ";
+			public static final String DELETE_DISCOUNT = "Do you really wish to delete this discount: ";
+		}
+		
+		public static final class InventoryController{
+			public static final String EDIT_PRODUCT = "Edit Product";
+			public static final String DEL_PRODUCT = "Delete Product";
+			public static final String DEL_PROD_CONF = "Do you really wish to delete this product?";
+			public static final String ADD_PRODUCT = "Add Product";
+			public static final String DEL_CAT_CONF = "Do you really wish to delete this category?";
 		}
 	}
 }
