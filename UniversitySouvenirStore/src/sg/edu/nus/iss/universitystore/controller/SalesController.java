@@ -68,7 +68,8 @@ public class SalesController implements ISalesDelegate {
 	}
 
 	/**
-	 * test space in barcode
+	 * test space in barcode FIXME no invoke from other code,reserve for scanner
+	 * function
 	 */
 	public void scanBarCode() {
 		String productCode = "test";
@@ -77,12 +78,13 @@ public class SalesController implements ISalesDelegate {
 	}
 
 	/**
-	 * AddProduct by barCode in this case
+	 * AddProduct by barCode
 	 * 
 	 * @param productCode
 	 * @param quantity
 	 */
 	private void addProductByBarCode(String productCode, int quantity) {
+		// FIXME the same Item exist in the list need directly add
 		try {
 			Product product = InventoryManager.getInstance().findProduct(productCode);
 			if (product == null) {
@@ -91,7 +93,20 @@ public class SalesController implements ISalesDelegate {
 			} else {
 				// add transaction Item and show
 				TransactionItem item = new TransactionItem(product, quantity);
-				transactionItemList.add(item);
+				boolean isAdd = true;
+				// loop to make sure whether there is repeated scanned
+				// product,if repeated then increased
+				for (int i = 0; i < transactionItemList.size(); i++) {
+					if (transactionItemList.get(i).getProduct().getIdentifier()
+							.equals(item.getProduct().getIdentifier())) {
+						int old_quantity = transactionItemList.get(i).getQuantity();
+						transactionItemList.get(i).setQuantity(old_quantity + quantity);
+						isAdd = false;
+					}
+				}
+				if (isAdd) {
+					transactionItemList.add(item);
+				}
 				// calculate total and setText
 				float total;
 				if (currentDiscount == null) {
@@ -128,6 +143,9 @@ public class SalesController implements ISalesDelegate {
 		}
 	}
 
+	/**
+	 * click one line
+	 */
 	@Override
 	public void cancel() {
 		transactionItemList.clear();
@@ -148,30 +166,52 @@ public class SalesController implements ISalesDelegate {
 			@Override
 			public boolean onMemberIdentification(String MemberCode) {
 				// TODO query Member
-				try {
-					Member member = MemberManager.getInstance().getMember(MemberCode);
-					Discount discount = DiscountManager.getInstance().getDiscount(MemberCode);
-					if (discount == null) {
-						salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList));
-						salesPanel.onMemberIdentification(member.getName(), "none discount", "0%",
-								String.valueOf(member.getLoyaltyPoints()));
-					} else {
-						salesPanel.onMemberIdentification(member.getName(), discount.getCode(),
-								String.valueOf(discount.getPercentage()+"%"), String.valueOf(member.getLoyaltyPoints()));
-						salesPanel.setTotal(
-								TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode()));
-					}
-					memberDialog.dispose();
-					memberDialog.setVisible(false);
-				} catch (Exception e) {
-					UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-							DialogType.WARNING_MESSAGE);
-				}
+				refreshSalesData(MemberCode);
 				return true;
 			}
 
 		};
 		memberDialog.setVisible(true);
+	}
+
+	@Override
+	public void onSalesPanelVisible() {
+		if (currentMember != null) {
+			refreshSalesData(currentMember.getIdentifier());
+		}
+	}
+
+	private void refreshSalesData(String Membercode) {
+		try {
+			Member member = MemberManager.getInstance().getMember(Membercode);
+			currentMember = member;
+			Discount discount = DiscountManager.getInstance().getDiscount(Membercode);
+			currentDiscount = discount;
+			if (discount == null) {
+				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList));
+				salesPanel.onMemberIdentification(member.getName(), "none discount", "0%",
+						String.valueOf(member.getLoyaltyPoints()));
+			} else {
+				salesPanel.onMemberIdentification(member.getName(), discount.getCode(),
+						String.valueOf(discount.getPercentage() + "%"), String.valueOf(member.getLoyaltyPoints()));
+				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode()));
+			}
+		} catch (Exception e) {
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+					DialogType.WARNING_MESSAGE);
+			try {
+				currentMember = null;
+				currentDiscount = null;
+				salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL, "none discount", "0%",
+						"0.0");
+				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList));
+			} catch (Exception e1) {
+				// if error again then cancel transaction
+				cancel();
+				// better find stack here
+				e1.printStackTrace();
+			}
+		}
 	}
 
 }
