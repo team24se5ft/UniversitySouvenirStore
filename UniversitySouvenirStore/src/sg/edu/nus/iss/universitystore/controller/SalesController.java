@@ -88,7 +88,7 @@ public class SalesController implements ISalesDelegate {
 		try {
 			Product product = InventoryManager.getInstance().findProduct(productCode);
 			if (product == null) {
-				UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING,
+				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
 						ViewConstants.ValidationMessage.PRODUCT_ID_NotExist, DialogType.WARNING_MESSAGE);
 			} else {
 				// add transaction Item and show
@@ -124,7 +124,7 @@ public class SalesController implements ISalesDelegate {
 				productDialog.setVisible(false);
 			}
 		} catch (Exception e) {
-			UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
 					DialogType.WARNING_MESSAGE);
 		}
 	}
@@ -198,8 +198,7 @@ public class SalesController implements ISalesDelegate {
 				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode()));
 			}
 		} catch (Exception e) {
-			UIUtils.showMessageDialog(salesPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
-					DialogType.WARNING_MESSAGE);
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, e.getMessage(),DialogType.WARNING_MESSAGE);
 			try {
 				currentMember = null;
 				currentDiscount = null;

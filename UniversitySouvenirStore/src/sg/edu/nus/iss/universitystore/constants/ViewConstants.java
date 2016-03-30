@@ -22,6 +22,11 @@ public class ViewConstants {
 		public static final String STR_USER_LABEL = "Username:";
 		public static final String STR_PASSWORD_LABEL = "Password: ";
 		public static final String STR_LOGIN = "Login";
+		
+		// Labels for Inventory
+		public static final String STR_ADD_CATEGORY = "Add Category";
+		public static final String STR_EDIT_CATEGORY = "Edit Category";
+		public static final String STR_DELETE_CATEGORY = "Delete Category";
 
 		// Labels for Discount
 		public static final String STR_ADD_DISCOUNT = "Add Discount";
@@ -45,12 +50,14 @@ public class ViewConstants {
 		public static final String STR_CANCEL = "Cancel";
 	}
 
-	public static final class ErrorMessages {
+	public static final class StatusMessage {
 
+		// Error
+		public final static String ERROR = "Error";
 		// Warning
-		public final static String STR_WARNING = "Warning";
+		public final static String WARNING = "Warning";
 		// Success
-		public final static String STR_SUCCESS = "Success";
+		public final static String SUCCESS = "Success";
 	}
 	
 	public class PanelHeaders{
@@ -204,5 +211,13 @@ public class ViewConstants {
 		public static final String MEMBER_NotExist = "the input member ID is not exist!";
 		public static final String PRODUCT_ID_NotExist = "the input product ID is not exist!";
 		
+	}
+	
+	public static final class Controller {
+		public static final String PLEASE_SELECT_ROW = "Please select a row of the table for completing this operation.";
+		public static final String SUCCESS_MESSAGE = "Successfully added.";
+		public static final class Discount {			
+			public static final String DELETE_DISCOUNT = "Do u really want to delete discount: ";
+		}
 	}
 }

@@ -94,7 +94,7 @@ public class MemberController implements IMemberDelegate {
 				try {
 					memberManager.addNewMember(memberId, memberName);
 					// Show the success dialog
-					UIUtils.showMessageDialog(memberPanel, ViewConstants.ErrorMessages.STR_SUCCESS,
+					UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.SUCCESS,
 							"Successfully added.", DialogType.INFORMATION_MESSAGE);
 					// Update Table
 					arrMember = memberManager.getAllMembers();
