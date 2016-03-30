@@ -55,7 +55,9 @@ public class MemberPanel extends BaseTablePanel {
 		addComponentListener(new ComponentAdapter() {
 			public void componentShown(ComponentEvent e) {
 				// Inform the controller that the panel is visible.
-				delegate.onMemberPanelVisible();
+				if(delegate != null) {
+					delegate.onMemberPanelVisible();
+				}
 			}
 		});
 	}

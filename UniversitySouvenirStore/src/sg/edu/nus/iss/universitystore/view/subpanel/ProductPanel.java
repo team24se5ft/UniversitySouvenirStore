@@ -53,7 +53,9 @@ public class ProductPanel extends BaseTablePanel {
 		addComponentListener(new ComponentAdapter() {
 			public void componentShown(ComponentEvent e) {
 				// Inform the controller that the panel is visible.
-				delegate.onProductPanelVisible();
+				if(delegate != null) {
+					delegate.onProductPanelVisible();
+				}
 			}
 		});
 	}
