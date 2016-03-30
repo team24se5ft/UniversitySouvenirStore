@@ -103,7 +103,7 @@ public class InventoryManager {
 	 * @throws StoreException
 	 * @throws InventoryException 
 	 */
-	public static InventoryManager getInstance() throws FileNotFoundException, IOException, StoreException, InventoryException {
+	public static InventoryManager getInstance() throws InventoryException {
 		if (instance == null) {
 			synchronized (InventoryManager.class) {
 				if (instance == null) {
@@ -133,7 +133,7 @@ public class InventoryManager {
 	 * @throws StoreException
 	 * @throws InventoryException 
 	 */
-	public InventoryManager() throws FileNotFoundException, IOException, StoreException, InventoryException {
+	public InventoryManager() throws InventoryException {
 		productID = (productID == null) ? Constants.Data.Product.INITIALIZED_COUNT : productID;
 		initialize();
 	}
@@ -150,9 +150,13 @@ public class InventoryManager {
 	 * @throws StoreException
 	 * @throws InventoryException 
 	 */
-	private void initialize() throws FileNotFoundException, IOException, StoreException, InventoryException {
-		categoryData = new DataFile<>(Constants.Data.FileName.CATEGORY_DAT);
-		productData = new DataFile<>(Constants.Data.FileName.PRODUCT_DAT);
+	private void initialize() throws InventoryException {
+		try {
+			categoryData = new DataFile<>(Constants.Data.FileName.CATEGORY_DAT);
+			productData = new DataFile<>(Constants.Data.FileName.PRODUCT_DAT);
+		} catch (IOException ioExp) {
+			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+		}
 
 		initializeVendors();
 		if(productID == Constants.Data.Product.INITIALIZED_COUNT){
