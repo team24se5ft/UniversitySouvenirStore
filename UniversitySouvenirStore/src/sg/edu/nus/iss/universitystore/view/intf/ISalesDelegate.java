@@ -12,15 +12,15 @@ public interface ISalesDelegate {
 	public void checkOut();
 	/**
 	 * click cancel btn form the view
+	 * @param row
 	 */
-	public void cancel();
+	public void cancel(int row);
 	/**
 	 * click member btn form the view
 	 */
 	public void memberIdentification();
-	
 	/**
-	 * TODO:
+	 * invoked when salesPanel visible
 	 */
 	public void onSalesPanelVisible();
 	
