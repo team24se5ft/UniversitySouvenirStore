@@ -1,14 +1,8 @@
 package sg.edu.nus.iss.universitystore.model;
 
 import sg.edu.nus.iss.universitystore.exception.StoreException;
-import sg.edu.nus.iss.universitystore.messages.Messages;
-import sg.edu.nus.iss.universitystore.utility.CommonUtils.MessageTitleType;
-import sg.edu.nus.iss.universitystore.utility.CommonUtils.MessageType;
 
 public class Category {
-	
-	private final static int C_CODE = 0;
-	private final static int C_NAME = 1;
 
 	/***********************************************************/
 	//Instance Variables
@@ -20,9 +14,8 @@ public class Category {
 	//Constructors
 	/**
 	 * @throws StoreException *********************************************************/
-	public Category(String code, String name) throws StoreException{
+	public Category(String code, String name) {
 		this.code = code.toUpperCase();
-		validate();
 		this.name = name;
 	}
 	
@@ -83,18 +76,5 @@ public class Category {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
-	}
-	/***********************************************************/
-	//Validate Methods
-	/***********************************************************/
-	/**
-	 * Validate Category creation
-	 * @throws StoreException 
-	 */
-	public void validate() throws StoreException{
-		if(code.length() != 3)
-			throw new StoreException(MessageTitleType.ERROR, Messages.Error.Category.INVALID_CODE_LENGTH, MessageType.ERROR_MESSAGE);
-		else if(!code.matches("^[a-zA-Z]{3}$"))
-			throw new StoreException(MessageTitleType.ERROR, Messages.Error.Category.INVALID_CHARACTERS, MessageType.ERROR_MESSAGE);
 	}
 }

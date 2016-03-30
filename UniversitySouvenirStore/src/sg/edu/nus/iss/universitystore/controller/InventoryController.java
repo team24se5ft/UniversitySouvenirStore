@@ -7,11 +7,13 @@ import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
+import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
+import sg.edu.nus.iss.universitystore.validation.InventoryValidation;
 import sg.edu.nus.iss.universitystore.view.dialog.CategoryDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ProductDialog;
@@ -114,10 +116,8 @@ public class InventoryController implements IInventoryDelegate {
 			// The callback implementation
 			@Override
 			public boolean categoryCallback(String categoryCode, String categoryName) {
-				if (categoryCode.length() > 0 && categoryName.length() > 0) {
-					// Category Code client side validation.
-					if (categoryCode.length() == 3) {
-						try {
+				try {
+					if (InventoryValidation.Catgory.isValidData(categoryCode, categoryName)) {
 							inventoryManager.addCategory(categoryCode, categoryName);
 							// Show the success dialog
 							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_SUCCESS,
@@ -129,17 +129,10 @@ public class InventoryController implements IInventoryDelegate {
 									TableDataUtils.getHeadersForCategoryTable());
 							// Dismiss the add category dialog
 							return true;
-						} catch (Exception e) {
-							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING,
-									e.getMessage(), DialogType.WARNING_MESSAGE);
 						}
-					} else {
-						UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING,
-								STR_ERROR_CATEGORY_3_DIGIT, DialogType.WARNING_MESSAGE);
-					}
-				} else {
+				} catch (InventoryException inventoryExp) {
 					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING,
-							STR_ERROR_MESSAGE_CATEGORY_CODE_OR_NAME_EMPTY, DialogType.WARNING_MESSAGE);
+							inventoryExp.getMessage(), DialogType.WARNING_MESSAGE);
 				}
 				return false;
 			}

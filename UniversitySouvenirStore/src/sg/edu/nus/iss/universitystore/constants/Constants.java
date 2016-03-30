@@ -17,8 +17,10 @@ public final class Constants {
 		public static final String NEW_LINE = "\n";
 		public static final class Validation {
 			public static final String NUMBER_MATCH = "\\d+";
-			public static final String FLOAT_MATCH = "\\d+\\.\\d+";
+			public static final String FLOAT_MATCH = "\\d+(\\.\\d+)?";
 			public static final String DATE_MATCH = "\\d{4}\\-\\d{2}\\-\\d{2}";
+			public static final String CODE_MATCH = "[A-Z]+";
+			public static final String NAME_MATCH = "[a-zA-Z0-9 ]+";
 		}
 		public static final DateTimeFormatter YYYY_MM_DD_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	}
@@ -60,6 +62,14 @@ public final class Constants {
 			public static final String FILE_SEPTR_MATCH = "\\" + FILE_SEPTR;
 			public static final String DESCRIPTION_MATCH = "(\\\"(?!\\\")(.*?)\\\"" + FILE_SEPTR_MATCH + ")";
 		}
+		
+		public static final class Category {
+			public static final class Pattern {
+				public static final String CODE_MATCH = "[A-Z]{3}";
+				public static final String NAME_MATCH = "[a-zA-Z0-9 ]+";
+				public static final String LINE_MATCH = "^" + CODE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + NAME_MATCH + "$";
+			}
+		}
 
 		public static final class Product {
 			public static final class Pattern {
@@ -80,7 +90,7 @@ public final class Constants {
 				public static final String CODE_MATCH = "[A-Z]+";
 				public static final String START_DATE_MATCH = "\\d{4}\\-\\d{2}\\-\\d{2}";
 				public static final String PERIOD_MATCH = "\\d{1,3}";
-				public static final String PERCENTAGE_MATCH = "\\d{1,3}\\.\\d{1,2}";
+				public static final String PERCENTAGE_MATCH = "\\d{1,3}(\\.\\d{1,2})?";
 				public static final String ELIGIBILITY_MATCH = "[A|M]";
 				public static final String LINE_MATCH = "^(" + CODE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + ")"
 						+ Data.Pattern.DESCRIPTION_MATCH + "(" + START_DATE_MATCH + Data.Pattern.FILE_SEPTR_MATCH

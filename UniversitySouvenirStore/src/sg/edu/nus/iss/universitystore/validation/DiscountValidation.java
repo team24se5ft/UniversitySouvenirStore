@@ -26,7 +26,7 @@ public class DiscountValidation extends Validation {
 	 * @return Boolean
 	 * @throws DiscountException
 	 */
-	public static final boolean isValidData(String code, String description, String startDate, String period,
+	public static boolean isValidData(String code, String description, String startDate, String period,
 			String percentage, String eligibilty) throws DiscountException {
 
 		// Check for empty fields
@@ -35,7 +35,7 @@ public class DiscountValidation extends Validation {
 			throw new DiscountException(DiscountError.EMPTY_DISCOUNT_FIELDS);
 
 		// Check if Discount Code contains only alphabets
-		if (!code.matches(Constants.Data.Discount.Pattern.CODE_MATCH))
+		if (!isCode(code))
 			throw new DiscountException(DiscountError.INVALID_CODE);
 
 		// Check if Percentage format is incorrect
@@ -72,7 +72,7 @@ public class DiscountValidation extends Validation {
 	 * @param dataLine
 	 * @return Boolean
 	 */
-	public static boolean isValidValue(String periodStr, String percentageStr) throws DiscountException {
+	private static boolean isValidValue(String periodStr, String percentageStr) throws DiscountException {
 		int period = Integer.parseInt(periodStr);
 		float percentage = Float.parseFloat(percentageStr);
 

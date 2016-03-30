@@ -14,6 +14,14 @@ public class InventoryException extends Exception{
 	// Enum listing all possible errors possible during login
 	/***********************************************************/
 	public enum InventoryError {
+		// Category
+		INVALID_CATEGORY_FIELDS(Messages.Error.Category.INVALID_CATEGORY_FIELDS),
+		INVALID_CODE(Messages.Error.Common.INVALID_CODE),
+		INVALID_CODE_LENTH(Messages.Error.Category.INVALID_CODE),
+		CATEGORY_ALREADY_PRESENT(Messages.Error.Category.CATEGORY_ALREADY_PRESENT),
+		CATEGORY_NOT_AVAILABLE(Messages.Error.Category.CATEGORY_NOT_AVAILABLE),
+		CATEGORY_UNKNOWN_ERROR(Messages.Error.Category.CATEGORY_UNKNOWN_ERROR),
+		// Member
 	    EMPTY_MEMBER_NAME(Messages.Error.Member.EMPTY_MEMBER_NAME),
 	    EMPTY_MEMBER_ID(Messages.Error.Member.EMPTY_MEMBER_ID),
 	    INVALID_MEMBER_NAME(Messages.Error.Member.INVALID_MEMBER_NAME),

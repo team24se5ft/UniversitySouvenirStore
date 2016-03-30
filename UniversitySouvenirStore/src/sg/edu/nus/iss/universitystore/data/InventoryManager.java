@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
+import sg.edu.nus.iss.universitystore.exception.InventoryException;
+import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryError;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.messages.Messages;
 import sg.edu.nus.iss.universitystore.model.Category;
@@ -14,6 +16,7 @@ import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.model.Vendor;
 import sg.edu.nus.iss.universitystore.utility.CommonUtils.MessageTitleType;
 import sg.edu.nus.iss.universitystore.utility.CommonUtils.MessageType;
+import sg.edu.nus.iss.universitystore.validation.InventoryValidation;
 
 /**
  * Manager Class used to handle Inventory
@@ -100,8 +103,9 @@ public class InventoryManager {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public static InventoryManager getInstance() throws FileNotFoundException, IOException, StoreException {
+	public static InventoryManager getInstance() throws FileNotFoundException, IOException, StoreException, InventoryException {
 		if (instance == null) {
 			synchronized (InventoryManager.class) {
 				if (instance == null) {
@@ -129,8 +133,9 @@ public class InventoryManager {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public InventoryManager() throws FileNotFoundException, IOException, StoreException {
+	public InventoryManager() throws FileNotFoundException, IOException, StoreException, InventoryException {
 		productID = (productID == null) ? Constants.Data.Product.INITIALIZED_COUNT : productID;
 		initialize();
 	}
@@ -145,8 +150,9 @@ public class InventoryManager {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	private void initialize() throws FileNotFoundException, IOException, StoreException {
+	private void initialize() throws FileNotFoundException, IOException, StoreException, InventoryException {
 		categoryData = new DataFile<>(Constants.Data.FileName.CATEGORY_DAT);
 		productData = new DataFile<>(Constants.Data.FileName.PRODUCT_DAT);
 
@@ -161,8 +167,9 @@ public class InventoryManager {
 	 * 
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	private void initializeVendors() throws IOException, StoreException {
+	private void initializeVendors() throws InventoryException {
 		vendorMap = new HashMap<>();
 
 		// Get all categories list
@@ -201,18 +208,24 @@ public class InventoryManager {
 	 * @return
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public ArrayList<Category> getAllCategories() throws IOException, StoreException {
+	public ArrayList<Category> getAllCategories() throws InventoryException {
 		ArrayList<Category> categoryList = new ArrayList<>();
-		String[] categoriesStrList = categoryData.getAll();
+		String[] categoriesStrList;
+		try {
+			categoriesStrList = categoryData.getAll();
+		} catch (IOException ioExp) {
+			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+		}
 
 		for (String categoryStr : categoriesStrList) {
 
-			// If line in Data file is empty, skip line
-			if (categoryStr.isEmpty())
-				continue;
-
 			String[] categoryStrSplt = categoryStr.split(Constants.Data.FILE_SEPTR);
+			
+			// If line in Data file is empty, skip line
+			if (!isValidCategory(categoryStrSplt))
+				continue;
 
 			categoryList.add(new Category(categoryStrSplt[CategoryArg.CODE.ordinal()],
 					categoryStrSplt[CategoryArg.NAME.ordinal()]));
@@ -227,17 +240,27 @@ public class InventoryManager {
 	 * @param category
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public boolean addCategory(String categoryCode, String categoryName) throws IOException, StoreException {
+	public boolean addCategory(String categoryCode, String categoryName) throws InventoryException {
+		if(!InventoryValidation.Catgory.isValidData(categoryCode, categoryName))
+			return false;
+		
 		Category category = new Category(categoryCode, categoryName);
 
 		// Check if category code already exists
-		if (hasCategory(categoryCode))
-			return false;
-		categoryData.add(category);
-
-		// Add Vendor Data file
-		addVendorDataFile(category.getCode());
+		if (hasCategory(categoryCode)) {
+			throw new InventoryException(InventoryError.CATEGORY_ALREADY_PRESENT);
+		}else {
+			try {
+				categoryData.add(category);
+			} catch (IOException ioExp) {
+				throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+			}
+		
+			// Add Vendor Data file
+			addVendorDataFile(category.getCode());
+		}
 
 		return true;
 	}
@@ -248,16 +271,20 @@ public class InventoryManager {
 	 * @param category
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public boolean deleteCategory(String categoryCode) throws IOException, StoreException {
-		// TODO: Good to Have
+	public boolean deleteCategory(String categoryCode) throws InventoryException {
 		boolean status = false;
 
 		if (hasCategory(categoryCode)) {
 			Category category = findCategory(categoryCode);
-
-			if (categoryData.delete(category.toString())) {
-				status = deleteAllVendors(categoryCode);
+			
+			try{
+				if (categoryData.delete(category.toString())) {
+					status = deleteAllVendors(categoryCode);
+				}
+			} catch (IOException ioExp) {
+				throw new InventoryException(InventoryError.UNKNOWN_ERROR);
 			}
 		}
 
@@ -272,8 +299,9 @@ public class InventoryManager {
 	 * @param updatedCategory
 	 *            The new category object.
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public void updateCategory(Category oldCategory, Category updatedCategory) throws IOException, StoreException {
+	public void updateCategory(Category oldCategory, Category updatedCategory) throws InventoryException {
 		// Check if the category exists
 		if (hasCategory(oldCategory.getCode())) {
 			// Get existing Vendor list
@@ -295,8 +323,9 @@ public class InventoryManager {
 	 * @param categoryCode
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public Category findCategory(String categoryCode) throws IOException, StoreException {
+	public Category findCategory(String categoryCode) throws InventoryException {
 		ArrayList<Category> categoryList = getAllCategories();
 		Category categoryFound = null;
 
@@ -315,20 +344,29 @@ public class InventoryManager {
 	 * @return
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public boolean hasCategory(String categoryCode) throws IOException, StoreException {
-		isValidCategory(categoryCode);
-
-		return findCategory(categoryCode) != null;
+	public boolean hasCategory(String categoryCode) throws InventoryException {
+		return InventoryValidation.Catgory.isValidCatgoryCode(categoryCode) && findCategory(categoryCode) != null;
 	}
 
-	private void isValidCategory(String categoryCode) throws StoreException {
-		if (categoryCode.length() != 3)
-			throw new StoreException(MessageTitleType.ERROR, Messages.Error.Category.INVALID_CODE_LENGTH,
-					MessageType.ERROR_MESSAGE);
-		else if (!categoryCode.matches("^[a-zA-Z]{3}$"))
-			throw new StoreException(MessageTitleType.ERROR, Messages.Error.Category.INVALID_CHARACTERS,
-					MessageType.ERROR_MESSAGE);
+	/**
+	 * Checks if category content is valid
+	 * 
+	 * @param categoryList
+	 * @return Boolean
+	 * @throws InventoryException
+	 */
+	private boolean isValidCategory(String[] categoryList) {
+		boolean status = false;
+		try {
+			if(InventoryValidation.Catgory.isValidData(categoryList[CategoryArg.CODE.ordinal()], categoryList[CategoryArg.NAME.ordinal()])){
+				status = true;
+			}
+		} catch (InventoryException e) {
+			status = false;
+		}
+		return status;
 	}
 
 	/***********************************************************/
@@ -369,8 +407,9 @@ public class InventoryManager {
 	 * @param goods
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public Product addProduct(Goods goods) throws IOException, StoreException {
+	public Product addProduct(Goods goods) throws IOException, StoreException, InventoryException {
 
 		return addProduct(goods.getCategory().getCode(), goods.getName(), goods.getDescription(),
 				String.valueOf(goods.getQuantity()), String.valueOf(goods.getPrice()),
@@ -383,9 +422,10 @@ public class InventoryManager {
 	 * @param goods
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
 	public Product addProduct(String categoryCode, String name, String description, String quantity, String price,
-			String reorderThreshold, String reorderQuantity) throws IOException, StoreException {
+			String reorderThreshold, String reorderQuantity) throws IOException, StoreException, InventoryException {
 
 		if (!hasCategory(categoryCode))
 			return null;
@@ -429,8 +469,9 @@ public class InventoryManager {
 	 * @return
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public boolean isValidProduct(String productID) throws IOException, StoreException {
+	public boolean isValidProduct(String productID) throws IOException, StoreException, InventoryException {
 		boolean status = false;
 
 		String categoryCode = productID.replaceAll(Constants.Data.Product.Pattern.ID_MATCH,
@@ -449,8 +490,9 @@ public class InventoryManager {
 	 * @return
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public boolean deleteProduct(Product product) throws IOException, StoreException {
+	public boolean deleteProduct(Product product) throws IOException, StoreException, InventoryException {
 		boolean status = false;
 
 		if (!isValidProduct(product.getIdentifier()))
@@ -471,8 +513,9 @@ public class InventoryManager {
 	 * @return
 	 * @throws IOException
 	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public boolean updateProduct(Product newProduct) throws IOException, StoreException {
+	public boolean updateProduct(Product newProduct) throws IOException, StoreException, InventoryException {
 		boolean status = false;
 
 		if (!isValidProduct(newProduct.getIdentifier()))
@@ -534,10 +577,15 @@ public class InventoryManager {
 	 * @return
 	 * @throws IOException
 	 */
-	public ArrayList<Vendor> getAllVendors(String categoryCode) throws IOException {
+	public ArrayList<Vendor> getAllVendors(String categoryCode) throws InventoryException {
 		ArrayList<Vendor> vendorList = new ArrayList<>();
 		DataFile<Vendor> vendorData = vendorMap.get(categoryCode);
-		String[] vendorStrList = vendorData.getAll();
+		String[] vendorStrList;
+		try {
+			vendorStrList = vendorData.getAll();
+		} catch (IOException ioExp) {
+			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+		}
 
 		for (String vendorStr : vendorStrList) {
 
@@ -557,13 +605,17 @@ public class InventoryManager {
 	 * Add New Vendor Data File
 	 * 
 	 * @param categoryCode
+	 * @throws InventoryException 
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public void addVendorDataFile(String categoryCode) throws FileNotFoundException, IOException{
-		// Add Vendor Data file
-		vendorMap.put(categoryCode,
-				new DataFile<Vendor>(Constants.Data.FileName.VENDOR_DAT + categoryCode));
+	public void addVendorDataFile(String categoryCode) throws InventoryException {		
+		try {
+			vendorMap.put(categoryCode,
+					new DataFile<Vendor>(Constants.Data.FileName.VENDOR_DAT + categoryCode));
+		} catch (IOException ioExp) {
+			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+		}
 	}
 
 	/**
@@ -575,10 +627,21 @@ public class InventoryManager {
 	 * @return Status
 	 * @throws IOException
 	 */
-	public boolean addVendor(String categoryCode, String vendorName, String vendorDescription) throws IOException {
-		// TODO: Good to have - Add a vendor to vendor list
+	public boolean addVendor(String categoryCode, String vendorName, String vendorDescription) throws InventoryException {
+		if (!hasCategory(categoryCode)) {
+			throw new InventoryException(InventoryError.CATEGORY_NOT_AVAILABLE);
+		}
+		
 		DataFile<Vendor> vendorList = vendorMap.get(categoryCode);
-		return vendorList.add(new Vendor(vendorName, vendorDescription));
+		if (vendorList == null) {
+			throw new InventoryException(InventoryError.CATEGORY_UNKNOWN_ERROR);
+		}
+		
+		try {
+			return vendorList.add(new Vendor(vendorName, vendorDescription));
+		} catch (IOException ioExp) {
+			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+		}
 	}
 
 	/**
@@ -586,9 +649,13 @@ public class InventoryManager {
 	 * 
 	 * @param categoryCode
 	 * @return
+	 * @throws InventoryException 
 	 */
-	public boolean deleteAllVendors(String categoryCode) {
+	public boolean deleteAllVendors(String categoryCode) throws InventoryException {
 		boolean status = false;
+		if (!hasCategory(categoryCode)) {
+			throw new InventoryException(InventoryError.CATEGORY_NOT_AVAILABLE);
+		}
 
 		DataFile<Vendor> vendorData = vendorMap.get(categoryCode);
 
@@ -607,14 +674,22 @@ public class InventoryManager {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean deleteVendor(String categoryCode, String vendorName) throws IOException {
+	public boolean deleteVendor(String categoryCode, String vendorName) throws InventoryException {
 		boolean status = false;
+		if (!hasCategory(categoryCode)) {
+			throw new InventoryException(InventoryError.CATEGORY_NOT_AVAILABLE);
+		}
 
 		DataFile<Vendor> vendorData = vendorMap.get(categoryCode);
-		Vendor vendor = findVendor(categoryCode, vendorName);
-
-		if (vendorData != null && vendor != null) {
+		Vendor vendor = findVendor(categoryCode, vendorName);		
+		if (vendorData == null || vendor == null) {
+			throw new InventoryException(InventoryError.CATEGORY_UNKNOWN_ERROR);
+		}
+		
+		try {
 			status = vendorData.delete(vendor.toString());
+		} catch (IOException ioExp) {
+			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
 		}
 
 		return status;
@@ -624,9 +699,11 @@ public class InventoryManager {
 	 * (3.10.d) Find Vendor
 	 * 
 	 * @param categoryCode
-	 * @throws IOException
+	 * @param vendorName
+	 * @return Vendor as per Category Code and Vendor Name, returns null if not found.
+	 * @throws InventoryException
 	 */
-	public Vendor findVendor(String categoryCode, String vendorName) throws IOException {
+	public Vendor findVendor(String categoryCode, String vendorName) throws InventoryException {
 		ArrayList<Vendor> vendorList = getAllVendors(categoryCode);
 		Vendor vendorFound = null;
 
@@ -647,7 +724,7 @@ public class InventoryManager {
 	 * @return List of Vendors
 	 * @throws IOException
 	 */
-	public ArrayList<Vendor> getVendorBasedOnProduct(Product product) throws IOException {
+	public ArrayList<Vendor> getVendorBasedOnProduct(Product product) throws InventoryException {
 		ArrayList<Vendor> vendorList = new ArrayList<>();
 		// TODO: GOOD to have a check if category is valid
 

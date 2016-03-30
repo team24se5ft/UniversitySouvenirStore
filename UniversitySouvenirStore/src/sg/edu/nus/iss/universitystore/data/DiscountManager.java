@@ -194,7 +194,7 @@ public class DiscountManager {
 	 * @param dataLine
 	 * @return Boolean
 	 */
-	private boolean isValidData(String[] discountList) {
+	private boolean isValidDiscount(String[] discountList) {
 		boolean status = false;
 
 		try {
@@ -253,7 +253,7 @@ public class DiscountManager {
 			String[] discountStrSpltLst = splitDiscountData(discountStr);
 			
 			// Checks if line in Data file is of valid
-			if (!isValidData(discountStrSpltLst))
+			if (!isValidDiscount(discountStrSpltLst))
 				continue;
 
 			// Add Discount
