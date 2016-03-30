@@ -15,13 +15,15 @@ public final class Constants {
 	public static final class Common {
 		public static final String EMPTY_STR = "";
 		public static final String NEW_LINE = "\n";
-		public static final class Validation {
+
+		public static final class Pattern {
 			public static final String NUMBER_MATCH = "\\d+";
 			public static final String FLOAT_MATCH = "\\d+(\\.\\d+)?";
 			public static final String DATE_MATCH = "\\d{4}\\-\\d{2}\\-\\d{2}";
 			public static final String CODE_MATCH = "[A-Z]+";
 			public static final String NAME_MATCH = "[a-zA-Z0-9 ]+";
 		}
+
 		public static final DateTimeFormatter YYYY_MM_DD_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	}
 
@@ -62,12 +64,13 @@ public final class Constants {
 			public static final String FILE_SEPTR_MATCH = "\\" + FILE_SEPTR;
 			public static final String DESCRIPTION_MATCH = "(\\\"(?!\\\")(.*?)\\\"" + FILE_SEPTR_MATCH + ")";
 		}
-		
+
 		public static final class Category {
 			public static final class Pattern {
 				public static final String CODE_MATCH = "[A-Z]{3}";
-				public static final String NAME_MATCH = "[a-zA-Z0-9 ]+";
-				public static final String LINE_MATCH = "^" + CODE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + NAME_MATCH + "$";
+				public static final String NAME_MATCH = Common.Pattern.NAME_MATCH;
+				public static final String LINE_MATCH = "^" + CODE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + NAME_MATCH
+						+ "$";
 			}
 		}
 
@@ -76,8 +79,20 @@ public final class Constants {
 				public static final String ID_MATCH = "(\\w+)" + ID_SEPTR + "(\\d+)";
 				public static final String CATEGORY_REPLACE = "$1";
 				public static final String COUNT_REPLACE = "$2";
+				public static final String NAME_MATCH = Common.Pattern.NAME_MATCH;
+				public static final String QUANTITY_MATCH = Common.Pattern.NUMBER_MATCH;
+				public static final String PRICE_MATCH = Common.Pattern.FLOAT_MATCH;
+				public static final String REORDER_THRESHOLD_MATCH = Common.Pattern.NUMBER_MATCH;
+				public static final String REORDER_QUANTITY_MATCH = Common.Pattern.NUMBER_MATCH;
+				public static final String LINE_MATCH = "^(" + ID_MATCH + Data.Pattern.FILE_SEPTR_MATCH + NAME_MATCH
+						+ Data.Pattern.FILE_SEPTR_MATCH + ")" + Data.Pattern.DESCRIPTION_MATCH + "(" + QUANTITY_MATCH
+						+ Data.Pattern.FILE_SEPTR_MATCH + PRICE_MATCH + Data.Pattern.FILE_SEPTR_MATCH
+						+ REORDER_THRESHOLD_MATCH + Data.Pattern.FILE_SEPTR_MATCH + REORDER_QUANTITY_MATCH + ")$";
+				public static final String DESCRIPTION_REPLACE = "$5";
+				public static final String OTHER_CNTNT_REPLACE = "$1$6";
 			}
-
+			public static final int PRODUCT_ZERO = 0;
+			public static final int DATA_SPLT_LENGTH = 7;
 			public static final int INITIALIZED_COUNT = 0;
 		}
 
@@ -87,9 +102,9 @@ public final class Constants {
 
 		public static final class Discount {
 			public static final class Pattern {
-				public static final String CODE_MATCH = "[A-Z]+";
+				public static final String CODE_MATCH = Common.Pattern.CODE_MATCH;
 				public static final String START_DATE_MATCH = "\\d{4}\\-\\d{2}\\-\\d{2}";
-				public static final String PERIOD_MATCH = "\\d{1,3}";
+				public static final String PERIOD_MATCH = Common.Pattern.NUMBER_MATCH;
 				public static final String PERCENTAGE_MATCH = "\\d{1,3}(\\.\\d{1,2})?";
 				public static final String ELIGIBILITY_MATCH = "[A|M]";
 				public static final String LINE_MATCH = "^(" + CODE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + ")"

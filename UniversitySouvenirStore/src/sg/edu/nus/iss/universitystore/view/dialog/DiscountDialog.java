@@ -48,7 +48,7 @@ public abstract class DiscountDialog extends BaseDialog {
 	public DiscountDialog(JFrame parent, String title) {
 		super(parent, title);
 		this.addWindowListener(this);
-		this.setSize(400, 280);
+		this.setSize(400, 305);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}

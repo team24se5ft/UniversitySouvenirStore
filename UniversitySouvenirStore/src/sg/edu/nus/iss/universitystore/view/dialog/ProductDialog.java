@@ -47,7 +47,7 @@ public abstract class ProductDialog extends BaseDialog {
 		super(parent, title);
 		// Customize this dialog
 		this.addWindowListener(this);
-		this.setSize(400, 300);
+		this.setSize(400, 310);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}

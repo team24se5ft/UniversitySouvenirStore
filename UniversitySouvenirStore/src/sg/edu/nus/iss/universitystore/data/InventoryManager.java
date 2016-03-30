@@ -9,13 +9,11 @@ import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryError;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
-import sg.edu.nus.iss.universitystore.messages.Messages;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Goods;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.model.Vendor;
-import sg.edu.nus.iss.universitystore.utility.CommonUtils.MessageTitleType;
-import sg.edu.nus.iss.universitystore.utility.CommonUtils.MessageType;
+import sg.edu.nus.iss.universitystore.utility.DateUtils;
 import sg.edu.nus.iss.universitystore.validation.InventoryValidation;
 
 /**
@@ -43,7 +41,7 @@ public class InventoryManager {
 	 * Product Arguments
 	 */
 	public enum ProductArg {
-		IDENTIFIER(0), NAME(1), DESCRIPTION(2), QUANTITY(3), PRICE(4), REORDERTHRESHOLD(5), REORDERQUANTITY(6);
+		IDENTIFIER(0), NAME(1), QUANTITY(2), PRICE(3), REORDERTHRESHOLD(4), REORDERQUANTITY(5), DESCRIPTION(6);
 
 		private int position;
 
@@ -185,9 +183,9 @@ public class InventoryManager {
 	 * Initializes Product Counter based on the highest value in the Product
 	 * Data File
 	 * 
-	 * @throws IOException
+	 * @throws InventoryException 
 	 */
-	private void initializeProductCounter() throws IOException {
+	private void initializeProductCounter() throws InventoryException  {
 		ArrayList<Product> productList = getAllProducts();
 
 		for (Product product : productList) {
@@ -224,7 +222,7 @@ public class InventoryManager {
 			String[] categoryStrSplt = categoryStr.split(Constants.Data.FILE_SEPTR);
 			
 			// If line in Data file is empty, skip line
-			if (!isValidCategory(categoryStrSplt))
+			if (!isValidCategoryData(categoryStrSplt))
 				continue;
 
 			categoryList.add(new Category(categoryStrSplt[CategoryArg.CODE.ordinal()],
@@ -357,7 +355,7 @@ public class InventoryManager {
 	 * @return Boolean
 	 * @throws InventoryException
 	 */
-	private boolean isValidCategory(String[] categoryList) {
+	private boolean isValidCategoryData(String[] categoryList) {
 		boolean status = false;
 		try {
 			if(InventoryValidation.Catgory.isValidData(categoryList[CategoryArg.CODE.ordinal()], categoryList[CategoryArg.NAME.ordinal()])){
@@ -379,23 +377,28 @@ public class InventoryManager {
 	 * @return
 	 * @throws IOException
 	 */
-	public ArrayList<Product> getAllProducts() throws IOException {
+	public ArrayList<Product> getAllProducts() throws InventoryException {
 		ArrayList<Product> productList = new ArrayList<>();
-		String[] productStrList = productData.getAll();
+		String[] productStrList;
+		try {
+			productStrList = productData.getAll();
+		} catch (IOException ioExp) {
+			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+		}
 
 		for (String productStr : productStrList) {
+			
+			String[] productStrSpltLst = splitProductData(productStr);
 
 			// If line in Data file is empty, skip line
-			if (productStr.isEmpty())
-				continue;
+			if (!isValidProductData(productStrSpltLst))
+				continue;			
 
-			String[] productStrSplt = productStr.split(Constants.Data.FILE_SEPTR);
-
-			productList.add(new Product(productStrSplt[ProductArg.IDENTIFIER.ordinal()],
-					productStrSplt[ProductArg.NAME.ordinal()], productStrSplt[ProductArg.DESCRIPTION.ordinal()],
-					productStrSplt[ProductArg.QUANTITY.ordinal()], productStrSplt[ProductArg.PRICE.ordinal()],
-					productStrSplt[ProductArg.REORDERTHRESHOLD.ordinal()],
-					productStrSplt[ProductArg.REORDERQUANTITY.ordinal()]));
+			productList.add(new Product(productStrSpltLst[ProductArg.IDENTIFIER.ordinal()],
+					productStrSpltLst[ProductArg.NAME.ordinal()], productStrSpltLst[ProductArg.DESCRIPTION.ordinal()],
+					productStrSpltLst[ProductArg.QUANTITY.ordinal()], productStrSpltLst[ProductArg.PRICE.ordinal()],
+					productStrSpltLst[ProductArg.REORDERTHRESHOLD.ordinal()],
+					productStrSpltLst[ProductArg.REORDERQUANTITY.ordinal()]));
 		}
 
 		return productList;
@@ -420,12 +423,10 @@ public class InventoryManager {
 	 * (3.5.b, 3.5.c.2) Add Product
 	 * 
 	 * @param goods
-	 * @throws IOException
-	 * @throws StoreException
 	 * @throws InventoryException 
 	 */
 	public Product addProduct(String categoryCode, String name, String description, String quantity, String price,
-			String reorderThreshold, String reorderQuantity) throws IOException, StoreException, InventoryException {
+			String reorderThreshold, String reorderQuantity) throws InventoryException {
 
 		if (!hasCategory(categoryCode))
 			return null;
@@ -438,7 +439,11 @@ public class InventoryManager {
 		Product product = new Product(productID.toString(), name, description, quantity, price, reorderThreshold,
 				reorderQuantity);
 
-		return productData.add(product) ? product : null;
+		try {
+			return productData.add(product) ? product : null;
+		} catch (IOException inExp) {
+			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+		}
 	}
 
 	/**
@@ -446,10 +451,13 @@ public class InventoryManager {
 	 * 
 	 * @param productID
 	 * @return Product found
-	 * @throws IOException
+	 * @throws InventoryException 
 	 */
-	public Product findProduct(String productID) throws IOException {
+	public Product findProduct(String productID) throws InventoryException {
 		ArrayList<Product> productList = getAllProducts();
+		if(productList.size() == Constants.Data.Product.PRODUCT_ZERO)
+			throw new InventoryException(InventoryError.PRODUCT_ZERO);
+		
 		Product productFound = null;
 
 		for (Product product : productList) {
@@ -471,7 +479,7 @@ public class InventoryManager {
 	 * @throws StoreException
 	 * @throws InventoryException 
 	 */
-	public boolean isValidProduct(String productID) throws IOException, StoreException, InventoryException {
+	public boolean isValidProduct(String productID) throws InventoryException {
 		boolean status = false;
 
 		String categoryCode = productID.replaceAll(Constants.Data.Product.Pattern.ID_MATCH,
@@ -488,19 +496,21 @@ public class InventoryManager {
 	 * 
 	 * @param product
 	 * @return
-	 * @throws IOException
-	 * @throws StoreException
 	 * @throws InventoryException 
 	 */
-	public boolean deleteProduct(Product product) throws IOException, StoreException, InventoryException {
+	public boolean deleteProduct(Product product) throws InventoryException {
 		boolean status = false;
 
 		if (!isValidProduct(product.getIdentifier()))
-			return false;
+			throw new InventoryException(InventoryError.PRODUCT_NOT_AVAILABLE);
 
 		product = findProduct(product.getIdentifier());
-		if (productData.delete(product.toString())) {
-			status = true;
+		try {
+			if (productData.delete(product.toString())) {
+				status = true;
+			}
+		} catch (IOException ioExp) {
+			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
 		}
 
 		return status;
@@ -511,19 +521,21 @@ public class InventoryManager {
 	 * 
 	 * @param newProduct
 	 * @return
-	 * @throws IOException
-	 * @throws StoreException
 	 * @throws InventoryException 
 	 */
-	public boolean updateProduct(Product newProduct) throws IOException, StoreException, InventoryException {
+	public boolean updateProduct(Product newProduct) throws InventoryException {
 		boolean status = false;
 
 		if (!isValidProduct(newProduct.getIdentifier()))
-			return status;
+			throw new InventoryException(InventoryError.PRODUCT_NOT_AVAILABLE);
 
 		Product existingProduct = findProduct(newProduct.getIdentifier());
 		if (deleteProduct(existingProduct)) {
-			status = productData.add(newProduct);
+			try {
+				status = productData.add(newProduct);
+			} catch (IOException ioExp) {
+				throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+			}
 		}
 
 		return status;
@@ -533,13 +545,12 @@ public class InventoryManager {
 	 * (3.3.a, 3.3.b) Get List of Products below Threshold
 	 * 
 	 * @return List of Products
-	 * @throws IOException
-	 * @throws StoreException
+	 * @throws InventoryException 
 	 */
-	public ArrayList<Product> getProductsBelowThreshold() throws IOException, StoreException {
+	public ArrayList<Product> getProductsBelowThreshold() throws InventoryException {
 		ArrayList<Product> productList = getAllProducts();
-		if (productList.size() == 0)
-			throw new StoreException(Messages.Error.Product.PRODUCT_ZERO);
+		if (productList.size() == Constants.Data.Product.PRODUCT_ZERO)
+			throw new InventoryException(InventoryError.PRODUCT_ZERO);
 
 		// List of Products below Threshold
 		ArrayList<Product> blwTheshProdList = new ArrayList<>();
@@ -552,6 +563,45 @@ public class InventoryManager {
 
 		return blwTheshProdList;
 	}
+	
+	/**
+	 * Checks if Data is Valid
+	 * 
+	 * @param productList
+	 * @return Boolean
+	 */
+	public boolean isValidProductData(String[] productList) {
+		boolean status = false;
+
+		try {
+			if (productList.length == Constants.Data.Product.DATA_SPLT_LENGTH
+					&& InventoryValidation.Product.isValidData(productList[ProductArg.NAME.ordinal()],
+							productList[ProductArg.DESCRIPTION.ordinal()], productList[ProductArg.QUANTITY.ordinal()],
+							productList[ProductArg.PRICE.ordinal()], productList[ProductArg.REORDERTHRESHOLD.ordinal()],
+							productList[ProductArg.REORDERQUANTITY.ordinal()])) {
+				String categoryCode = productList[ProductArg.IDENTIFIER.ordinal()].replaceAll(
+						Constants.Data.Product.Pattern.ID_MATCH, Constants.Data.Product.Pattern.CATEGORY_REPLACE);
+				status = hasCategory(categoryCode);
+			}
+		} catch (InventoryException inventoryExp) {
+			status = false;
+		}
+
+		return status;
+	}
+	
+	/**
+	 * Splits Row of Data File into a list of Strings
+	 * 
+	 * @param line
+	 * @return Boolean
+	 */
+	private String[] splitProductData(String productRow) {
+
+		return DateUtils.extractContent(productRow, Constants.Data.Product.Pattern.LINE_MATCH,
+				Constants.Data.Product.Pattern.DESCRIPTION_REPLACE,
+				Constants.Data.Product.Pattern.OTHER_CNTNT_REPLACE);
+	}
 
 	/***********************************************************/
 	// Private Methods for Product
@@ -563,7 +613,6 @@ public class InventoryManager {
 	 * @return Product ID
 	 */
 	private int generateProductID() {
-		// TODO: Generate Random Number
 		return ++productID;
 	}
 

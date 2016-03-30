@@ -107,7 +107,7 @@ public class Product {
 	 */
 	@Override
 	public String toString() {
-		return identifier + "," + name + "," + description + "," + quantity + "," + price + "," + reorderThreshold + ","
+		return identifier + "," + name + ",\"" + description + "\"," + quantity + "," + price + "," + reorderThreshold + ","
 				+ reorderQuantity;
 	}
 

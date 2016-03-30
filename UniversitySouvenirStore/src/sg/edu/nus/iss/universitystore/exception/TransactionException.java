@@ -15,11 +15,10 @@ public class TransactionException extends Exception{
 	// Enum listing all possible errors possible during login
 	/***********************************************************/
 	public enum TransactionError {
-	    EMPTY_MEMBER_NAME(Messages.Error.Member.EMPTY_MEMBER_NAME),
-	    EMPTY_MEMBER_ID(Messages.Error.Member.EMPTY_MEMBER_ID),
-	    INVALID_MEMBER_NAME(Messages.Error.Member.INVALID_MEMBER_NAME),
-	    MEMBER_IDENTIFIER_ALREADY_PRESENT(Messages.Error.Member.MEMBER_IDENTIFIER_ALREADY_PRESENT),
-	    MEMBER_NOT_PRESENT_IN_FILE(Messages.Error.Member.MEMBER_NOT_PRESENT_IN_FILE),
+		INVALID_DISCOUNT_ID(Messages.Error.Transaction.INVALID_DISCOUNT_ID),
+		REQUESTED_QUANTITY_MORE_THAN_AVAILABLE(Messages.Error.Transaction.REQUESTED_QUANTITY_MORE_THAN_AVAILABLE),
+		INVALID_MEMBER_ID(Messages.Error.Transaction.INVALID_MEMBER_ID),
+		UNABLE_TO_UPDATE_LOYALTY_POINTS(Messages.Error.Transaction.UNABLE_TO_UPDATE_LOYALTY_POINTS),
 	    UNKNOWN_ERROR(Messages.Error.Common.UNKNOWN_ERROR)
 	    ;
 		
