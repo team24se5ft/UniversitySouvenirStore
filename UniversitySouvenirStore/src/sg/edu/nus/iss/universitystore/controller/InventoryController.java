@@ -213,7 +213,7 @@ public class InventoryController implements IInventoryDelegate {
 
 			@Override
 			public boolean productCallback(String categoryCode, String name, String description, String quantity,
-					String price, String barcodeNumber, String reorderThreshold, String reorderQuantity) {
+					String price, String reorderThreshold, String reorderQuantity) {
 				try {
 					// Add the new product
 					inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
@@ -249,7 +249,7 @@ public class InventoryController implements IInventoryDelegate {
 
 			@Override
 			public boolean productCallback(String categoryCode, String name, String description, String quantity,
-					String price, String barcodeNumber, String reorderThreshold, String reorderQuantity) {
+					String price, String reorderThreshold, String reorderQuantity) {
 				try {
 					Product updatedProduct = new Product(categoryCode, name, description, quantity, price,
 							reorderThreshold, reorderQuantity);

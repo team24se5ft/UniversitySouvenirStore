@@ -47,7 +47,7 @@ public abstract class ProductDialog extends BaseDialog {
 		super(parent, title);
 		// Customize this dialog
 		this.addWindowListener(this);
-		this.setSize(400, 350);// TODO: Move to constants
+		this.setSize(400, 300);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
@@ -80,11 +80,6 @@ public abstract class ProductDialog extends BaseDialog {
 	 * Textfield for holding the price for the particular product.
 	 */
 	private JTextField price;
-
-	/**
-	 * Textfield for holding the bar code number for the particular product.
-	 */
-	private JTextField barcodeNumber;
 
 	/**
 	 * Textfield for holding the reorder quantity of the particular product.
@@ -122,8 +117,6 @@ public abstract class ProductDialog extends BaseDialog {
 	 *            The quantity of the product.
 	 * @param price
 	 *            The price of the product.
-	 * @param barcodeNumber
-	 *            The barcode number associated with the product.
 	 * @param reorderThreshold
 	 *            The threshold quantity of the product.
 	 * @param reorderQuantity
@@ -132,7 +125,7 @@ public abstract class ProductDialog extends BaseDialog {
 	 *         the frame or not. If true, then the dialog will be removed.
 	 */
 	public abstract boolean productCallback(String categoryCode, String name, String description, String quantity,
-			String price, String barcodeNumber, String reorderThreshold, String reorderQuantity);
+			String price, String reorderThreshold, String reorderQuantity);
 
 	/***********************************************************/
 	// Public Methods
@@ -251,7 +244,7 @@ public abstract class ProductDialog extends BaseDialog {
 	@Override
 	protected boolean confirmClicked() {
 		return productCallback(String.valueOf(categoryList.getSelectedItem()), productName.getText(), productDescription.getText(), quantity.getText(),
-				price.getText(), barcodeNumber.getText(), thresholdQuantity.getText(), reorderQuantity.getText());
+				price.getText(), thresholdQuantity.getText(), reorderQuantity.getText());
 	}
 
 	/***********************************************************/
@@ -276,29 +269,23 @@ public abstract class ProductDialog extends BaseDialog {
 		categoryList = createComboBoxOnPanel(arrCategoryCode, jPanel, index++);
 
 		// Start adding the products
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_NAME, index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_NAME, index);
 		productName = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_DESC, index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_DESC, index);
 		productDescription = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_QUANTITY, index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_QUANTITY, index);
 		quantity = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_PRICE, index);// Move to constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_PRICE, index);
 		price = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.BARCODE_NO, index);// Move to
-																// constants
-		barcodeNumber = createTextFieldOnPanel(jPanel, index++);
-
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.REORDER_QUANTITY, index);// Move
-																			// to
-																			// constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.REORDER_QUANTITY, index);
+		
 		thresholdQuantity = createTextFieldOnPanel(jPanel, index++);
 
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.ORDER_QUANTITY, index);// Move to
-																// constants
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.ORDER_QUANTITY, index);
 		reorderQuantity = createTextFieldOnPanel(jPanel, index++);
 	}
 	

@@ -104,7 +104,7 @@ public abstract class BaseDialog extends JDialog implements WindowListener{
 	protected GridBagConstraints getConstraintsForSecondColumn(int yPosition) {
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
-		gridBagConstraints.insets = new Insets(0, 0, 8, 0);
+		gridBagConstraints.insets = new Insets(0, 0, 5, 0);
 		gridBagConstraints.gridx = 1;
 		gridBagConstraints.gridy = yPosition;
 		return gridBagConstraints;
