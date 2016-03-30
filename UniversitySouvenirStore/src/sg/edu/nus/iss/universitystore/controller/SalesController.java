@@ -109,11 +109,12 @@ public class SalesController implements ISalesDelegate {
 				}
 				// calculate total and setText
 				float total;
-				if (currentDiscount == null) {
-					total = TransactionManager.getInstance().getTotal(transactionItemList);
-				} else {
+				if(currentDiscount != null) {
 					total = TransactionManager.getInstance().getTotal(transactionItemList, currentDiscount.getCode());
+				}else {
+					total = TransactionManager.getInstance().getTotal(transactionItemList, null);
 				}
+				
 				// modify UI
 				salesPanel.updateTable(TableDataUtils.getFormattedTransactionListForTable(transactionItemList),
 						TableDataUtils.getHeadersForTransactionTable());
@@ -188,7 +189,7 @@ public class SalesController implements ISalesDelegate {
 			Discount discount = DiscountManager.getInstance().getDiscount(Membercode);
 			currentDiscount = discount;
 			if (discount == null) {
-				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList));
+				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
 				salesPanel.onMemberIdentification(member.getName(), "none discount", "0%",
 						String.valueOf(member.getLoyaltyPoints()));
 			} else {
@@ -204,7 +205,7 @@ public class SalesController implements ISalesDelegate {
 				currentDiscount = null;
 				salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL, "none discount", "0%",
 						"0.0");
-				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList));
+				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
 			} catch (Exception e1) {
 				// if error again then cancel transaction
 				cancel();

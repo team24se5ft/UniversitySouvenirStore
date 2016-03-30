@@ -393,7 +393,7 @@ public class DiscountManager {
 	 * 
 	 * @param code
 	 * @return Discount
-	 * @throws IOException
+	 * @throws DiscountException
 	 */
 	public Discount findDiscount(String code) throws DiscountException {
 		ArrayList<Discount> discountList = getAllDiscounts();

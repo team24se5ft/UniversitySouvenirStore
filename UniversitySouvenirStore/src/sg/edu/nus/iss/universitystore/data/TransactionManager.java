@@ -78,12 +78,13 @@ public class TransactionManager {
 
 	/**
 	 * Make the constructor private, since we provide the singleton instance.
-	 * @throws InventoryException 
+	 * 
+	 * @throws InventoryException
 	 */
-	private TransactionManager() throws TransactionException, InventoryException{
+	private TransactionManager() throws TransactionException, InventoryException {
 		try {
 			initialize();
-		} catch (IOException | DiscountException | MemberException | StoreException e) { 
+		} catch (IOException | DiscountException | MemberException | StoreException e) {
 			throw new TransactionException(TransactionError.UNKNOWN_ERROR);
 		}
 	}
@@ -95,9 +96,10 @@ public class TransactionManager {
 	 * 
 	 * @throws StoreException
 	 * @throws IOException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
-	private void initialize() throws IOException,DiscountException,MemberException, StoreException, InventoryException {
+	private void initialize()
+			throws IOException, DiscountException, MemberException, StoreException, InventoryException {
 		transactionData = new DataFile<>(Constants.Data.FileName.TRANSACTION_DAT);
 		discountManager = DiscountManager.getInstance();
 		inventoryManager = InventoryManager.getInstance();
@@ -148,7 +150,8 @@ public class TransactionManager {
 		}
 	}
 
-	private void updateInventoryAfterSale(TransactionItem transactionItem) throws IOException, StoreException, InventoryException {
+	private void updateInventoryAfterSale(TransactionItem transactionItem)
+			throws IOException, StoreException, InventoryException {
 		Product product = transactionItem.getProduct();
 		int updatedQuantity = product.getQuantity() - transactionItem.getQuantity();
 		product.setQuantity(updatedQuantity);
@@ -162,8 +165,8 @@ public class TransactionManager {
 	 * Get a single instance of TransactionManager
 	 * 
 	 * @return TransactionManager The singleton instance of this class.
-	 * @throws TransactionException 
-	 * @throws InventoryException 
+	 * @throws TransactionException
+	 * @throws InventoryException
 	 */
 	public static TransactionManager getInstance() throws TransactionException, InventoryException {
 		if (instance == null) {
@@ -212,7 +215,7 @@ public class TransactionManager {
 	 *            The discount that is being offered.
 	 * @return The total price of all the items.
 	 */
-	public float getTotal(ArrayList<TransactionItem> arrTransactionItem, String discountId) throws IOException {
+	public float getTotal(ArrayList<TransactionItem> arrTransactionItem, String discountId) {
 		// Get the total sum first
 		float total = 0;
 		for (TransactionItem transactionItem : arrTransactionItem) {
@@ -220,30 +223,18 @@ public class TransactionManager {
 		}
 
 		// It is possible that no discount is applicable.
+		if(discountId == null || discountId.length() == 0) {
+			return total;
+		}
+		
 		Discount discount;
 		try {
 			discount = discountManager.findDiscount(discountId);
-			if (discount != null) {
-				total *= ((1-discount.getPercentage() * 0.01));
-			}
+			total *= ((1 - discount.getPercentage() * 0.01));
+			return total;
 		} catch (DiscountException e) {
-			e.printStackTrace();
+			return total;
 		}
-		return total;
-	}
-	/**
-	 * calculate total without discount
-	 * @param arrTransactionItem
-	 * @return
-	 * @throws IOException
-	 */
-	public float getTotal(ArrayList<TransactionItem> arrTransactionItem) {
-		// Get the total sum first
-		float total = 0;
-		for (TransactionItem transactionItem : arrTransactionItem) {
-			total += transactionItem.getTotal();
-		}
-		return total;
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.universitystore.view.intf;
 
+import javax.jws.Oneway;
+
 public interface ISalesDelegate {
 	
 	/**
@@ -19,4 +21,8 @@ public interface ISalesDelegate {
 	 */
 	public void memberIdentification();
 	
+	/**
+	 * Called when the sales panel is visible. 
+	 */
+	public void onSalesPanelVisible();
 }
