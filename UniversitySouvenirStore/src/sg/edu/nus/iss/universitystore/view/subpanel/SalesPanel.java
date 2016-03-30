@@ -370,7 +370,11 @@ public class SalesPanel extends BaseTablePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.cancel();
+				if(table.getSelectedRow()<0){
+					delegate.cancel(-1);
+				}else{
+					delegate.cancel(table.getSelectedRow());
+				}
 			}
 		};
 	}

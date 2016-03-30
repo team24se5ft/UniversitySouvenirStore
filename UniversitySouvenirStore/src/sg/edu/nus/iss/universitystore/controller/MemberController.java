@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
+import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
@@ -193,7 +194,12 @@ public class MemberController implements IMemberDelegate {
 	
 	@Override
 	public void onMemberPanelVisible() {
-		memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
-									TableDataUtils.getHeadersForMemberTable());
+		try {
+			arrMember = memberManager.getAllMembers();
+			memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
+					TableDataUtils.getHeadersForMemberTable());
+		} catch (MemberException e) {
+			e.printStackTrace();
+		}
 	}
 }
