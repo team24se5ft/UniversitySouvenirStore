@@ -56,12 +56,13 @@ public class TableDataUtils {
 		String[][] list = new String[productList.size()][Constants.TableData.NUMBER_OF_PRODUCT_TABLE_COLUMNS];
 		for (int row = 0; row < productList.size(); row++) {
 			Product product = productList.get(row);
-			list[row][Constants.TableData.FIRST_COLUMN] = product.getName();
-			list[row][Constants.TableData.SECOND_COLUMN] = product.getDescription();
-			list[row][Constants.TableData.THIRD_COLUMN] = String.valueOf(product.getQuantity());
-			list[row][Constants.TableData.FOURTH_COLUMN] = String.valueOf(product.getPrice());
-			list[row][Constants.TableData.FIFTH_COLUMN] = String.valueOf(product.getReorderThreshold());
-			list[row][Constants.TableData.SIXTH_COLUMN] = String.valueOf(product.getReorderQuantity());
+			list[row][Constants.TableData.FIRST_COLUMN] = product.getIdentifier();
+			list[row][Constants.TableData.SECOND_COLUMN] = product.getName();
+			list[row][Constants.TableData.THIRD_COLUMN] = product.getDescription();
+			list[row][Constants.TableData.FOURTH_COLUMN] = String.valueOf(product.getQuantity());
+			list[row][Constants.TableData.FIFTH_COLUMN] = String.valueOf(product.getPrice());
+			list[row][Constants.TableData.SIXTH_COLUMN] = String.valueOf(product.getReorderThreshold());
+			list[row][Constants.TableData.SEVENTH_COLUMN] = String.valueOf(product.getReorderQuantity());
 		}
 		return list;
 	}
@@ -95,7 +96,7 @@ public class TableDataUtils {
 	 * @return The string array with the table headers.
 	 */
 	public static String[] getHeadersForProductTable() {
-		String[] list = new String[] { Constants.TableData.STR_PRODUCT_NAME,
+		String[] list = new String[] { Constants.TableData.STR_PRODUCT_CODE,Constants.TableData.STR_PRODUCT_NAME,
 				Constants.TableData.STR_PRODUCT_DESCRIPTION, Constants.TableData.STR_PRODUCT_QUANTITY,
 				Constants.TableData.STR_PRODUCT_PRICE, Constants.TableData.STR_PRODUCT_REORDER_THRESHOLD,
 				Constants.TableData.STR_PRODUCT_REORDER_QUANTITY };

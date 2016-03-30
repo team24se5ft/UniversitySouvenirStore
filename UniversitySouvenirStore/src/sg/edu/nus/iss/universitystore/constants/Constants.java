@@ -138,6 +138,7 @@ public final class Constants {
 		public static final int FOURTH_COLUMN = 3;
 		public static final int FIFTH_COLUMN = 4;
 		public static final int SIXTH_COLUMN = 5;
+		public static final int SEVENTH_COLUMN = 6;
 
 		// Category
 		public static final int NUMBER_OF_CATEGORY_TABLE_COLUMNS = 2;
@@ -145,7 +146,8 @@ public final class Constants {
 		public static final String STR_CATEGORY_NAME = "Name";
 
 		// Product
-		public static final int NUMBER_OF_PRODUCT_TABLE_COLUMNS = 6;
+		public static final int NUMBER_OF_PRODUCT_TABLE_COLUMNS = 7;
+		public static final String STR_PRODUCT_CODE = "Code";
 		public static final String STR_PRODUCT_NAME = "Name";
 		public static final String STR_PRODUCT_DESCRIPTION = "Description";
 		public static final String STR_PRODUCT_QUANTITY = "Quantity";
