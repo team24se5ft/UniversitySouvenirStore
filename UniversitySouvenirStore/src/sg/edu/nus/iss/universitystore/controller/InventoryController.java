@@ -175,7 +175,7 @@ public class InventoryController implements IInventoryDelegate {
 	@Override
 	public void deleteCategoryClicked(int index) {
 		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, ViewConstants.Labels.STR_DELETE_CATEGORY,
-				"Do u really want to delete the category?") {
+				ViewConstants.Controller.InventoryController.DEL_CAT_CONF) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -208,7 +208,7 @@ public class InventoryController implements IInventoryDelegate {
 	@Override
 	public void addProductClicked() {
 		// Add a new Product Dialog
-		ProductDialog productDialog = new ProductDialog(topFrame, "Add Product") {
+		ProductDialog productDialog = new ProductDialog(topFrame, ViewConstants.Controller.InventoryController.ADD_PRODUCT) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -245,7 +245,7 @@ public class InventoryController implements IInventoryDelegate {
 		// Get the object at the index
 		Product product = arrProduct.get(index);
 
-		ProductDialog productDialog = new ProductDialog(topFrame, "Edit Product") {
+		ProductDialog productDialog = new ProductDialog(topFrame, ViewConstants.Controller.InventoryController.EDIT_PRODUCT) {
 
 			@Override
 			public boolean productCallback(String categoryCode, String name, String description, String quantity,
@@ -287,8 +287,8 @@ public class InventoryController implements IInventoryDelegate {
 
 	@Override
 	public void deleteProductClicked(int index) {
-		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Product",
-				"Do u really want to delete the product?") {
+		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, ViewConstants.Controller.InventoryController.DEL_PRODUCT,
+				ViewConstants.Controller.InventoryController.DEL_PROD_CONF) {
 
 			private static final long serialVersionUID = 1L;
 
