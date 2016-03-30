@@ -49,6 +49,9 @@ public class DiscountController implements IDiscountDelegate {
 		return discountPanel;
 	}
 
+	/***********************************************************/
+	// Abstract Method Implementation
+	/***********************************************************/
 	@Override
 	public void addDiscount() {
 		DiscountDialog dlg = new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel),
@@ -144,6 +147,16 @@ public class DiscountController implements IDiscountDelegate {
 		updateDlg.setVisible(true);
 	}
 
+	@Override
+	public void rowNotSelected() {
+		// Display message for error.
+		UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, "Please select a row of the table for completing this operation.",
+				DialogType.WARNING_MESSAGE);
+	}
+	
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
 	/**
 	 * judge whether updateUI according to flag
 	 * 
