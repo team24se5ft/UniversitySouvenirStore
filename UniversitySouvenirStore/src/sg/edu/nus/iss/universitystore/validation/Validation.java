@@ -11,7 +11,7 @@ import sg.edu.nus.iss.universitystore.constants.Constants;
  * @author Sanjay
  *
  */
-class Validation {
+abstract class Validation {
 
 	/**
 	 * Is String value of Number Type
@@ -45,5 +45,19 @@ class Validation {
 		if (dateString.matches(Constants.Common.Validation.DATE_MATCH))
 			date = LocalDate.parse(dateString, Constants.Common.YYYY_MM_DD_FORMAT);
 		return date != null;
+	}
+	
+	/**
+	 * Is String of Type Code. i.e. consists of only alphabets in capitals
+	 * 
+	 * @param codeString
+	 * @return
+	 */
+	static boolean isCode(String codeString) {
+		return codeString.matches(Constants.Common.Validation.CODE_MATCH);
+	}
+	
+	static boolean isName(String nameString) {
+		return !nameString.trim().isEmpty() && nameString.matches(Constants.Common.Validation.NAME_MATCH);
 	}
 }

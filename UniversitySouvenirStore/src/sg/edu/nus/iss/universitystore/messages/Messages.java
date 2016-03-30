@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.universitystore.messages;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
+
 public final class Messages {
 	public static final class Error {
 		public static final class Common {
@@ -7,11 +9,16 @@ public final class Messages {
 			public static final String INVALID_NUMBER = "Please Enter a Valid Number. Eg 123";
 			public static final String INVALID_FLOAT = "Please Enter a Valid Number with a maximum of two decimals. Eg 50.0 or 30.25";
 			public static final String INVALID_DATE = "Please Enter a Valid Date. Eg. 2000-10-20";
+			public static final String INVALID_CODE = "Code must consist of only alphabets and in Capitals";
+			public static final String EMPTY_FIELDS = "All fields are mandatory.";
 		}
 		
 		public static final class Category {
-			public static final String INVALID_CODE_LENGTH = "Category Code must be 3 characters long!";
-			public static final String INVALID_CHARACTERS = "Category Code must only contain alphabet characters!";
+			public static final String INVALID_CODE = new StringBuffer().append(Common.INVALID_CODE).append(Constants.Common.NEW_LINE).append("Code must be 3 characters long only").toString();
+			public static final String CATEGORY_ALREADY_PRESENT = "The Category Code already exists!";
+			public static final String CATEGORY_NOT_AVAILABLE = "The Category Code doesn't exist";
+			public static final String CATEGORY_UNKNOWN_ERROR = "Category Code not added correctly. " + Common.UNKNOWN_ERROR;
+			public static final String INVALID_CATEGORY_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS).append(Constants.Common.NEW_LINE).append(Category.INVALID_CODE).append(Constants.Common.NEW_LINE).append("Category Name can contain only alphabets, numbers and spaces").toString();
 		}
 		public static final class Product {
 			public static final String PRODUCT_ZERO = "No products have been added to the store.";
@@ -34,7 +41,6 @@ public final class Messages {
 		}
 		
 		public static final class Discount {
-			public static final String EMPTY_DISCOUNT_FIELDS = "All fields are mandatory.";
 			public static final String DISCOUNT_NOT_PRESENT_IN_FILE = "The Discount does not exist!";
 			public static final String DISCOUNT_ALREADY_PRESENT = "The Discount Code already exists!";
 			public static final String INVALID_PERIOD = new StringBuffer().append("Period: ").append(Common.INVALID_NUMBER).toString();

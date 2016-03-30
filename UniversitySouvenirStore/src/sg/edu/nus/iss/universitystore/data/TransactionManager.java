@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.DiscountException;
+import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException;
@@ -77,8 +78,9 @@ public class TransactionManager {
 
 	/**
 	 * Make the constructor private, since we provide the singleton instance.
+	 * @throws InventoryException 
 	 */
-	private TransactionManager() throws TransactionException{
+	private TransactionManager() throws TransactionException, InventoryException{
 		try {
 			initialize();
 		} catch (IOException | DiscountException | MemberException | StoreException e) { 
@@ -93,8 +95,9 @@ public class TransactionManager {
 	 * 
 	 * @throws StoreException
 	 * @throws IOException
+	 * @throws InventoryException 
 	 */
-	private void initialize() throws IOException,DiscountException,MemberException, StoreException {
+	private void initialize() throws IOException,DiscountException,MemberException, StoreException, InventoryException {
 		transactionData = new DataFile<>(Constants.Data.FileName.TRANSACTION_DAT);
 		discountManager = DiscountManager.getInstance();
 		inventoryManager = InventoryManager.getInstance();
@@ -145,7 +148,7 @@ public class TransactionManager {
 		}
 	}
 
-	private void updateInventoryAfterSale(TransactionItem transactionItem) throws IOException, StoreException {
+	private void updateInventoryAfterSale(TransactionItem transactionItem) throws IOException, StoreException, InventoryException {
 		Product product = transactionItem.getProduct();
 		int updatedQuantity = product.getQuantity() - transactionItem.getQuantity();
 		product.setQuantity(updatedQuantity);
@@ -160,8 +163,9 @@ public class TransactionManager {
 	 * 
 	 * @return TransactionManager The singleton instance of this class.
 	 * @throws TransactionException 
+	 * @throws InventoryException 
 	 */
-	public static TransactionManager getInstance() throws TransactionException {
+	public static TransactionManager getInstance() throws TransactionException, InventoryException {
 		if (instance == null) {
 			synchronized (TransactionManager.class) {
 				if (instance == null) {
