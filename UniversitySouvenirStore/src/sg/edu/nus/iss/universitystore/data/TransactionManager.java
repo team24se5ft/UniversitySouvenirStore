@@ -171,7 +171,7 @@ public class TransactionManager {
 	 * @throws TransactionException
 	 * @throws InventoryException
 	 */
-	public static TransactionManager getInstance() throws TransactionException, InventoryException {
+	public static TransactionManager getInstance() throws TransactionException {
 		if (instance == null) {
 			synchronized (TransactionManager.class) {
 				if (instance == null) {
@@ -264,6 +264,7 @@ public class TransactionManager {
 		// Check if the requested item exists, else throw exceptions
 		checkIfRequestedQuantityExistsInInventory(arrTransactionItem);
 
+		// Check if it valid discount
 		if(discountId != null || discountId.length() != 0) {
 			// Check Discount Id
 			try {
@@ -273,6 +274,7 @@ public class TransactionManager {
 			}
 		}
 		
+		// Check if it is a valid member
 		if(memberId != null || memberId.length() != 0) {
 			if(!memberId.equals(ViewConstants.Labels.STR_PUBLIC)) {
 				try {
