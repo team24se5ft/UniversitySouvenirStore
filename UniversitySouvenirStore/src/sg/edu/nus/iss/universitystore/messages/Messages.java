@@ -51,5 +51,11 @@ public final class Messages {
 			public static final String INVALID_PERIOD_RANGE = "Period should be between 0 and 365";
 			public static final String INVALID_PERCENTAGE_RANGE = "Percentage should be bewteen 1 and 100";
 		}
+		
+		public static final class Transaction {
+			public static final String INVALID_DISCOUNT_ID = "Invalid discount Id.";
+			public static final String INVALID_MEMBER_ID = "Invalid member Id.";
+			public static final String REQUESTED_QUANTITY_MORE_THAN_AVAILABLE = "Requested quantity of one or more items more than that available in the store";
+		}
 	}
 }
