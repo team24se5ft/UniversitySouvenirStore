@@ -256,12 +256,12 @@ public class InventoryController implements IInventoryDelegate {
 				ViewConstants.Controller.InventoryController.EDIT_PRODUCT) {
 
 			@Override
-			public boolean productCallback(String categoryCode, String name, String description, String quantity,
+			public boolean productCallback(String productID, String name, String description, String quantity,
 					String price, String reorderThreshold, String reorderQuantity) {
 				try {
-					if (InventoryValidation.Product.isValidData(categoryCode, name, description, quantity, price,
+					if (InventoryValidation.Product.isValidData(name, description, quantity, price,
 							reorderThreshold, reorderQuantity)) {
-						Product updatedProduct = new Product(categoryCode, name, description, quantity, price,
+						Product updatedProduct = new Product(productID, name, description, quantity, price,
 								reorderThreshold, reorderQuantity);
 						inventoryManager.updateProduct(updatedProduct);
 						// Update the local copy
