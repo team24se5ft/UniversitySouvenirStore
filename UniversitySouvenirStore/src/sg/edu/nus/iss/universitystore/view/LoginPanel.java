@@ -1,32 +1,23 @@
 package sg.edu.nus.iss.universitystore.view;
 
 import java.awt.Color;
-
-
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.EmptyBorder;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
@@ -125,7 +116,7 @@ public class LoginPanel extends JPanel{
 		overlayPanel = new JPanel();
 		overlayPanel.setPreferredSize(new Dimension(330, 170));
 		overlayPanel.setMaximumSize(new Dimension(330, 170));
-		overlayPanel.setBackground(new java.awt.Color(0, 102, 204));
+		overlayPanel.setBackground(new java.awt.Color(30, 55, 117));
 		overlayPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		overlayPanel.setOpaque(true);
         overlayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, ViewConstants.Labels.STR_LOGIN, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 3, 24), new java.awt.Color(255, 255, 255)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(ViewConstants.Fonts.TAHOMA_FONT, 0, 16), new java.awt.Color(255, 255, 255)));
@@ -159,6 +150,7 @@ public class LoginPanel extends JPanel{
 		
 		//Submit button
 		btnSubmit = new JButton(new ImageIcon(ViewConstants.PanelHeaders.LOGIN_ICON_IMG));
+		btnSubmit.setBorder(new EmptyBorder(15, 0, 0, 0));
 		btnSubmit.setBorderPainted(false);
 		btnSubmit.setContentAreaFilled(false);
 		btnSubmit.setFocusPainted(false);
@@ -190,8 +182,8 @@ public class LoginPanel extends JPanel{
 	 */
 	private JLabel getLabel(String labelText) {
 		JLabel jLabel = new JLabel(labelText);
-		jLabel.setFont(new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 2, 18)); 
-		jLabel.setForeground(new java.awt.Color(255, 255, 255));
+		jLabel.setFont(new Font(ViewConstants.Fonts.VANI_FONT, 2, 18)); 
+		jLabel.setForeground(new Color(255, 255, 255));
 		return jLabel;
 	}
 }

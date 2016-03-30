@@ -63,7 +63,7 @@ public class ViewConstants {
 	public class PanelHeaders{
 		//Login Panel Headers
 		public static final String BACKGRND_IMG="Resources/main_background.jpg";
-		public static final String LOGIN_ICON_IMG="Resources/login_icon.jpg";
+		public static final String LOGIN_ICON_IMG="Resources/btnSubmit.png";
 		
 		//Dashboard Panel Headers
 		public static final String LOGOUT_CONFIRM_MSG="Are you sure you wish to logout?";
