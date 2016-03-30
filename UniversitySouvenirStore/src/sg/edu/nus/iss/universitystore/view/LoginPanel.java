@@ -116,7 +116,7 @@ public class LoginPanel extends JPanel{
 		overlayPanel = new JPanel();
 		overlayPanel.setPreferredSize(new Dimension(330, 170));
 		overlayPanel.setMaximumSize(new Dimension(330, 170));
-		overlayPanel.setBackground(new java.awt.Color(30, 55, 117));
+		overlayPanel.setBackground(new Color(30, 55, 117));
 		overlayPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		overlayPanel.setOpaque(true);
         overlayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, ViewConstants.Labels.STR_LOGIN, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(ViewConstants.Fonts.VANI_FONT, 3, 24), new java.awt.Color(255, 255, 255)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(ViewConstants.Fonts.TAHOMA_FONT, 0, 16), new java.awt.Color(255, 255, 255)));

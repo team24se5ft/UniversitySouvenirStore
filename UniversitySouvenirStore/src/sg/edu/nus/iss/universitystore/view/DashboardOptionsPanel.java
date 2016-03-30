@@ -67,10 +67,10 @@ public class DashboardOptionsPanel extends JPanel {
 		jpanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jpanel.setPreferredSize(new Dimension(200, 50));
 		jpanel.setMaximumSize(new Dimension(200, 50));
-		jpanel.setBackground(Color.DARK_GRAY);
+		jpanel.setBackground(new Color(30, 55, 117));
 		jpanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 		Image image=new ImageIcon(iconUrl).getImage();
-		JLabel iconLabel=new JLabel(new ImageIcon(image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH)));
+		JLabel iconLabel=new JLabel(new ImageIcon(image.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
 		JLabel label = new JLabel(labelText);
 		label.setFont(new Font(ViewConstants.Common.DEFAULT_FONT, 1, fontSize));
 		label.setForeground(Color.WHITE);
