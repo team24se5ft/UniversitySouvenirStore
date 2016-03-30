@@ -175,7 +175,7 @@ public class InventoryController implements IInventoryDelegate {
 	@Override
 	public void deleteCategoryClicked(int index) {
 		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, ViewConstants.Labels.STR_DELETE_CATEGORY,
-				"Do u really want to delete the category?") {
+				ViewConstants.Controller.InventoryController.DEL_CAT_CONF) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -208,29 +208,34 @@ public class InventoryController implements IInventoryDelegate {
 	@Override
 	public void addProductClicked() {
 		// Add a new Product Dialog
-		ProductDialog productDialog = new ProductDialog(topFrame, "Add Product") {
+		ProductDialog productDialog = new ProductDialog(topFrame, ViewConstants.Controller.InventoryController.ADD_PRODUCT) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean productCallback(String categoryCode, String name, String description, String quantity,
 					String price, String reorderThreshold, String reorderQuantity) {
 				try {
-					// Add the new product
-					inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
-							reorderQuantity);
-					// Show the success dialog
-					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
-							ViewConstants.Controller.SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
-					// Update the local copy
-					arrProduct = inventoryManager.getAllProducts();
-					// Update the table
-					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
-							TableDataUtils.getHeadersForProductTable());
-				} catch (Exception e) {
-					// TODO: handle exception
+					if (InventoryValidation.Product.isValidData(categoryCode, name, description, quantity, price,
+							reorderThreshold, reorderQuantity)) {
+						// Add the new product
+						inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
+								reorderQuantity);
+						// Show the success dialog
+						UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
+								ViewConstants.Controller.SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
+						// Update the local copy
+						arrProduct = inventoryManager.getAllProducts();
+						// Update the table
+						inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+								TableDataUtils.getHeadersForProductTable());
+						return true;
+					}
+				} catch (InventoryException inventoryExp) {
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				// Hide the dialog after execution.
-				return true;
+				return false;
 			}
 		};
 		// Set the list of categories that need to be displayed.
@@ -245,25 +250,29 @@ public class InventoryController implements IInventoryDelegate {
 		// Get the object at the index
 		Product product = arrProduct.get(index);
 
-		ProductDialog productDialog = new ProductDialog(topFrame, "Edit Product") {
+		ProductDialog productDialog = new ProductDialog(topFrame, ViewConstants.Controller.InventoryController.EDIT_PRODUCT) {
 
 			@Override
 			public boolean productCallback(String categoryCode, String name, String description, String quantity,
 					String price, String reorderThreshold, String reorderQuantity) {
 				try {
-					Product updatedProduct = new Product(categoryCode, name, description, quantity, price,
-							reorderThreshold, reorderQuantity);
-					inventoryManager.updateProduct(updatedProduct);
-					// Update the local copy
-					arrProduct = inventoryManager.getAllProducts();
-					// Update table
-					// Update the table
-					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
-							TableDataUtils.getHeadersForProductTable());
-					// Dismiss the dialog OR show a success dialog
-					return true;
-				} catch (Exception e) {
-					// TODO: handle exception
+					if (InventoryValidation.Product.isValidData(categoryCode, name, description, quantity, price,
+							reorderThreshold, reorderQuantity)) {
+						Product updatedProduct = new Product(categoryCode, name, description, quantity, price,
+								reorderThreshold, reorderQuantity);
+						inventoryManager.updateProduct(updatedProduct);
+						// Update the local copy
+						arrProduct = inventoryManager.getAllProducts();
+						// Update table
+						// Update the table
+						inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+								TableDataUtils.getHeadersForProductTable());
+						// Dismiss the dialog OR show a success dialog
+						return true;
+					}
+				} catch (InventoryException inventoryExp) {
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				// TODO Auto-generated method stub
 				return false;
@@ -287,8 +296,8 @@ public class InventoryController implements IInventoryDelegate {
 
 	@Override
 	public void deleteProductClicked(int index) {
-		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Product",
-				"Do u really want to delete the product?") {
+		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, ViewConstants.Controller.InventoryController.DEL_PRODUCT,
+				ViewConstants.Controller.InventoryController.DEL_PROD_CONF) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -303,8 +312,9 @@ public class InventoryController implements IInventoryDelegate {
 					// Update the table
 					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
 							TableDataUtils.getHeadersForProductTable());
-				} catch (Exception e) {
-					// TODO: handle exception
+				} catch (InventoryException inventoryExp) {
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				// Remove the dialog
 				return true;
