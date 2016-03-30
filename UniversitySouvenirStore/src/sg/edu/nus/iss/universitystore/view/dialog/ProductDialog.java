@@ -260,7 +260,7 @@ public abstract class ProductDialog extends BaseDialog {
 	private void addElements(JPanel panel) {
 		int index = 0;
 		// Now create the label & combo box
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.CATEGORY, index);
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_CODE, index);
 		
 		// While initializing the array will be null
 		if(arrCategoryCode == null) {

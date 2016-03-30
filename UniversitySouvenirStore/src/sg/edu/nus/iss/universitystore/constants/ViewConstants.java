@@ -107,7 +107,6 @@ public class ViewConstants {
 		public static final String MEMBER_CODE="Member Code";
 		
 		//Product Dialog Headers
-		public static final String CATEGORY="Category :";
 		public static final String PROD_NAME="Product Name :";
 		public static final String PROD_DESC="Product Description :";
 		public static final String PROD_QUANTITY="Product Quantity :";
