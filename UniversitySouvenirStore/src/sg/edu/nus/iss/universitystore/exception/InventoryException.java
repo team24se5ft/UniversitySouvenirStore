@@ -21,6 +21,10 @@ public class InventoryException extends Exception{
 		CATEGORY_ALREADY_PRESENT(Messages.Error.Category.CATEGORY_ALREADY_PRESENT),
 		CATEGORY_NOT_AVAILABLE(Messages.Error.Category.CATEGORY_NOT_AVAILABLE),
 		CATEGORY_UNKNOWN_ERROR(Messages.Error.Category.CATEGORY_UNKNOWN_ERROR),
+		// Product
+		INVALID_PRODUCT_FIELDS(Messages.Error.Product.INVALID_PRODUCT_FIELDS),
+		PRODUCT_NOT_AVAILABLE(Messages.Error.Product.PRODUCT_NOT_AVAILABLE),
+		PRODUCT_ZERO(Messages.Error.Product.PRODUCT_ZERO),
 		// Member
 	    EMPTY_MEMBER_NAME(Messages.Error.Member.EMPTY_MEMBER_NAME),
 	    EMPTY_MEMBER_ID(Messages.Error.Member.EMPTY_MEMBER_ID),

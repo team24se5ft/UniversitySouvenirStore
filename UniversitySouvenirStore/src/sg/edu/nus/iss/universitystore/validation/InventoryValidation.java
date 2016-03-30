@@ -3,6 +3,7 @@ package sg.edu.nus.iss.universitystore.validation;
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryError;
+import sg.edu.nus.iss.universitystore.model.Category;
 
 /**
  * Validations for Inventory
@@ -12,6 +13,9 @@ import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryErro
  */
 public class InventoryValidation extends Validation {
 
+	/**
+	 * Category Validations
+	 */
 	public static class Catgory {
 
 		/**
@@ -22,7 +26,7 @@ public class InventoryValidation extends Validation {
 		 * @throws InventoryException
 		 */
 		public static boolean isValidCatgoryCode(String code) throws InventoryException {
-			
+
 			// Checks if Category fields are empty
 			if (code.isEmpty() || !isCode(code)) {
 				throw new InventoryException(InventoryError.INVALID_CODE);
@@ -35,7 +39,7 @@ public class InventoryValidation extends Validation {
 
 			return true;
 		}
-		
+
 		/**
 		 * Checks if category data is of correct format
 		 * 
@@ -53,6 +57,55 @@ public class InventoryValidation extends Validation {
 
 			return isValidCatgoryCode(code);
 		}
+	}
+
+	/**
+	 * Product Validations
+	 */
+	public static class Product {
+
+		/**
+		 * Validate all Product Data other than product identifier
+		 * 
+		 * @param name
+		 * @param description
+		 * @param quantity
+		 * @param price
+		 * @param reorderThreshold
+		 * @param reorderQuantity
+		 * @return Boolean
+		 * @throws InventoryException
+		 */
+		public static boolean isValidData(String name, String description, String quantity, String price,
+				String reorderThreshold, String reorderQuantity) throws InventoryException {
+
+			if (!isName(name) || description.isEmpty() || !isNumber(quantity) || !isFloat(price)
+					|| !isNumber(reorderThreshold) || !isNumber(reorderQuantity)) {
+				throw new InventoryException(InventoryError.INVALID_PRODUCT_FIELDS);
+			}
+
+			return true;
+		}
+
+		/**
+		 * Validate all Product Data and Category
+		 * 
+		 * @param category
+		 * @param name
+		 * @param description
+		 * @param quantity
+		 * @param price
+		 * @param reorderThreshold
+		 * @param reorderQuantity
+		 * @return
+		 * @throws InventoryException
+		 */
+		public static boolean isValidData(String categoryCode, String name, String description, String quantity,
+				String price, String reorderThreshold, String reorderQuantity) throws InventoryException {
+			return InventoryValidation.Catgory.isValidCatgoryCode(categoryCode)
+					&& isValidData(name, description, quantity, price, reorderThreshold, reorderQuantity);
+		}
+
 	}
 
 }

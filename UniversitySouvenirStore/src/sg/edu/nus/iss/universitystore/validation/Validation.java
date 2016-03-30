@@ -20,7 +20,7 @@ abstract class Validation {
 	 * @return
 	 */
 	static boolean isNumber(String numberString) {
-		return numberString.matches(Constants.Common.Validation.NUMBER_MATCH);
+		return numberString.matches(Constants.Common.Pattern.NUMBER_MATCH);
 	}
 
 	/**
@@ -30,7 +30,7 @@ abstract class Validation {
 	 * @return
 	 */
 	static boolean isFloat(String floatString) {
-		return floatString.matches(Constants.Common.Validation.FLOAT_MATCH);
+		return floatString.matches(Constants.Common.Pattern.FLOAT_MATCH);
 	}
 
 	/**
@@ -42,11 +42,11 @@ abstract class Validation {
 	 */
 	static boolean isDate(String dateString) throws DateTimeParseException {
 		LocalDate date = null;
-		if (dateString.matches(Constants.Common.Validation.DATE_MATCH))
+		if (dateString.matches(Constants.Common.Pattern.DATE_MATCH))
 			date = LocalDate.parse(dateString, Constants.Common.YYYY_MM_DD_FORMAT);
 		return date != null;
 	}
-	
+
 	/**
 	 * Is String of Type Code. i.e. consists of only alphabets in capitals
 	 * 
@@ -54,10 +54,17 @@ abstract class Validation {
 	 * @return
 	 */
 	static boolean isCode(String codeString) {
-		return codeString.matches(Constants.Common.Validation.CODE_MATCH);
+		return codeString.matches(Constants.Common.Pattern.CODE_MATCH);
 	}
-	
+
+	/**
+	 * Is String of Type Name. i.e. consists of only alphabets, numbers and
+	 * spaces
+	 * 
+	 * @param nameString
+	 * @return
+	 */
 	static boolean isName(String nameString) {
-		return !nameString.trim().isEmpty() && nameString.matches(Constants.Common.Validation.NAME_MATCH);
+		return !nameString.trim().isEmpty() && nameString.matches(Constants.Common.Pattern.NAME_MATCH);
 	}
 }

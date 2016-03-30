@@ -215,22 +215,27 @@ public class InventoryController implements IInventoryDelegate {
 			public boolean productCallback(String categoryCode, String name, String description, String quantity,
 					String price, String reorderThreshold, String reorderQuantity) {
 				try {
-					// Add the new product
-					inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
-							reorderQuantity);
-					// Show the success dialog
-					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
-							ViewConstants.Controller.SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
-					// Update the local copy
-					arrProduct = inventoryManager.getAllProducts();
-					// Update the table
-					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
-							TableDataUtils.getHeadersForProductTable());
-				} catch (Exception e) {
-					// TODO: handle exception
+					if (InventoryValidation.Product.isValidData(categoryCode, name, description, quantity, price,
+							reorderThreshold, reorderQuantity)) {
+						// Add the new product
+						inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
+								reorderQuantity);
+						// Show the success dialog
+						UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
+								ViewConstants.Controller.SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
+						// Update the local copy
+						arrProduct = inventoryManager.getAllProducts();
+						// Update the table
+						inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+								TableDataUtils.getHeadersForProductTable());
+						return true;
+					}
+				} catch (InventoryException inventoryExp) {
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				// Hide the dialog after execution.
-				return true;
+				return false;
 			}
 		};
 		// Set the list of categories that need to be displayed.
@@ -251,19 +256,23 @@ public class InventoryController implements IInventoryDelegate {
 			public boolean productCallback(String categoryCode, String name, String description, String quantity,
 					String price, String reorderThreshold, String reorderQuantity) {
 				try {
-					Product updatedProduct = new Product(categoryCode, name, description, quantity, price,
-							reorderThreshold, reorderQuantity);
-					inventoryManager.updateProduct(updatedProduct);
-					// Update the local copy
-					arrProduct = inventoryManager.getAllProducts();
-					// Update table
-					// Update the table
-					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
-							TableDataUtils.getHeadersForProductTable());
-					// Dismiss the dialog OR show a success dialog
-					return true;
-				} catch (Exception e) {
-					// TODO: handle exception
+					if (InventoryValidation.Product.isValidData(categoryCode, name, description, quantity, price,
+							reorderThreshold, reorderQuantity)) {
+						Product updatedProduct = new Product(categoryCode, name, description, quantity, price,
+								reorderThreshold, reorderQuantity);
+						inventoryManager.updateProduct(updatedProduct);
+						// Update the local copy
+						arrProduct = inventoryManager.getAllProducts();
+						// Update table
+						// Update the table
+						inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+								TableDataUtils.getHeadersForProductTable());
+						// Dismiss the dialog OR show a success dialog
+						return true;
+					}
+				} catch (InventoryException inventoryExp) {
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				// TODO Auto-generated method stub
 				return false;
@@ -303,8 +312,9 @@ public class InventoryController implements IInventoryDelegate {
 					// Update the table
 					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
 							TableDataUtils.getHeadersForProductTable());
-				} catch (Exception e) {
-					// TODO: handle exception
+				} catch (InventoryException inventoryExp) {
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				// Remove the dialog
 				return true;
