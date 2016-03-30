@@ -27,6 +27,8 @@ public class ViewConstants {
 		public static final String STR_ADD_DISCOUNT = "Add Discount";
 		public static final String STR_EDIT_DISCOUNT = "Edit Discount";
 		public static final String STR_DELETE_DISCOUNT = "Delete Discount";
+		public static final String STR_MEMBER = "Member";
+		public static final String STR_PUBLIC = "Public";
 
 		// Labels for Sales
 		public static final String STR_ADD_SALESPRODUCT = "Add Product";

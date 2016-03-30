@@ -79,12 +79,7 @@ public abstract class BaseDialog extends JDialog implements WindowListener{
 	 */
 	protected JTextField createTextFieldOnPanel(JPanel jPanel, int yPosition) {
 		JTextField jTextField = new JTextField(10);
-		GridBagConstraints gridBagConstraintForTextField = new GridBagConstraints();
-		gridBagConstraintForTextField.fill = GridBagConstraints.BOTH;
-		gridBagConstraintForTextField.insets = new Insets(0, 0, 5, 0);
-		gridBagConstraintForTextField.gridx = 1;
-		gridBagConstraintForTextField.gridy = yPosition;
-		jPanel.add(jTextField, gridBagConstraintForTextField);
+		jPanel.add(jTextField, getConstraintsForSecondColumn(yPosition));
 		return jTextField;
 	}
 	
@@ -97,15 +92,23 @@ public abstract class BaseDialog extends JDialog implements WindowListener{
 	 */
 	protected JComboBox<String> createComboBoxOnPanel(String[]list, JPanel panel, int yPosition) {
 		JComboBox<String> comboBox = new JComboBox<String>(list);
-		GridBagConstraints gridBagConstraintForComboBox = new GridBagConstraints();
-		gridBagConstraintForComboBox.fill = GridBagConstraints.BOTH;
-		gridBagConstraintForComboBox.insets = new Insets(0, 0, 5, 0);
-		gridBagConstraintForComboBox.gridx = 1;
-		gridBagConstraintForComboBox.gridy = yPosition;
-		panel.add(comboBox, gridBagConstraintForComboBox);
+		panel.add(comboBox, getConstraintsForSecondColumn(yPosition));
 		return comboBox;
 	}
 
+	/**
+	 * Method to get the constraints for any item that is placed on the second column 
+	 * @param yPosition The position of the item on the panel.
+	 * @return The updated constraints.
+	 */
+	protected GridBagConstraints getConstraintsForSecondColumn(int yPosition) {
+		GridBagConstraints gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.fill = GridBagConstraints.BOTH;
+		gridBagConstraints.insets = new Insets(0, 0, 8, 0);
+		gridBagConstraints.gridx = 1;
+		gridBagConstraints.gridy = yPosition;
+		return gridBagConstraints;
+	}
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/

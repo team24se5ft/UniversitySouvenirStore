@@ -1,35 +1,37 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.TextField;
+import java.awt.GridBagLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.model.Discount;
 
 public abstract class DiscountDialog extends BaseDialog {
-	private static final long serialVersionUID = 3029306694712724442L;
+	private static final long serialVersionUID = 1L;
 
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
 	// textfield define
-	private TextField code;
-	private TextField percentage;
-	private TextField description;
-	private TextField startDate;
-	private TextField period;
+	private JTextField code;
+	private JTextField percentage;
+	private JTextField description;
+	private JTextField startDate;
+	private JTextField period;
 
-	// M for member,A for All
-	JRadioButton randioButtonM;
-	JRadioButton randioButtonA;
+	// Member or Public
+	JRadioButton radioBtnMember;
+	JRadioButton radioBtnPublic;
 
 	/***********************************************************/
 	// Constructors
@@ -91,12 +93,13 @@ public abstract class DiscountDialog extends BaseDialog {
 		description.setText(discount.getDescription());
 		startDate.setText(discount.getStartDate());
 		period.setText(discount.getPeriod() + "");
-		if (discount.getEligibilty().equals("M")) {
-			randioButtonM.setSelected(true);
-			randioButtonA.setSelected(false);
+		// From the backend we will get the value 'M' or 'A'.
+		if (discount.getEligibilty().equals(Constants.Data.Discount.Eligibility.MEMBER)) {
+			radioBtnMember.setSelected(true);
+			radioBtnPublic.setSelected(false);
 		} else {
-			randioButtonM.setSelected(false);
-			randioButtonA.setSelected(true);
+			radioBtnMember.setSelected(false);
+			radioBtnPublic.setSelected(true);
 		}
 	}
 
@@ -111,13 +114,13 @@ public abstract class DiscountDialog extends BaseDialog {
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		randioButtonM = new JRadioButton("M", true);
-		randioButtonA = new JRadioButton("A");
-		contentPane.add(randioButtonM);
-		contentPane.add(randioButtonA);
+		radioBtnMember = new JRadioButton(ViewConstants.Labels.STR_MEMBER, true);
+		radioBtnPublic = new JRadioButton(ViewConstants.Labels.STR_PUBLIC);
+		contentPane.add(radioBtnMember);
+		contentPane.add(radioBtnPublic);
 		ButtonGroup group = new ButtonGroup();
-		group.add(randioButtonM);
-		group.add(randioButtonA);
+		group.add(radioBtnMember);
+		group.add(radioBtnPublic);
 		return contentPane;
 	}
 
@@ -133,33 +136,22 @@ public abstract class DiscountDialog extends BaseDialog {
 	 */
 	@Override
 	protected JPanel getPanelToAddToDialog() {
-		JPanel jpanel = new JPanel();
-		jpanel.setLayout(new GridLayout(6, 6));
+		JPanel jPanel = new JPanel();
+		// Add border for creating a space from the margins.
+		Border border = jPanel.getBorder();
+		Border margin = new EmptyBorder(10, 10, 10, 10);
+		jPanel.setBorder(new CompoundBorder(border, margin));
 
-		code = new TextField();
-		code.setColumns(1);
-		percentage = new TextField();
-		percentage.setColumns(1);
-		description = new TextField();
-		description.setColumns(1);
-		startDate = new TextField();
-		startDate.setColumns(1);
-		period = new TextField();
-		period.setColumns(1);
+		// Add the gridbag layout
+		GridBagLayout panelGridBagLayout = new GridBagLayout();
+		panelGridBagLayout.columnWidths = new int[] { 86, 86, 0 };
+		panelGridBagLayout.rowHeights = new int[] { 20, 20, 20, 20, 20, 0 };
+		panelGridBagLayout.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		panelGridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		jPanel.setLayout(panelGridBagLayout);
 
-		jpanel.add(new JLabel(ViewConstants.DialogHeaders.DISC_CODE));
-		jpanel.add(code);
-		jpanel.add(new JLabel(ViewConstants.DialogHeaders.OFF_PERC));
-		jpanel.add(percentage);
-		jpanel.add(new JLabel(ViewConstants.DialogHeaders.TYPE));
-		jpanel.add(initSingleButtonGroup());
-		jpanel.add(new JLabel(ViewConstants.DialogHeaders.DESCRIPTION));
-		jpanel.add(description);
-		jpanel.add(new JLabel(ViewConstants.DialogHeaders.START_DATE));
-		jpanel.add(startDate);
-		jpanel.add(new JLabel(ViewConstants.DialogHeaders.PERIOD));
-		jpanel.add(period);
-		return jpanel;
+		addElements(jPanel);
+		return jPanel;
 	}
 
 	/**
@@ -169,18 +161,53 @@ public abstract class DiscountDialog extends BaseDialog {
 	protected boolean confirmClicked() {
 		// check discount eligibility
 		String eligibility;
-		if (randioButtonM.isSelected()) {
-			eligibility = "M";
+		if (radioBtnMember.isSelected()) {
+			// Backend takes in values of only 'M' or 'A'.
+			eligibility = Constants.Data.Discount.Eligibility.MEMBER;
 		} else {
-			eligibility = "A";
+			eligibility = Constants.Data.Discount.Eligibility.ALL;
 		}
 		// check date format
 		String startdate = startDate.getText();
-		// if (!DateUtils.checkDate()) {
-		// return false;
-		// }
-		return onDiscountCallBack(code.getText(), description.getText(), startdate, period.getText(), percentage.getText(),
-				eligibility);
+		return onDiscountCallBack(code.getText(), description.getText(), startdate, period.getText(),
+				percentage.getText(), eligibility);
 	}
 
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+
+	/**
+	 * Method to create the various textfields and their labels.
+	 * 
+	 * @param panel
+	 *            The panel on which the textfields & labels need to be placed.
+	 */
+	private void addElements(JPanel jPanel) {
+		int index = 0;
+
+		// Discount Code
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.DISC_CODE, index);
+		code = createTextFieldOnPanel(jPanel, index++);
+
+		// Discount Percentage
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.OFF_PERC, index);
+		percentage = createTextFieldOnPanel(jPanel, index++);
+
+		// Type
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.TYPE, index);
+		jPanel.add(initSingleButtonGroup(), getConstraintsForSecondColumn(index++));
+
+		// Description
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.DESCRIPTION, index);
+		description = createTextFieldOnPanel(jPanel, index++);
+
+		// Start Date
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.START_DATE, index);
+		startDate = createTextFieldOnPanel(jPanel, index++);
+
+		// Period
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PERIOD, index);
+		period = createTextFieldOnPanel(jPanel, index++);
+	}
 }

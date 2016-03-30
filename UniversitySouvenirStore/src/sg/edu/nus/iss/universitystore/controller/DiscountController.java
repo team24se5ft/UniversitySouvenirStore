@@ -52,7 +52,7 @@ public class DiscountController implements IDiscountDelegate {
 	@Override
 	public void addDiscount() {
 		DiscountDialog dlg = new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel),
-				"addDiscount") {
+				ViewConstants.Labels.STR_ADD_DISCOUNT) {
 
 			@Override
 			public boolean onDiscountCallBack(String code, String description, String startDate, String period,
@@ -115,7 +115,7 @@ public class DiscountController implements IDiscountDelegate {
 		Discount oldDiscount = discountList.get(row);
 
 		DiscountDialog updateDlg = new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel),
-				"UpdateDiscount") {
+				ViewConstants.Labels.STR_EDIT_DISCOUNT) {
 
 			@Override
 			public boolean onDiscountCallBack(String code, String description, String startDate, String period,
