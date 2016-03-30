@@ -59,7 +59,12 @@ public class DiscountPanel extends BaseTablePanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.updateDiscount(table.getSelectedRow());
+				if (table.getSelectedRow() != -1) {
+					delegate.updateDiscount(table.getSelectedRow());
+				}
+				else {
+					delegate.rowNotSelected();
+				}
 			}
 		};
 	}
@@ -70,7 +75,12 @@ public class DiscountPanel extends BaseTablePanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delegate.deleteDiscount(table.getSelectedRow());
+				if (table.getSelectedRow() != -1) {
+					delegate.deleteDiscount(table.getSelectedRow());
+				}
+				else {
+					delegate.rowNotSelected();
+				}
 			}
 		};
 	}

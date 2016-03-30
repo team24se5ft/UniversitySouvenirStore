@@ -22,6 +22,11 @@ public class ViewConstants {
 		public static final String STR_USER_LABEL = "Username:";
 		public static final String STR_PASSWORD_LABEL = "Password: ";
 		public static final String STR_LOGIN = "Login";
+		
+		// Labels for Inventory
+		public static final String STR_ADD_CATEGORY = "Add Category";
+		public static final String STR_EDIT_CATEGORY = "Edit Category";
+		public static final String STR_DELETE_CATEGORY = "Delete Category";
 
 		// Labels for Discount
 		public static final String STR_ADD_DISCOUNT = "Add Discount";
@@ -45,12 +50,14 @@ public class ViewConstants {
 		public static final String STR_CANCEL = "Cancel";
 	}
 
-	public static final class ErrorMessages {
+	public static final class StatusMessage {
 
+		// Error
+		public final static String ERROR = "Error";
 		// Warning
-		public final static String STR_WARNING = "Warning";
+		public final static String WARNING = "Warning";
 		// Success
-		public final static String STR_SUCCESS = "Success";
+		public final static String SUCCESS = "Success";
 	}
 	
 	public class PanelHeaders{
@@ -183,13 +190,19 @@ public class ViewConstants {
 	}
 
 	public static final class SalesPanel {
-		public static final String MEMBER_OPTION_LABEL = "Public";
+		public static final String MEMBER_OPTION_LABEL = "PUBLIC";
 		public static final String NONE_DISCOUNT = "none discount";
 		public static final String MEMBER_LABEL = "member:";
 		public static final String DISCOUNT_LABEL = "discount:";
 		public static final String DISCOUNT_PERCENTAGE_LABEL = "off:";
 		public static final String AVAILABLE_LOYALPOINT_LABEL = "AvailableLoyalPoint:";
+		
 		public static final String LOYALPOINT_LABEL = "loyalPoint:";
+		public static final String TOTAL_LABEL = "Total:";
+		public static final String CASH_LABEL = "Cash:";
+		public static final String CHANGE_LABEL = "Change:";
+		
+		
 	}
 
 	public static final class ValidationMessage {

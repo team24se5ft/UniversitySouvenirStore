@@ -109,7 +109,7 @@ public class InventoryController implements IInventoryDelegate {
 	/***********************************************************/
 	@Override
 	public void addCategoryClicked() {
-		CategoryDialog categoryDialog = new CategoryDialog(topFrame, "Add Category") {
+		CategoryDialog categoryDialog = new CategoryDialog(topFrame, ViewConstants.Labels.STR_ADD_CATEGORY) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -120,7 +120,7 @@ public class InventoryController implements IInventoryDelegate {
 					if (InventoryValidation.Catgory.isValidData(categoryCode, categoryName)) {
 							inventoryManager.addCategory(categoryCode, categoryName);
 							// Show the success dialog
-							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_SUCCESS,
+							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
 									STR_SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
 							// Update the table
 							arrCategory = inventoryManager.getAllCategories();
@@ -131,8 +131,8 @@ public class InventoryController implements IInventoryDelegate {
 							return true;
 						}
 				} catch (InventoryException inventoryExp) {
-					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING,
-							inventoryExp.getMessage(), DialogType.WARNING_MESSAGE);
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				return false;
 			}
@@ -146,26 +146,28 @@ public class InventoryController implements IInventoryDelegate {
 		// Get the object at the index
 		Category category = arrCategory.get(index);
 		// Implement an instance of the category dialog
-		CategoryDialog categoryDialog = new CategoryDialog(topFrame, "Edit Category") {
+		CategoryDialog categoryDialog = new CategoryDialog(topFrame, ViewConstants.Labels.STR_EDIT_CATEGORY) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean categoryCallback(String categoryCode, String categoryName) {
-				// TODO : Do validation here
 				try {
-					// If the value is valid Update the value in the dB
-					Category updatedCategory = new Category(categoryCode, categoryName);
-					inventoryManager.updateCategory(category, updatedCategory);
-					// Update the local copy
-					arrCategory = inventoryManager.getAllCategories();
-					// Update table
-					inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
-							TableDataUtils.getHeadersForCategoryTable());
-					// Dismiss the dialog OR show a success dialog
-					return true;
-				} catch (Exception e) {
-					// TODO: handle exception
+						if (InventoryValidation.Catgory.isValidData(categoryCode, categoryName)) {
+						// If the value is valid Update the value in the dB
+						Category updatedCategory = new Category(categoryCode, categoryName);
+						inventoryManager.updateCategory(category, updatedCategory);
+						// Update the local copy
+						arrCategory = inventoryManager.getAllCategories();
+						// Update table
+						inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
+								TableDataUtils.getHeadersForCategoryTable());
+						// Dismiss the dialog OR show a success dialog
+						return true;
+					}
+				} catch (InventoryException inventoryExp) {
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				return false;
 			}
@@ -180,7 +182,7 @@ public class InventoryController implements IInventoryDelegate {
 
 	@Override
 	public void deleteCategoryClicked(int index) {
-		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Category",
+		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, ViewConstants.Labels.STR_DELETE_CATEGORY,
 				"Do u really want to delete the category?") {
 
 			private static final long serialVersionUID = 1L;
@@ -196,8 +198,9 @@ public class InventoryController implements IInventoryDelegate {
 					// Update the table
 					inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
 							TableDataUtils.getHeadersForCategoryTable());
-				} catch (Exception e) {
-					// TODO: handle exception
+				}  catch (InventoryException inventoryExp) {
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				// Remove the dialog
 				return true;
@@ -224,7 +227,7 @@ public class InventoryController implements IInventoryDelegate {
 					inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
 							reorderQuantity);
 					// Show the success dialog
-					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_SUCCESS,
+					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
 							STR_SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
 					// Update the local copy
 					arrProduct = inventoryManager.getAllProducts();
@@ -321,7 +324,7 @@ public class InventoryController implements IInventoryDelegate {
 	@Override
 	public void rowNotSelected() {
 		// Display message for error.
-		UIUtils.showMessageDialog(inventoryPanel, ViewConstants.ErrorMessages.STR_WARNING, STR_ERROR_ROW_NOT_SELECTED,
+		UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR, STR_ERROR_ROW_NOT_SELECTED,
 				DialogType.WARNING_MESSAGE);
 	}
 

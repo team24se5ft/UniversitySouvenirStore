@@ -34,7 +34,7 @@ public class DiscountController implements IDiscountDelegate {
 			discountManager = DiscountManager.getInstance();
 			discountList = discountManager.getAllDiscounts();
 		} catch (DiscountException e) {
-			UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+			UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
 					DialogType.ERROR_MESSAGE);
 		}
 		discountPanel = new DiscountPanel(this);
@@ -49,6 +49,9 @@ public class DiscountController implements IDiscountDelegate {
 		return discountPanel;
 	}
 
+	/***********************************************************/
+	// Abstract Method Implementation
+	/***********************************************************/
 	@Override
 	public void addDiscount() {
 		DiscountDialog dlg = new DiscountDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel),
@@ -67,7 +70,7 @@ public class DiscountController implements IDiscountDelegate {
 						discountList = discountManager.getAllDiscounts();
 					}
 				} catch (DiscountException e) {
-					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+					UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
 							DialogType.ERROR_MESSAGE);
 					return false;
 				}
@@ -97,7 +100,7 @@ public class DiscountController implements IDiscountDelegate {
 					flag = discountManager.deleteDiscount(discount.getCode());
 					discountList = discountManager.getAllDiscounts();
 				} catch (DiscountException e) {
-					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+					UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
 							DialogType.ERROR_MESSAGE);
 				}
 				return isUpdateUI(flag);
@@ -132,7 +135,7 @@ public class DiscountController implements IDiscountDelegate {
 						discountList = discountManager.getAllDiscounts();
 					}
 				} catch (DiscountException e) {
-					UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING, e.getMessage(),
+					UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
 							DialogType.ERROR_MESSAGE);
 					
 					return false;
@@ -144,6 +147,16 @@ public class DiscountController implements IDiscountDelegate {
 		updateDlg.setVisible(true);
 	}
 
+	@Override
+	public void rowNotSelected() {
+		// Display message for error.
+		UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, "Please select a row of the table for completing this operation.",
+				DialogType.WARNING_MESSAGE);
+	}
+	
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
 	/**
 	 * judge whether updateUI according to flag
 	 * 
@@ -156,7 +169,7 @@ public class DiscountController implements IDiscountDelegate {
 					TableDataUtils.getHeadersForDiscountTable());
 			return true;
 		} else {
-			UIUtils.showMessageDialog(discountPanel, ViewConstants.ErrorMessages.STR_WARNING,
+			UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR,
 					ViewConstants.ValidationMessage.VALIDATION_Failed, DialogType.WARNING_MESSAGE);
 			return false;
 		}

@@ -19,4 +19,9 @@ public interface ISalesDelegate {
 	 */
 	public void memberIdentification();
 	
+	/**
+	 * TODO:
+	 */
+	public void onSalesPanelVisible();
+	
 }
