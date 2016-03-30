@@ -58,4 +58,9 @@ public interface IInventoryDelegate {
 	 * @param index The selected index of the product table.
 	 */
 	public void deleteProductClicked(int index);
+	
+	/**
+	 * Method to inform the controller that the panel is visible.
+	 */
+	public void onProductPanelVisible();
 }
