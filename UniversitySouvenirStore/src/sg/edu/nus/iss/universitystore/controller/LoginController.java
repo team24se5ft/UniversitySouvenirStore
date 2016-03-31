@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.LoginManager;
+import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.LoginException;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
@@ -42,9 +43,9 @@ public class LoginController implements ILoginDelegate {
 		// Instantiate Data File Manager
 		try {
 			loginManager = LoginManager.getInstance();
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			UIUtils.showMessageDialog(loginPanel, "Error", e.getMessage(), DialogType.ERROR_MESSAGE);
+		} catch (LoginException loginExp) {
+			UIUtils.showMessageDialog(loginPanel, ViewConstants.StatusMessage.ERROR,
+					loginExp.getMessage(), DialogType.ERROR_MESSAGE);
 		}
 	}
 
@@ -66,8 +67,9 @@ public class LoginController implements ILoginDelegate {
 			if(LoginValidation.isValidData(username, password) && loginManager.isValidCredentials(storeKeeper)) {
 				UIUtils.navigateToDashboard(loginPanel);
 			}
-		} catch (LoginException exception) {
-			UIUtils.showMessageDialog(loginPanel,"Error",exception.getMessage(),DialogType.ERROR_MESSAGE);
+		} catch (LoginException loginExp) {
+			UIUtils.showMessageDialog(loginPanel, ViewConstants.StatusMessage.ERROR,
+					loginExp.getMessage(), DialogType.ERROR_MESSAGE);
 		}
 	}
 

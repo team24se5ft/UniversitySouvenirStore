@@ -79,9 +79,9 @@ public class InventoryController implements IInventoryDelegate {
 
 			// Get main frame reference
 			topFrame = (JFrame) SwingUtilities.getWindowAncestor(inventoryPanel);
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e.getStackTrace());
+		} catch (InventoryException inventoryExp) {
+			UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+					inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 		}
 	}
 
