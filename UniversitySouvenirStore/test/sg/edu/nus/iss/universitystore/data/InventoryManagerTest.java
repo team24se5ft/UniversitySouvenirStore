@@ -10,10 +10,10 @@ import org.junit.Test;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.JUnitConstants;
-import sg.edu.nus.iss.universitystore.exception.StoreException;
+import sg.edu.nus.iss.universitystore.exception.InventoryException;
+import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryError;
 import sg.edu.nus.iss.universitystore.intf.UniversityStoreJUnit;
 import sg.edu.nus.iss.universitystore.messages.JUnitMessages;
-import sg.edu.nus.iss.universitystore.messages.Messages;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Goods;
 import sg.edu.nus.iss.universitystore.model.Product;
@@ -96,7 +96,6 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 	 * Product Reorder Quantity
 	 */
 	private Integer prodReorderQuantity1, prodReorderQuantity2;
-	
 
 	@Override
 	public void setUp() throws Exception {
@@ -153,7 +152,7 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 		// Invalid Product
 		invalidProdID1 = "BOA/15";
 		invalidProdID2 = "BOAZ/15";
-		
+
 		// Product Set 1
 		prodName1 = "Nike Cloths";
 		prodDescription1 = "Nike Cloths L";
@@ -161,7 +160,6 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 		prodPrice1 = 50.00;
 		prodReorderQuantity1 = 40;
 		prodReorderThreshold1 = 10;
-		
 
 		// Product Set 2
 		prodName2 = "Nike Cloths";
@@ -170,8 +168,11 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 		prodPrice2 = 60.00;
 		prodReorderQuantity2 = 20;
 		prodReorderThreshold2 = 10;
-		/*product2 = new Product(category1, prodName2, prodDescription2, prodQuantity2.intValue(),
-				prodPrice2.doubleValue(), prodReorderThreshold2.intValue(), prodReorderQuantity2.intValue());*/
+		/*
+		 * product2 = new Product(category1, prodName2, prodDescription2,
+		 * prodQuantity2.intValue(), prodPrice2.doubleValue(),
+		 * prodReorderThreshold2.intValue(), prodReorderQuantity2.intValue());
+		 */
 
 	}
 
@@ -234,21 +235,19 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 
 		} catch (IOException e) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException e) {
+		} catch (InventoryException inventoryExp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
 	}
 
 	/**
-	 * Test the following functionalities: 
-	 * 1. Addition of One New Category Twice
-	 * 2. Addition of another Category 
-	 * 3. Check for invalid Category 
-	 * 4. Delete a category 
-	 * 5. Delete an invalid category
+	 * Test the following functionalities: 1. Addition of One New Category Twice
+	 * 2. Addition of another Category 3. Check for invalid Category 4. Delete a
+	 * category 5. Delete an invalid category
 	 */
 	@Test
 	public void testCategoryFunctionalities() {
+		InventoryManager inventoryManager = null;
 		try {
 			// Copy Test File Category.dat
 			JUnitUtility.copyFile(Constants.Data.FileName.CATEGORY_DAT,
@@ -256,8 +255,14 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 							+ Constants.Data.FILE_PATH_SEPTR);
 
 			// Instantiate Inventory Manager
-			InventoryManager inventoryManager = InventoryManager.getInstance();
+			inventoryManager = InventoryManager.getInstance();
+		} catch (IOException e) {
+			fail(JUnitMessages.Error.JUNIT_FAIL);
+		} catch (InventoryException e) {
+			fail(JUnitMessages.Error.JUNIT_FAIL);
+		}
 
+		try {
 			// Check Initial Conditions
 			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.CATEGORY_DAT, 1));
 			Assert.assertTrue(inventoryManager.getAllCategories().size() == 1);
@@ -266,8 +271,19 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 
 			// Add new category
 			Assert.assertTrue(inventoryManager.addCategory(categoryCode1, categoryName1));
+		} catch (InventoryException inventoryExp) {
+			fail(JUnitMessages.Error.JUNIT_FAIL);
+		}
+
+		try {
 			// Add the same category
 			Assert.assertFalse(inventoryManager.addCategory(categoryCode1, categoryName1));
+			fail(JUnitMessages.Error.JUNIT_FAIL);
+		} catch (InventoryException inventoryExp) {
+			Assert.assertEquals(InventoryError.CATEGORY_ALREADY_PRESENT.toString(), inventoryExp.getMessage());
+		}
+
+		try {
 			// Add Second category
 			Assert.assertTrue(inventoryManager.addCategory(categoryCode2, categoryName2));
 
@@ -291,9 +307,7 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			// Delete invalid category
 			Assert.assertFalse(inventoryManager.deleteCategory(categoryCode2));
 
-		} catch (IOException e) {
-			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException e) {
+		} catch (InventoryException inventoryExp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
 	}
@@ -323,13 +337,13 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		} catch (IOException exception) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException exception) {
-			Assert.assertEquals(exception.getMessage(), Messages.Error.Category.INVALID_CODE_LENGTH);
+		} catch (InventoryException inventoryExp) {
+			Assert.assertEquals(InventoryError.INVALID_CODE_LENTH.toString(), inventoryExp.getMessage());
 		}
 	}
 
 	/**
-	 * Addition of Invalid Category due to Code length
+	 * Addition of Invalid Category due to incorrect characters
 	 */
 	@Test
 	public void testAddInvalidCategoryCharacters() {
@@ -353,8 +367,8 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		} catch (IOException exception) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException exception) {
-			Assert.assertEquals(exception.getMessage(), Messages.Error.Category.INVALID_CHARACTERS);
+		} catch (InventoryException inventoryExp) {
+			Assert.assertEquals(InventoryError.INVALID_CODE.toString(), inventoryExp.getMessage());
 		}
 	}
 
@@ -385,8 +399,8 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		} catch (IOException exception) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException exception) {
-			Assert.assertEquals(exception.getMessage(), Messages.Error.Category.INVALID_CODE_LENGTH);
+		} catch (InventoryException inventoryExp) {
+			Assert.assertEquals(InventoryError.INVALID_CODE_LENTH.toString(), inventoryExp.getMessage());
 		}
 	}
 
@@ -427,27 +441,26 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 
 		} catch (IOException exception) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException exception) {
+		} catch (InventoryException inventoryExp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
 	}
 
 	/**
-	 * Testing the following: 
-	 * 1. Additions of 2 categories 
-	 * 2. Additions of 3 products
-	 * 3. Update a product
-	 * 4. Check if Reorder threshold has been reached
+	 * Testing the following: 1. Additions of 2 categories 2. Additions of 3
+	 * products 3. Update a product 4. Check if Reorder threshold has been
+	 * reached
 	 */
 	@Test
 	public void testAddThreeProduct() {
+		InventoryManager inventoryManager = null;
 		try {
 			// Copy Test File Product.dat
 			JUnitUtility.copyFile(Constants.Data.FileName.CATEGORY_DAT,
 					JUnitConstants.Data.FILE_FOLDER.INVENTORY.toString().toLowerCase()
 							+ Constants.Data.FILE_PATH_SEPTR);
 
-			InventoryManager inventoryManager = InventoryManager.getInstance();
+			inventoryManager = InventoryManager.getInstance();
 
 			// Check Initial Conditions
 			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.CATEGORY_DAT, 1));
@@ -473,19 +486,19 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			Assert.assertTrue(inventoryManager.isValidProduct(newProduct1.getIdentifier()));
 			Assert.assertTrue(inventoryManager.isValidProduct(newProduct2.getIdentifier()));
 			Assert.assertTrue(inventoryManager.isValidProduct(newProduct3.getIdentifier()));
-			
-			Product updatedProduct = new Product(newProduct1.getIdentifier(), prodName1, prodDescription1, prodQuantity1.toString(),
-					prodPrice1.toString(), prodReorderThreshold1.toString(), prodReorderQuantity1.toString());
+
+			Product updatedProduct = new Product(newProduct1.getIdentifier(), prodName1, prodDescription1,
+					prodQuantity1.toString(), prodPrice1.toString(), prodReorderThreshold1.toString(),
+					prodReorderQuantity1.toString());
 			Assert.assertTrue(inventoryManager.updateProduct(updatedProduct));
-			
+
 			ArrayList<Product> productsBlwThrshld = inventoryManager.getProductsBelowThreshold();
 			Assert.assertEquals(productsBlwThrshld.size(), 1);
-			Assert.assertEquals(productsBlwThrshld.get(0),updatedProduct);
-			
+			Assert.assertEquals(productsBlwThrshld.get(0), updatedProduct);
 
 		} catch (IOException exception) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException exception) {
+		} catch (InventoryException inventoryExp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
 	}
@@ -516,7 +529,7 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 
 		} catch (IOException exception) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException exception) {
+		} catch (InventoryException inventoryExp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
 	}
@@ -555,7 +568,7 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 
 		} catch (IOException exception) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException exception) {
+		} catch (InventoryException inventoryExp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
 	}
@@ -595,11 +608,11 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 
 		} catch (IOException exception) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException exception) {
-			Assert.assertEquals(Messages.Error.Category.INVALID_CODE_LENGTH, exception.getMessage());
+		} catch (InventoryException inventoryExp) {
+			Assert.assertEquals(InventoryError.INVALID_CODE_LENTH.toString(), inventoryExp.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Check threshold should throw a exception when no products are found in
 	 * store
@@ -628,8 +641,8 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		} catch (IOException exception) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
-		} catch (StoreException exception) {
-			Assert.assertEquals(exception.getMessage(), Messages.Error.Product.PRODUCT_ZERO);
+		} catch (InventoryException inventoryExp) {
+			Assert.assertEquals(InventoryError.PRODUCT_ZERO.toString(), inventoryExp.getMessage());
 		}
 	}
 }
