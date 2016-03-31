@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.universitystore.messages;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
+import sg.edu.nus.iss.universitystore.constants.Constants.Data;
 
 public final class Messages {
 	public static final class Error {
@@ -10,7 +11,7 @@ public final class Messages {
 			public static final String INVALID_FLOAT = "Please Enter a Valid Positive Number with a maximum of two decimals. For example, \"50.0\" or \"30.25\"";
 			public static final String INVALID_DATE = "Please Enter a Valid Date. Eg. 2000-10-20";
 			public static final String INVALID_CODE = "Code must consist of only alphabets and in Capitals";
-			public static final String INVALID_NAME = "Name must can contain alphabets, numbers and Spaces only";
+			public static final String INVALID_NAME = "Name can contain alphabets, numbers and Spaces only";
 			public static final String EMPTY_FIELDS = "All fields are mandatory.";
 		}
 
@@ -34,11 +35,17 @@ public final class Messages {
 			public static final String INVALID_NUMBER = new StringBuffer()
 					.append("For Quantity, Reorder Threshold and Reorder Quantity").append(Constants.Common.NEW_LINE)
 					.append(Common.INVALID_NUMBER).toString();
-			public static final String INVALID_FLOAT = new StringBuffer().append("For Price ")
-					.append(Common.INVALID_FLOAT).toString();
+			public static final String INVALID_QUANTITY = new StringBuffer().append("Quantity: ")
+					.append(Common.INVALID_NUMBER).toString();
+			public static final String INVALID_REORDER_QUANTITY = new StringBuffer().append("Reorder Quantity: ")
+					.append(Common.INVALID_NUMBER).toString();
+			public static final String INVALID_REORDER_THRESHOLD = new StringBuffer().append("Reorder Threshold: ")
+					.append(Common.INVALID_NUMBER).toString();
+			public static final String INVALID_PRICE = new StringBuffer().append("Price: ").append(Common.INVALID_FLOAT)
+					.toString();
 			public static final String INVALID_PRODUCT_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS)
 					.append(Constants.Common.NEW_LINE).append(INVALID_NAME).append(Constants.Common.NEW_LINE)
-					.append(INVALID_NUMBER).append(Constants.Common.NEW_LINE).append(INVALID_FLOAT).toString();
+					.append(INVALID_NUMBER).append(Constants.Common.NEW_LINE).append(INVALID_PRICE).toString();
 			public static final String PRODUCT_ZERO = "No products have been added to the store.";
 			public static final String PRODUCT_NOT_AVAILABLE = "The Product Identifier doesn't exist";
 		}
@@ -51,12 +58,19 @@ public final class Messages {
 		}
 
 		public static final class Member {
-			public static final String EMPTY_MEMBER_NAME = "You have not entered a Member Name!";
-			public static final String EMPTY_MEMBER_ID = "You have not entered a Member ID!";
-			public static final String EMPTY_NAME_AND_ID = "You have not entered a Member Name and Member ID!";
-			public static final String INVALID_MEMBER_NAME = "Please enter a valid member name!";
+			public static final String INVALID_MEMBER_ID = "Member ID should only contain alphabets and numbers";
+			public static final String INVALID_MEMBER_NAME = new StringBuffer().append("Member Name: ")
+					.append(Common.INVALID_NAME).toString();
+			public static final String INVALID_LOYALTY_POINTS = "Loyalty Points has to be a positive value";
 			public static final String MEMBER_IDENTIFIER_ALREADY_PRESENT = "The Member ID you entered already exists!";
 			public static final String MEMBER_NOT_PRESENT_IN_FILE = "The Member does not exist!";
+			public static final String EMPTY_MEMBER_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS)
+					.append(Constants.Common.NEW_LINE).append(INVALID_MEMBER_ID).append(Constants.Common.NEW_LINE)
+					.append(INVALID_MEMBER_NAME).append(Constants.Common.NEW_LINE).append(INVALID_LOYALTY_POINTS)
+					.toString();
+			public static final String ADD_EMPTY_MEMBER_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS)
+					.append(Constants.Common.NEW_LINE).append(INVALID_MEMBER_ID).append(Constants.Common.NEW_LINE)
+					.append(INVALID_MEMBER_NAME).toString();
 		}
 
 		public static final class Discount {
@@ -73,7 +87,7 @@ public final class Messages {
 			public static final String INVALID_PERIOD_RANGE = "Period should be between 0 and 365";
 			public static final String INVALID_PERCENTAGE_RANGE = "Percentage should be bewteen 1 and 100";
 		}
-		
+
 		public static final class Transaction {
 			public static final String INVALID_DISCOUNT_ID = "Invalid discount Id.";
 			public static final String INVALID_MEMBER_ID = "Invalid member Id.";

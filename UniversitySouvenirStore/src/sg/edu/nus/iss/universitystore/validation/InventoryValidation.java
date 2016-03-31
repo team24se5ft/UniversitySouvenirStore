@@ -79,9 +79,29 @@ public class InventoryValidation extends Validation {
 		public static boolean isValidData(String name, String description, String quantity, String price,
 				String reorderThreshold, String reorderQuantity) throws InventoryException {
 
-			if (!isName(name) || description.isEmpty() || !isNumber(quantity) || !isFloat(price)
-					|| !isNumber(reorderThreshold) || !isNumber(reorderQuantity)) {
+			if (name.isEmpty() || description.isEmpty() || quantity.isEmpty() || price.isEmpty()
+					|| reorderThreshold.isEmpty() || reorderQuantity.isEmpty()) {
 				throw new InventoryException(InventoryError.INVALID_PRODUCT_FIELDS);
+			}
+
+			if (!isName(name)) {
+				throw new InventoryException(InventoryError.INVALID_NAME);
+			}
+
+			if (!isNumber(quantity)) {
+				throw new InventoryException(InventoryError.INVALID_QUANTITY);
+			}
+
+			if (!isFloat(price)) {
+				throw new InventoryException(InventoryError.INVALID_PRICE);
+			}
+
+			if (!isNumber(reorderThreshold)) {
+				throw new InventoryException(InventoryError.INVALID_REORDER_QUANTITY);
+			}
+
+			if (!isNumber(reorderQuantity)) {
+				throw new InventoryException(InventoryError.INVALID_REORDER_THRESHOLD);
 			}
 
 			return true;

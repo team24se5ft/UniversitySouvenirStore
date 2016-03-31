@@ -12,6 +12,7 @@ import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
+import sg.edu.nus.iss.universitystore.validation.MemberValidation;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.MemberDialog;
 import sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate;
@@ -54,9 +55,9 @@ public class MemberController implements IMemberDelegate {
 			// Initialize the instance variables.
 			memberManager = MemberManager.getInstance();
 			arrMember = memberManager.getAllMembers();
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e.getStackTrace());
+		} catch (MemberException memberExp) {
+			UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.ERROR,
+					memberExp.getMessage(), DialogType.ERROR_MESSAGE);
 		}
 
 		// Initialize the panel associated with this controller
@@ -90,20 +91,21 @@ public class MemberController implements IMemberDelegate {
 			
 			@Override
 			public boolean memberCallBack(String memberId, String memberName, String loyaltyPoints) {
-				// TODO Auto-generated method stub
-				// TODO Validations
 				try {
-					memberManager.addNewMember(memberId, memberName);
-					// Show the success dialog
-					UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.SUCCESS,
-							"Successfully added.", DialogType.INFORMATION_MESSAGE);
-					// Update Table
-					arrMember = memberManager.getAllMembers();
-					memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
-							TableDataUtils.getHeadersForMemberTable());
-					return true;
-				} catch (Exception e) {
-					// TODO: handle exception
+					if(MemberValidation.isValidData(memberId, memberName)) {
+						memberManager.addNewMember(memberId, memberName);
+						// Show the success dialog
+						UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.SUCCESS,
+								"Successfully added.", DialogType.INFORMATION_MESSAGE);
+						// Update Table
+						arrMember = memberManager.getAllMembers();
+						memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
+								TableDataUtils.getHeadersForMemberTable());
+						return true;
+					}
+				} catch (MemberException memberExp) {
+					UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.ERROR,
+							memberExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				return false;
 			}
@@ -136,8 +138,9 @@ public class MemberController implements IMemberDelegate {
 					arrMember = memberManager.getAllMembers();
 					memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
 							TableDataUtils.getHeadersForMemberTable());
-				} catch (Exception e) {
-					// TODO: handle exception
+				} catch (MemberException memberExp) {
+					UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.ERROR,
+							memberExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
 				// Remove the dialog
 				return true;
@@ -157,20 +160,22 @@ public class MemberController implements IMemberDelegate {
 
 					@Override
 					public boolean memberCallBack(String memberId, String memberName, String loyaltyPoints) {
-						// TODO : Do validation here
 						try {
-							// If the value is valid Update the value in the dB
-							Member updatedMember = new Member(memberId, memberName, loyaltyPoints);
-							memberManager.updateMember(member, updatedMember);
-							// Update the local copy
-							arrMember = memberManager.getAllMembers();
-							// Update table
-							memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
-									TableDataUtils.getHeadersForMemberTable());
-							// Dismiss the dialog OR show a success dialog
-							return true;
-						} catch (Exception e) {
-							// TODO: handle exception
+							if(MemberValidation.isValidData(memberId, memberName, loyaltyPoints) && MemberValidation.isValidLoyaltyPoint(loyaltyPoints)) {
+								// If the value is valid Update the value in the dB
+								Member updatedMember = new Member(memberId, memberName, loyaltyPoints);
+								memberManager.updateMember(member, updatedMember);
+								// Update the local copy
+								arrMember = memberManager.getAllMembers();
+								// Update table
+								memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
+										TableDataUtils.getHeadersForMemberTable());
+								// Dismiss the dialog OR show a success dialog
+								return true;
+							}
+						} catch (MemberException memberExp) {
+							UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.ERROR,
+									memberExp.getMessage(), DialogType.ERROR_MESSAGE);
 						}
 						return false;
 					}

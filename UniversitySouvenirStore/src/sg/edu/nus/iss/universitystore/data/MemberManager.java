@@ -9,6 +9,7 @@ import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.MemberException.MemberError;
 import sg.edu.nus.iss.universitystore.model.Member;
+import sg.edu.nus.iss.universitystore.validation.MemberValidation;
 
 /**
  * Managing member data
@@ -18,6 +19,19 @@ import sg.edu.nus.iss.universitystore.model.Member;
  */
 
 public class MemberManager {
+	
+	/**
+	 * Member Arguments
+	 */
+	public enum MemberArg {
+		NAME(0), MEMBER_ID(1), LOYALTY_POINTS(2);
+
+		private int position;
+
+		private MemberArg(int position) {
+			this.position = position;
+		}
+	}
 
 	/***********************************************************/
 	// Instance Variables
@@ -153,15 +167,32 @@ public class MemberManager {
 		// Store all the values in an array list.
 		ArrayList<Member> storedMembers = new ArrayList<Member>();
 		for (String singleMember : membersList) {
-			if (singleMember.isEmpty())
+
+			String[] memberStrSpltLst = singleMember.split(Constants.Data.FILE_SEPTR);
+
+			if (memberStrSpltLst.length != 3 || !isValidMemberData(memberStrSpltLst))
 				continue;
-			String[] memberSeperator = singleMember.split(Constants.Data.FILE_SEPTR);
-			String memberName = memberSeperator[0];
-			String memberId = memberSeperator[1];
-			int loyaltyPoints = Integer.parseInt(memberSeperator[2]);
-			storedMembers.add(new Member(memberId,memberName,loyaltyPoints));
+
+			storedMembers.add(new Member(memberStrSpltLst[MemberArg.MEMBER_ID.ordinal()],
+					memberStrSpltLst[MemberArg.NAME.ordinal()], memberStrSpltLst[MemberArg.LOYALTY_POINTS.ordinal()]));
 		}
 		return storedMembers;
+	}
+	
+	/**
+	 * Validates Member Data
+	 * 
+	 * @param dataStrList
+	 * @return Boolean
+	 * @throws MemberException
+	 */
+	private boolean isValidMemberData(String[] dataStrList) {
+		try {
+			return MemberValidation.isValidData(dataStrList[MemberArg.MEMBER_ID.ordinal()],
+					dataStrList[MemberArg.NAME.ordinal()], dataStrList[MemberArg.LOYALTY_POINTS.ordinal()]);
+		} catch (MemberException memberExp) {
+			return false;
+		}
 	}
 
 	/**

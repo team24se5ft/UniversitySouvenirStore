@@ -97,7 +97,11 @@ public final class Constants {
 		}
 
 		public static final class Member {
-			public static final int LOYALTY_NEW_MEMBER = 0;
+			public static final int LOYALTY_NEW_MEMBER = -1;
+			public static final class Pattern {
+				public static final String MEMBER_ID_MATCH = "^[a-zA-Z0-9]+$";
+				public static final String LOYALTY_POINTS_MATCH = "^((-1)|\\d+)$";
+			}
 		}
 
 		public static final class Discount {
