@@ -1,9 +1,6 @@
 package sg.edu.nus.iss.universitystore.model;
 
 public class StoreKeeper {
-	
-	private final static int USERNAME = 0;
-	private final static int PASSWORD = 1;
 
 	/***********************************************************/
 	//Instance Variables
@@ -17,10 +14,6 @@ public class StoreKeeper {
 	public StoreKeeper(String userName,String password) {
 		this.userName = userName;
 		this.password = password;
-	}
-	
-	public StoreKeeper(String[] args){
-		this(args[USERNAME],args[PASSWORD]);
 	}
 	
 	/***********************************************************/

@@ -38,7 +38,6 @@ public class InitializeTest {
 	}
 
 	public static boolean isJUnit() {
-		System.out.println(instance == null);
 		return instance == null ? false : isJUnit;
 	}
 	

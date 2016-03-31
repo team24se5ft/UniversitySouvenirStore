@@ -6,10 +6,11 @@ import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.LoginManager;
-import sg.edu.nus.iss.universitystore.exception.UniversityStoreLoginException;
+import sg.edu.nus.iss.universitystore.exception.LoginException;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
+import sg.edu.nus.iss.universitystore.validation.LoginValidation;
 import sg.edu.nus.iss.universitystore.view.LoginPanel;
 import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
 
@@ -41,7 +42,7 @@ public class LoginController implements ILoginDelegate {
 		// Instantiate Data File Manager
 		try {
 			loginManager = LoginManager.getInstance();
-		} catch (UniversityStoreLoginException e) {
+		} catch (LoginException e) {
 			// TODO Auto-generated catch block
 			UIUtils.showMessageDialog(loginPanel, "Error", e.getMessage(), DialogType.ERROR_MESSAGE);
 		}
@@ -62,10 +63,10 @@ public class LoginController implements ILoginDelegate {
 		StoreKeeper storeKeeper = new StoreKeeper(username, password);
 		
 		try {
-			if(loginManager.isValidCredentials(storeKeeper)) {
+			if(LoginValidation.isValidData(username, password) && loginManager.isValidCredentials(storeKeeper)) {
 				UIUtils.navigateToDashboard(loginPanel);
 			}
-		} catch (UniversityStoreLoginException exception) {
+		} catch (LoginException exception) {
 			UIUtils.showMessageDialog(loginPanel,"Error",exception.getMessage(),DialogType.ERROR_MESSAGE);
 		}
 	}

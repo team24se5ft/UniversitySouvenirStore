@@ -3,7 +3,6 @@
  */
 package sg.edu.nus.iss.universitystore.exception;
 
-import sg.edu.nus.iss.universitystore.exception.UniversityStoreLoginException.LoginError;
 import sg.edu.nus.iss.universitystore.messages.Messages;
 
 /**

@@ -53,7 +53,7 @@ public final class Messages {
 		public static final class Login {
 			public static final String EMPTY_USERNAME = "You have not entered a Username!";
 			public static final String EMPTY_PASSWORD = "You have not entered a Password!";
-			public static final String EMPTY_USERNAME_AND_PASSWORD = "You have not entered a Username and Password!";
+			public static final String EMPTY_USERNAME_PASSWORD = "You have not entered a Username and Password!";
 			public static final String INVALID_CREDENTIALS = "Invalid Username and//or password. Please check your details.";
 		}
 

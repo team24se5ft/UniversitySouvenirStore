@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
-import sg.edu.nus.iss.universitystore.exception.UniversityStoreLoginException;
-import sg.edu.nus.iss.universitystore.exception.UniversityStoreLoginException.LoginError;
+import sg.edu.nus.iss.universitystore.exception.LoginException;
+import sg.edu.nus.iss.universitystore.exception.LoginException.LoginError;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
+import sg.edu.nus.iss.universitystore.validation.LoginValidation;
 
 /**
  * Manager to handle Login for Store Keeper
@@ -16,16 +17,29 @@ import sg.edu.nus.iss.universitystore.model.StoreKeeper;
  *
  */
 public class LoginManager {
+	
+	/**
+	 * Login Arguments
+	 */
+	public enum LoginArg {
+		USERNAME(0), PASSWORD(1);
+
+		private int position;
+
+		private LoginArg(int position) {
+			this.position = position;
+		}
+	}
 
 	private static LoginManager instance;
 
 	private DataFile<StoreKeeper> storeKeeperData;
 
-	private LoginManager() throws UniversityStoreLoginException {
+	private LoginManager() throws LoginException {
 		try {
 			initialize();
 		} catch (IOException e) { 
-			throw new UniversityStoreLoginException(LoginError.UNKNOWN_ERROR);
+			throw new LoginException(LoginError.UNKNOWN_ERROR);
 		}
 	}
 
@@ -34,7 +48,7 @@ public class LoginManager {
 	 * 
 	 * @return DataFileManager
 	 */
-	public static LoginManager getInstance() throws UniversityStoreLoginException {
+	public static LoginManager getInstance() throws LoginException {
 		if (instance == null) {
 			synchronized (LoginManager.class) {
 				if (instance == null) {
@@ -46,7 +60,7 @@ public class LoginManager {
 	}
 
 	/**
-	 * Initialize Files
+	 * Initialize all Date Files
 	 * 
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -70,16 +84,7 @@ public class LoginManager {
 	 * @return Boolean
 	 * @throws IOException
 	 */
-	public boolean isValidCredentials(StoreKeeper enteredCredentials) throws UniversityStoreLoginException {
-		// Check if valid data has been provided by the user.
-		if (enteredCredentials.getUserName().length() == 0 && enteredCredentials.getPassword().length() == 0) {
-			throw new UniversityStoreLoginException(LoginError.EMPTY_USERNAME_AND_PASSWORD);
-		} else if (enteredCredentials.getUserName().length() == 0) {
-			throw new UniversityStoreLoginException(LoginError.EMPTY_USERNAME);
-		} else if (enteredCredentials.getPassword().length() == 0) {
-			throw new UniversityStoreLoginException(LoginError.EMPTY_PASSWORD);
-		}
-
+	public boolean isValidCredentials(StoreKeeper enteredCredentials) throws LoginException {
 		// Check if the data matches as in dB
 		ArrayList<StoreKeeper> credentials = getLoginCredentials();
 		for (StoreKeeper credentailsData : credentials) {
@@ -88,7 +93,7 @@ public class LoginManager {
 			}
 		}
 		// Throw an exception.
-		throw new UniversityStoreLoginException(LoginError.INVALID_CREDENTIALS);
+		throw new LoginException(LoginError.INVALID_CREDENTIALS);
 	}
 
 	/**
@@ -97,25 +102,41 @@ public class LoginManager {
 	 * @return All Store Keeper Credentials
 	 * @throws UniversityStoreLoginException
 	 */
-	private ArrayList<StoreKeeper> getLoginCredentials() throws UniversityStoreLoginException {
+	private ArrayList<StoreKeeper> getLoginCredentials() throws LoginException {
 		// Catch the exception from parent & inform the controller.
 		String[] storeKprStrList;
 		try {
 			storeKprStrList = storeKeeperData.getAll();
 		} catch (IOException e) {
-			throw new UniversityStoreLoginException(LoginError.UNKNOWN_ERROR);
+			throw new LoginException(LoginError.UNKNOWN_ERROR);
 		}
 
 		ArrayList<StoreKeeper> storeKeeper = new ArrayList<>();
-		for (String strKprStr : storeKprStrList) {
+		for (String storKprStr : storeKprStrList) {
+			
+			String[] storLprStrSpltLst = storKprStr.split(Constants.Data.FILE_SEPTR);
 
-			if (strKprStr.isEmpty())
+			if (storLprStrSpltLst.length != 2 || !isValidLoginData(storLprStrSpltLst))
 				continue;
 
-			storeKeeper.add(new StoreKeeper(strKprStr.split(Constants.Data.FILE_SEPTR)));
+			storeKeeper.add(new StoreKeeper(storLprStrSpltLst[LoginArg.USERNAME.ordinal()], storLprStrSpltLst[LoginArg.PASSWORD.ordinal()]));
 		}
 
 		return storeKeeper;
+	}
+	
+	/**
+	 * Validates Login Data
+	 * 
+	 * @param dataList
+	 * @return
+	 */
+	public boolean isValidLoginData(String[] dataList) {
+		try {
+			return LoginValidation.isValidData(dataList[LoginArg.USERNAME.ordinal()], dataList[LoginArg.PASSWORD.ordinal()]);
+		} catch (LoginException e) {
+			return false;
+		}
 	}
 
 }
