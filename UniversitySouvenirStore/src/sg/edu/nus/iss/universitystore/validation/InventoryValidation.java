@@ -51,7 +51,7 @@ public class InventoryValidation extends Validation {
 		public static boolean isValidData(String code, String name) throws InventoryException {
 
 			// Checks if Category fields are empty
-			if (code.isEmpty() || !isCode(code) || !isName(name)) {
+			if (code.isEmpty() || !isName(name)) {
 				throw new InventoryException(InventoryError.INVALID_CATEGORY_FIELDS);
 			}
 

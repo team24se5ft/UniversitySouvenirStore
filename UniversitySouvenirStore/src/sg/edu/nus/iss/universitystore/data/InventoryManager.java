@@ -281,8 +281,8 @@ public class InventoryManager {
 			Category category = findCategory(categoryCode);
 			
 			try{
-				if (categoryData.delete(category.toString())) {
-					status = deleteAllVendors(categoryCode);
+				if (deleteAllVendors(categoryCode)) {
+					status = categoryData.delete(category.toString());
 				}
 			} catch (IOException ioExp) {
 				throw new InventoryException(InventoryError.UNKNOWN_ERROR);
