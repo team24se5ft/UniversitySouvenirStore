@@ -84,7 +84,9 @@ public class TransactionManager {
 	private TransactionManager() throws TransactionException {
 		try {
 			initialize();
-		} catch (IOException | DiscountException | MemberException | InventoryException e) {
+		} catch (DiscountException | MemberException | InventoryException exp) {
+			throw new TransactionException(TransactionError.OTHER_ERROR, exp.getMessage());
+		} catch (IOException ioExp) {
 			throw new TransactionException(TransactionError.UNKNOWN_ERROR);
 		}
 	}
@@ -138,12 +140,12 @@ public class TransactionManager {
 			throws TransactionException {
 		// Check the quantities using inventory manager
 		for (TransactionItem transactionItem : arrTransactionItem) {
-			Product product = null;
-			try {// TODO - Remove this once product is done.
+			Product product;
+			try {
 				product = inventoryManager.findProduct(transactionItem.getProduct().getIdentifier());
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
+			} catch (InventoryException inventoryExp) {
+				// TODO: Check functionality
+				throw new TransactionException(TransactionError.OTHER_ERROR, inventoryExp.getMessage());
 			}
 			int availableQuantity = product.getQuantity();
 
@@ -231,6 +233,9 @@ public class TransactionManager {
 				continue;
 
 			String[] transactionStrSplt = transactionStr.split(Constants.Data.FILE_SEPTR);
+			
+			if(transactionStrSplt.length != 5)
+				continue;
 
 			transactionList.add(new Transaction(transactionStrSplt[TransactionArg.IDENTIFIER.ordinal()],
 					transactionStrSplt[TransactionArg.PRODUCT_ID.ordinal()],

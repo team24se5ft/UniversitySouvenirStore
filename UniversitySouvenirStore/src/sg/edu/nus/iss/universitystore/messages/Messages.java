@@ -13,6 +13,7 @@ public final class Messages {
 			public static final String INVALID_CODE = "Code must consist of capital alphabets only!";
 			public static final String INVALID_NAME = "Name can only contain alphabets, numbers and Spaces";
 			public static final String EMPTY_FIELDS = "All fields are mandatory.";
+			public static final String OTHER_ERROR = "Error in functionality.";
 		}
 
 		public static final class Category {

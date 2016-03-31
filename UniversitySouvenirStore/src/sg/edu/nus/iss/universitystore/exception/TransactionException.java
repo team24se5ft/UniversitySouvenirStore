@@ -3,6 +3,7 @@
  */
 package sg.edu.nus.iss.universitystore.exception;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.MemberException.MemberError;
 import sg.edu.nus.iss.universitystore.messages.Messages;
 
@@ -19,6 +20,7 @@ public class TransactionException extends Exception{
 		REQUESTED_QUANTITY_MORE_THAN_AVAILABLE(Messages.Error.Transaction.REQUESTED_QUANTITY_MORE_THAN_AVAILABLE),
 		INVALID_MEMBER_ID(Messages.Error.Transaction.INVALID_MEMBER_ID),
 		UNABLE_TO_UPDATE_LOYALTY_POINTS(Messages.Error.Transaction.UNABLE_TO_UPDATE_LOYALTY_POINTS),
+		OTHER_ERROR(Messages.Error.Common.OTHER_ERROR),
 	    UNKNOWN_ERROR(Messages.Error.Common.UNKNOWN_ERROR)
 	    ;
 		
@@ -47,6 +49,7 @@ public class TransactionException extends Exception{
 	// Instance variables
 	/***********************************************************/
 	private TransactionError error;
+	private String customMessage;
 	
 	/***********************************************************/
 	// Getters
@@ -58,14 +61,19 @@ public class TransactionException extends Exception{
 	
 	@Override
 	public String getMessage() {
-		return error.toString();
+		return error.toString()
+				+ (customMessage.isEmpty() ? Constants.Common.EMPTY_STR : Constants.Common.NEW_LINE + customMessage);
 	}
-	
+
 	/***********************************************************/
 	// Constructor
 	/***********************************************************/
-	
 	public TransactionException(TransactionError error) {
 		this.error = error;
+	}
+
+	public TransactionException(TransactionError error, String customMessage) {
+		this(error);
+		this.customMessage = customMessage;
 	}
 }
