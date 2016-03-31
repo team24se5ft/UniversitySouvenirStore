@@ -46,7 +46,7 @@ public class LoginManager {
 	}
 
 	/**
-	 * Initialize all Date Files
+	 * Initialize Files
 	 * 
 	 * @throws FileNotFoundException
 	 * @throws IOException

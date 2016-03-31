@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
-import sg.edu.nus.iss.universitystore.exception.StoreException;
 
 public class InitializeTest {
 	
@@ -38,7 +37,8 @@ public class InitializeTest {
 		return instance;
 	}
 
-	public static boolean isJUnit() {		
+	public static boolean isJUnit() {
+		System.out.println(instance == null);
 		return instance == null ? false : isJUnit;
 	}
 	

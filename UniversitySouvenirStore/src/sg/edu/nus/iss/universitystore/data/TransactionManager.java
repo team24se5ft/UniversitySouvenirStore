@@ -10,7 +10,6 @@ import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.exception.DiscountException;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
-import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException.TransactionError;
 import sg.edu.nus.iss.universitystore.model.Discount;
@@ -85,7 +84,7 @@ public class TransactionManager {
 	private TransactionManager() throws TransactionException {
 		try {
 			initialize();
-		} catch (IOException | DiscountException | MemberException | StoreException | InventoryException e) {
+		} catch (IOException | DiscountException | MemberException | InventoryException e) {
 			throw new TransactionException(TransactionError.UNKNOWN_ERROR);
 		}
 	}
@@ -100,7 +99,7 @@ public class TransactionManager {
 	 * @throws InventoryException
 	 */
 	private void initialize()
-			throws IOException, DiscountException, MemberException, StoreException, InventoryException {
+			throws DiscountException, MemberException, InventoryException, IOException{
 		transactionData = new DataFile<>(Constants.Data.FileName.TRANSACTION_DAT);
 		discountManager = DiscountManager.getInstance();
 		inventoryManager = InventoryManager.getInstance();
@@ -164,7 +163,7 @@ public class TransactionManager {
 	 * @throws InventoryException
 	 */
 	private void updateInventoryAfterSale(TransactionItem transactionItem)
-			throws IOException, StoreException, InventoryException {
+			throws  InventoryException {
 		Product product = transactionItem.getProduct();
 		int updatedQuantity = product.getQuantity() - transactionItem.getQuantity();
 		product.setQuantity(updatedQuantity);

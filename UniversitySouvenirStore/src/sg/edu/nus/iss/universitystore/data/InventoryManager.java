@@ -8,7 +8,6 @@ import java.util.HashMap;
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryError;
-import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Goods;
 import sg.edu.nus.iss.universitystore.model.Product;
@@ -416,7 +415,7 @@ public class InventoryManager {
 	 * @throws StoreException
 	 * @throws InventoryException 
 	 */
-	public Product addProduct(Goods goods) throws IOException, StoreException, InventoryException {
+	public Product addProduct(Goods goods) throws InventoryException {
 
 		return addProduct(goods.getCategory().getCode(), goods.getName(), goods.getDescription(),
 				String.valueOf(goods.getQuantity()), String.valueOf(goods.getPrice()),

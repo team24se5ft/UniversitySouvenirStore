@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.universitystore.model;
 
-import sg.edu.nus.iss.universitystore.exception.StoreException;
 
 public class Category {
 

@@ -10,8 +10,8 @@ public final class Messages {
 			public static final String INVALID_NUMBER = "Please Enter a Valid Positive Number. For example, \"123\"";
 			public static final String INVALID_FLOAT = "Please Enter a Valid Positive Number with a maximum of two decimals. For example, \"50.0\" or \"30.25\"";
 			public static final String INVALID_DATE = "Please Enter a Valid Date. Eg. 2000-10-20";
-			public static final String INVALID_CODE = "Code must consist of only alphabets and in Capitals";
-			public static final String INVALID_NAME = "Name can contain alphabets, numbers and Spaces only";
+			public static final String INVALID_CODE = "Code must consist of capital alphabets only!";
+			public static final String INVALID_NAME = "Name can only contain alphabets, numbers and Spaces";
 			public static final String EMPTY_FIELDS = "All fields are mandatory.";
 		}
 
