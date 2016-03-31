@@ -1,19 +1,26 @@
 package sg.edu.nus.iss.universitystore.data;
 
+
+
 import static org.junit.Assert.*;
 
 import java.io.IOException;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.Assert;
+
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.utility.JUnitUtility;
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.JUnitConstants;
+import sg.edu.nus.iss.universitystore.data.LoginManager;
+import sg.edu.nus.iss.universitystore.exception.LoginException;
+import sg.edu.nus.iss.universitystore.exception.LoginException.LoginError;
 import sg.edu.nus.iss.universitystore.intf.UniversityStoreJUnit;
+import sg.edu.nus.iss.universitystore.messages.JUnitMessages;
 
 public class LoginManagerTest {
 
@@ -38,25 +45,19 @@ public class LoginManagerTest {
 		try{
 			// Copy Test File Category.dat
 			JUnitUtility.copyFile(Constants.Data.FileName.STORE_KEEPER_DAT,
-								JUnitConstants.Data.FILE_FOLDER.STOREKEEPER.toString().toLowerCase()
-										+ Constants.Data.FILE_PATH_SEPTR);
+								(JUnitConstants.Data.FILE_FOLDER.STOREKEEPER.toString().toLowerCase()+ Constants.Data.FILE_PATH_SEPTR));
 
 			// Instantiate Inventory Manager
 			loginManager = LoginManager.getInstance();
 			
-			//Test for valid case
-			if(loginManager.isValidCredentials(storeKeeper1))
-			{
-				
-			}
+			Assert.assertTrue(loginManager.isValidCredentials(storeKeeper1));
 			
-			if(loginManager.isValidCredentials(storeKeeper2))
-			{
-				fail("Test case fails");
-			}
+			Assert.assertFalse(loginManager.isValidCredentials(storeKeeper2));
 		}
-		catch(IOException e){
-			e.printStackTrace();
+		catch (LoginException e) {
+			Assert.assertEquals(LoginError.INVALID_CREDENTIALS.toString(),e.getMessage());
+		} catch (IOException e) {
+			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
 		
 	}

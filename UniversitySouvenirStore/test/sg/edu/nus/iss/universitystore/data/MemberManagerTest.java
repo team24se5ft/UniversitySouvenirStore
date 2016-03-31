@@ -155,7 +155,7 @@ public class MemberManagerTest extends UniversityStoreJUnit {
 			// Add new member
 			Assert.assertTrue(memberManager.addNewMember(memberName1, memberId1));
 			// Add the same member
-			Assert.assertTrue(memberManager.addNewMember(memberName1, memberId1));
+			Assert.assertFalse(memberManager.addNewMember(memberName1, memberId1));
 			// Add Second member
 			Assert.assertTrue(memberManager.addNewMember(memberName2, memberId2));
 			// Find Member
