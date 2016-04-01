@@ -4,7 +4,6 @@
 package sg.edu.nus.iss.universitystore.exception;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
-import sg.edu.nus.iss.universitystore.exception.MemberException.MemberError;
 import sg.edu.nus.iss.universitystore.messages.Messages;
 
 /**
@@ -62,7 +61,7 @@ public class TransactionException extends Exception{
 	@Override
 	public String getMessage() {
 		return error.toString()
-				+ (customMessage.isEmpty() ? Constants.Common.EMPTY_STR : Constants.Common.NEW_LINE + customMessage);
+				+ (customMessage==null||customMessage.isEmpty() ? Constants.Common.EMPTY_STR : Constants.Common.NEW_LINE + customMessage);
 	}
 
 	/***********************************************************/

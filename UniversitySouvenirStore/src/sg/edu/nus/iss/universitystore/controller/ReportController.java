@@ -3,6 +3,7 @@
  */
 package sg.edu.nus.iss.universitystore.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -10,12 +11,14 @@ import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
+import sg.edu.nus.iss.universitystore.data.TransactionManager;
+import sg.edu.nus.iss.universitystore.exception.TransactionException;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.model.TransactionReport;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.view.intf.IReportDelegate;
-import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
 import sg.edu.nus.iss.universitystore.view.subpanel.ReportPanel;
 
 /**
@@ -58,6 +61,11 @@ public class ReportController implements IReportDelegate {
 	private ArrayList<Member> arrMember;
 
 	/**
+	 * The list of all transaction item.
+	 */
+	private ArrayList<TransactionReport> arrTransaction;
+
+	/**
 	 * The reference to the main frame on which the current panel is added.
 	 */
 	private JFrame topFrame;
@@ -95,6 +103,7 @@ public class ReportController implements IReportDelegate {
 			arrCategory = inventoryManager.getAllCategories();
 			arrProduct = inventoryManager.getAllProducts();
 			arrMember = memberManager.getAllMembers();
+			arrTransaction = TransactionManager.getInstance().getTransactionReport();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getStackTrace());
@@ -107,16 +116,33 @@ public class ReportController implements IReportDelegate {
 				TableDataUtils.getHeadersForProductTable());
 		reportPanel.setMemberTableData(TableDataUtils.getFormattedMemberListForTable(arrMember),
 				TableDataUtils.getHeadersForMemberTable());
+		reportPanel.setTransactionTableData(TableDataUtils.getFormattedTransactionListForTable(arrTransaction),
+				TableDataUtils.getHeadersForTransactionTable());
 	}
 
 	/***********************************************************/
 	// IReportDelegate
 	/***********************************************************/
+
 	/**
 	 * Will be called when the report panel is visble.
 	 */
 	public void reportPanelVisible() {
 		// Everytime the view is visible we will initialize the components.
 		initializeComponents();
+	}
+
+	@Override
+	public void onTransactionQuery(String startDate, String endDate) {
+		//TODO validate startDate and endDate here,such as startDate cannot over endDate.
+		LocalDate start=LocalDate.parse(startDate);
+		LocalDate end=LocalDate.parse(endDate);
+		try {
+			arrTransaction=TransactionManager.getInstance().getTransactionReport(start,end);
+			reportPanel.setTransactionTableData(TableDataUtils.getFormattedTransactionListForTable(arrTransaction),
+					TableDataUtils.getHeadersForTransactionTable());
+		} catch (TransactionException e) {
+			e.printStackTrace();
+		}
 	}
 }

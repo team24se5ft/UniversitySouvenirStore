@@ -2,8 +2,10 @@ package sg.edu.nus.iss.universitystore.data;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
@@ -17,6 +19,7 @@ import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.model.Transaction;
 import sg.edu.nus.iss.universitystore.model.TransactionItem;
+import sg.edu.nus.iss.universitystore.model.TransactionReport;
 
 /**
  * Manager class for handling the payment & transaction functionality.
@@ -100,8 +103,7 @@ public class TransactionManager {
 	 * @throws IOException
 	 * @throws InventoryException
 	 */
-	private void initialize()
-			throws DiscountException, MemberException, InventoryException, IOException{
+	private void initialize() throws DiscountException, MemberException, InventoryException, IOException {
 		transactionData = new DataFile<>(Constants.Data.FileName.TRANSACTION_DAT);
 		discountManager = DiscountManager.getInstance();
 		inventoryManager = InventoryManager.getInstance();
@@ -118,10 +120,10 @@ public class TransactionManager {
 	private int getTransactionId() throws TransactionException {
 		// Get the transactionId
 		int transactionId = 1;
-		ArrayList<Transaction> allTransactions = getAllTransactions();
+		ArrayList<TransactionReport> allTransactions = getTransactionReport();
 
 		if (allTransactions.size() != 0) {
-			Transaction lastTransaction = allTransactions.get(allTransactions.size() - 1);
+			TransactionReport lastTransaction = allTransactions.get(allTransactions.size() - 1);
 			transactionId = (Integer.valueOf(lastTransaction.getIdentifier())) + 1;
 		}
 		return transactionId;
@@ -164,15 +166,22 @@ public class TransactionManager {
 	 * @throws StoreException
 	 * @throws InventoryException
 	 */
-	private void updateInventoryAfterSale(TransactionItem transactionItem)
-			throws  InventoryException {
-		Product product = transactionItem.getProduct();
-		int updatedQuantity = product.getQuantity() - transactionItem.getQuantity();
-		product.setQuantity(updatedQuantity);
-		inventoryManager.updateProduct(product);
+	private boolean updateInventoryAfterSale(Transaction transaction) throws IOException, InventoryException {
+		boolean status = true;
+		for (int i = 0; i < transaction.getTransactionItemList().size(); i++) {
+			TransactionItem transactionItem = transaction.getTransactionItemList().get(i);
+			Product product = transactionItem.getProduct();
+			int updatedQuantity = product.getQuantity() - transactionItem.getQuantity();
+			product.setQuantity(updatedQuantity);
+			if (!inventoryManager.updateProduct(product)) {
+				status = false;
+			}
+		}
+		return status;
 	}
 
-	private void updateLoyaltyPointsOfMemberAfterSale(String memberId, float totalAmount) throws TransactionException{
+	private boolean updateLoyaltyPointsOfMemberAfterSale(String memberId, float totalAmount)
+			throws TransactionException {
 		// Update the member loyalty points
 		if (!memberId.equals(ViewConstants.Labels.STR_PUBLIC)) {
 			try {
@@ -183,11 +192,12 @@ public class TransactionManager {
 				// Set the loyalty points to the new member
 				updatedMember.setLoyaltyPoints(updatedMember.getLoyaltyPoints() + earnedLoyaltyPoints);
 				// Update the dB
-				memberManager.updateMember(memberManager.getMember(memberId), updatedMember);
+				return memberManager.updateMember(memberManager.getMember(memberId), updatedMember);
 			} catch (MemberException e) {
 				throw new TransactionException(TransactionError.UNABLE_TO_UPDATE_LOYALTY_POINTS);
 			}
 		}
+		return true;
 	}
 	/***********************************************************/
 	// Public Methods
@@ -212,13 +222,14 @@ public class TransactionManager {
 	}
 
 	/**
-	 * (3.3.d) Get All Transactions from Data File
+	 * (3.3.d) Get TransactionReports from Data File to fulfill the
+	 * transactionTable
 	 * 
 	 * @return
 	 * @throws IOException
 	 */
-	public ArrayList<Transaction> getAllTransactions() throws TransactionException {
-		ArrayList<Transaction> transactionList = new ArrayList<>();
+	public ArrayList<TransactionReport> getTransactionReport() throws TransactionException {
+		ArrayList<TransactionReport> transactionList = new ArrayList<>();
 
 		String[] transactionStrList;
 		try {
@@ -233,17 +244,138 @@ public class TransactionManager {
 				continue;
 
 			String[] transactionStrSplt = transactionStr.split(Constants.Data.FILE_SEPTR);
-			
-			if(transactionStrSplt.length != 5)
+			String productId = transactionStrSplt[TransactionArg.PRODUCT_ID.ordinal()];
+			Product product;
+			try {
+				product = InventoryManager.getInstance().findProduct(productId);
+				if (product == null) {
+					continue;
+				}
+				int quantity = Integer.valueOf(transactionStrSplt[TransactionArg.QUANTITY.ordinal()]);
+				String memberId = transactionStrSplt[TransactionArg.MEMBER_ID.ordinal()];
+				String date = transactionStrSplt[TransactionArg.DATE.ordinal()];
+				int Identifider = Integer.valueOf(transactionStrSplt[TransactionArg.IDENTIFIER.ordinal()]);
+				TransactionItem transactionitem = new TransactionItem(product, quantity);
+				transactionList.add(new TransactionReport(Identifider, transactionitem, memberId, date));
+			} catch (InventoryException e) {
+				e.printStackTrace();
+			}
+		}
+		sortTransactionReport(transactionList);
+		return transactionList;
+	}
+
+	/**
+	 * query for transaction record by input startDate and endDate
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 * @throws TransactionException
+	 */
+	public ArrayList<TransactionReport> getTransactionReport(LocalDate startDate, LocalDate endDate)
+			throws TransactionException {
+		ArrayList<TransactionReport> transactionList = new ArrayList<>();
+
+		String[] transactionStrList;
+		try {
+			transactionStrList = transactionData.getAll();
+		} catch (IOException e) {
+			throw new TransactionException(TransactionError.UNKNOWN_ERROR);
+		}
+
+		for (String transactionStr : transactionStrList) {
+			// If line in Data file is empty, skip line
+			if (transactionStr.isEmpty())
 				continue;
 
-			transactionList.add(new Transaction(transactionStrSplt[TransactionArg.IDENTIFIER.ordinal()],
-					transactionStrSplt[TransactionArg.PRODUCT_ID.ordinal()],
-					transactionStrSplt[TransactionArg.MEMBER_ID.ordinal()],
-					transactionStrSplt[TransactionArg.QUANTITY.ordinal()],
-					transactionStrSplt[TransactionArg.DATE.ordinal()]));
+			String[] transactionStrSplt = transactionStr.split(Constants.Data.FILE_SEPTR);
+			String date = transactionStrSplt[TransactionArg.DATE.ordinal()];
+			LocalDate localdate = LocalDate.parse(date);
+			if (localdate.isBefore(startDate) || localdate.isAfter(endDate)) {
+				continue;
+			}
+			String productId = transactionStrSplt[TransactionArg.PRODUCT_ID.ordinal()];
+			Product product;
+			try {
+				product = InventoryManager.getInstance().findProduct(productId);
+				if (product == null) {
+					continue;
+				}
+				int quantity = Integer.valueOf(transactionStrSplt[TransactionArg.QUANTITY.ordinal()]);
+				String memberId = transactionStrSplt[TransactionArg.MEMBER_ID.ordinal()];
+				int Identifider = Integer.valueOf(transactionStrSplt[TransactionArg.IDENTIFIER.ordinal()]);
+				TransactionItem transactionitem = new TransactionItem(product, quantity);
+				transactionList.add(new TransactionReport(Identifider, transactionitem, memberId, date));
+			} catch (InventoryException e) {
+				e.printStackTrace();
+			}
+		}
+		sortTransactionReport(transactionList);
+		return transactionList;
+	}
+
+	/**
+	 * (3.3.d) Get All Transactions from Data File,reserve for future utilize
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public ArrayList<Transaction> getAllTransaction() throws TransactionException {
+		ArrayList<Transaction> transactionList = new ArrayList<>();
+
+		String[] transactionStrList;
+		try {
+			transactionStrList = transactionData.getAll();
+		} catch (IOException e) {
+			throw new TransactionException(TransactionError.UNKNOWN_ERROR);
+		}
+		String tempId = "1";
+		for (String transactionStr : transactionStrList) {
+			// If line in Data file is empty, skip line
+			if (transactionStr.isEmpty())
+				continue;
+
+			String[] transactionStrSplt = transactionStr.split(Constants.Data.FILE_SEPTR);
+			String productId = transactionStrSplt[TransactionArg.PRODUCT_ID.ordinal()];
+			Product product;
+			try {
+				product = InventoryManager.getInstance().findProduct(productId);
+				if (product == null) {
+					continue;
+				}
+				int quantity = Integer.valueOf(transactionStrSplt[TransactionArg.QUANTITY.ordinal()]);
+				String memberId = transactionStrSplt[TransactionArg.MEMBER_ID.ordinal()];
+				String date = transactionStrSplt[TransactionArg.DATE.ordinal()];
+				String Identifider = transactionStrSplt[TransactionArg.IDENTIFIER.ordinal()];
+				TransactionItem transactionitem = new TransactionItem(product, quantity);
+				ArrayList<TransactionItem> list = new ArrayList<TransactionItem>();
+				if (Identifider.equals(String.valueOf(Identifider))) {
+					list.add(transactionitem);
+				} else {
+					tempId = Identifider;
+					transactionList.add(new Transaction(Identifider, list, memberId, date));
+				}
+			} catch (InventoryException e) {
+				e.printStackTrace();
+			}
 		}
 		return transactionList;
+	}
+
+	/**
+	 * use default way to sort transaction Report by(product id)
+	 * 
+	 * @param reportList
+	 */
+	public void sortTransactionReport(ArrayList<TransactionReport> reportList) {
+		reportList.sort(new Comparator<TransactionReport>() {
+
+			@Override
+			public int compare(TransactionReport report1, TransactionReport report2) {
+				return report1.getItem().getProduct().getIdentifier()
+						.compareTo(report2.getItem().getProduct().getIdentifier());
+			}
+		});
 	}
 
 	/**
@@ -319,34 +451,24 @@ public class TransactionManager {
 			throw new TransactionException(TransactionError.INVALID_MEMBER_ID);
 		}
 
-		// Return Value
-		boolean returnValue = false;
-
 		// Loop through all the elements
-		for (TransactionItem transactionItem : arrTransactionItem) {
-			// Create a new Transaction object
-			Transaction transaction = new Transaction(transactionId, transactionItem.getProduct().getIdentifier(),
-					memberId, transactionItem.getQuantity(), LocalDate.now());
-			try {
-				returnValue = transactionData.add(transaction);
-				updateInventoryAfterSale(transactionItem);
-			} catch (Exception e) {
+		// Create a new Transaction object
+		Transaction transaction = new Transaction(transactionId, arrTransactionItem, memberId, LocalDate.now());
+		try {
+			transactionData.add(transaction);
+			if (updateInventoryAfterSale(transaction)) {
+				return updateLoyaltyPointsOfMemberAfterSale(memberId, getTotal(arrTransactionItem, discountId));
+			} else {
 				// TODO : Remove all the items that have been written because
 				// something went wrong
 				// Revert the constant value as well.
 			}
+		} catch (Exception e) {
+			// TODO : Remove all the items that have been written because
+			// something went wrong
+			// Revert the constant value as well.
+			return false;
 		}
-
-		if (returnValue) {
-			try {
-				updateLoyaltyPointsOfMemberAfterSale(memberId, getTotal(arrTransactionItem, discountId));
-			} catch (TransactionException e) {
-				// TODO : Remove all the items that have been written because
-				// something went wrong
-				// Revert the constant value as well.
-			}
-		}
-		
-		return returnValue;
+		return false;
 	}
 }

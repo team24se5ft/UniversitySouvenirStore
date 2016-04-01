@@ -1,7 +1,7 @@
 package sg.edu.nus.iss.universitystore.model;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Transaction {
 
@@ -9,9 +9,8 @@ public class Transaction {
 	// Instance Variables
 	/***********************************************************/
 	private String identifier;
-	private String productId;
+	private ArrayList<TransactionItem> itemList;
 	private String memberId;
-	private int quantity;
 	private LocalDate date;
 
 	/***********************************************************/
@@ -32,13 +31,11 @@ public class Transaction {
 	 * @param date
 	 *            The date of the transaction
 	 */
-	public Transaction(int identifier, String productId, String memberId, int quantity, LocalDate date) {
+	public Transaction(int identifier, ArrayList<TransactionItem> itemList, String memberId, LocalDate date) {
 		// Set the values
-		this.identifier = String.valueOf(identifier);// TODO - Validate if this
-														// gives an integer
-		this.productId = productId;
+		this.identifier = String.valueOf(identifier);// TODO - Validate if this ßßgives an integer
+		this.itemList = itemList;
 		this.memberId = memberId;
-		this.quantity = quantity;
 		this.date = date;// TODO - Put validation for getting the correct format
 	}
 
@@ -56,9 +53,9 @@ public class Transaction {
 	 * @param date
 	 *            The date of the transaction
 	 */
-	public Transaction(String identifier, String productId, String memberId, String quantity, String date) {
+	public Transaction(String identifier, ArrayList<TransactionItem> itemList, String memberId, String date) {
 		// Call the main constructor
-		this(Integer.parseInt(identifier), productId, memberId, Integer.parseInt(quantity), LocalDate.parse(date));
+		this(Integer.parseInt(identifier), itemList, memberId, LocalDate.parse(date));
 	}
 	/***********************************************************/
 	// Getters & Setters
@@ -74,8 +71,8 @@ public class Transaction {
 	/**
 	 * @return the productId
 	 */
-	public String getProductId() {
-		return productId;
+	public ArrayList<TransactionItem> getTransactionItemList() {
+		return itemList;
 	}
 
 	/**
@@ -83,13 +80,6 @@ public class Transaction {
 	 */
 	public String getMemberId() {
 		return memberId;
-	}
-
-	/**
-	 * @return the quantity
-	 */
-	public int getQuantity() {
-		return quantity;
 	}
 
 	/**
@@ -110,6 +100,11 @@ public class Transaction {
 	 */
 	@Override
 	public String toString() {
-		return identifier + "," + productId + "," + memberId + "," + quantity + "," + date;
+		String value="";
+		for(int i=0;i<itemList.size();i++){
+			value+=identifier + "," + itemList.get(i).getProduct().getIdentifier() + "," + memberId + "," + itemList.get(i).getQuantity() + "," + date.toString();
+			value+="\n";
+		}
+		return value;
 	}
 }

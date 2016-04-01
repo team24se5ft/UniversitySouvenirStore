@@ -23,6 +23,7 @@ public abstract class MemberScanDialog extends BaseDialog {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
+
 	/**
 	 * Constructor to create the dialog.
 	 * 
@@ -38,19 +39,22 @@ public abstract class MemberScanDialog extends BaseDialog {
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
-	
-	
+
 	/**
 	 * check the memberCode and return result
-	 * @param MemberCode 
+	 * 
+	 * @param MemberCode
 	 */
 	public abstract boolean onMemberIdentification(String MemberCode);
 
 	/***********************************************************/
 	// Abstract Method Implementation
 	/***********************************************************/
-	/* (non-Javadoc)
-	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#getPanelToAddToDialog()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see sg.edu.nus.iss.universitystore.view.dialog.BaseDialog#
+	 * getPanelToAddToDialog()
 	 */
 	@Override
 	protected JPanel getPanelToAddToDialog() {
@@ -70,10 +74,7 @@ public abstract class MemberScanDialog extends BaseDialog {
 	 */
 	@Override
 	protected boolean confirmClicked() {
-		if (MemberCode.getText().length() != 0) {
-			return onMemberIdentification(MemberCode.getText());
-		}
-		return false;
+		return onMemberIdentification(MemberCode.getText());
 	}
 
 }

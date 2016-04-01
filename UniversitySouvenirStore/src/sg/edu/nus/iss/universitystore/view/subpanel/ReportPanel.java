@@ -6,7 +6,6 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.text.View;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.view.intf.IReportDelegate;
@@ -43,6 +42,10 @@ public class ReportPanel extends JPanel{
 	 * Panel which displays all the functionalities related to the member.
 	 */
 	private MemberPanel memberPanel;
+	/**
+	 * Panel which displays all the functionalities related to the member.
+	 */
+	private TransactionPanel TransactionPanel;
 	
 	/**
 	 * Delegate for informing the controller about the various events.
@@ -71,7 +74,9 @@ public class ReportPanel extends JPanel{
 		memberPanel = new MemberPanel(null);
 		memberPanel.removeButtonPanel();
 		
-		createTabbedPane(categoryPanel, productPanel, memberPanel);
+		TransactionPanel = new TransactionPanel(delegate);
+		
+		createTabbedPane(categoryPanel, productPanel, memberPanel,TransactionPanel);
 		
 		// Add the component listener since this class needs to be updated when there is a change on the other fields.
 		addComponentListener( new ComponentAdapter ()
@@ -113,12 +118,20 @@ public class ReportPanel extends JPanel{
 	public void setMemberTableData(String[][] content, String[] headers) {
 		memberPanel.updateTable(content, headers);
 	}
+	/**
+	 * Method to set the table data for Transaction Panel
+	 * @param content The table content to displayed as part of transaction panel.
+	 * @param headers The table headers to displayed as part of transaction panel.
+	 */
+	public void setTransactionTableData(String[][] content, String[] headers) {
+		TransactionPanel.updateTable(content, headers);
+	}
 	
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/
 
-	private void createTabbedPane(JPanel categoryPanel, JPanel productPanel, JPanel memberPanel) {
+	private void createTabbedPane(JPanel categoryPanel, JPanel productPanel, JPanel memberPanel,JPanel transactionPanel) {
 		tabbedPane = new JTabbedPane();
 		// TODO - Add image to the tabbed pane?
 		tabbedPane.addTab(ViewConstants.PaneHeaders.REP_CATEGORY_PANE, null, categoryPanel,
@@ -127,6 +140,8 @@ public class ReportPanel extends JPanel{
 				ViewConstants.PaneHeaders.REP_PRODUCT_PANE_DESC);
 		tabbedPane.addTab(ViewConstants.PaneHeaders.REP_MEMBER_PANE, null, memberPanel,
 				ViewConstants.PaneHeaders.REP_MEMBER_PANE_DESC);
+		tabbedPane.addTab(ViewConstants.PaneHeaders.REP_TRANSACTION_PANE, null, transactionPanel,
+				ViewConstants.PaneHeaders.REP_TRANSACTION_PANE_DESC);
 		add(tabbedPane, BorderLayout.CENTER);
 	}
 }
