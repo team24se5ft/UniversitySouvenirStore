@@ -103,5 +103,10 @@ public final class Messages {
 			public static final String REQUESTED_QUANTITY_MORE_THAN_AVAILABLE = "Requested quantity of one or more items more than that available in the store";
 			public static final String UNABLE_TO_UPDATE_LOYALTY_POINTS = "Something went wrong while updating loyalty points.";
 		}
+		
+		public static final class Controller{
+			public static final String NO_PRODUCTS_PRS = "No products present in the store.";
+			public static final String CAT_BEFORE_PROD = "Please add a category before adding products.";
+		}
 	}
 }
