@@ -193,7 +193,7 @@ public class ViewConstants {
 		public static final String MEMBER_OPTION_LABEL = "PUBLIC";
 		public static final String NONE_DISCOUNT = "No Discount";
 		public static final String MEMBER_LABEL = "Member:";
-		public static final String DISCOUNT_LABEL = "Discount:";
+		public static final String DISCOUNT_LABEL = "Discount Applicable To:";
 		public static final String DISCOUNT_PERCENTAGE_LABEL = "Discount %:";
 		public static final String AVAILABLE_LOYALPOINT_LABEL = "Available Loyalty Points:";
 		

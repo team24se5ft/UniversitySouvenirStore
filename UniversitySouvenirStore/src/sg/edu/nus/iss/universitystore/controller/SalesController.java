@@ -14,6 +14,7 @@ import sg.edu.nus.iss.universitystore.exception.DiscountException;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException;
+import sg.edu.nus.iss.universitystore.messages.Messages;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
@@ -73,7 +74,7 @@ public class SalesController implements ISalesDelegate {
 	public void addProduct() {
 		try {
 			if(inventoryManager.getAllProducts().size() == 0) {
-				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, "No products present in the store.",
+				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, Messages.Error.Controller.NO_PRODUCTS_PRS,
 						DialogType.ERROR_MESSAGE);
 			}else {
 				productDialog = new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Scan Product") {

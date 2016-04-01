@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
+import sg.edu.nus.iss.universitystore.messages.Messages;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
@@ -210,7 +211,7 @@ public class InventoryController implements IInventoryDelegate {
 	public void addProductClicked() {
 		try {
 			if(inventoryManager.getAllCategories().size() == 0) {
-				UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR, "Please add a category before adding products.",
+				UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR, Messages.Error.Controller.CAT_BEFORE_PROD,
 						DialogType.ERROR_MESSAGE);
 			}else {
 				// Add a new Product Dialog
