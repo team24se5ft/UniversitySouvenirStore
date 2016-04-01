@@ -109,8 +109,8 @@ public class InventoryController implements IInventoryDelegate {
 			@Override
 			public boolean categoryCallback(String categoryCode, String categoryName) {
 				try {
-					if (InventoryValidation.Catgory.isValidData(categoryCode, categoryName)) {
-						inventoryManager.addCategory(categoryCode, categoryName);
+					if (InventoryValidation.Catgory.isValidData(categoryCode.toUpperCase(), categoryName)) {
+						inventoryManager.addCategory(categoryCode.toUpperCase(), categoryName);
 						// Show the success dialog
 						UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
 								ViewConstants.Controller.SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
@@ -145,9 +145,9 @@ public class InventoryController implements IInventoryDelegate {
 			@Override
 			public boolean categoryCallback(String categoryCode, String categoryName) {
 				try {
-					if (InventoryValidation.Catgory.isValidData(categoryCode, categoryName)) {
+					if (InventoryValidation.Catgory.isValidData(categoryCode.toUpperCase(), categoryName)) {
 						// If the value is valid Update the value in the dB
-						Category updatedCategory = new Category(categoryCode, categoryName);
+						Category updatedCategory = new Category(categoryCode.toUpperCase(), categoryName);
 						inventoryManager.updateCategory(category, updatedCategory);
 						// Update the local copy
 						arrCategory = inventoryManager.getAllCategories();

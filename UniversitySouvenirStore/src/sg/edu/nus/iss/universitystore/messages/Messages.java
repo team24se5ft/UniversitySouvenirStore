@@ -17,8 +17,7 @@ public final class Messages {
 		}
 
 		public static final class Category {
-			public static final String INVALID_CODE = new StringBuffer().append(Common.INVALID_CODE)
-					.append(Constants.Common.NEW_LINE).append("Code must be 3 characters long only").toString();
+			public static final String INVALID_CODE = new StringBuffer().append("Code must be 3 characters long only").toString();
 			public static final String INVALID_NAME = new StringBuffer().append("Category ").append(Common.INVALID_NAME)
 					.toString();
 			public static final String CATEGORY_ALREADY_PRESENT = "The Category Code already exists!";
