@@ -41,19 +41,18 @@ public class DiscountManagerTest extends UniversityStoreJUnit {
 
 	String memberID;
 	String memberName;
+	String memberLoyaltyPoints;
 
 	Discount discount1, discount2, invldDiscount, discountDefault;
-
-	Member member;
 
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 
-		// Member
+		// New Member
 		memberID = "ABZW123KL";
 		memberName = "Abzsde Klaoel";
-		member = new Member(memberID, memberName);
+		memberLoyaltyPoints = "50";
 
 		// Discount 1
 		discountCode1 = "GME_WEEK";
@@ -98,6 +97,7 @@ public class DiscountManagerTest extends UniversityStoreJUnit {
 
 		memberID = null;
 		memberName = null;
+		memberLoyaltyPoints = null;
 
 		DiscountManager.deleteInstance();
 		MemberManager.deleteInstance();
@@ -155,8 +155,15 @@ public class DiscountManagerTest extends UniversityStoreJUnit {
 			// Get Discount for Public Members
 			Assert.assertEquals(discountDefault,
 					discountManager.getDiscount(Constants.Data.Discount.Member.Public.CODE));
-			// Get Discount for Member
+			// Get Discount for New Member
 			Assert.assertTrue(discountManager.getDiscount(memberID).getPercentage() == 20);
+			
+			// Modify Added Member
+			Member oldMember = memberManager.getMember(memberID);
+			Member updatedMember = new Member(oldMember.getIdentifier(), oldMember.getName(), memberLoyaltyPoints);
+			Assert.assertTrue(memberManager.updateMember(oldMember, updatedMember));
+			// Get Discount for Existing Member
+			Assert.assertTrue(discountManager.getDiscount(memberID).getPercentage() == 10);
 
 			// Update new discount
 			Assert.assertTrue(discountManager.updateDiscount(discount1, discount2));
