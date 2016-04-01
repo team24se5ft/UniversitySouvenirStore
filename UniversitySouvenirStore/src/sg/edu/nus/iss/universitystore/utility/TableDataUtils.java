@@ -11,7 +11,9 @@ import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
+import sg.edu.nus.iss.universitystore.model.Transaction;
 import sg.edu.nus.iss.universitystore.model.TransactionItem;
+import sg.edu.nus.iss.universitystore.model.TransactionReport;
 
 public class TableDataUtils {
 
@@ -68,7 +70,21 @@ public class TableDataUtils {
 	}
 
 	/**
-	 * Method to get the table content for transaction table
+	 * Method to get the table headers for product. It is important that this is
+	 * in sync with the content method.
+	 * 
+	 * @return The string array with the table headers.
+	 */
+	public static String[] getHeadersForProductTable() {
+		String[] list = new String[] { Constants.TableData.STR_PRODUCT_CODE, Constants.TableData.STR_PRODUCT_NAME,
+				Constants.TableData.STR_PRODUCT_DESCRIPTION, Constants.TableData.STR_PRODUCT_QUANTITY,
+				Constants.TableData.STR_PRODUCT_PRICE, Constants.TableData.STR_PRODUCT_REORDER_THRESHOLD,
+				Constants.TableData.STR_PRODUCT_REORDER_QUANTITY };
+		return list;
+	}
+
+	/**
+	 * Method to get the table content for transactionItem table
 	 * 
 	 * @param transactionList
 	 *            The array containing products that need to be displayed in the
@@ -76,8 +92,9 @@ public class TableDataUtils {
 	 * 
 	 * @return The 2D string array which will be input to the table.
 	 */
-	public static String[][] getFormattedTransactionListForTable(ArrayList<TransactionItem> transactionList) {
-		String[][] list = new String[transactionList.size()][Constants.TableData.NUMBER_OF_PRODUCT_TABLE_COLUMNS];
+	public static String[][] getFormattedTransactionItemListForTable(ArrayList<TransactionItem> transactionList) {
+		String[][] list = new String[transactionList
+				.size()][Constants.TableData.NUMBER_OF_TRANSACTION_ITEM_TABLE_COLUMNS];
 		for (int row = 0; row < transactionList.size(); row++) {
 			TransactionItem item = transactionList.get(row);
 			list[row][Constants.TableData.FIRST_COLUMN] = item.getProduct().getIdentifier();
@@ -90,16 +107,54 @@ public class TableDataUtils {
 	}
 
 	/**
-	 * Method to get the table headers for product. It is important that this is
-	 * in sync with the content method.
+	 * Method to get the table headers for transactionItem. It is important that
+	 * this is in sync with the content method.
 	 * 
 	 * @return The string array with the table headers.
 	 */
-	public static String[] getHeadersForProductTable() {
-		String[] list = new String[] { Constants.TableData.STR_PRODUCT_CODE,Constants.TableData.STR_PRODUCT_NAME,
-				Constants.TableData.STR_PRODUCT_DESCRIPTION, Constants.TableData.STR_PRODUCT_QUANTITY,
-				Constants.TableData.STR_PRODUCT_PRICE, Constants.TableData.STR_PRODUCT_REORDER_THRESHOLD,
-				Constants.TableData.STR_PRODUCT_REORDER_QUANTITY };
+	public static String[] getHeadersForTransactionItemTable() {
+		String[] list = new String[] { Constants.TableData.STR_TRANSACTIONITEM_PRODUCT_IDENTIFIER,
+				Constants.TableData.STR_TRANSACTIONITEM_PRODUCT_NAME,
+				Constants.TableData.STR_TRANSACTIONITEM_PURCHASE_QUANTITY,
+				Constants.TableData.STR_TRANSACTIONITEM_PRICE, Constants.TableData.STR_TRANSACTIONITEM_TOTAL };
+		return list;
+	}
+
+	/**
+	 * Method to get the table content for transaction table
+	 * 
+	 * @param transactionList
+	 *            The array containing products that need to be displayed in the
+	 *            table.
+	 * 
+	 * @return The 2D string array which will be input to the table.
+	 */
+	public static String[][] getFormattedTransactionListForTable(ArrayList<TransactionReport> transactionList) {
+		String[][] list = new String[transactionList
+				.size()][Constants.TableData.NUMBER_OF_TRANSACTION_ITEM_TABLE_COLUMNS];
+		for (int row = 0; row < transactionList.size(); row++) {
+			TransactionReport transaction = transactionList.get(row);
+			list[row][Constants.TableData.FIRST_COLUMN] = transaction.getItem().getProduct().getIdentifier();
+			list[row][Constants.TableData.SECOND_COLUMN] = transaction.getItem().getProduct().getName();
+			list[row][Constants.TableData.THIRD_COLUMN] = transaction.getItem().getProduct().getDescription();
+			list[row][Constants.TableData.FOURTH_COLUMN] = transaction.getMemberId();
+			list[row][Constants.TableData.FIFTH_COLUMN] = String.valueOf(transaction.getItem().getQuantity());
+			list[row][Constants.TableData.SIXTH_COLUMN] = String.valueOf(transaction.getDate());
+		}
+		return list;
+	}
+
+	/**
+	 * Method to get the table headers for transaction. It is important that
+	 * this is in sync with the content method.
+	 * 
+	 * @return The string array with the table headers.
+	 */
+	public static String[] getHeadersForTransactionTable() {
+		String[] list = new String[] { Constants.TableData.STR_TRANSACTION_PRODUCT_IDENTIFIER,
+				Constants.TableData.STR_TRANSACTION_PRODUCT_NAME,
+				Constants.TableData.STR_TRANSACTION_PRODUCT_DESCRIPTION, Constants.TableData.STR_MEMBER_IDENTIFIER,
+				Constants.TableData.STR_TRANSACTION_PURCHASE_QUANTITY, Constants.TableData.STR_TRANSACTION_DATE };
 		return list;
 	}
 
@@ -170,16 +225,4 @@ public class TableDataUtils {
 		return list;
 	}
 
-	/**
-	 * Method to get the table headers for transaction. It is important that this is
-	 * in sync with the content method.
-	 * 
-	 * @return The string array with the table headers.
-	 */
-	public static String[] getHeadersForTransactionTable() {
-		String[] list = new String[] { Constants.TableData.STR_TRANSACTION_PRODUCT_IDENTIFIER,
-				Constants.TableData.STR_TRANSACTION_PRODUCT_NAME, Constants.TableData.STR_TRANSACTION_PURCHASE_QUANTITY,
-				Constants.TableData.STR_TRANSACTION_PRICE, Constants.TableData.STR_TRANSACTION_TOTAL };
-		return list;
-	}
 }
