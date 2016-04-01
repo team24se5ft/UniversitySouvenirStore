@@ -1,5 +1,5 @@
 MEMBER_FIRST,"First purchase by member",ALWAYS,ALWAYS,20.0,M
-MEMBER_SUBSEQ,"Something",ALWAYS,ALWAYS,5.0,M
+MEMBER_SUBSEQ,"Something",ALWAYS,ALWAYS,10.0,M
 CENTENARY,"Centenary Celebration in 2014",2014-01-01,365,15.0,A
 
 CENTENARY_INVLD1,"Centenary Celebration in 2014",365,15.0,A
