@@ -191,6 +191,47 @@ public class DiscountManager {
 	/***********************************************************/
 	
 	/**
+	 * (3.2.c) Get all Valid Discounts applicable for current system date
+	 * 
+	 * @return List of Discounts
+	 * @throws IOException
+	 */
+	private ArrayList<Discount> getAllMemberDiscounts() throws DiscountException {
+		ArrayList<Discount> discountList = getAllDiscounts();
+		ArrayList<Discount> memberDiscountList = new ArrayList<>();
+
+		for (Discount discount : discountList) {
+
+			// Checks if discount is applicable for current date
+			if (!isApplicableDate(discount.getStartDate(), discount.getPeriod()))
+				continue;
+
+			// Add Discount
+			memberDiscountList.add(discount);
+		}
+
+		return memberDiscountList;
+	}
+
+	/**
+	 * (3.2.c) Return all discount applicable to non-members
+	 * 
+	 * @return List of Discounts applicable to the Public
+	 * @throws IOException
+	 */
+	private ArrayList<Discount> getAllPublicDiscounts() throws DiscountException {
+		ArrayList<Discount> discountList = getAllMemberDiscounts();
+		ArrayList<Discount> publicDiscountList = new ArrayList<>();
+
+		for (Discount discount : discountList) {
+			if (discount.getEligibilty().equalsIgnoreCase(Constants.Data.Discount.Eligibility.ALL))
+				publicDiscountList.add(discount);
+		}
+
+		return publicDiscountList;
+	}
+	
+	/**
 	 * Checks if Current Date is within the Discount Start Date and Period or if
 	 * it is set as 'ALWAYS'
 	 * 
@@ -265,47 +306,6 @@ public class DiscountManager {
 		}
 
 		return discountList;
-	}
-
-	/**
-	 * (3.2.c) Get all Valid Discounts applicable for current system date
-	 * 
-	 * @return List of Discounts
-	 * @throws IOException
-	 */
-	public ArrayList<Discount> getAllMemberDiscounts() throws DiscountException {
-		ArrayList<Discount> discountList = getAllDiscounts();
-		ArrayList<Discount> memberDiscountList = new ArrayList<>();
-
-		for (Discount discount : discountList) {
-
-			// Checks if discount is applicable for current date
-			if (!isApplicableDate(discount.getStartDate(), discount.getPeriod()))
-				continue;
-
-			// Add Discount
-			memberDiscountList.add(discount);
-		}
-
-		return memberDiscountList;
-	}
-
-	/**
-	 * (3.2.c) Return all discount applicable to non-members
-	 * 
-	 * @return List of Discounts applicable to the Public
-	 * @throws IOException
-	 */
-	public ArrayList<Discount> getAllPublicDiscounts() throws DiscountException {
-		ArrayList<Discount> discountList = getAllMemberDiscounts();
-		ArrayList<Discount> publicDiscountList = new ArrayList<>();
-
-		for (Discount discount : discountList) {
-			if (discount.getEligibilty().equalsIgnoreCase(Constants.Data.Discount.Eligibility.ALL))
-				publicDiscountList.add(discount);
-		}
-
-		return publicDiscountList;
 	}
 
 	/**
