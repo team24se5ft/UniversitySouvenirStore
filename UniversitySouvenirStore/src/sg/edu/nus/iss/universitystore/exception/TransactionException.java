@@ -20,6 +20,9 @@ public class TransactionException extends Exception{
 		INVALID_MEMBER_ID(Messages.Error.Transaction.INVALID_MEMBER_ID),
 		UNABLE_TO_UPDATE_LOYALTY_POINTS(Messages.Error.Transaction.UNABLE_TO_UPDATE_LOYALTY_POINTS),
 		OTHER_ERROR(Messages.Error.Common.OTHER_ERROR),
+		INVALID_START_DATE(Messages.Error.Transaction.INVALID_START_DATE),
+		INVALID_END_DATE(Messages.Error.Transaction.INVALID_END_DATE),
+		END_DATE_BEFORE_START_DATE(Messages.Error.Transaction.END_DATE_BEFORE_START_DATE),
 	    UNKNOWN_ERROR(Messages.Error.Common.UNKNOWN_ERROR)
 	    ;
 		

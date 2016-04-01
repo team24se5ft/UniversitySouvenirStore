@@ -102,6 +102,9 @@ public final class Messages {
 			public static final String INVALID_MEMBER_ID = "Invalid member Id.";
 			public static final String REQUESTED_QUANTITY_MORE_THAN_AVAILABLE = "Requested quantity of one or more items more than that available in the store";
 			public static final String UNABLE_TO_UPDATE_LOYALTY_POINTS = "Something went wrong while updating loyalty points.";
+			public static final String INVALID_START_DATE = new StringBuffer().append("Start Date: ").append(Common.INVALID_DATE).toString();
+			public static final String INVALID_END_DATE = new StringBuffer().append("End Date: ").append(Common.INVALID_DATE).toString();
+			public static final String END_DATE_BEFORE_START_DATE = "End Date must be after Start Date";
 		}
 		
 		public static final class Controller{

@@ -9,15 +9,21 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
 import sg.edu.nus.iss.universitystore.data.TransactionManager;
+import sg.edu.nus.iss.universitystore.exception.InventoryException;
+import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.model.TransactionReport;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
+import sg.edu.nus.iss.universitystore.utility.UIUtils;
+import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
+import sg.edu.nus.iss.universitystore.validation.TransactionValidation;
 import sg.edu.nus.iss.universitystore.view.intf.IReportDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.ReportPanel;
 
@@ -104,10 +110,6 @@ public class ReportController implements IReportDelegate {
 			arrProduct = inventoryManager.getAllProducts();
 			arrMember = memberManager.getAllMembers();
 			arrTransaction = TransactionManager.getInstance().getTransactionReport();
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e.getStackTrace());
-		}
 
 		// Update Inventory Panel with retrieved data
 		reportPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
@@ -118,6 +120,11 @@ public class ReportController implements IReportDelegate {
 				TableDataUtils.getHeadersForMemberTable());
 		reportPanel.setTransactionTableData(TableDataUtils.getFormattedTransactionListForTable(arrTransaction),
 				TableDataUtils.getHeadersForTransactionTable());
+		
+		} catch (InventoryException | MemberException | TransactionException exp) {
+			UIUtils.showMessageDialog(reportPanel, ViewConstants.StatusMessage.ERROR,
+					exp.getMessage(), DialogType.ERROR_MESSAGE);
+		}
 	}
 
 	/***********************************************************/
@@ -134,15 +141,32 @@ public class ReportController implements IReportDelegate {
 
 	@Override
 	public void onTransactionQuery(String startDate, String endDate) {
-		//TODO validate startDate and endDate here,such as startDate cannot over endDate.
-		LocalDate start=LocalDate.parse(startDate);
-		LocalDate end=LocalDate.parse(endDate);
+		// When fields are empty
+		if(startDate.isEmpty() && endDate.isEmpty()){
+			try {
+				arrTransaction = TransactionManager.getInstance().getTransactionReport();
+				reportPanel.setTransactionTableData(TableDataUtils.getFormattedTransactionListForTable(arrTransaction),
+						TableDataUtils.getHeadersForTransactionTable());
+			} catch (TransactionException transactionExp) {
+				UIUtils.showMessageDialog(reportPanel, ViewConstants.StatusMessage.ERROR,
+						transactionExp.getMessage(), DialogType.ERROR_MESSAGE);
+			}
+			return;
+		}
+		
 		try {
-			arrTransaction=TransactionManager.getInstance().getTransactionReport(start,end);
-			reportPanel.setTransactionTableData(TableDataUtils.getFormattedTransactionListForTable(arrTransaction),
-					TableDataUtils.getHeadersForTransactionTable());
-		} catch (TransactionException e) {
-			e.printStackTrace();
+			if(TransactionValidation.isValidData(startDate, endDate)){
+				// Convert to LocalDate Java Object
+				LocalDate start=LocalDate.parse(startDate);
+				LocalDate end=LocalDate.parse(endDate);
+				
+				arrTransaction=TransactionManager.getInstance().getTransactionReport(start,end);
+				reportPanel.setTransactionTableData(TableDataUtils.getFormattedTransactionListForTable(arrTransaction),
+						TableDataUtils.getHeadersForTransactionTable());	
+			}
+		} catch (TransactionException transactionExp) {
+			UIUtils.showMessageDialog(reportPanel, ViewConstants.StatusMessage.ERROR,
+					transactionExp.getMessage(), DialogType.ERROR_MESSAGE);
 		}
 	}
 }
