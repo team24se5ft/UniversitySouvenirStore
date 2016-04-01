@@ -221,12 +221,12 @@ public class InventoryController implements IInventoryDelegate {
 
 					@Override
 					public boolean productCallback(String categoryCode, String name, String description, String quantity,
-							String price, String reorderThreshold, String reorderQuantity) {
+							String price, String barCode, String reorderThreshold, String reorderQuantity) {
 						try {
-							if (InventoryValidation.Product.isValidData(categoryCode, name, description, quantity, price,
+							if (InventoryValidation.Product.isValidData(categoryCode, name, description, quantity, price, barCode,
 									reorderThreshold, reorderQuantity)) {
 								// Add the new product
-								inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
+								inventoryManager.addProduct(categoryCode, name, description, quantity, price, barCode, reorderThreshold,
 										reorderQuantity);
 								// Show the success dialog
 								UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
@@ -269,12 +269,12 @@ public class InventoryController implements IInventoryDelegate {
 
 			@Override
 			public boolean productCallback(String productID, String name, String description, String quantity,
-					String price, String reorderThreshold, String reorderQuantity) {
+					String price, String barCode, String reorderThreshold, String reorderQuantity) {
 				try {
-					if (InventoryValidation.Product.isValidData(name, description, quantity, price,
+					if (InventoryValidation.Product.isValidData(name, description, quantity, price, barCode,
 							reorderThreshold, reorderQuantity)) {
 						Product updatedProduct = new Product(productID, name, description, quantity, price,
-								reorderThreshold, reorderQuantity);
+								barCode, reorderThreshold, reorderQuantity);
 						inventoryManager.updateProduct(updatedProduct);
 						// Update the local copy
 						arrProduct = inventoryManager.getAllProducts();
@@ -289,7 +289,6 @@ public class InventoryController implements IInventoryDelegate {
 					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
 							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 				}
-				// TODO Auto-generated method stub
 				return false;
 			}
 		};
@@ -297,6 +296,7 @@ public class InventoryController implements IInventoryDelegate {
 		productDialog.setProductName(product.getName());
 		productDialog.setProductDescription(product.getDescription());
 		productDialog.setProductPrice(String.valueOf(product.getPrice()));
+		productDialog.setProductBarCode(String.valueOf(product.getBarCode()));
 		productDialog.setProductQuantity(String.valueOf(product.getQuantity()));
 		productDialog.setThresholdQuantity(String.valueOf(product.getReorderThreshold()));
 		productDialog.setReorderQuantity(String.valueOf(product.getReorderQuantity()));

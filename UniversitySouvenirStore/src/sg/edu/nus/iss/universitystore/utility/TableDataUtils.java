@@ -63,8 +63,9 @@ public class TableDataUtils {
 			list[row][Constants.TableData.THIRD_COLUMN] = product.getDescription();
 			list[row][Constants.TableData.FOURTH_COLUMN] = String.valueOf(product.getQuantity());
 			list[row][Constants.TableData.FIFTH_COLUMN] = String.valueOf(product.getPrice());
-			list[row][Constants.TableData.SIXTH_COLUMN] = String.valueOf(product.getReorderThreshold());
-			list[row][Constants.TableData.SEVENTH_COLUMN] = String.valueOf(product.getReorderQuantity());
+			list[row][Constants.TableData.SIXTH_COLUMN] = String.valueOf(product.getBarCode());
+			list[row][Constants.TableData.SEVENTH_COLUMN] = String.valueOf(product.getReorderThreshold());
+			list[row][Constants.TableData.EIGHTH_COLUMN] = String.valueOf(product.getReorderQuantity());
 		}
 		return list;
 	}
@@ -78,8 +79,8 @@ public class TableDataUtils {
 	public static String[] getHeadersForProductTable() {
 		String[] list = new String[] { Constants.TableData.STR_PRODUCT_CODE, Constants.TableData.STR_PRODUCT_NAME,
 				Constants.TableData.STR_PRODUCT_DESCRIPTION, Constants.TableData.STR_PRODUCT_QUANTITY,
-				Constants.TableData.STR_PRODUCT_PRICE, Constants.TableData.STR_PRODUCT_REORDER_THRESHOLD,
-				Constants.TableData.STR_PRODUCT_REORDER_QUANTITY };
+				Constants.TableData.STR_PRODUCT_PRICE, Constants.TableData.STR_PRODUCT_BARCODE,
+				Constants.TableData.STR_PRODUCT_REORDER_THRESHOLD, Constants.TableData.STR_PRODUCT_REORDER_QUANTITY };
 		return list;
 	}
 

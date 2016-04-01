@@ -76,10 +76,10 @@ public class InventoryValidation extends Validation {
 		 * @return Boolean
 		 * @throws InventoryException
 		 */
-		public static boolean isValidData(String name, String description, String quantity, String price,
+		public static boolean isValidData(String name, String description, String quantity, String price, String barCode,
 				String reorderThreshold, String reorderQuantity) throws InventoryException {
 
-			if (name.isEmpty() || description.isEmpty() || quantity.isEmpty() || price.isEmpty()
+			if (name.isEmpty() || description.isEmpty() || quantity.isEmpty() || price.isEmpty() || barCode.isEmpty()
 					|| reorderThreshold.isEmpty() || reorderQuantity.isEmpty()) {
 				throw new InventoryException(InventoryError.INVALID_PRODUCT_FIELDS);
 			}
@@ -94,6 +94,10 @@ public class InventoryValidation extends Validation {
 
 			if (!isFloat(price)) {
 				throw new InventoryException(InventoryError.INVALID_PRICE);
+			}
+			
+			if(!isNumber(barCode)) {
+				throw new InventoryException(InventoryError.INVALID_BARCODE);
 			}
 
 			if (!isNumber(reorderThreshold)) {
@@ -121,9 +125,9 @@ public class InventoryValidation extends Validation {
 		 * @throws InventoryException
 		 */
 		public static boolean isValidData(String categoryCode, String name, String description, String quantity,
-				String price, String reorderThreshold, String reorderQuantity) throws InventoryException {
+				String price, String barCode, String reorderThreshold, String reorderQuantity) throws InventoryException {
 			return InventoryValidation.Catgory.isValidCatgoryCode(categoryCode)
-					&& isValidData(name, description, quantity, price, reorderThreshold, reorderQuantity);
+					&& isValidData(name, description, quantity, price, barCode, reorderThreshold, reorderQuantity);
 		}
 
 	}

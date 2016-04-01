@@ -17,7 +17,8 @@ public final class Messages {
 		}
 
 		public static final class Category {
-			public static final String INVALID_CODE = new StringBuffer().append("Code must be 3 characters long only").toString();
+			public static final String INVALID_CODE = new StringBuffer().append("Code must be 3 characters long only")
+					.toString();
 			public static final String INVALID_NAME = new StringBuffer().append("Category ").append(Common.INVALID_NAME)
 					.toString();
 			public static final String CATEGORY_ALREADY_PRESENT = "The Category Code already exists!";
@@ -43,11 +44,17 @@ public final class Messages {
 					.append(Common.INVALID_NUMBER).toString();
 			public static final String INVALID_PRICE = new StringBuffer().append("Price: ").append(Common.INVALID_FLOAT)
 					.toString();
+			public static final String INVALID_BARCODE = new StringBuffer().append("Bar Code: ")
+					.append(Common.INVALID_NUMBER).toString();
 			public static final String INVALID_PRODUCT_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS)
 					.append(Constants.Common.NEW_LINE).append(INVALID_NAME).append(Constants.Common.NEW_LINE)
-					.append(INVALID_NUMBER).append(Constants.Common.NEW_LINE).append(INVALID_PRICE).toString();
+					.append(INVALID_NUMBER).append(Constants.Common.NEW_LINE).append(INVALID_PRICE)
+					.append(Constants.Common.NEW_LINE).append(INVALID_BARCODE).append(Constants.Common.NEW_LINE)
+					.append(INVALID_REORDER_THRESHOLD).append(Constants.Common.NEW_LINE)
+					.append(INVALID_REORDER_QUANTITY).toString();
 			public static final String PRODUCT_ZERO = "No products have been added to the store.";
 			public static final String PRODUCT_NOT_AVAILABLE = "The Product Identifier doesn't exist";
+			public static final String PRODUCT_BAR_CODE_EXISTS = "The Product Bar Code already exists";
 		}
 
 		public static final class Login {
@@ -102,12 +109,14 @@ public final class Messages {
 			public static final String INVALID_MEMBER_ID = "Invalid member Id.";
 			public static final String REQUESTED_QUANTITY_MORE_THAN_AVAILABLE = "Requested quantity of one or more items more than that available in the store";
 			public static final String UNABLE_TO_UPDATE_LOYALTY_POINTS = "Something went wrong while updating loyalty points.";
-			public static final String INVALID_START_DATE = new StringBuffer().append("Start Date: ").append(Common.INVALID_DATE).toString();
-			public static final String INVALID_END_DATE = new StringBuffer().append("End Date: ").append(Common.INVALID_DATE).toString();
+			public static final String INVALID_START_DATE = new StringBuffer().append("Start Date: ")
+					.append(Common.INVALID_DATE).toString();
+			public static final String INVALID_END_DATE = new StringBuffer().append("End Date: ")
+					.append(Common.INVALID_DATE).toString();
 			public static final String END_DATE_BEFORE_START_DATE = "End Date must be after Start Date";
 		}
-		
-		public static final class Controller{
+
+		public static final class Controller {
 			public static final String NO_PRODUCTS_PRS = "No products present in the store.";
 			public static final String CAT_BEFORE_PROD = "Please add a category before adding products.";
 		}

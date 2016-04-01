@@ -111,6 +111,7 @@ public class ViewConstants {
 		public static final String PROD_DESC="Product Description :";
 		public static final String PROD_QUANTITY="Product Quantity :";
 		public static final String PROD_PRICE="Product Price :";
+		public static final String BAR_CODE="BarCode :";
 		public static final String REORDER_QUANTITY="Reorder Quantity (Threshold):";
 		public static final String ORDER_QUANTITY="Order Quantity :";
 		

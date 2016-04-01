@@ -9,6 +9,7 @@ public class Product {
 	private String name;
 	private String description;
 	private int quantity;
+	private String barCode;
 	private double price;
 	private int reorderThreshold;
 	private int reorderQuantity;
@@ -16,25 +17,16 @@ public class Product {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
-	public Product(String identifier, String name, String description, String quantity, String price,
+	public Product(String identifier, String name, String description, String quantity, String price, String barCode, 
 			String reorderThreshold, String reorderQuantity) {
 		this.identifier = identifier;
 		this.name = name;
 		this.description = description;
 		this.quantity = Integer.parseInt(quantity);
+		this.barCode = barCode;
 		this.price = Double.parseDouble(price);
 		this.reorderThreshold = Integer.parseInt(reorderThreshold);
 		this.reorderQuantity = Integer.parseInt(reorderQuantity);
-	}
-
-	public Product(String identifier, Goods goods) {
-		this.identifier = identifier;
-		this.name = goods.getName();
-		this.description = goods.getDescription();
-		this.quantity = goods.getQuantity();
-		this.price = goods.getPrice();
-		this.reorderThreshold = goods.getReorderThreshold();
-		this.reorderQuantity = goods.getReorderQuantity();
 	}
 
 	/***********************************************************/
@@ -48,6 +40,7 @@ public class Product {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
 	/**
 	 * @return the identifier
 	 */
@@ -74,6 +67,13 @@ public class Product {
 	 */
 	public int getQuantity() {
 		return quantity;
+	}
+
+	/**
+	 * @return the BarCode
+	 */
+	public String getBarCode() {
+		return barCode;
 	}
 
 	/**
@@ -107,14 +107,15 @@ public class Product {
 	 */
 	@Override
 	public String toString() {
-		return identifier + "," + name + ",\"" + description + "\"," + quantity + "," + price + "," + reorderThreshold + ","
-				+ reorderQuantity;
+		return identifier + "," + name + ",\"" + description + "\"," + quantity + "," + price + "," + barCode + ","
+				+ reorderThreshold + "," + reorderQuantity;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((barCode == null) ? 0 : barCode.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -136,6 +137,11 @@ public class Product {
 		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
+		if (barCode == null) {
+			if (other.barCode != null)
+				return false;
+		} else if (!barCode.equals(other.barCode))
+			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;

@@ -15,7 +15,6 @@ import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryErro
 import sg.edu.nus.iss.universitystore.intf.UniversityStoreJUnit;
 import sg.edu.nus.iss.universitystore.messages.JUnitMessages;
 import sg.edu.nus.iss.universitystore.model.Category;
-import sg.edu.nus.iss.universitystore.model.Goods;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.utility.JUnitUtility;
 
@@ -28,74 +27,76 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 	/**
 	 * Category Codes
 	 */
-	private String categoryCode1, categoryCode2, categoryCode3, invalidCatgryCode1, invalidCatgryCode2,
+	private String categoryCode1, categoryCode2, invalidCatgryCode1, invalidCatgryCode2,
 			invalidCatgryCode3;
 	/**
 	 * Category Names
 	 */
-	private String categoryName1, categoryName2, categoryName3, invalidCatgryName1, invalidCatgryName2,
+	private String categoryName1, categoryName2, invalidCatgryName2,
 			invalidCatgryName3;
 
+	
 	/**
-	 * Goods
+	 * Product Name
 	 */
-	private Goods goods1, goods2, goods3;
+	private String productName1, productName2, productName3;
 	/**
-	 * Goods Name
+	 * Product Description
 	 */
-	private String goodsName1, goodsName2, goodsName3;
+	private String productDescription1, productDescription2, productDescription3;
 	/**
-	 * Goods Description
+	 * Product Quality
 	 */
-	private String goodsDescription1, goodsDescription2, goodsDescription3;
+	private Integer productQuantity1, productQuantity2, productQuantity3;
 	/**
-	 * Goods Quality
+	 * Product Price
 	 */
-	private Integer goodsQuantity1, goodsQuantity2, goodsQuantity3;
+	private Double productPrice1, productPrice2, productPrice3;
 	/**
-	 * Goods Price
+	 * Product Bar Code
 	 */
-	private Double goodsPrice1, goodsPrice2, goodsPrice3;
+	private Integer productBarCode1, productBarCode2, productBarCode3;
 	/**
-	 * Goods Reorder Threshold
+	 * Product Reorder Threshold
 	 */
-	private Integer goodsReorderThreshold1, goodsReorderThreshold2, goodsReorderThreshold3;
+	private Integer productReorderThreshold1, productReorderThreshold2, productReorderThreshold3;
 	/**
-	 * Goods Reorder Quantity
+	 * Product Reorder Quantity
 	 */
-	private Integer goodsReorderQuantity1, goodsReorderQuantity2, goodsReorderQuantity3;
+	private Integer productReorderQuantity1, productReorderQuantity2, productReorderQuantity3;
 	/**
 	 * Invalid Product Identifier
 	 */
 	private String invalidProdID1, invalidProdID2;
-	/**
-	 * Products
-	 */
-	private Product product1, product2;
+
 	/**
 	 * Product Name
 	 */
-	private String prodName1, prodName2;
+	private String prodName1;
 	/**
 	 * Product Description
 	 */
-	private String prodDescription1, prodDescription2;
+	private String prodDescription1;
 	/**
 	 * Product Quality
 	 */
-	private Integer prodQuantity1, prodQuantity2;
+	private Integer prodQuantity1;
 	/**
 	 * Product Price
 	 */
-	private Double prodPrice1, prodPrice2;
+	private Double prodPrice1;
+	/**
+	 * Product Barcode
+	 */
+	private String prodBarCode1;
 	/**
 	 * Product Reorder Threshold
 	 */
-	private Integer prodReorderThreshold1, prodReorderThreshold2;
+	private Integer prodReorderThreshold1;
 	/**
 	 * Product Reorder Quantity
 	 */
-	private Integer prodReorderQuantity1, prodReorderQuantity2;
+	private Integer prodReorderQuantity1;
 
 	@Override
 	public void setUp() throws Exception {
@@ -113,66 +114,50 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 
 		// Invalid Category
 		invalidCatgryCode1 = "MCW";
-		invalidCatgryName1 = "Microwave";
 		invalidCatgryCode2 = "BOAZ";
 		invalidCatgryName2 = "Boa Snakes";
 		invalidCatgryCode3 = "BO1";
 		invalidCatgryName3 = "Boa Snakes";
 
-		// Goods Set 1
-		goodsName1 = "Nike Cloths";
-		goodsDescription1 = "Nike Cloths L";
-		goodsQuantity1 = 50;
-		goodsPrice1 = 50.00;
-		goodsReorderQuantity1 = 40;
-		goodsReorderThreshold1 = 10;
-		goods1 = new Goods(category1, goodsName1, goodsDescription1, goodsQuantity1.intValue(),
-				goodsPrice1.doubleValue(), goodsReorderThreshold1.intValue(), goodsReorderQuantity1.intValue());
+		// Product Set 1
+		productName1 = "Nike Cloths";
+		productDescription1 = "Nike Cloths L";
+		productQuantity1 = 50;
+		productPrice1 = 50.00;
+		productBarCode1 = 1;
+		productReorderQuantity1 = 40;
+		productReorderThreshold1 = 10;
 
-		// Goods Set 2
-		goodsName2 = "Nike Cloths";
-		goodsDescription2 = "Nike Cloths XL";
-		goodsQuantity2 = 30;
-		goodsPrice2 = 60.00;
-		goodsReorderQuantity2 = 20;
-		goodsReorderThreshold2 = 10;
-		goods2 = new Goods(category1, goodsName2, goodsDescription2, goodsQuantity2.intValue(),
-				goodsPrice2.doubleValue(), goodsReorderThreshold2.intValue(), goodsReorderQuantity2.intValue());
+		// Product Set 2
+		productName2 = "Nike Cloths";
+		productDescription2 = "Nike Cloths XL";
+		productQuantity2 = 30;
+		productPrice2 = 60.00;
+		productBarCode2 = 11;
+		productReorderQuantity2 = 20;
+		productReorderThreshold2 = 10;
 
-		// Goods Set 3
-		goodsName3 = "Nike Shoes";
-		goodsDescription3 = "Nike Running Shoes Size 9.5";
-		goodsQuantity3 = 80;
-		goodsPrice3 = 100.00;
-		goodsReorderQuantity3 = 55;
-		goodsReorderThreshold3 = 25;
-		goods3 = new Goods(category2, goodsName3, goodsDescription3, goodsQuantity3.intValue(),
-				goodsPrice3.doubleValue(), goodsReorderThreshold3.intValue(), goodsReorderQuantity3.intValue());
+		// Product Set 3
+		productName3 = "Nike Shoes";
+		productDescription3 = "Nike Running Shoes Size 9.5";
+		productQuantity3 = 80;
+		productPrice3 = 100.00;
+		productBarCode3 = 111;
+		productReorderQuantity3 = 55;
+		productReorderThreshold3 = 25;
 
 		// Invalid Product
 		invalidProdID1 = "BOA/15";
 		invalidProdID2 = "BOAZ/15";
 
-		// Product Set 1
+		// Product Set 4
 		prodName1 = "Nike Cloths";
 		prodDescription1 = "Nike Cloths L";
 		prodQuantity1 = 10;
 		prodPrice1 = 50.00;
+		prodBarCode1 = "4321";
 		prodReorderQuantity1 = 40;
 		prodReorderThreshold1 = 10;
-
-		// Product Set 2
-		prodName2 = "Nike Cloths";
-		prodDescription2 = "Nike Cloths XL";
-		prodQuantity2 = 5;
-		prodPrice2 = 60.00;
-		prodReorderQuantity2 = 20;
-		prodReorderThreshold2 = 10;
-		/*
-		 * product2 = new Product(category1, prodName2, prodDescription2,
-		 * prodQuantity2.intValue(), prodPrice2.doubleValue(),
-		 * prodReorderThreshold2.intValue(), prodReorderQuantity2.intValue());
-		 */
 
 	}
 
@@ -183,17 +168,17 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 
 		// Destroy all category content;
 		category1 = category2 = null;
-		categoryCode1 = categoryCode2 = categoryCode3 = invalidCatgryCode1 = invalidCatgryCode2 = invalidCatgryCode3 = null;
-		categoryName1 = categoryName2 = categoryName3 = invalidCatgryName1 = invalidCatgryName2 = invalidCatgryName3 = null;
+		categoryCode1 = categoryCode2 = invalidCatgryCode1 = invalidCatgryCode2 = invalidCatgryCode3 = null;
+		categoryName1 = categoryName2 = invalidCatgryName2 = invalidCatgryName3 = null;
 
-		// Destroy all goods content;
-		goods1 = goods2 = goods3 = null;
-		goodsName1 = goodsName2 = goodsName3 = null;
-		goodsDescription1 = goodsDescription2 = goodsDescription3 = null;
-		goodsQuantity1 = goodsQuantity2 = goodsQuantity3 = null;
-		goodsPrice1 = goodsPrice2 = goodsPrice3 = null;
-		goodsReorderThreshold1 = goodsReorderThreshold2 = goodsReorderThreshold3 = null;
-		goodsReorderQuantity1 = goodsReorderQuantity2 = goodsReorderQuantity3 = null;
+		// Destroy all product content;
+		productName1 = productName2 = productName3 = null;
+		productDescription1 = productDescription2 = productDescription3 = null;
+		productQuantity1 = productQuantity2 = productQuantity3 = null;
+		productPrice1 = productPrice2 = productPrice3 = null;
+		productBarCode1 = productBarCode2 = productBarCode3 = null;
+		productReorderThreshold1 = productReorderThreshold2 = productReorderThreshold3 = null;
+		productReorderQuantity1 = productReorderQuantity2 = productReorderQuantity3 = null;
 
 		invalidProdID1 = invalidProdID2 = null;
 	}
@@ -432,7 +417,9 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.VENDOR_DAT, 2));
 
 			// Add New Product
-			Product newProduct = inventoryManager.addProduct(goods1);
+			Product newProduct = inventoryManager.addProduct(category1.getCode(), productName1, productDescription1,
+					String.valueOf(productQuantity1), String.valueOf(productPrice1), String.valueOf(productBarCode1),
+					String.valueOf(productReorderThreshold1), String.valueOf(productReorderQuantity1));
 			Assert.assertTrue(newProduct != null);
 
 			// Check Post Conditions
@@ -474,21 +461,27 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.VENDOR_DAT, 3));
 
 			// Add New Product
-			Product newProduct1 = inventoryManager.addProduct(goods1);
-			Product newProduct2 = inventoryManager.addProduct(goods2);
-			Product newProduct3 = inventoryManager.addProduct(goods3);
+			Product newProduct1 = inventoryManager.addProduct(category1.getCode(), productName1, productDescription1,
+					String.valueOf(productQuantity1), String.valueOf(productPrice1), String.valueOf(productBarCode1),
+					String.valueOf(productReorderThreshold1), String.valueOf(productReorderQuantity1));
+			Product newProduct2 = inventoryManager.addProduct(category1.getCode(), productName2, productDescription2,
+					String.valueOf(productQuantity2), String.valueOf(productPrice2), String.valueOf(productBarCode2),
+					String.valueOf(productReorderThreshold2), String.valueOf(productReorderQuantity2));
+			Product newProduct3 = inventoryManager.addProduct(category2.getCode(), productName3, productDescription3,
+					String.valueOf(productQuantity3), String.valueOf(productPrice3), String.valueOf(productBarCode3),
+					String.valueOf(productReorderThreshold3), String.valueOf(productReorderQuantity3));
 			Assert.assertTrue(newProduct1 != null);
 			Assert.assertTrue(newProduct2 != null);
 			Assert.assertTrue(newProduct3 != null);
 
 			// Check Post Conditions
-			Assert.assertEquals(inventoryManager.getAllProducts().size(), 3);
+			Assert.assertEquals(3, inventoryManager.getAllProducts().size());
 			Assert.assertTrue(inventoryManager.isValidProduct(newProduct1.getIdentifier()));
 			Assert.assertTrue(inventoryManager.isValidProduct(newProduct2.getIdentifier()));
 			Assert.assertTrue(inventoryManager.isValidProduct(newProduct3.getIdentifier()));
 
 			Product updatedProduct = new Product(newProduct1.getIdentifier(), prodName1, prodDescription1,
-					prodQuantity1.toString(), prodPrice1.toString(), prodReorderThreshold1.toString(),
+					prodQuantity1.toString(), prodPrice1.toString(), prodBarCode1, prodReorderThreshold1.toString(),
 					prodReorderQuantity1.toString());
 			Assert.assertTrue(inventoryManager.updateProduct(updatedProduct));
 
@@ -523,7 +516,9 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.VENDOR_DAT, 1));
 
 			// Add New Product
-			Product newProduct = inventoryManager.addProduct(goods1);
+			Product newProduct = inventoryManager.addProduct(category1.getCode(), productName1, productDescription1,
+					String.valueOf(productQuantity1), String.valueOf(productPrice1), String.valueOf(productBarCode1),
+					String.valueOf(productReorderThreshold1), String.valueOf(productReorderQuantity1));
 			Assert.assertTrue(newProduct == null);
 			Assert.assertEquals(inventoryManager.getAllProducts().size(), 0);
 
@@ -558,7 +553,9 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.VENDOR_DAT, 2));
 
 			// Add New Product
-			Product newProduct = inventoryManager.addProduct(goods1);
+			Product newProduct = inventoryManager.addProduct(category1.getCode(), productName1, productDescription1,
+					String.valueOf(productQuantity1), String.valueOf(productPrice1), String.valueOf(productBarCode1),
+					String.valueOf(productReorderThreshold1), String.valueOf(productReorderQuantity1));
 			Assert.assertTrue(newProduct != null);
 
 			// Check Post Conditions
@@ -597,7 +594,9 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.VENDOR_DAT, 2));
 
 			// Add New Product
-			Product newProduct = inventoryManager.addProduct(goods1);
+			Product newProduct = inventoryManager.addProduct(category1.getCode(), productName1, productDescription1,
+					String.valueOf(productQuantity1), String.valueOf(productPrice1), String.valueOf(productBarCode1),
+					String.valueOf(productReorderThreshold1), String.valueOf(productReorderQuantity1));
 			Assert.assertTrue(newProduct != null);
 
 			// Check Post Conditions

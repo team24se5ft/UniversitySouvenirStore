@@ -47,7 +47,7 @@ public abstract class ProductDialog extends BaseDialog {
 		super(parent, title);
 		// Customize this dialog
 		this.addWindowListener(this);
-		this.setSize(400, 310);
+		this.setSize(400, 340);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}
@@ -80,6 +80,11 @@ public abstract class ProductDialog extends BaseDialog {
 	 * Textfield for holding the price for the particular product.
 	 */
 	private JTextField price;
+	
+	/**
+	 * Textfield for holding the bar-code for the particular product.
+	 */
+	private JTextField barCode;
 
 	/**
 	 * Textfield for holding the reorder quantity of the particular product.
@@ -125,7 +130,7 @@ public abstract class ProductDialog extends BaseDialog {
 	 *         the frame or not. If true, then the dialog will be removed.
 	 */
 	public abstract boolean productCallback(String categoryCode, String name, String description, String quantity,
-			String price, String reorderThreshold, String reorderQuantity);
+			String price, String barCode, String reorderThreshold, String reorderQuantity);
 
 	/***********************************************************/
 	// Public Methods
@@ -180,6 +185,16 @@ public abstract class ProductDialog extends BaseDialog {
 	 */
 	public void setProductPrice(String price) {
 		this.price.setText(price);
+	}
+	
+	/**
+	 * Set the product barcode
+	 * 
+	 * @param productName
+	 *            The product price.
+	 */
+	public void setProductBarCode(String barCode) {
+		this.barCode.setText(barCode);
 	}
 
 	/**
@@ -244,7 +259,7 @@ public abstract class ProductDialog extends BaseDialog {
 	@Override
 	protected boolean confirmClicked() {
 		return productCallback(String.valueOf(categoryList.getSelectedItem()), productName.getText(), productDescription.getText(), quantity.getText(),
-				price.getText(), thresholdQuantity.getText(), reorderQuantity.getText());
+				price.getText(), barCode.getText(), thresholdQuantity.getText(), reorderQuantity.getText());
 	}
 
 	/***********************************************************/
@@ -280,9 +295,11 @@ public abstract class ProductDialog extends BaseDialog {
 
 		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_PRICE, index);
 		price = createTextFieldOnPanel(jPanel, index++);
-
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.REORDER_QUANTITY, index);
 		
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.BAR_CODE, index);
+		barCode = createTextFieldOnPanel(jPanel, index++);
+
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.REORDER_QUANTITY, index);		
 		thresholdQuantity = createTextFieldOnPanel(jPanel, index++);
 
 		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.ORDER_QUANTITY, index);

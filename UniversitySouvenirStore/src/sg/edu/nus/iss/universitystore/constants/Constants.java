@@ -79,22 +79,26 @@ public final class Constants {
 				public static final String NAME_MATCH = Common.Pattern.NAME_MATCH;
 				public static final String QUANTITY_MATCH = Common.Pattern.NUMBER_MATCH;
 				public static final String PRICE_MATCH = Common.Pattern.FLOAT_MATCH;
+				public static final String BARCODE_MATCH = Common.Pattern.NUMBER_MATCH;
 				public static final String REORDER_THRESHOLD_MATCH = Common.Pattern.NUMBER_MATCH;
 				public static final String REORDER_QUANTITY_MATCH = Common.Pattern.NUMBER_MATCH;
 				public static final String LINE_MATCH = "^(" + ID_MATCH + Data.Pattern.FILE_SEPTR_MATCH + NAME_MATCH
 						+ Data.Pattern.FILE_SEPTR_MATCH + ")" + Data.Pattern.DESCRIPTION_MATCH + "(" + QUANTITY_MATCH
-						+ Data.Pattern.FILE_SEPTR_MATCH + PRICE_MATCH + Data.Pattern.FILE_SEPTR_MATCH
-						+ REORDER_THRESHOLD_MATCH + Data.Pattern.FILE_SEPTR_MATCH + REORDER_QUANTITY_MATCH + ")$";
+						+ Data.Pattern.FILE_SEPTR_MATCH + PRICE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + BARCODE_MATCH
+						+ Data.Pattern.FILE_SEPTR_MATCH + REORDER_THRESHOLD_MATCH + Data.Pattern.FILE_SEPTR_MATCH
+						+ REORDER_QUANTITY_MATCH + ")$";
 				public static final String DESCRIPTION_REPLACE = "$5";
 				public static final String OTHER_CNTNT_REPLACE = "$1$6";
 			}
+
 			public static final int PRODUCT_ZERO = 0;
-			public static final int DATA_SPLT_LENGTH = 7;
+			public static final int DATA_SPLT_LENGTH = 8;
 			public static final int INITIALIZED_COUNT = 0;
 		}
 
 		public static final class Member {
 			public static final int LOYALTY_NEW_MEMBER = -1;
+
 			public static final class Pattern {
 				public static final String MEMBER_ID_MATCH = "^[a-zA-Z0-9]+$";
 				public static final String LOYALTY_POINTS_MATCH = "^((-1)|\\d+)$";
@@ -104,6 +108,7 @@ public final class Constants {
 		public static final class Discount {
 			public static final String ALWAYS = "ALWAYS";
 			public static final int ALWAYS_VAL = -1;
+
 			public static final class Pattern {
 				public static final String CODE_MATCH = Common.Pattern.CODE_MATCH;
 				public static final String START_DATE_MATCH = "((" + ALWAYS + ")|\\d{4}-\\d{2}-\\d{2})";
@@ -151,6 +156,7 @@ public final class Constants {
 		public static final int FIFTH_COLUMN = 4;
 		public static final int SIXTH_COLUMN = 5;
 		public static final int SEVENTH_COLUMN = 6;
+		public static final int EIGHTH_COLUMN = 7;
 
 		// Category
 		public static final int NUMBER_OF_CATEGORY_TABLE_COLUMNS = 2;
@@ -158,12 +164,13 @@ public final class Constants {
 		public static final String STR_CATEGORY_NAME = "Name";
 
 		// Product
-		public static final int NUMBER_OF_PRODUCT_TABLE_COLUMNS = 7;
+		public static final int NUMBER_OF_PRODUCT_TABLE_COLUMNS = 8;
 		public static final String STR_PRODUCT_CODE = "Code";
 		public static final String STR_PRODUCT_NAME = "Name";
 		public static final String STR_PRODUCT_DESCRIPTION = "Description";
 		public static final String STR_PRODUCT_QUANTITY = "Quantity";
 		public static final String STR_PRODUCT_PRICE = "Price";
+		public static final String STR_PRODUCT_BARCODE = "BarCode";
 		public static final String STR_PRODUCT_REORDER_THRESHOLD = "Reorder Threshold";
 		public static final String STR_PRODUCT_REORDER_QUANTITY = "Reorder Quantity";
 

@@ -9,7 +9,6 @@ import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryError;
 import sg.edu.nus.iss.universitystore.model.Category;
-import sg.edu.nus.iss.universitystore.model.Goods;
 import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.model.Vendor;
 import sg.edu.nus.iss.universitystore.utility.DateUtils;
@@ -40,7 +39,7 @@ public class InventoryManager {
 	 * Product Arguments
 	 */
 	public enum ProductArg {
-		IDENTIFIER(0), NAME(1), QUANTITY(2), PRICE(3), REORDERTHRESHOLD(4), REORDERQUANTITY(5), DESCRIPTION(6);
+		IDENTIFIER(0), NAME(1), QUANTITY(2), PRICE(3), BAR_CODE(4), REORDERTHRESHOLD(5), REORDERQUANTITY(6), DESCRIPTION(7);
 
 		private int position;
 
@@ -400,7 +399,7 @@ public class InventoryManager {
 			productList.add(new Product(productStrSpltLst[ProductArg.IDENTIFIER.ordinal()],
 					productStrSpltLst[ProductArg.NAME.ordinal()], productStrSpltLst[ProductArg.DESCRIPTION.ordinal()],
 					productStrSpltLst[ProductArg.QUANTITY.ordinal()], productStrSpltLst[ProductArg.PRICE.ordinal()],
-					productStrSpltLst[ProductArg.REORDERTHRESHOLD.ordinal()],
+					productStrSpltLst[ProductArg.BAR_CODE.ordinal()], productStrSpltLst[ProductArg.REORDERTHRESHOLD.ordinal()],
 					productStrSpltLst[ProductArg.REORDERQUANTITY.ordinal()]));
 		}
 
@@ -415,12 +414,12 @@ public class InventoryManager {
 	 * @throws StoreException
 	 * @throws InventoryException 
 	 */
-	public Product addProduct(Goods goods) throws InventoryException {
+	/*public Product addProduct(Goods goods) throws InventoryException {
 
 		return addProduct(goods.getCategory().getCode(), goods.getName(), goods.getDescription(),
 				String.valueOf(goods.getQuantity()), String.valueOf(goods.getPrice()),
 				String.valueOf(goods.getReorderThreshold()), String.valueOf(goods.getReorderQuantity()));
-	}
+	}*/
 
 	/**
 	 * (3.5.b, 3.5.c.2) Add Product
@@ -428,18 +427,21 @@ public class InventoryManager {
 	 * @param goods
 	 * @throws InventoryException 
 	 */
-	public Product addProduct(String categoryCode, String name, String description, String quantity, String price,
+	public Product addProduct(String categoryCode, String name, String description, String quantity, String price, String barCode,
 			String reorderThreshold, String reorderQuantity) throws InventoryException {
 
 		if (!hasCategory(categoryCode))
 			return null;
+		
+		if(productBarCodeExists(barCode))
+			throw new InventoryException(InventoryError.PRODUCT_BAR_CODE_EXISTS);
 
 		StringBuffer productID = new StringBuffer();
 		productID.append(categoryCode);
 		productID.append(Constants.Data.ID_SEPTR);
 		productID.append(generateProductID());
 
-		Product product = new Product(productID.toString(), name, description, quantity, price, reorderThreshold,
+		Product product = new Product(productID.toString(), name, description, quantity, price, barCode, reorderThreshold,
 				reorderQuantity);
 
 		try {
@@ -458,8 +460,6 @@ public class InventoryManager {
 	 */
 	public Product findProduct(String productID) throws InventoryException {
 		ArrayList<Product> productList = getAllProducts();
-		if(productList.size() == Constants.Data.Product.PRODUCT_ZERO)
-			throw new InventoryException(InventoryError.PRODUCT_ZERO);
 		
 		Product productFound = null;
 
@@ -471,6 +471,39 @@ public class InventoryManager {
 		}
 
 		return productFound;
+	}
+	
+	/**
+	 * Find Product by BarCode
+	 * 
+	 * @param barCode
+	 * @return
+	 * @throws InventoryException
+	 */
+	public Product findProductByBarCode(String barCode) throws InventoryException {
+		ArrayList<Product> productList = getAllProducts();
+		
+		Product productFound = null;
+
+		for (Product product : productList) {
+			if (product.getBarCode().equals(barCode)) {
+				productFound = product;
+				break;
+			}
+		}
+
+		return productFound;
+	}
+	
+	/**
+	 * Checks if Product has existing BarCode
+	 * 
+	 * @param barCode
+	 * @return
+	 * @throws InventoryException 
+	 */
+	public boolean productBarCodeExists(String barCode) throws InventoryException {
+		return findProductByBarCode(barCode) != null;
 	}
 
 	/**
@@ -531,6 +564,9 @@ public class InventoryManager {
 
 		if (!isValidProduct(newProduct.getIdentifier()))
 			throw new InventoryException(InventoryError.PRODUCT_NOT_AVAILABLE);
+		
+		if(productBarCodeExists(newProduct.getBarCode()))
+			throw new InventoryException(InventoryError.PRODUCT_BAR_CODE_EXISTS);
 
 		Product existingProduct = findProduct(newProduct.getIdentifier());
 		if (deleteProduct(existingProduct)) {
@@ -580,7 +616,8 @@ public class InventoryManager {
 			if (productList.length == Constants.Data.Product.DATA_SPLT_LENGTH
 					&& InventoryValidation.Product.isValidData(productList[ProductArg.NAME.ordinal()],
 							productList[ProductArg.DESCRIPTION.ordinal()], productList[ProductArg.QUANTITY.ordinal()],
-							productList[ProductArg.PRICE.ordinal()], productList[ProductArg.REORDERTHRESHOLD.ordinal()],
+							productList[ProductArg.PRICE.ordinal()], productList[ProductArg.BAR_CODE.ordinal()],
+							productList[ProductArg.REORDERTHRESHOLD.ordinal()],
 							productList[ProductArg.REORDERQUANTITY.ordinal()])) {
 				String categoryCode = productList[ProductArg.IDENTIFIER.ordinal()].replaceAll(
 						Constants.Data.Product.Pattern.ID_MATCH, Constants.Data.Product.Pattern.CATEGORY_REPLACE);
