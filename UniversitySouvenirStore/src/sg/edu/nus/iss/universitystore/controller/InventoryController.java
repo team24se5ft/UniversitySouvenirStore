@@ -208,43 +208,54 @@ public class InventoryController implements IInventoryDelegate {
 
 	@Override
 	public void addProductClicked() {
-		// Add a new Product Dialog
-		ProductDialog productDialog = new ProductDialog(topFrame,
-				ViewConstants.Controller.InventoryController.ADD_PRODUCT) {
-			private static final long serialVersionUID = 1L;
+		try {
+			if(inventoryManager.getAllCategories().size() == 0) {
+				UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR, "Please add a category before adding products.",
+						DialogType.ERROR_MESSAGE);
+			}else {
+				// Add a new Product Dialog
+				ProductDialog productDialog = new ProductDialog(topFrame,
+						ViewConstants.Controller.InventoryController.ADD_PRODUCT) {
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			public boolean productCallback(String categoryCode, String name, String description, String quantity,
-					String price, String reorderThreshold, String reorderQuantity) {
-				try {
-					if (InventoryValidation.Product.isValidData(categoryCode, name, description, quantity, price,
-							reorderThreshold, reorderQuantity)) {
-						// Add the new product
-						inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
-								reorderQuantity);
-						// Show the success dialog
-						UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
-								ViewConstants.Controller.SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
-						// Update the local copy
-						arrProduct = inventoryManager.getAllProducts();
-						// Update the table
-						inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
-								TableDataUtils.getHeadersForProductTable());
-						return true;
+					@Override
+					public boolean productCallback(String categoryCode, String name, String description, String quantity,
+							String price, String reorderThreshold, String reorderQuantity) {
+						try {
+							if (InventoryValidation.Product.isValidData(categoryCode, name, description, quantity, price,
+									reorderThreshold, reorderQuantity)) {
+								// Add the new product
+								inventoryManager.addProduct(categoryCode, name, description, quantity, price, reorderThreshold,
+										reorderQuantity);
+								// Show the success dialog
+								UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.SUCCESS,
+										ViewConstants.Controller.SUCCESS_MESSAGE, DialogType.INFORMATION_MESSAGE);
+								// Update the local copy
+								arrProduct = inventoryManager.getAllProducts();
+								// Update the table
+								inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+										TableDataUtils.getHeadersForProductTable());
+								return true;
+							}
+						} catch (InventoryException inventoryExp) {
+							UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+									inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
+						}
+						// Hide the dialog after execution.
+						return false;
 					}
-				} catch (InventoryException inventoryExp) {
-					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
-							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
-				}
-				// Hide the dialog after execution.
-				return false;
-			}
-		};
-		// Set the list of categories that need to be displayed.
-		productDialog.setCategoryCodeList(getCategoryCode(arrCategory));
+				};
+				// Set the list of categories that need to be displayed.
+				productDialog.setCategoryCodeList(getCategoryCode(arrCategory));
 
-		// Show the dialog.
-		productDialog.setVisible(true);
+				// Show the dialog.
+				productDialog.setVisible(true);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
 import sg.edu.nus.iss.universitystore.data.TransactionManager;
 import sg.edu.nus.iss.universitystore.exception.DiscountException;
+import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException;
 import sg.edu.nus.iss.universitystore.model.Discount;
@@ -36,13 +37,25 @@ public class SalesController implements ISalesDelegate {
 	private Member currentMember;
 	MemberScanDialog memberDialog;
 	ProductScanDialog productDialog;
-
+	
+	/**
+	 * Reference to Inventory Manager
+	 */
+	private InventoryManager inventoryManager;
+	
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
 	public SalesController() {
 		salesPanel = new SalesPanel(this);
 		refreshSalesData(ViewConstants.Labels.STR_PUBLIC, false);
+		try {
+			inventoryManager = InventoryManager.getInstance();
+		} catch (InventoryException e) {
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
+					DialogType.ERROR_MESSAGE);
+		}
+		
 	}
 
 	/***********************************************************/
@@ -58,17 +71,26 @@ public class SalesController implements ISalesDelegate {
 	 */
 	@Override
 	public void addProduct() {
-		productDialog = new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "scanProduct") {
-
-			@Override
-			public boolean onProductScanResult(String productCode, int quantity) {
-				// add query product entity
-				addProductByBarCode(productCode, quantity);
-				return true;
+		try {
+			if(inventoryManager.getAllProducts().size() == 0) {
+				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, "No products present in the store.",
+						DialogType.ERROR_MESSAGE);
+			}else {
+				productDialog = new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Scan Product") {
+					@Override
+					public boolean onProductScanResult(String productCode, int quantity) {
+						// add query product entity
+						addProductByBarCode(productCode, quantity);
+						return true;
+					}
+				};
+				productDialog.setVisible(true);
 			}
-
-		};
-		productDialog.setVisible(true);
+		} catch (Exception e) {
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
+					DialogType.ERROR_MESSAGE);
+		}
+		
 	}
 
 	/**
