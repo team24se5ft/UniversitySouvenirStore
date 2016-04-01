@@ -10,6 +10,8 @@ import sg.edu.nus.iss.universitystore.data.DiscountManager;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
 import sg.edu.nus.iss.universitystore.data.TransactionManager;
+import sg.edu.nus.iss.universitystore.exception.DiscountException;
+import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
@@ -40,7 +42,7 @@ public class SalesController implements ISalesDelegate {
 	/***********************************************************/
 	public SalesController() {
 		salesPanel = new SalesPanel(this);
-		refreshSalesData(ViewConstants.Labels.STR_PUBLIC,false);
+		refreshSalesData(ViewConstants.Labels.STR_PUBLIC, false);
 	}
 
 	/***********************************************************/
@@ -93,10 +95,10 @@ public class SalesController implements ISalesDelegate {
 				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
 						ViewConstants.ValidationMessage.PRODUCT_ID_NotExist, DialogType.WARNING_MESSAGE);
 			} else {
-				if(product.getQuantity()<quantity){
-					//validate quantity before check out
-					UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, ViewConstants.ValidationMessage.PRODUCT_QUANTITY_NOTEnough,
-							DialogType.WARNING_MESSAGE);
+				if (product.getQuantity() < quantity) {
+					// validate quantity before check out
+					UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
+							ViewConstants.ValidationMessage.PRODUCT_QUANTITY_NOTEnough, DialogType.WARNING_MESSAGE);
 					return;
 				}
 				// add transaction Item and show
@@ -150,23 +152,23 @@ public class SalesController implements ISalesDelegate {
 		// transactionItemList);
 		// dialog.setVisible(true);
 		// FIXME test to finish
-		ConfirmationDialog dlg=new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Check OUT",
-				"Do you confirm to check out?") {
-			
+		ConfirmationDialog dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
+				"Check OUT", "Do you confirm to check out?") {
+
 			@Override
 			protected boolean confirmClicked() {
-				if(salesPanel.checkOUTable()){
+				if (salesPanel.checkOUTable()) {
 					try {
 						TransactionManager.getInstance().addTransaction(transactionItemList,
-								currentDiscount == null ? null : currentDiscount.getCode(),
-								currentMember == null ? ViewConstants.Labels.STR_PUBLIC : currentMember.getIdentifier());
-						//show receipt here
-						//clear salesPanel here
+								currentDiscount == null ? null : currentDiscount.getCode(), currentMember == null
+										? ViewConstants.Labels.STR_PUBLIC : currentMember.getIdentifier());
+						// show receipt here
+						// clear salesPanel here
 						clearSalesPanel();
 					} catch (TransactionException e) {
 						e.printStackTrace();
 					}
-				}else{
+				} else {
 					UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, "no enough payment",
 							DialogType.WARNING_MESSAGE);
 				}
@@ -176,16 +178,16 @@ public class SalesController implements ISalesDelegate {
 		};
 		dlg.setVisible(true);
 	}
-	
+
 	private void clearSalesPanel() {
-		//clear transaction item list
+		// clear transaction item list
 		transactionItemList.clear();
-		//clear calculation part 
+		// clear calculation part
 		salesPanel.clear();
-		//clear table update
+		// clear table update
 		salesPanel.updateTable(TableDataUtils.getFormattedTransactionItemListForTable(transactionItemList),
 				TableDataUtils.getHeadersForTransactionItemTable());
-		//clear memberInfo part
+		// clear memberInfo part
 		refreshSalesData(ViewConstants.Labels.STR_PUBLIC, false);
 	}
 
@@ -222,7 +224,8 @@ public class SalesController implements ISalesDelegate {
 						} else {
 							salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
 						}
-						salesPanel.updateTable(TableDataUtils.getFormattedTransactionItemListForTable(transactionItemList),
+						salesPanel.updateTable(
+								TableDataUtils.getFormattedTransactionItemListForTable(transactionItemList),
 								TableDataUtils.getHeadersForTransactionItemTable());
 					} catch (TransactionException e) {
 						e.printStackTrace();
@@ -246,10 +249,10 @@ public class SalesController implements ISalesDelegate {
 			@Override
 			public boolean onMemberIdentification(String MemberCode) {
 				// TODO query Member
-				if(MemberCode.length()==0){
-					refreshSalesData(ViewConstants.Labels.STR_PUBLIC,true);
-				}else{
-					refreshSalesData(MemberCode,true);
+				if (MemberCode.length() == 0) {
+					refreshSalesData(ViewConstants.Labels.STR_PUBLIC, true);
+				} else {
+					refreshSalesData(MemberCode, true);
 				}
 				return true;
 			}
@@ -261,58 +264,64 @@ public class SalesController implements ISalesDelegate {
 	@Override
 	public void onSalesPanelVisible() {
 		if (currentMember != null) {
-			//check whether member Data changed during the transaction
-			refreshSalesData(currentMember.getIdentifier(),true);
-		}else{
-			//previous customer is not a member,purpose of the code is to check whether discount changed
-			refreshSalesData(ViewConstants.Labels.STR_PUBLIC,false);
+			// check whether member Data changed during the transaction
+			refreshSalesData(currentMember.getIdentifier(), true);
+		} else {
+			// previous customer is not a member,purpose of the code is to check
+			// whether discount changed
+			refreshSalesData(ViewConstants.Labels.STR_PUBLIC, false);
 		}
 	}
 
 	/**
-	 * refresh member infomation and calculation result
+	 * refresh memberInfo part and calculation part
 	 * 
 	 * @param Membercode
 	 */
-	private void refreshSalesData(String Membercode,boolean isShowTip) {
-		try {
-			Member member = MemberManager.getInstance().getMember(Membercode);
+	private void refreshSalesData(String memberCode,boolean isShowTip){
+		//set member part
+		try{
+			Member member = MemberManager.getInstance().getMember(memberCode);
 			currentMember = member;
-			Discount discount = DiscountManager.getInstance().getDiscount(Membercode);
-			currentDiscount = discount;
-			if (discount == null) {
-				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
-				salesPanel.onMemberIdentification(member.getName(), "none discount", "0%",
-						String.valueOf(member.getLoyaltyPoints()));
-			} else {
-				salesPanel.onMemberIdentification(member.getName(), discount.getCode(),
-						String.valueOf(discount.getPercentage() + "%"), String.valueOf(member.getLoyaltyPoints()));
-				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode()));
+			if(member!=null){
+				salesPanel.onMemberIdentification(member.getName(),String.valueOf(member.getLoyaltyPoints()) );
+			}else{
+				salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL,"0.0");
 			}
-		} catch (Exception e) {
-			if(isShowTip){
+		}catch(MemberException e){
+			salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL,"0.0");
+		}
+		//set discount part
+		try{
+			Discount discount;
+			if(currentMember!=null){
+				discount = DiscountManager.getInstance().getDiscount(memberCode);
+			}else{
+				discount = DiscountManager.getInstance().getDiscount(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL);
+			}
+			currentDiscount = discount;
+			if(discount!=null){
+				salesPanel.onSetDiscount(discount.getCode(), discount.getPercentage()+"%");
+				salesPanel.setTotal((TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode())));
+			}else{
+				salesPanel.onSetDiscount("none discount", "0.0%");
+				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
+			}
+		}catch(DiscountException e){
+			salesPanel.onSetDiscount("none discount", "0.0%");
+			try {
+				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
+			} catch (TransactionException e1) {
+				e1.printStackTrace();
+			}
+		}catch(TransactionException e){
+			if (isShowTip) {
 				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, e.getMessage(),
 						DialogType.WARNING_MESSAGE);
 			}
-			try {
-				currentMember = null;
-				Discount discount = DiscountManager.getInstance().getDiscount(Membercode);
-				currentDiscount=discount;
-				if(discount==null){
-					salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL, "none discount", "0%",
-							"0.0");
-				}else{
-					salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL, discount.getCode(), discount.getPercentage()+"%",
-							"0.0");
-				}
-				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
-			} catch (Exception e1) {
-				// if error again then cancel transaction
-				cancel(-1);
-				// better find stack here
-				e1.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 	}
+	
 
 }

@@ -96,7 +96,8 @@ public class SalesPanel extends BaseTablePanel {
 		String data[][] = {};
 		JPanel jpanel = new JPanel();
 		jpanel.setLayout(new BorderLayout());
-		jpanel.add(getScrollPaneWithTable(data, TableDataUtils.getHeadersForTransactionItemTable()), BorderLayout.CENTER);
+		jpanel.add(getScrollPaneWithTable(data, TableDataUtils.getHeadersForTransactionItemTable()),
+				BorderLayout.CENTER);
 		jpanel.add(getCalculationPanel(), BorderLayout.SOUTH);
 		add(jpanel, BorderLayout.CENTER);
 		add(getButtonPanel(), BorderLayout.SOUTH);
@@ -319,14 +320,22 @@ public class SalesPanel extends BaseTablePanel {
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
-	public void onMemberIdentification(String memberName, String discountCode, String off, String availableloyalPoint) {
+	public void onMemberIdentification(String memberName, String availableloyalPoint) {
 		// TODO show highest discount,show availableloyalPoint,show MemberName
 		memberOption.setText(memberName);
-		discountOption.setText(discountCode);
 		avaiLableLoyalPoint.setText(availableloyalPoint);
-		discountPercentage.setText(off);
 		memberText = memberName;
 		toggleLoyalPanel(true);
+	}
+
+	/**
+	 * for discount input in
+	 * @param discountCode
+	 * @param off
+	 */
+	public void onSetDiscount(String discountCode, String off) {
+		discountOption.setText(discountCode);
+		discountPercentage.setText(off);
 		refreshCalculation();
 	}
 
@@ -339,8 +348,8 @@ public class SalesPanel extends BaseTablePanel {
 		totalText.setText(String.valueOf(total));
 		refreshCalculation();
 	}
-	
-	public void clear(){
+
+	public void clear() {
 		totalText.setText("0.0");
 		cashText.setText("");
 		ChangeText.setText("0.0");
@@ -349,6 +358,7 @@ public class SalesPanel extends BaseTablePanel {
 
 	/**
 	 * check whether the customer pay enough money
+	 * 
 	 * @return
 	 */
 	public boolean checkOUTable() {
