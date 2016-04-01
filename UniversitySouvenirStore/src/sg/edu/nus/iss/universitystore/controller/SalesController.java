@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.universitystore.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -177,7 +178,7 @@ public class SalesController implements ISalesDelegate {
 	public void checkOut() {
 		// generate a receipt
 		if(transactionItemList.size()<=0){
-			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, "no product added",
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, "No products added for checking out.",
 					DialogType.ERROR_MESSAGE);
 			return;
 		}
@@ -194,6 +195,8 @@ public class SalesController implements ISalesDelegate {
 						// show receipt here
 						// clear salesPanel here
 						clearSalesPanel();
+						// Show the threshold dialog if required.
+						checkIfAnyProductHasReachedThreshold();
 					} catch (TransactionException e) {
 						e.printStackTrace();
 					}
@@ -322,7 +325,8 @@ public class SalesController implements ISalesDelegate {
 			Member member = MemberManager.getInstance().getMember(memberCode);
 			currentMember = member;
 			if (member != null) {
-				salesPanel.onMemberIdentification(member.getName(), String.valueOf(member.getLoyaltyPoints()));
+				String loyaltyPoints = (member.getLoyaltyPoints() == -1)?"0":String.valueOf(member.getLoyaltyPoints());
+				salesPanel.onMemberIdentification(member.getName(), loyaltyPoints);
 			} else {
 				salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL, "0");
 			}
@@ -361,5 +365,35 @@ public class SalesController implements ISalesDelegate {
 			e.printStackTrace();
 		}
 	}
-
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
+	/**
+	 * Method to check whether any product has reached its threshold value after checkout.
+	 */
+	private void checkIfAnyProductHasReachedThreshold() {
+		try {
+			// Get the array with the list of threshold products
+			ArrayList<Product> arrThreshold = inventoryManager.getProductsBelowThreshold();
+			// Only if any threshold value has been reached, we will proceed.
+			if(arrThreshold.size() != 0) {
+				// Create the custom message
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder.append("The following products are below threshold quantity:\n");
+				for (Product product : arrThreshold) {
+					stringBuilder.append(product.getIdentifier() + "\t \t");
+					stringBuilder.append(product.getName() + "\n");
+				}
+				// Display a dialog to inform the same
+				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, stringBuilder.toString(),
+						DialogType.WARNING_MESSAGE);
+				
+				// Now update the announcement pane.
+				
+			}
+		} catch (InventoryException e) {
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, e.getMessage(),
+					DialogType.WARNING_MESSAGE);
+		}
+	}
 }
