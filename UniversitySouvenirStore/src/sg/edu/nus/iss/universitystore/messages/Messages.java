@@ -83,7 +83,7 @@ public final class Messages {
 			public static final String INVALID_PERCENTAGE = new StringBuffer().append("Percentage: ")
 					.append(Common.INVALID_FLOAT).toString();
 			public static final String INVALID_CODE = new StringBuffer().append(Common.INVALID_CODE).toString();
-			public static final String INVALID_ELIGIBILITY = "Eligibility should be selected as \"M\" or \"A\"";
+			public static final String INVALID_ELIGIBILITY = "Eligibility should be selected as \"Member\" or \"Public\"";
 			public static final String INVALID_PERCENTAGE_RANGE = "Percentage should be bewteen 1 and 100";
 			public static final String NEWMEMBER_PERCENTAGE_ONLY = "Only Percentage can be updated for New Member Discount";
 			public static final String EXTNGMEMBER_PERCENTAGE_ONLY = "Only Percentage can be updated for Existing Member Discount";
