@@ -63,6 +63,16 @@ public class DashboardPanel extends JPanel implements IDashBoardOptionChangeDele
 	}
 	
 	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
+	/**
+	 * Method to set the announcement pane.
+	 */
+	public void setAnnouncementPaneText(String stringToSet) {
+		optionPanel.setAnnouncementPaneText(stringToSet);
+	}
+	
+	/***********************************************************/
 	// Private Methods
 	/***********************************************************/
 	private void changePanel(String option) {

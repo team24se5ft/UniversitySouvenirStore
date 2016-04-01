@@ -20,6 +20,11 @@ import sg.edu.nus.iss.universitystore.controller.LoginController;
 public class UIUtils {
 	
 	/***********************************************************/
+	// Static variables
+	/***********************************************************/
+	private static DashboardController dashboardController;
+	
+	/***********************************************************/
 	//Enums
 	/***********************************************************/
 	public enum DialogType{
@@ -70,10 +75,14 @@ public class UIUtils {
 		MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(panel);
 		JPanel mainPanel = mainFrame.getMainPanel();
 		mainPanel.removeAll();
-		DashboardController dashbaordController = new DashboardController();
-		mainPanel.add(dashbaordController.getDashboardPanel());
+		dashboardController = new DashboardController();
+		mainPanel.add(dashboardController.getDashboardPanel());
 		mainFrame.getContentPane().invalidate();
 		mainFrame.getContentPane().validate();
+	}
+	
+	public static DashboardController getDashBoardController() {
+		return dashboardController;
 	}
 	
 	public  static void navigateToLogin(JPanel panel) {

@@ -35,7 +35,26 @@ public class DashboardOptionsPanel extends JPanel {
     /***********************************************************/
     //Instance Variables
     /***********************************************************/
-    private IDashBoardOptionChangeDelegate dashBoardOptionChangeDelegate;
+    /**
+     * The delegate to communicate with the controller
+     */
+	private IDashBoardOptionChangeDelegate dashBoardOptionChangeDelegate;
+    
+	/**
+	 * The announcement pane text area
+	 */
+	private JTextArea announcementTextArea;
+	
+    /***********************************************************/
+	// Public Methods
+	/***********************************************************/
+    /**
+     * Method to update the announcement pane text.
+     * @param string The string that needs to be set.
+     */
+	public void setAnnouncementPaneText(String string) {
+		announcementTextArea.setText(string);
+	}
     
 	/***********************************************************/
 	//Private Methods
@@ -114,14 +133,14 @@ public class DashboardOptionsPanel extends JPanel {
 	}
 
 	private void addAnnouncementPane() {
-		JTextArea textArea = new JTextArea();
-		textArea.setLineWrap(true);
+		announcementTextArea = new JTextArea();
+		announcementTextArea.setLineWrap(true);
 		//TODO - This input needs to be received. 
-		textArea.setText(ViewConstants.PanelHeaders.ANNOUNCEMENT_DEMO); 
-		textArea.setEditable(false);
-		textArea.setHighlighter(null);
+		announcementTextArea.setText(ViewConstants.PanelHeaders.ANNOUNCEMENT_DEMO); 
+		announcementTextArea.setEditable(false);
+		announcementTextArea.setHighlighter(null);
 		
-		JScrollPane scrollPane = new JScrollPane(textArea);
+		JScrollPane scrollPane = new JScrollPane(announcementTextArea);
 		add(scrollPane);
 	}
 }

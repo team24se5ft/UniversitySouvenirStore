@@ -381,7 +381,7 @@ public class SalesController implements ISalesDelegate {
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.append("The following products are below threshold quantity:\n");
 				for (Product product : arrThreshold) {
-					stringBuilder.append(product.getIdentifier() + "\t \t");
+					stringBuilder.append(product.getIdentifier() + " " + "-" + " ");
 					stringBuilder.append(product.getName() + "\n");
 				}
 				// Display a dialog to inform the same
@@ -389,7 +389,7 @@ public class SalesController implements ISalesDelegate {
 						DialogType.WARNING_MESSAGE);
 				
 				// Now update the announcement pane.
-				
+				UIUtils.getDashBoardController().getDashboardPanel().setAnnouncementPaneText(stringBuilder.toString());
 			}
 		} catch (InventoryException e) {
 			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, e.getMessage(),
