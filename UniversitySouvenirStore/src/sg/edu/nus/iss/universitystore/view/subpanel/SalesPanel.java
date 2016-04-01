@@ -285,7 +285,7 @@ public class SalesPanel extends BaseTablePanel {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				memberOption.setText("change member");
+				memberOption.setText(ViewConstants.SalesPanel.CHANGE_MEMBER);
 			}
 
 			@Override

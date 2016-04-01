@@ -66,7 +66,7 @@ public class ViewConstants {
 		public static final String LOGIN_ICON_IMG="Resources/btnSubmit.png";
 		
 		//Dashboard Panel Headers
-		public static final String LOGOUT_CONFIRM_MSG="Are you sure you wish to logout?";
+		public static final String LOGOUT_CONFIRM_MSG="Are you sure you want to log out?";
 		
 		//Dashboard Options Panel Headers
 		public static final String SALE_ICON_IMG="Resources/sale_icon.png";
@@ -95,7 +95,7 @@ public class ViewConstants {
 		public static final String OFF_PERC="Percent Off";
 		public static final String TYPE="Type";
 		public static final String DESCRIPTION="Description";
-		public static final String START_DATE="Start Date (yyyy-MM-dd):";
+		public static final String START_DATE="Start Date (YYYY-MM-DD):";
 		public static final String PERIOD="Period";
 		
 		//Member Dialog Headers
@@ -131,7 +131,7 @@ public class ViewConstants {
 		public static final String DISCOUNT_PERCENTAGE = "Percentage";
 		public static final String DISCOUNT_TYPE = "Type";
 		public static final String DISCOUNT_DESCRIPTION = "Description";
-		public static final String DISCOUNT_STARTDATE = "StartDate";
+		public static final String DISCOUNT_STARTDATE = "Start Date";
 		public static final String DISCOUNT_PERIOD = "Period";
 
 		// Member Table Headers
@@ -144,17 +144,17 @@ public class ViewConstants {
 		
 		//Inventory Pane Headers
 		public static final String INV_CATEGORY_PANE="Category";
-		public static final String INV_CATEGORY_PANE_DESC="All functionalities related to the categories.";
+		public static final String INV_CATEGORY_PANE_DESC="All functionalities related to the categories";
 		public static final String INV_PRODUCT_PANE="Product";
-		public static final String INV_PRODUCT_PANE_DESC="All functionalities related to the products.";
+		public static final String INV_PRODUCT_PANE_DESC="All functionalities related to the products";
 		
 		//Report Pane Headers
 		public static final String REP_CATEGORY_PANE="Category";
-		public static final String REP_CATEGORY_PANE_DESC="Get all categories.";
+		public static final String REP_CATEGORY_PANE_DESC="Get all Categories";
 		public static final String REP_PRODUCT_PANE="Product";
-		public static final String REP_PRODUCT_PANE_DESC="Get all products.";
+		public static final String REP_PRODUCT_PANE_DESC="Get all Products";
 		public static final String REP_MEMBER_PANE="Member";
-		public static final String REP_MEMBER_PANE_DESC="Get all members.";
+		public static final String REP_MEMBER_PANE_DESC="Get all Members";
 		public static final String REP_TRANSACTION_PANE="Transactions";
 		public static final String REP_TRANSACTION_PANE_DESC="Get all Transactions.";
 	}
@@ -191,35 +191,37 @@ public class ViewConstants {
 
 	public static final class SalesPanel {
 		public static final String MEMBER_OPTION_LABEL = "PUBLIC";
-		public static final String NONE_DISCOUNT = "none discount";
-		public static final String MEMBER_LABEL = "member:";
-		public static final String DISCOUNT_LABEL = "discount:";
-		public static final String DISCOUNT_PERCENTAGE_LABEL = "off:";
-		public static final String AVAILABLE_LOYALPOINT_LABEL = "AvailableLoyalPoint:";
+		public static final String NONE_DISCOUNT = "No Discount";
+		public static final String MEMBER_LABEL = "Member:";
+		public static final String DISCOUNT_LABEL = "Discount:";
+		public static final String DISCOUNT_PERCENTAGE_LABEL = "Discount %:";
+		public static final String AVAILABLE_LOYALPOINT_LABEL = "Available Loyalty Points:";
 		
-		public static final String LOYALPOINT_LABEL = "loyalPoint:";
+		public static final String LOYALPOINT_LABEL = "Loyalty Points:";
 		public static final String TOTAL_LABEL = "Total:";
 		public static final String CASH_LABEL = "Cash:";
 		public static final String CHANGE_LABEL = "Change:";
+		public static final String CHANGE_MEMBER="Change Member:";
 		
 		
 	}
 
 	public static final class ValidationMessage {
 		// all uncatch exception use this failed
-		public static final String VALIDATION_Failed = "some unexception problem occur!";
-		public static final String MEMBER_NotExist = "the input member ID is not exist!";
-		public static final String PRODUCT_ID_NotExist = "the input product ID is not exist!";
-		public static final String PRODUCT_QUANTITY_NOTEnough = "there is no enough product!";
+		//TODO !!!! Please Add to Messages.java
+		public static final String VALIDATION_Failed = "An unexpected problem occured!";
+		public static final String MEMBER_NotExist = "This Member ID does not exist!";
+		public static final String PRODUCT_ID_NotExist = "This Product ID does not exist!";
+		public static final String PRODUCT_QUANTITY_NOTEnough = "Insufficient Product Stock!";
 		
 	}
 	
 	public static final class Controller {
-		public static final String PLEASE_SELECT_ROW = "Please select a row of the table for completing this operation.";
+		public static final String PLEASE_SELECT_ROW = "Please select a row of the table for this operation.";
 		public static final String SUCCESS_MESSAGE = "Successfully added.";
 		
 		public static final class Discount {			
-			public static final String DELETE_DISCOUNT = "Do you really wish to delete this discount: ";
+			public static final String DELETE_DISCOUNT = "Do you really wish to delete this discount?";
 		}
 		
 		public static final class InventoryController{
