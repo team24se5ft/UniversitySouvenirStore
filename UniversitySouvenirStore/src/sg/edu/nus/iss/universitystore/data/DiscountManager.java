@@ -201,6 +201,10 @@ public class DiscountManager {
 		ArrayList<Discount> memberDiscountList = new ArrayList<>();
 
 		for (Discount discount : discountList) {
+			
+			if (discount.getCode().equals(Constants.Data.Discount.Member.Existing.CODE)
+					|| discount.getCode().equals(Constants.Data.Discount.Member.New.CODE))
+				continue;
 
 			// Checks if discount is applicable for current date
 			if (!isApplicableDate(discount.getStartDate(), discount.getPeriod()))
