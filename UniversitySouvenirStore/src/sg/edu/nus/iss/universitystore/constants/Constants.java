@@ -1,10 +1,7 @@
 package sg.edu.nus.iss.universitystore.constants;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import sg.edu.nus.iss.universitystore.model.Category;
 
 public final class Constants {
 
@@ -184,12 +181,20 @@ public final class Constants {
 		public static final String STR_MEMBER_IDENTIFIER = "Identifier";
 		public static final String STR_MEMBER_NAME = "Name";
 		public static final String STR_MEMBER_LOYALTY_POINTS = "Loyalty Points";
+		// TransactionITEM
+		public static final int NUMBER_OF_TRANSACTION_ITEM_TABLE_COLUMNS = 6;
+		public static final String STR_TRANSACTIONITEM_PRODUCT_IDENTIFIER = "Product Id";
+		public static final String STR_TRANSACTIONITEM_PRODUCT_NAME = "Product Name";
+		public static final String STR_TRANSACTIONITEM_PURCHASE_QUANTITY = "Purchased Quantity";
+		public static final String STR_TRANSACTIONITEM_PRICE = "Price";
+		public static final String STR_TRANSACTIONITEM_TOTAL = "Total";
 		// Transaction
-		public static final int NUMBER_OF_TRANSACTION_TABLE_COLUMNS = 5;
+		public static final int NUMBER_OF_TRANSACTION_TABLE_COLUMNS = 4;
 		public static final String STR_TRANSACTION_PRODUCT_IDENTIFIER = "Product Id";
 		public static final String STR_TRANSACTION_PRODUCT_NAME = "Product Name";
+		public static final String STR_TRANSACTION_PRODUCT_DESCRIPTION = "Product Description";
+		public static final String STR_TRANSACTION_MEMBER_IDENTIFIER = "Member Id";
 		public static final String STR_TRANSACTION_PURCHASE_QUANTITY = "Purchased Quantity";
-		public static final String STR_TRANSACTION_PRICE = "Price";
-		public static final String STR_TRANSACTION_TOTAL = "Total";
+		public static final String STR_TRANSACTION_DATE = "Date";
 	}
 }

@@ -87,6 +87,11 @@ public class DiscountController implements IDiscountDelegate {
 		if (row < 0) {
 			return;
 		}
+		if(discountList.size()<=5){
+			UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, "discount cannot be less than 5 lines!",
+					DialogType.ERROR_MESSAGE);
+			return;
+		}
 		Discount discount = discountList.get(row);
 		new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "ConfirmDialog",
 				ViewConstants.Controller.Discount.DELETE_DISCOUNT + discount.getCode()) {			

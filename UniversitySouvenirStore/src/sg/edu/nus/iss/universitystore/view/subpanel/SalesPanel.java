@@ -40,7 +40,7 @@ public class SalesPanel extends BaseTablePanel {
 	/***********************************************************/
 	private JButton memberOption;// add memberDialog to check member
 	private JLabel discountOption; // show current discount
-	JLabel discountPercentage; //show current discount percentage
+	JLabel discountPercentage; // show current discount percentage
 	JLabel availableLabel;
 	JLabel avaiLableLoyalPoint;
 
@@ -53,7 +53,7 @@ public class SalesPanel extends BaseTablePanel {
 
 	private ISalesDelegate delegate;
 
-	//used for changeMember tip switch
+	// used for changeMember tip switch
 	private String memberText = ViewConstants.SalesPanel.MEMBER_OPTION_LABEL;
 
 	/***********************************************************/
@@ -66,14 +66,12 @@ public class SalesPanel extends BaseTablePanel {
 		borderLayout.setVgap(20);
 		this.setLayout(borderLayout);
 		initSalePanel();
-		addComponentListener( new ComponentAdapter ()
-	    {
-	        public void componentShown(ComponentEvent e )
-	        {
-	        	// Inform the controller that the panel is visible.
-	            delegate.onSalesPanelVisible();
-	        }
-	    });
+		addComponentListener(new ComponentAdapter() {
+			public void componentShown(ComponentEvent e) {
+				// Inform the controller that the panel is visible.
+				delegate.onSalesPanelVisible();
+			}
+		});
 
 	}
 
@@ -98,7 +96,7 @@ public class SalesPanel extends BaseTablePanel {
 		String data[][] = {};
 		JPanel jpanel = new JPanel();
 		jpanel.setLayout(new BorderLayout());
-		jpanel.add(getScrollPaneWithTable(data, TableDataUtils.getHeadersForTransactionTable()), BorderLayout.CENTER);
+		jpanel.add(getScrollPaneWithTable(data, TableDataUtils.getHeadersForTransactionItemTable()), BorderLayout.CENTER);
 		jpanel.add(getCalculationPanel(), BorderLayout.SOUTH);
 		add(jpanel, BorderLayout.CENTER);
 		add(getButtonPanel(), BorderLayout.SOUTH);
@@ -106,8 +104,8 @@ public class SalesPanel extends BaseTablePanel {
 	}
 
 	/**
-	 * 1.set loyalPoint and cash can only be input as digit
-	 * 2.make loyalPoint not over avaliablePoint
+	 * 1.set loyalPoint and cash can only be input as digit 2.make loyalPoint
+	 * not over avaliablePoint
 	 */
 	private void initCalculationEvent() {
 		LoyalPointText.addKeyListener(new KeyListener() {
@@ -120,7 +118,7 @@ public class SalesPanel extends BaseTablePanel {
 					e.consume();
 					return;
 				}
-				//calculate whether loyalPoint will over available Point
+				// calculate whether loyalPoint will over available Point
 				int loyalPoint = LoyalPointText.getText().isEmpty() ? e.getKeyChar() - 48
 						: Integer.valueOf(String.valueOf(LoyalPointText.getText() + e.getKeyChar()));
 				int availableLoyalPoint = avaiLableLoyalPoint.getText().isEmpty() ? 0
@@ -246,11 +244,11 @@ public class SalesPanel extends BaseTablePanel {
 		customerInfoPanel.add(new JLabel(ViewConstants.SalesPanel.DISCOUNT_LABEL), getConstraint(0, 1));
 		customerInfoPanel.add(discountOption, getConstraint(1, 1));
 
-		discountPercentage=new JLabel("0%");
-		
+		discountPercentage = new JLabel("0%");
+
 		customerInfoPanel.add(new JLabel(ViewConstants.SalesPanel.DISCOUNT_PERCENTAGE_LABEL), getConstraint(0, 2));
 		customerInfoPanel.add(discountPercentage, getConstraint(1, 2));
-		
+
 		availableLabel = new JLabel(ViewConstants.SalesPanel.AVAILABLE_LOYALPOINT_LABEL);
 		avaiLableLoyalPoint = new JLabel("0.0");
 
@@ -321,7 +319,7 @@ public class SalesPanel extends BaseTablePanel {
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
-	public void onMemberIdentification(String memberName, String discountCode,String off, String availableloyalPoint) {
+	public void onMemberIdentification(String memberName, String discountCode, String off, String availableloyalPoint) {
 		// TODO show highest discount,show availableloyalPoint,show MemberName
 		memberOption.setText(memberName);
 		discountOption.setText(discountCode);
@@ -340,6 +338,24 @@ public class SalesPanel extends BaseTablePanel {
 	public void setTotal(float total) {
 		totalText.setText(String.valueOf(total));
 		refreshCalculation();
+	}
+	
+	public void clear(){
+		totalText.setText("0.0");
+		cashText.setText("");
+		ChangeText.setText("0.0");
+		LoyalPointText.setText("");
+	}
+
+	/**
+	 * check whether the customer pay enough money
+	 * @return
+	 */
+	public boolean checkOUTable() {
+		if (Float.valueOf(ChangeText.getText()) >= 0) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -370,9 +386,9 @@ public class SalesPanel extends BaseTablePanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(table.getSelectedRow()<0){
+				if (table.getSelectedRow() < 0) {
 					delegate.cancel(-1);
-				}else{
+				} else {
 					delegate.cancel(table.getSelectedRow());
 				}
 			}

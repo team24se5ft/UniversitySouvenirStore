@@ -7,11 +7,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
-import sg.edu.nus.iss.universitystore.data.DiscountManager.DiscountArg;
 import sg.edu.nus.iss.universitystore.exception.DiscountException;
-import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.DiscountException.DiscountError;
-import sg.edu.nus.iss.universitystore.exception.MemberException.MemberError;
+import sg.edu.nus.iss.universitystore.exception.MemberException;
+import sg.edu.nus.iss.universitystore.exception.StoreException;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.utility.DateUtils;

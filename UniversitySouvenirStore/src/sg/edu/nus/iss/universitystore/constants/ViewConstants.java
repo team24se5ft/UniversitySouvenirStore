@@ -155,6 +155,8 @@ public class ViewConstants {
 		public static final String REP_PRODUCT_PANE_DESC="Get all products.";
 		public static final String REP_MEMBER_PANE="Member";
 		public static final String REP_MEMBER_PANE_DESC="Get all members.";
+		public static final String REP_TRANSACTION_PANE="Transactions";
+		public static final String REP_TRANSACTION_PANE_DESC="Get all Transactions.";
 	}
 
 	// Dashboard options
@@ -208,6 +210,7 @@ public class ViewConstants {
 		public static final String VALIDATION_Failed = "some unexception problem occur!";
 		public static final String MEMBER_NotExist = "the input member ID is not exist!";
 		public static final String PRODUCT_ID_NotExist = "the input product ID is not exist!";
+		public static final String PRODUCT_QUANTITY_NOTEnough = "there is no enough product!";
 		
 	}
 	
