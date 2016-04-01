@@ -205,6 +205,10 @@ public class ViewConstants {
 		
 		
 	}
+	
+	public static final class Receipt{
+		public static final String RECEIPT_TITLE="Here is receipt";
+	}
 
 	public static final class ValidationMessage {
 		// all uncatch exception use this failed

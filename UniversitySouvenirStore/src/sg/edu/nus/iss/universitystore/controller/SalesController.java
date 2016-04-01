@@ -170,11 +170,11 @@ public class SalesController implements ISalesDelegate {
 	@Override
 	public void checkOut() {
 		// generate a receipt
-		// ReceiptDialog dialog = new ReceiptDialog((JFrame)
-		// SwingUtilities.getWindowAncestor(salesPanel), "Receipt",
-		// transactionItemList);
-		// dialog.setVisible(true);
-		// FIXME test to finish
+		if(transactionItemList.size()<=0){
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, "no product added",
+					DialogType.ERROR_MESSAGE);
+			return;
+		}
 		ConfirmationDialog dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
 				"Check OUT", "Do you confirm to check out?") {
 
