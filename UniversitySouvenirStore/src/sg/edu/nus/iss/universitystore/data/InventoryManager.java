@@ -361,7 +361,7 @@ public class InventoryManager {
 	private boolean isValidCategoryData(String[] categoryList) {
 		boolean status = false;
 		try {
-			if(InventoryValidation.Catgory.isValidData(categoryList[CategoryArg.CODE.ordinal()], categoryList[CategoryArg.NAME.ordinal()])){
+			if(categoryList.length == 2 && InventoryValidation.Catgory.isValidData(categoryList[CategoryArg.CODE.ordinal()], categoryList[CategoryArg.NAME.ordinal()])){
 				status = true;
 			}
 		} catch (InventoryException e) {
