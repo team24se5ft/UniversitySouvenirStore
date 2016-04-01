@@ -57,16 +57,6 @@ public class DiscountManager {
 	 */
 	private MemberManager memberManager;
 
-	/**
-	 * New Member Discount
-	 */
-	private float newMemberDiscount;
-
-	/**
-	 * Member Discount
-	 */
-	private float memberDiscount;
-
 	/***********************************************************/
 	// Singleton
 	/***********************************************************/
@@ -116,9 +106,6 @@ public class DiscountManager {
 		} catch (MemberException | IOException memberExp) {
 			throw new DiscountException(DiscountError.UNKNOWN_ERROR);
 		}
-
-		this.newMemberDiscount = Constants.Data.Discount.Member.New.DEFAULT_DISCOUNT;
-		this.memberDiscount = Constants.Data.Discount.Member.Existing.DEFAULT_DISCOUNT;
 	}
 
 	/***********************************************************/
@@ -136,59 +123,12 @@ public class DiscountManager {
 	}
 
 	/***********************************************************/
-	// Getters & Setters
-	/***********************************************************/
-
-	/**
-	 * (3.2.a.1) Set New Member Discount
-	 * 
-	 * @param discountPercentage
-	 */
-	public void setNewMemberDiscount(int discountPercentage) {
-		this.newMemberDiscount = discountPercentage;
-	}
-
-	/**
-	 * (3.2.b.1) Set Member Discount
-	 * 
-	 * @param discountPercentage
-	 */
-	public void setMemberDiscount(int discountPercentage) {
-		this.memberDiscount = discountPercentage;
-	}
-
-	/**
-	 * (3.2.a) Get New Member Discount
-	 * 
-	 * @return Discount
-	 */
-	public Discount getNewMemberDiscount() {
-		return new Discount(Constants.Data.Discount.Member.New.CODE, Constants.Data.Discount.Member.New.DESCRIPTION,
-				Constants.DateTime.CURRENT_DATE.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-				Constants.Data.Discount.Member.New.PERIOD, this.newMemberDiscount,
-				Constants.Data.Discount.Eligibility.MEMBER);
-	}
-
-	/**
-	 * (3.2.b) Get Member Discount
-	 * 
-	 * @return Discount
-	 */
-	public Discount getMemberDiscount() {
-		return new Discount(Constants.Data.Discount.Member.Existing.CODE,
-				Constants.Data.Discount.Member.Existing.DESCRIPTION,
-				Constants.DateTime.CURRENT_DATE.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-				Constants.Data.Discount.Member.Existing.PERIOD, this.memberDiscount,
-				Constants.Data.Discount.Eligibility.MEMBER);
-	}
-
-	/***********************************************************/
 	// Validation for Discount
 	/***********************************************************/
 
 	/**
 	 * Validates the format of Data in a row of Data File and
-	 * if the period is <=365 and if percentage is < 100
+	 * if the period is >=0 and if percentage is < 100
 	 * 
 	 * @param dataLine
 	 * @return Boolean
@@ -210,10 +150,72 @@ public class DiscountManager {
 
 		return status;
 	}
+	
+	/**
+	 * Validates if the Discount is for New Member or Existing Member
+	 * 
+	 * @param discount
+	 * @return Boolean
+	 */
+	private boolean isDefaultDiscount(Discount discount) {
+		return discount.getCode().equals(Constants.Data.Discount.Member.Existing.CODE)
+				|| discount.getCode().equals(Constants.Data.Discount.Member.New.CODE);
+	}
+
+	/**
+	 * For Update Discount, Validates if Default Discounts is for New Member or
+	 * Existing Member only percentage is editable
+	 * 
+	 * @param oldDiscount
+	 * @param newDiscount
+	 * @return Boolean
+	 * @throws DiscountException
+	 */
+	private boolean updateDefaultDiscount(Discount oldDiscount, Discount newDiscount) throws DiscountException {
+
+		if (oldDiscount.getCode().equals(Constants.Data.Discount.Member.Existing.CODE)) {
+			if (!oldDiscount.equalsIgnoresPercentage(newDiscount))
+				throw new DiscountException(DiscountError.EXTNGMEMBER_PERCENTAGE_ONLY);
+
+			return true;
+		} else if (oldDiscount.getCode().equals(Constants.Data.Discount.Member.New.CODE)) {
+			if (!oldDiscount.equalsIgnoresPercentage(newDiscount))
+				throw new DiscountException(DiscountError.NEWMEMBER_PERCENTAGE_ONLY);
+
+			return true;
+		}
+
+		return false;
+	}
 
 	/***********************************************************/
 	// Private Methods for Discount
 	/***********************************************************/
+	
+	/**
+	 * Checks if Current Date is within the Discount Start Date and Period or if
+	 * it is set as 'ALWAYS'
+	 * 
+	 * @param startDate
+	 * @param period
+	 * @return
+	 */
+	private boolean isApplicableDate(String startDate, int period) {
+		// Checks if start date is set as 'ALWAYS'
+		if(startDate.equalsIgnoreCase(Constants.Data.Discount.ALWAYS))
+			return true;
+		
+		LocalDate discountStrtDate = LocalDate.parse(startDate);
+
+		// Is applicable if Current Date is equal to or after discount date
+		// And if Current Date is equal to or before the end of the period of
+		// discount
+		return ((discountStrtDate.isBefore(Constants.DateTime.CURRENT_DATE)
+				&& discountStrtDate.plusDays(period).isAfter(Constants.DateTime.CURRENT_DATE))
+				|| (discountStrtDate.isEqual(Constants.DateTime.CURRENT_DATE)
+						|| discountStrtDate.plusDays(period).isEqual(Constants.DateTime.CURRENT_DATE)));
+
+	}
 
 	/**
 	 * Splits Row of Data File into a list of Strings
@@ -291,26 +293,6 @@ public class DiscountManager {
 	}
 
 	/**
-	 * Checks if Current Date is within the Discount Start Date and Period
-	 * 
-	 * @param startDate
-	 * @param period
-	 * @return
-	 */
-	private boolean isApplicableDate(String startDate, int period) {
-		LocalDate discountStrtDate = LocalDate.parse(startDate);
-
-		// Is applicable if Current Date is equal to or after discount date
-		// And if Current Date is equal to or before the end of the period of
-		// discount
-		return ((discountStrtDate.isBefore(Constants.DateTime.CURRENT_DATE)
-				&& discountStrtDate.plusDays(period).isAfter(Constants.DateTime.CURRENT_DATE))
-				|| (discountStrtDate.isEqual(Constants.DateTime.CURRENT_DATE)
-						|| discountStrtDate.plusDays(period).isEqual(Constants.DateTime.CURRENT_DATE)));
-
-	}
-
-	/**
 	 * (3.2.c) Return all discount applicable to non-members
 	 * 
 	 * @return List of Discounts applicable to the Public
@@ -354,8 +336,9 @@ public class DiscountManager {
 				throw new DiscountException(DiscountError.MEMBER_NOT_PRESENT_IN_FILE);
 			}
 			// Get Discount for New or Existing Member
-			discount = member.getLoyaltyPoints() == Constants.Data.Member.LOYALTY_NEW_MEMBER ? getNewMemberDiscount()
-					: getMemberDiscount();
+			discount = member.getLoyaltyPoints() == Constants.Data.Member.LOYALTY_NEW_MEMBER
+					? findDiscount(Constants.Data.Discount.Member.New.CODE)
+					: findDiscount(Constants.Data.Discount.Member.Existing.CODE);
 		}
 
 		return discount;
@@ -462,10 +445,14 @@ public class DiscountManager {
 	 * @return Status
 	 * @throws IOException
 	 */
-	public boolean deleteDiscount(String code) throws DiscountException {
+	public boolean deleteDiscount(String code, boolean fromUpdate) throws DiscountException {
 
 		if (hasDiscount(code)) {
 			Discount discount = findDiscount(code);
+			
+			if(!fromUpdate && isDefaultDiscount(discount))
+				throw new DiscountException(DiscountError.DEFAULT_DISCOUNT_NOT_DELETABLE);
+			
 			try {
 				return discountData.delete(discount.toString());
 			} catch (IOException ioExp) {
@@ -484,9 +471,12 @@ public class DiscountManager {
 	 * @throws DiscountException
 	 */
 	public boolean updateDiscount(Discount oldDiscount, Discount newDiscount) throws DiscountException {
-		if (deleteDiscount(oldDiscount.getCode())) {
+		
+		if (updateDefaultDiscount(oldDiscount, newDiscount) | deleteDiscount(oldDiscount.getCode(), true)) {
 			return addDiscount(newDiscount);
 		}
+		
 		return false;
 	}
+	
 }

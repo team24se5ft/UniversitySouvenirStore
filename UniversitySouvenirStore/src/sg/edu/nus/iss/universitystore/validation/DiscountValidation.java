@@ -46,7 +46,7 @@ public class DiscountValidation extends Validation {
 
 		// Check if Date is of valid format
 		try {
-			if (!isDate(startDate)) {
+			if (!isDate(startDate) && !startDate.matches(Constants.Data.Discount.Pattern.START_DATE_MATCH)) {
 				throw new DiscountException(DiscountError.INVALID_START_DATE);
 			}
 		} catch (DateTimeParseException dateTimeExp) {
@@ -54,16 +54,14 @@ public class DiscountValidation extends Validation {
 		}
 
 		// Check if Period is of correct format
-		if (!isNumber(period))
-			throw new DiscountException(DiscountError.INVALID_PERIOD);
-		else if (!period.matches(Constants.Data.Discount.Pattern.PERIOD_MATCH))
+		if (!isNumber(period) && !period.matches(Constants.Data.Discount.Pattern.PERIOD_MATCH))
 			throw new DiscountException(DiscountError.INVALID_PERIOD);
 
 		// Check if Eligibility is M or A
 		if (!eligibilty.matches(Constants.Data.Discount.Pattern.ELIGIBILITY_MATCH))
 			throw new DiscountException(DiscountError.INVALID_ELIGIBILITY);
 
-		return isValidValue(period, percentage);
+		return isValidValue(startDate, period, percentage);
 	}
 
 	/**
@@ -72,15 +70,22 @@ public class DiscountValidation extends Validation {
 	 * @param dataLine
 	 * @return Boolean
 	 */
-	private static boolean isValidValue(String periodStr, String percentageStr) throws DiscountException {
-		int period = Integer.parseInt(periodStr);
+	private static boolean isValidValue(String startDateStr, String periodStr, String percentageStr) throws DiscountException {
 		float percentage = Float.parseFloat(percentageStr);
 
 		if (!(percentage > 0 && percentage <= 100))
 			throw new DiscountException(DiscountError.INVALID_PERCENTAGE_RANGE);
+		
+		if(startDateStr.equals(Constants.Data.Discount.ALWAYS) && !periodStr.equals(Constants.Data.Discount.ALWAYS))
+			throw new DiscountException(DiscountError.START_DATE_PERIOD_ALWAYS);
+		
+		if(periodStr.equals(Constants.Data.Discount.ALWAYS))
+			return true;
+		
+		int period = Integer.parseInt(periodStr);
 
-		if (!(period >= 0 && period <= 365))
-			throw new DiscountException(DiscountError.INVALID_PERIOD_RANGE);
+		if (!(period >= 0))
+			throw new DiscountException(DiscountError.INVALID_PERIOD);
 
 		return true;
 

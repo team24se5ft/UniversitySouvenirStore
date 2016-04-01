@@ -64,8 +64,7 @@ public class DiscountController implements IDiscountDelegate {
 				
 				try {
 					if(DiscountValidation.isValidData(code, description, startDate, period, percentage, eligibilty)) {
-						Discount discount = new Discount(code, description, startDate, Integer.valueOf(period),
-								Float.valueOf(percentage), eligibilty);
+						Discount discount = new Discount(code, description, startDate, period, percentage, eligibilty);
 						flag = discountManager.addDiscount(discount);
 						discountList = discountManager.getAllDiscounts();
 					}
@@ -97,7 +96,7 @@ public class DiscountController implements IDiscountDelegate {
 				boolean flag = false;
 				// TODO dataModify
 				try {
-					flag = discountManager.deleteDiscount(discount.getCode());
+					flag = discountManager.deleteDiscount(discount.getCode(), false);
 					discountList = discountManager.getAllDiscounts();
 				} catch (DiscountException e) {
 					UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
@@ -128,8 +127,7 @@ public class DiscountController implements IDiscountDelegate {
 				try {
 					if(DiscountValidation.isValidData(code, description, startDate, period, percentage, eligibilty)) {
 						
-						Discount newDiscount = new Discount(code, description, startDate, Integer.valueOf(period),
-								Float.valueOf(percentage), eligibilty);
+						Discount newDiscount = new Discount(code, description, startDate, period, percentage, eligibilty);
 						
 						flag = discountManager.updateDiscount(oldDiscount, newDiscount);
 						discountList = discountManager.getAllDiscounts();
@@ -169,8 +167,8 @@ public class DiscountController implements IDiscountDelegate {
 					TableDataUtils.getHeadersForDiscountTable());
 			return true;
 		} else {
-			UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR,
-					ViewConstants.ValidationMessage.VALIDATION_Failed, DialogType.WARNING_MESSAGE);
+			/*UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR,
+					ViewConstants.ValidationMessage.VALIDATION_Failed, DialogType.WARNING_MESSAGE);*/
 			return false;
 		}
 	}

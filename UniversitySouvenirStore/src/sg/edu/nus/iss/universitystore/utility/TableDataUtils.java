@@ -118,7 +118,7 @@ public class TableDataUtils {
 			list[row][Constants.TableData.FIRST_COLUMN] = discount.getCode();
 			list[row][Constants.TableData.SECOND_COLUMN] = discount.getDescription();
 			list[row][Constants.TableData.THIRD_COLUMN] = discount.getStartDate();
-			list[row][Constants.TableData.FOURTH_COLUMN] = String.valueOf(discount.getPeriod());
+			list[row][Constants.TableData.FOURTH_COLUMN] = String.valueOf(discount.getPeriod() == Constants.Data.Discount.ALWAYS_VAL ? Constants.Data.Discount.ALWAYS : discount.getPeriod());
 			list[row][Constants.TableData.FIFTH_COLUMN] = String.valueOf(discount.getPercentage());
 			list[row][Constants.TableData.SIXTH_COLUMN] = discount.getEligibilty();
 		}

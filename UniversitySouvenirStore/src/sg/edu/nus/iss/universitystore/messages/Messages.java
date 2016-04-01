@@ -78,15 +78,24 @@ public final class Messages {
 			public static final String DISCOUNT_NOT_PRESENT_IN_FILE = "The Discount does not exist!";
 			public static final String DISCOUNT_ALREADY_PRESENT = "The Discount Code already exists!";
 			public static final String INVALID_PERIOD = new StringBuffer().append("Period: ")
-					.append(Common.INVALID_NUMBER).toString();
+					.append(Common.INVALID_NUMBER).append(" or ALWAYS").toString();
 			public static final String INVALID_START_DATE = new StringBuffer().append("Start Date: ")
-					.append(Common.INVALID_DATE).toString();
+					.append(Common.INVALID_DATE).append(" or ALWAYS").toString();
 			public static final String INVALID_PERCENTAGE = new StringBuffer().append("Percentage: ")
 					.append(Common.INVALID_FLOAT).toString();
-			public static final String INVALID_CODE = "Code should only contain alphabet characters!";
+			public static final String INVALID_CODE = new StringBuffer().append(Common.INVALID_CODE).toString();
 			public static final String INVALID_ELIGIBILITY = "Eligibility should be selected as \"M\" or \"A\"";
-			public static final String INVALID_PERIOD_RANGE = "Period should be between 0 and 365";
 			public static final String INVALID_PERCENTAGE_RANGE = "Percentage should be bewteen 1 and 100";
+			public static final String NEWMEMBER_PERCENTAGE_ONLY = "Only Percentage can be updated for New Member Discount";
+			public static final String EXTNGMEMBER_PERCENTAGE_ONLY = "Only Percentage can be updated for Existing Member Discount";
+			public static final String DEFAULT_DISCOUNT_NOT_UPDATABLE = "Default Customer Discount cannot be modified";
+			public static final String DEFAULT_DISCOUNT_NOT_DELETABLE = "Default Customer Discount cannot be deleted";
+			public static final String START_DATE_PERIOD_ALWAYS = "When Start Date is 'ALWAYS' period must be 'ALWAYS'";
+			public static final String EMPTY_DISCOUNT_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS)
+					.append(Constants.Common.NEW_LINE).append(INVALID_CODE).append(Constants.Common.NEW_LINE)
+					.append(INVALID_PERCENTAGE).append(Constants.Common.NEW_LINE).append(INVALID_ELIGIBILITY)
+					.append(Constants.Common.NEW_LINE).append(INVALID_START_DATE).append(Constants.Common.NEW_LINE)
+					.append(INVALID_PERIOD).toString();
 		}
 
 		public static final class Transaction {

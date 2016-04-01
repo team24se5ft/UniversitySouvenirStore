@@ -13,7 +13,7 @@ public class DiscountException extends Exception {
 	// Enum listing all possible errors possible during login
 	/***********************************************************/
 	public enum DiscountError {
-	    EMPTY_DISCOUNT_FIELDS(Messages.Error.Common.EMPTY_FIELDS),
+	    EMPTY_DISCOUNT_FIELDS(Messages.Error.Discount.EMPTY_DISCOUNT_FIELDS),
 	    DISCOUNT_NOT_PRESENT_IN_FILE(Messages.Error.Discount.DISCOUNT_NOT_PRESENT_IN_FILE),
 	    DISCOUNT_ALREADY_PRESENT(Messages.Error.Discount.DISCOUNT_ALREADY_PRESENT),
 	    MEMBER_NOT_PRESENT_IN_FILE(Messages.Error.Member.MEMBER_NOT_PRESENT_IN_FILE),
@@ -22,8 +22,12 @@ public class DiscountException extends Exception {
 	    INVALID_PERCENTAGE(Messages.Error.Discount.INVALID_PERCENTAGE),
 	    INVALID_CODE(Messages.Error.Common.INVALID_CODE),
 	    INVALID_ELIGIBILITY(Messages.Error.Discount.INVALID_ELIGIBILITY),
-	    INVALID_PERIOD_RANGE(Messages.Error.Discount.INVALID_PERIOD_RANGE),
 	    INVALID_PERCENTAGE_RANGE(Messages.Error.Discount.INVALID_PERCENTAGE_RANGE),
+	    NEWMEMBER_PERCENTAGE_ONLY(Messages.Error.Discount.NEWMEMBER_PERCENTAGE_ONLY),
+	    EXTNGMEMBER_PERCENTAGE_ONLY(Messages.Error.Discount.EXTNGMEMBER_PERCENTAGE_ONLY),
+	    DEFAULT_DISCOUNT_NOT_UPDATABLE(Messages.Error.Discount.DEFAULT_DISCOUNT_NOT_UPDATABLE),
+	    DEFAULT_DISCOUNT_NOT_DELETABLE(Messages.Error.Discount.DEFAULT_DISCOUNT_NOT_DELETABLE),
+	    START_DATE_PERIOD_ALWAYS(Messages.Error.Discount.START_DATE_PERIOD_ALWAYS),
 	    UNKNOWN_ERROR(Messages.Error.Common.UNKNOWN_ERROR)
 	    ;
 		

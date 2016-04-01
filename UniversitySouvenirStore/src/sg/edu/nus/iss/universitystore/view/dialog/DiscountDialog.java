@@ -92,7 +92,7 @@ public abstract class DiscountDialog extends BaseDialog {
 		percentage.setText(discount.getPercentage() + "");
 		description.setText(discount.getDescription());
 		startDate.setText(discount.getStartDate());
-		period.setText(discount.getPeriod() + "");
+		period.setText((discount.getPeriod() == Constants.Data.Discount.ALWAYS_VAL ? Constants.Data.Discount.ALWAYS : discount.getPeriod()) + "");
 		// From the backend we will get the value 'M' or 'A'.
 		if (discount.getEligibilty().equals(Constants.Data.Discount.Eligibility.MEMBER)) {
 			radioBtnMember.setSelected(true);

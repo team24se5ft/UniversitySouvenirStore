@@ -20,7 +20,7 @@ public final class Constants {
 			public static final String NUMBER_MATCH = "\\d+";
 			public static final String FLOAT_MATCH = "\\d+(\\.\\d+)?";
 			public static final String DATE_MATCH = "\\d{4}\\-\\d{2}\\-\\d{2}";
-			public static final String CODE_MATCH = "[A-Z]+";
+			public static final String CODE_MATCH = "[A-Z_]+";
 			public static final String NAME_MATCH = "[a-zA-Z0-9 ]+";
 		}
 
@@ -105,10 +105,12 @@ public final class Constants {
 		}
 
 		public static final class Discount {
+			public static final String ALWAYS = "ALWAYS";
+			public static final int ALWAYS_VAL = -1;
 			public static final class Pattern {
 				public static final String CODE_MATCH = Common.Pattern.CODE_MATCH;
-				public static final String START_DATE_MATCH = "\\d{4}\\-\\d{2}\\-\\d{2}";
-				public static final String PERIOD_MATCH = Common.Pattern.NUMBER_MATCH;
+				public static final String START_DATE_MATCH = "((" + ALWAYS + ")|\\d{4}-\\d{2}-\\d{2})";
+				public static final String PERIOD_MATCH = "((" + ALWAYS + ")|" + Common.Pattern.NUMBER_MATCH + ")";
 				public static final String PERCENTAGE_MATCH = "\\d{1,3}(\\.\\d{1,2})?";
 				public static final String ELIGIBILITY_MATCH = "[A|M]";
 				public static final String LINE_MATCH = "^(" + CODE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + ")"
@@ -126,21 +128,15 @@ public final class Constants {
 
 			public static final class Member {
 				public static final class New {
-					public static final String CODE = "NEWMEMBER";
-					public static final String DESCRIPTION = "Discount for New Member";
-					public static final int PERIOD = 0;
-					public static final float DEFAULT_DISCOUNT = 20;
+					public static final String CODE = "MEMBER_FIRST";
 				}
 
 				public static final class Existing {
-					public static final String CODE = "EXTGMEMBER";
-					public static final String DESCRIPTION = "Discount for Member";
-					public static final int PERIOD = 365;
-					public static final float DEFAULT_DISCOUNT = 10;
+					public static final String CODE = "MEMBER_SUBSEQ";
 				}
 
 				public static final class Public {
-					public static final String CODE = "NONMEMBER";
+					public static final String CODE = "PUBLIC";
 					public static final String DESCRIPTION = "No Discount applicable for Non-Member";
 					public static final int PERIOD = 0;
 					public static final float DEFAULT_DISCOUNT = 0;
