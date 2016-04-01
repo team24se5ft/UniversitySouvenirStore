@@ -266,7 +266,7 @@ public class SalesController implements ISalesDelegate {
 	@Override
 	public void memberIdentification() {
 		// TODO Auto-generated method stub
-		memberDialog = new MemberScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "scanMember") {
+		memberDialog = new MemberScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Enter Member Details") {
 
 			@Override
 			public boolean onMemberIdentification(String MemberCode) {
