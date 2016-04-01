@@ -38,12 +38,17 @@ public class SalesController implements ISalesDelegate {
 	private Member currentMember;
 	MemberScanDialog memberDialog;
 	ProductScanDialog productDialog;
-	
+
 	/**
 	 * Reference to Inventory Manager
 	 */
 	private InventoryManager inventoryManager;
-	
+
+	/**
+	 * Reference to Member Manager
+	 */
+	private MemberManager memberManager;
+
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
@@ -56,7 +61,7 @@ public class SalesController implements ISalesDelegate {
 			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
 					DialogType.ERROR_MESSAGE);
 		}
-		
+
 	}
 
 	/***********************************************************/
@@ -73,11 +78,12 @@ public class SalesController implements ISalesDelegate {
 	@Override
 	public void addProduct() {
 		try {
-			if(inventoryManager.getAllProducts().size() == 0) {
-				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, Messages.Error.Controller.NO_PRODUCTS_PRS,
-						DialogType.ERROR_MESSAGE);
-			}else {
-				productDialog = new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Scan Product") {
+			if (inventoryManager.getAllProducts().size() == 0) {
+				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
+						Messages.Error.Controller.NO_PRODUCTS_PRS, DialogType.ERROR_MESSAGE);
+			} else {
+				productDialog = new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
+						"Scan Product") {
 					@Override
 					public boolean onProductScanResult(String productCode, int quantity) {
 						// add query product entity
@@ -91,7 +97,7 @@ public class SalesController implements ISalesDelegate {
 			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
 					DialogType.ERROR_MESSAGE);
 		}
-		
+
 	}
 
 	/**
@@ -266,22 +272,31 @@ public class SalesController implements ISalesDelegate {
 	 */
 	@Override
 	public void memberIdentification() {
-		// TODO Auto-generated method stub
-		memberDialog = new MemberScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Enter Member Details") {
+		try {
+			memberManager = MemberManager.getInstance();
+			if (memberManager.getAllMembers().size() == 0) {
+				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
+						"No members enrolled in the store.", DialogType.ERROR_MESSAGE);
+			} else {
+				memberDialog = new MemberScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
+						"Enter Member Details") {
 
-			@Override
-			public boolean onMemberIdentification(String MemberCode) {
-				// TODO query Member
-				if (MemberCode.length() == 0) {
-					refreshSalesData(ViewConstants.Labels.STR_PUBLIC, true);
-				} else {
-					refreshSalesData(MemberCode, true);
-				}
-				return true;
+					@Override
+					public boolean onMemberIdentification(String MemberCode) {
+						if (MemberCode.length() == 0) {
+							refreshSalesData(ViewConstants.Labels.STR_PUBLIC, true);
+						} else {
+							refreshSalesData(MemberCode, true);
+						}
+						return true;
+					}
+				};
+				memberDialog.setVisible(true);
 			}
-
-		};
-		memberDialog.setVisible(true);
+		} catch (MemberException e) {
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
+					e.getMessage(), DialogType.ERROR_MESSAGE);
+		}
 	}
 
 	@Override
@@ -301,43 +316,44 @@ public class SalesController implements ISalesDelegate {
 	 * 
 	 * @param Membercode
 	 */
-	private void refreshSalesData(String memberCode,boolean isShowTip){
-		//set member part
-		try{
+	private void refreshSalesData(String memberCode, boolean isShowTip) {
+		// set member part
+		try {
 			Member member = MemberManager.getInstance().getMember(memberCode);
 			currentMember = member;
-			if(member!=null){
-				salesPanel.onMemberIdentification(member.getName(),String.valueOf(member.getLoyaltyPoints()) );
-			}else{
-				salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL,"0");
+			if (member != null) {
+				salesPanel.onMemberIdentification(member.getName(), String.valueOf(member.getLoyaltyPoints()));
+			} else {
+				salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL, "0");
 			}
-		}catch(MemberException e){
-			salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL,"0");
+		} catch (MemberException e) {
+			salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL, "0");
 		}
-		//set discount part
-		try{
+		// set discount part
+		try {
 			Discount discount;
-			if(currentMember!=null){
+			if (currentMember != null) {
 				discount = DiscountManager.getInstance().getDiscount(memberCode);
-			}else{
+			} else {
 				discount = DiscountManager.getInstance().getDiscount(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL);
 			}
 			currentDiscount = discount;
-			if(discount!=null){
-				salesPanel.onSetDiscount(discount.getCode(), discount.getPercentage()+"%");
-				salesPanel.setTotal((TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode())));
-			}else{
+			if (discount != null) {
+				salesPanel.onSetDiscount(discount.getCode(), discount.getPercentage() + "%");
+				salesPanel
+						.setTotal((TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode())));
+			} else {
 				salesPanel.onSetDiscount("none discount", "0.0%");
 				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
 			}
-		}catch(DiscountException e){
+		} catch (DiscountException e) {
 			salesPanel.onSetDiscount("none discount", "0.0%");
 			try {
 				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
 			} catch (TransactionException e1) {
 				e1.printStackTrace();
 			}
-		}catch(TransactionException e){
+		} catch (TransactionException e) {
 			if (isShowTip) {
 				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, e.getMessage(),
 						DialogType.WARNING_MESSAGE);
@@ -345,6 +361,5 @@ public class SalesController implements ISalesDelegate {
 			e.printStackTrace();
 		}
 	}
-	
 
 }
