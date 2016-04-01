@@ -429,7 +429,7 @@ public class TransactionManager {
 		checkIfRequestedQuantityExistsInInventory(arrTransactionItem);
 
 		// Check if it valid discount
-		if (discountId != null || discountId.length() != 0) {
+		if (discountId != null&& discountId.length() != 0) {
 			// Check Discount Id
 			try {
 				discountManager.findDiscount(discountId);

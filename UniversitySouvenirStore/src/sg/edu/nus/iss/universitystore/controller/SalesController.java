@@ -6,6 +6,7 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.DiscountManager;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
@@ -190,8 +191,10 @@ public class SalesController implements ISalesDelegate {
 				if (salesPanel.checkOUTable()) {
 					try {
 						TransactionManager.getInstance().addTransaction(transactionItemList,
-								currentDiscount == null ? null : currentDiscount.getCode(), currentMember == null
-										? ViewConstants.Labels.STR_PUBLIC : currentMember.getIdentifier());
+								currentDiscount.getCode() == Constants.Data.Discount.Member.Public.CODE ? null
+										: currentDiscount.getCode(),
+								currentMember == null ? ViewConstants.Labels.STR_PUBLIC
+										: currentMember.getIdentifier());
 						// show receipt here
 						// clear salesPanel here
 						clearSalesPanel();
@@ -297,8 +300,8 @@ public class SalesController implements ISalesDelegate {
 				memberDialog.setVisible(true);
 			}
 		} catch (MemberException e) {
-			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
-					e.getMessage(), DialogType.ERROR_MESSAGE);
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
+					DialogType.ERROR_MESSAGE);
 		}
 	}
 
