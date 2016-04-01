@@ -44,7 +44,7 @@ public class MemberValidation extends Validation{
 	
 	public static boolean isValidLoyaltyPoint(String loyaltyPoints) throws MemberException {
 		
-		if(loyaltyPoints.isEmpty() || !isNumber(loyaltyPoints))
+		if(loyaltyPoints.isEmpty() || !loyaltyPoints.matches(Constants.Data.Member.Pattern.LOYALTY_POINTS_MATCH))
 			throw new MemberException(MemberError.INVALID_LOYALTY_POINTS);
 		
 		return true;

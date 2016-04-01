@@ -11,7 +11,7 @@ public final class Messages {
 			public static final String INVALID_FLOAT = "Please Enter a Valid Positive Number with a maximum of two decimals. For example, \"50.0\" or \"30.25\"";
 			public static final String INVALID_DATE = "Please Enter a Valid Date. Eg. 2000-10-20";
 			public static final String INVALID_CODE = "Code must consist of capital alphabets only!";
-			public static final String INVALID_NAME = "Name can only contain alphabets, numbers and Spaces";
+			public static final String INVALID_NAME = "Name can only contain alphabets, numbers and spaces";
 			public static final String EMPTY_FIELDS = "All fields are mandatory.";
 			public static final String OTHER_ERROR = "Error in functionality.";
 		}
@@ -61,7 +61,7 @@ public final class Messages {
 			public static final String INVALID_MEMBER_ID = "Member ID should only contain alphabets and numbers";
 			public static final String INVALID_MEMBER_NAME = new StringBuffer().append("Member Name: ")
 					.append(Common.INVALID_NAME).toString();
-			public static final String INVALID_LOYALTY_POINTS = "Loyalty Points has to be a positive value";
+			public static final String INVALID_LOYALTY_POINTS = "Loyalty Points has to be -1(new member) or positive value";
 			public static final String MEMBER_IDENTIFIER_ALREADY_PRESENT = "The Member ID you entered already exists!";
 			public static final String MEMBER_NOT_PRESENT_IN_FILE = "The Member does not exist!";
 			public static final String EMPTY_MEMBER_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS)

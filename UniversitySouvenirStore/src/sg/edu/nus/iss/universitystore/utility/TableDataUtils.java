@@ -208,7 +208,12 @@ public class TableDataUtils {
 			Member member = memberList.get(row);
 			list[row][Constants.TableData.FIRST_COLUMN] = member.getIdentifier();
 			list[row][Constants.TableData.SECOND_COLUMN] = member.getName();
-			list[row][Constants.TableData.THIRD_COLUMN] = String.valueOf(member.getLoyaltyPoints());
+			// If the value of loyalty points is less than 0(i.e. -1), we display as 0. The logic remains the same.
+			if(member.getLoyaltyPoints() < 0) {
+				list[row][Constants.TableData.THIRD_COLUMN] = "New Member";
+			}else {
+				list[row][Constants.TableData.THIRD_COLUMN] = String.valueOf(member.getLoyaltyPoints());
+			}
 		}
 		return list;
 	}

@@ -123,7 +123,7 @@ public class MemberController implements IMemberDelegate {
 	 */
 	@Override
 	public void deleteMemberClicked(int index) {
-		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Category",
+		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Member",
 				"Do u really want to delete the member?") {
 
 			private static final long serialVersionUID = 1L;
