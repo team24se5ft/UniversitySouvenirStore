@@ -308,10 +308,10 @@ public class SalesController implements ISalesDelegate {
 			if(member!=null){
 				salesPanel.onMemberIdentification(member.getName(),String.valueOf(member.getLoyaltyPoints()) );
 			}else{
-				salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL,"0.0");
+				salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL,"0");
 			}
 		}catch(MemberException e){
-			salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL,"0.0");
+			salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL,"0");
 		}
 		//set discount part
 		try{
