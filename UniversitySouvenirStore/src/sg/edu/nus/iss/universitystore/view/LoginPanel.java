@@ -150,7 +150,7 @@ public class LoginPanel extends JPanel{
 		
 		//Submit button
 		btnSubmit = new JButton(new ImageIcon(ViewConstants.PanelHeaders.LOGIN_ICON_IMG));
-		btnSubmit.setBorder(new EmptyBorder(15, 0, 0, 0));
+		btnSubmit.setBorder(new EmptyBorder(5, 0, 0, 0));
 		btnSubmit.setBorderPainted(false);
 		btnSubmit.setContentAreaFilled(false);
 		btnSubmit.setFocusPainted(false);

@@ -78,6 +78,9 @@ public class SalesController implements ISalesDelegate {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
+	/**
+	 * Sales Controller Constructor
+	 */
 	public SalesController() {
 		salesPanel = new SalesPanel(this);
 		refreshSalesData(ViewConstants.Labels.STR_PUBLIC, false);
@@ -91,12 +94,15 @@ public class SalesController implements ISalesDelegate {
 	}
 
 	/***********************************************************/
-	// Public Methods
+	// Getters & Setters
 	/***********************************************************/
 	public SalesPanel getSalesPanel() {
 		return salesPanel;
 	}
 
+	/***********************************************************/
+	// Public Methods
+	/***********************************************************/
 	/**
 	 * after click addProduct btn,the function should generate a dialog for
 	 * product code input
