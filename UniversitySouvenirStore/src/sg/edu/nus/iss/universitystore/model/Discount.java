@@ -2,6 +2,12 @@ package sg.edu.nus.iss.universitystore.model;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 
+/**
+ * Discount Domain Object
+ * 
+ * @author Sanjay
+ *
+ */
 public class Discount {
 
 	/***********************************************************/
@@ -17,6 +23,17 @@ public class Discount {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
+	
+	/**
+	 * Discount Constructor
+	 * 
+	 * @param code
+	 * @param description
+	 * @param startDate
+	 * @param period
+	 * @param percentage
+	 * @param eligibilty
+	 */
 	public Discount(String code, String description, String startDate, int period, float percentage,
 			String eligibilty) {
 		this.code = code;

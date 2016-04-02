@@ -1,5 +1,11 @@
 package sg.edu.nus.iss.universitystore.model;
 
+/**
+ * Store Keeper Domain Object
+ * 
+ * @author Joshua
+ *
+ */
 public class StoreKeeper {
 
 	/***********************************************************/
@@ -11,6 +17,13 @@ public class StoreKeeper {
 	/***********************************************************/
 	//Constructors
 	/***********************************************************/
+	
+	/**
+	 * Store Keeper Constructor
+	 * 
+	 * @param userName
+	 * @param password
+	 */
 	public StoreKeeper(String userName,String password) {
 		this.userName = userName;
 		this.password = password;

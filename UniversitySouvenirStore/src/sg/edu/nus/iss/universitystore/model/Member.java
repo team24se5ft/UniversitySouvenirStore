@@ -1,5 +1,11 @@
 package sg.edu.nus.iss.universitystore.model;
 
+/**
+ * Member Domain Object
+ * 
+ * @author Deepak
+ *
+ */
 public class Member {
 
 	/***********************************************************/
@@ -25,6 +31,8 @@ public class Member {
 	/***********************************************************/
 
 	/**
+	 * Member Constructor
+	 * 
 	 * @param identifier
 	 * @param name
 	 * @param loyaltyPoints

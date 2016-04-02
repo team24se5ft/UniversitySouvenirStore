@@ -3,6 +3,12 @@ package sg.edu.nus.iss.universitystore.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Transaction Domain Object
+ * 
+ * @author Samrat
+ *
+ */
 public class Transaction {
 
 	/***********************************************************/
@@ -32,11 +38,10 @@ public class Transaction {
 	 *            The date of the transaction
 	 */
 	public Transaction(int identifier, ArrayList<TransactionItem> itemList, String memberId, LocalDate date) {
-		// Set the values
-		this.identifier = String.valueOf(identifier);// TODO - Validate if this ßßgives an integer
+		this.identifier = String.valueOf(identifier);
 		this.itemList = itemList;
 		this.memberId = memberId;
-		this.date = date;// TODO - Put validation for getting the correct format
+		this.date = date;
 	}
 
 	/**
@@ -101,8 +106,8 @@ public class Transaction {
 	@Override
 	public String toString() {
 		String value="";
-		for(int i=0;i<itemList.size();i++){
-			value+=identifier + "," + itemList.get(i).getProduct().getIdentifier() + "," + memberId + "," + itemList.get(i).getQuantity() + "," + date.toString();
+		for(TransactionItem item : itemList){
+			value+=identifier + "," + item.getProduct().getIdentifier() + "," + memberId + "," + item.getQuantity() + "," + date.toString();
 			value+="\n";
 		}
 		return value;

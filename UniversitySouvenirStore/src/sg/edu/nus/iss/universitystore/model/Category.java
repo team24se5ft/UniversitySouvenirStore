@@ -1,6 +1,11 @@
 package sg.edu.nus.iss.universitystore.model;
 
-
+/**
+ * Category Domain Object
+ * 
+ * @author Sanjay
+ *
+ */
 public class Category {
 
 	/***********************************************************/
@@ -11,8 +16,13 @@ public class Category {
 	
 	/***********************************************************/
 	//Constructors
+	/***********************************************************/
+	
 	/**
-	 * @throws StoreException *********************************************************/
+	 * Category Constructor
+	 * @param code
+	 * @param name
+	 */
 	public Category(String code, String name) {
 		this.code = code.toUpperCase();
 		this.name = name;

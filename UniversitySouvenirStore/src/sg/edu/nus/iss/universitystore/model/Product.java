@@ -1,5 +1,11 @@
 package sg.edu.nus.iss.universitystore.model;
 
+/**
+ * Product Domain Object
+ * 
+ * @author Sanjay
+ *
+ */
 public class Product {
 
 	/***********************************************************/
@@ -17,6 +23,19 @@ public class Product {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
+	
+	/**
+	 * Product Constructor
+	 * 
+	 * @param identifier
+	 * @param name
+	 * @param description
+	 * @param quantity
+	 * @param price
+	 * @param barCode
+	 * @param reorderThreshold
+	 * @param reorderQuantity
+	 */
 	public Product(String identifier, String name, String description, String quantity, String price, String barCode, 
 			String reorderThreshold, String reorderQuantity) {
 		this.identifier = identifier;

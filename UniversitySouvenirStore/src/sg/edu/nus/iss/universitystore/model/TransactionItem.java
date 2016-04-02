@@ -4,6 +4,8 @@
 package sg.edu.nus.iss.universitystore.model;
 
 /**
+ * Transaction Item Domain Object
+ * 
  * @author Samrat
  *
  */
@@ -74,10 +76,6 @@ public class TransactionItem {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
-	/***********************************************************/
-	// Private Methods
-	/***********************************************************/
 
 	/***********************************************************/
 	// Public Methods
