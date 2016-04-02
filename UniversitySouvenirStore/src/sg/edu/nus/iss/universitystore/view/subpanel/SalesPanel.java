@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -77,7 +79,12 @@ public class SalesPanel extends BaseTablePanel {
 				delegate.onSalesPanelVisible();
 			}
 		});
-
+		// Update the middle button
+		ImageIcon imageIcon = new ImageIcon("Resources/checkout_icon.png");
+		Image img = imageIcon.getImage();
+		Image newimg = img.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+		ImageIcon newIcon = new ImageIcon(newimg);
+		btnEdit.setIcon(newIcon);
 	}
 
 	/***********************************************************/
@@ -153,7 +160,8 @@ public class SalesPanel extends BaseTablePanel {
 			public void keyTyped(KeyEvent e) {
 				int keyChar = e.getKeyChar();
 				// only digit
-				if (keyChar < KeyEvent.VK_0 || keyChar > KeyEvent.VK_9) {
+				if (keyChar < KeyEvent.VK_0 && keyChar != KeyEvent.VK_PERIOD
+						|| keyChar > KeyEvent.VK_9 && keyChar != KeyEvent.VK_PERIOD) {
 					e.consume();
 				}
 			}
@@ -187,10 +195,10 @@ public class SalesPanel extends BaseTablePanel {
 		double change = cash + loyal - Constants.Data.Transaction.LOYALTY_POINTS_TO_CURRENCY_CONVERSION_RATE * total;
 		BigDecimal b = new BigDecimal(change);
 		double result = b.setScale(3, RoundingMode.HALF_UP).doubleValue();
-		if(result<0){
+		if (result < 0) {
 			ChangeText.setForeground(Color.red);
-		}else{
-			ChangeText.setForeground(new Color(45, 117, 69));//dark green color
+		} else {
+			ChangeText.setForeground(new Color(45, 117, 69));// dark green color
 		}
 		ChangeText.setText(String.valueOf(result));
 	}

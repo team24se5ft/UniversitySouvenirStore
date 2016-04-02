@@ -6,6 +6,7 @@ package sg.edu.nus.iss.universitystore.view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -156,7 +157,7 @@ public abstract class BaseTablePanel extends JPanel {
 
 		// Initialize the button.
 		btnAdd = new JButton(new ImageIcon("Resources/add_icon.png"));
-		btnEdit = new JButton(new ImageIcon("Resources/edit_icon.png"));
+		btnEdit = new JButton();//for round button icon
 		btnDelete = new JButton(new ImageIcon("Resources/delete_icon.png"));
 
 		// UI for the buttons.
@@ -177,6 +178,13 @@ public abstract class BaseTablePanel extends JPanel {
 		buttonPanel.add(btnAdd);
 		buttonPanel.add(btnEdit);
 		buttonPanel.add(btnDelete);
+		
+		// Update the middle button
+		ImageIcon imageIcon = new ImageIcon("Resources/edit_icon.png");
+		Image img = imageIcon.getImage();
+		Image newimg = img.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+		ImageIcon newIcon = new ImageIcon(newimg);
+		btnEdit.setIcon(newIcon);
 
 		// Return the panel.
 		return buttonPanel;

@@ -23,6 +23,7 @@ import sg.edu.nus.iss.universitystore.model.TransactionItem;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
+import sg.edu.nus.iss.universitystore.validation.TransactionValidation;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.MemberScanDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ProductScanDialog;
@@ -34,34 +35,34 @@ public class SalesController implements ISalesDelegate {
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
-	
+
 	/**
 	 * The panel associated with this controller.
 	 */
 	private SalesPanel salesPanel;
-	
+
 	/**
 	 * The list of transaction items
 	 */
 	private ArrayList<TransactionItem> transactionItemList = new ArrayList<TransactionItem>();
-	
+
 	/**
 	 * The discount associated to the sale.
 	 */
 	private Discount currentDiscount;
-	
+
 	/**
 	 * The member associated with the sale.
 	 */
 	private Member currentMember;
-	
+
 	/**
 	 * The member dialog object.
 	 */
 	MemberScanDialog memberDialog;
-	
+
 	/**
-	 * The product dialog object. 
+	 * The product dialog object.
 	 */
 	ProductScanDialog productDialog;
 
@@ -78,6 +79,7 @@ public class SalesController implements ISalesDelegate {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
+
 	/**
 	 * Sales Controller Constructor
 	 */
@@ -103,6 +105,7 @@ public class SalesController implements ISalesDelegate {
 	/***********************************************************/
 	// Public Methods
 	/***********************************************************/
+
 	/**
 	 * after click addProduct btn,the function should generate a dialog for
 	 * product code input
@@ -117,15 +120,33 @@ public class SalesController implements ISalesDelegate {
 				productDialog = new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
 						ViewConstants.DialogHeaders.SCAN_PRODUCT) {
 					@Override
-					public boolean onProductScanResult(String productCode, int quantity) {
+					public boolean onProductScanResult(String barCode, String quantity) {
 						// add query product entity
-						addProductByBarCode(productCode.toUpperCase(), quantity);
-						return true;
+						try {
+							if (TransactionValidation.isValidForScanProduct(barCode, quantity)) {
+								int quantities = Integer.valueOf(quantity);
+								if (barCode == null && barCode.length() <= 0) {
+									UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
+											Messages.Error.Controller.PRODUCT_CODE_EMPTY, DialogType.ERROR_MESSAGE);
+								} else if (quantities <= 0) {
+									UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
+											Messages.Error.Controller.QUANTITY_LESS_THAN_ZERO,
+											DialogType.ERROR_MESSAGE);
+								} else {
+									addProductByBarCode(barCode, quantities);
+								}
+								return false;
+							}
+						} catch (TransactionException e) {
+							UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
+									DialogType.ERROR_MESSAGE);
+						}
+						return false;
 					}
 				};
 				productDialog.setVisible(true);
 			}
-		} catch (Exception e) {
+		} catch (InventoryException e) {
 			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
 					DialogType.ERROR_MESSAGE);
 		}
@@ -138,18 +159,19 @@ public class SalesController implements ISalesDelegate {
 	 * @param productCode
 	 * @param quantity
 	 */
-	private void addProductByBarCode(String productCode, int quantity) {
+	private void addProductByBarCode(String barCode, int quantity) {
 		// FIXME the same Item exist in the list need directly add
 		try {
-			Product product = InventoryManager.getInstance().findProduct(productCode);
+			Product product = InventoryManager.getInstance().findProductByBarCode(barCode);
 			if (product == null) {
 				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
-						ViewConstants.ValidationMessage.PRODUCT_ID_NotExist, DialogType.WARNING_MESSAGE);
+						Messages.Error.Product.PRODUCT_BARCODE_NOT_AVAILABLE, DialogType.WARNING_MESSAGE);
+				return;
 			} else {
 				if (product.getQuantity() < quantity) {
 					// validate quantity before check out
 					UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
-							ViewConstants.ValidationMessage.PRODUCT_QUANTITY_NOTEnough, DialogType.WARNING_MESSAGE);
+							Messages.Error.Product.PRODUCT_QUANTITY_INSUFFICIENT, DialogType.WARNING_MESSAGE);
 					return;
 				}
 				// add transaction Item and show
@@ -213,9 +235,9 @@ public class SalesController implements ISalesDelegate {
 						TransactionManager.getInstance().addTransaction(transactionItemList,
 								currentDiscount.getCode() == Constants.Data.Discount.Member.Public.CODE ? null
 										: currentDiscount.getCode(),
-								currentMember == null ? ViewConstants.Labels.STR_PUBLIC
-										: currentMember.getIdentifier(),Integer.valueOf(salesPanel.getTotal()[3]));
-						//dispose the confirm dialog
+								currentMember == null ? ViewConstants.Labels.STR_PUBLIC : currentMember.getIdentifier(),
+								Integer.valueOf(salesPanel.getTotal()[3]));
+						// dispose the confirm dialog
 						this.setVisible(false);
 						this.dispose();
 						// show receipt here
@@ -237,10 +259,11 @@ public class SalesController implements ISalesDelegate {
 		};
 		dlg.setVisible(true);
 	}
-	
-	private void createReceipt(){
+
+	private void createReceipt() {
 		ReceiptDialog receiptDlg;
-		String discountPercentage = currentDiscount == null ? ViewConstants.SalesPanel.NONE_DISCOUNT : currentDiscount.getPercentage()+"%";
+		String discountPercentage = currentDiscount == null ? ViewConstants.SalesPanel.NONE_DISCOUNT
+				: currentDiscount.getPercentage() + "%";
 		String memberId = currentMember == null ? ViewConstants.Labels.STR_PUBLIC : currentMember.getIdentifier();
 		receiptDlg = new ReceiptDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), transactionItemList,
 				salesPanel.getTotal(), discountPercentage, memberId);
@@ -280,7 +303,7 @@ public class SalesController implements ISalesDelegate {
 			};
 			dlg.setVisible(true);
 		} else {
-			
+
 		}
 	}
 
@@ -422,7 +445,7 @@ public class SalesController implements ISalesDelegate {
 
 	@Override
 	public void rowNotSelected() {
-		UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, ViewConstants.Controller.PLEASE_SELECT_ROW,
-				DialogType.WARNING_MESSAGE);
+		UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
+				ViewConstants.Controller.PLEASE_SELECT_ROW, DialogType.WARNING_MESSAGE);
 	}
 }

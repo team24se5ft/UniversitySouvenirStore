@@ -255,7 +255,7 @@ public final class Constants {
 
 		public static final class Transaction {
 			public static final int CURRENCY_TO_LOYALTY_POINTS_CONVERSION_RATE = 10;
-			public static final int LOYALTY_POINTS_TO_CURRENCY_CONVERSION_RATE = 10;
+			public static final int LOYALTY_POINTS_TO_CURRENCY_CONVERSION_RATE = 1;
 			public static final String STR_PRODUCTS_BELOW_THRESHOLD = "The following products are below threshold quantity:";
 		}
 	}

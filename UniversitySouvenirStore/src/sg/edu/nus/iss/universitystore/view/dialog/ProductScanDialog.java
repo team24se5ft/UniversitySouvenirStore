@@ -47,7 +47,7 @@ public abstract class ProductScanDialog extends BaseDialog {
 	 *            key in quantity
 	 * @return
 	 */
-	public abstract boolean onProductScanResult(String productCode, int quantity);
+	public abstract boolean onProductScanResult(String productCode, String quantity);
 
 	/***********************************************************/
 	// Abstract Methods Implementation
@@ -68,20 +68,12 @@ public abstract class ProductScanDialog extends BaseDialog {
 		panelGridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		jPanel.setLayout(panelGridBagLayout);
 
-		// ProductCode = new JTextField();
-		// ProductCode.setColumns(1);
-		// quantity = new JTextField();
-		// quantity.setColumns(1);
 
 		// Finally add the elements
-		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_CODE, 0);
+		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.BAR_CODE, 0);
 		ProductCode = createTextFieldOnPanel(jPanel, 0);
 		createLabelOnPanel(jPanel, ViewConstants.DialogHeaders.PROD_QUANTITY, 1);
 		Quantity = createTextFieldOnPanel(jPanel, 1);
-		// jp.add(new JLabel(ViewConstants.DialogHeaders.PROD_CODE));
-		// jp.add(ProductCode);
-		// jp.add(new JLabel(ViewConstants.DialogHeaders.PROD_QUANTITY));
-		// jp.add(quantity);
 		return jPanel;
 	}
 
@@ -91,8 +83,7 @@ public abstract class ProductScanDialog extends BaseDialog {
 	@Override
 	protected boolean confirmClicked() {
 		// FIXME procode and quantity validaton
-		onProductScanResult(ProductCode.getText(), Integer.valueOf(Quantity.getText()));
-		return false;
+		return onProductScanResult(ProductCode.getText(), Quantity.getText());
 	}
 
 }

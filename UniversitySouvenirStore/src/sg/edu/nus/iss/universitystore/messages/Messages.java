@@ -54,8 +54,10 @@ public final class Messages {
 					.append(INVALID_REORDER_QUANTITY).toString();
 			public static final String PRODUCT_ZERO = "No products have been added to the store.";
 			public static final String PRODUCT_NOT_AVAILABLE = "The Product Identifier doesn't exist";
+			public static final String PRODUCT_BARCODE_NOT_AVAILABLE = "The Product BarCode doesn't exist";
 			public static final String PRODUCT_BAR_CODE_EXISTS = "The Product Bar Code already exists";
 			public static final String PRODUCT_COUNT_LESS_THAN_EXPECTED = "The total number of product cannot be less than 10.";
+			public static final String PRODUCT_QUANTITY_INSUFFICIENT = "The Product quantity insufficient";
 		}
 
 		public static final class Login {
@@ -121,11 +123,16 @@ public final class Messages {
 			public static final String NO_PRODUCTS_ADDED_IN_CART = "No products present in cart for checking out.";
 			public static final String MEMBER_CODE_EMPTY = "Member Code cannot be empty";
 			public static final String NO_MEMBERS_ENROLLED_IN_STORE = "No members enrolled in the store.";
+			public static final String INVALID_BARCODE = new StringBuffer().append("BarCode ").append(Common.INVALID_NUMBER).toString();
+			public static final String INVALID_QUANTITY = new StringBuffer().append("Quantity ").append(Common.INVALID_NUMBER).toString();
 		}
 
 		public static final class Controller {
 			public static final String NO_PRODUCTS_PRS = "No products present in the store.";
+			public static final String NO_TRANSACTION_FOUND = "No transaction found.";
 			public static final String CAT_BEFORE_PROD = "Please add a category before adding products.";
+			public static final String PRODUCT_CODE_EMPTY = "Please enter the valid Product Code";
+			public static final String QUANTITY_LESS_THAN_ZERO = "Product quantity can not less than 0";
 		}
 	}
 }

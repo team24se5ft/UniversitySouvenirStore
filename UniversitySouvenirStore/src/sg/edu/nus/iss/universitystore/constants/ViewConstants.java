@@ -108,6 +108,7 @@ public class ViewConstants {
 		public static final String ENTER_MEMBER_DETAILS = "Enter Member Details";
 		
 		//Product Dialog Headers
+		public static final String PROD_CATEGORY_CODE="Category Code :";
 		public static final String PROD_NAME="Product Name :";
 		public static final String PROD_DESC="Product Description :";
 		public static final String PROD_QUANTITY="Product Quantity :";
@@ -117,7 +118,6 @@ public class ViewConstants {
 		public static final String ORDER_QUANTITY="Order Quantity :";
 		
 		//Product Scan Dialog Headers
-		public static final String PROD_CODE="Product Code :";
 		public static final String SCAN_PRODUCT = "Scan Product";
 		
 		//Receipt Dialog Headers
@@ -209,7 +209,7 @@ public class ViewConstants {
 		public static final String TOTAL_LABEL = "Total:";
 		public static final String CASH_LABEL = "Cash:";
 		public static final String CHANGE_LABEL = "Change:";
-		public static final String CHANGE_MEMBER="Change Member:";
+		public static final String CHANGE_MEMBER="Change Member";
 		public static final String INSUFFICIENT_LOYALTY_POINTS="Insufficient Loyalty Points";
 		
 		

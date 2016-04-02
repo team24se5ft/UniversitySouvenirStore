@@ -38,4 +38,14 @@ public class TransactionValidation extends Validation {
 		
 		return true;
 	}
+	
+	public static boolean isValidForScanProduct(String productCode,String quantity) throws TransactionException{
+		if(!isNumber(productCode)){
+			throw new TransactionException(TransactionError.INVALID_BARCODE);
+		}
+		if(!isNumber(quantity)){
+			throw new TransactionException(TransactionError.INVALID_QUANTITY);
+		}
+		return true;
+	}
 }

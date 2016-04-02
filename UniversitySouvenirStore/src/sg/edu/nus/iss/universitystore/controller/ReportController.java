@@ -16,6 +16,7 @@ import sg.edu.nus.iss.universitystore.data.TransactionManager;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.TransactionException;
+import sg.edu.nus.iss.universitystore.messages.Messages;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
@@ -26,6 +27,7 @@ import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.validation.TransactionValidation;
 import sg.edu.nus.iss.universitystore.view.intf.IReportDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.ReportPanel;
+import sg.edu.nus.iss.universitystore.view.subpanel.TransactionPanel;
 
 /**
  * @author Samrat
@@ -159,10 +161,13 @@ public class ReportController implements IReportDelegate {
 				// Convert to LocalDate Java Object
 				LocalDate start=LocalDate.parse(startDate);
 				LocalDate end=LocalDate.parse(endDate);
-				
 				arrTransaction=TransactionManager.getInstance().getTransactionReport(start,end);
 				reportPanel.setTransactionTableData(TableDataUtils.getFormattedTransactionListForTable(arrTransaction),
 						TableDataUtils.getHeadersForTransactionTable());	
+				if(arrTransaction.size()==0){
+					UIUtils.showMessageDialog(reportPanel, ViewConstants.StatusMessage.ERROR,
+							Messages.Error.Controller.NO_TRANSACTION_FOUND, DialogType.ERROR_MESSAGE);
+				}
 			}
 		} catch (TransactionException transactionExp) {
 			UIUtils.showMessageDialog(reportPanel, ViewConstants.StatusMessage.ERROR,
