@@ -1,12 +1,3 @@
-/*
- * Classname: TransactionManagerTest
- * Version Information: 1.0
- * Date: 4-Apr-2016
- * Copyright © TEAM5FT - 2016
- */
-/**
- * 
- */
 package sg.edu.nus.iss.universitystore.data;
 
 import static org.junit.Assert.fail;
