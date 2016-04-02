@@ -63,6 +63,8 @@ public final class Constants {
 		}
 
 		public static final class Category {
+			public static final int CATEGORY_MINIMUM_COUNT = 5;
+			
 			public static final class Pattern {
 				public static final String CODE_MATCH = "[A-Z]{3}";
 				public static final String NAME_MATCH = Common.Pattern.NAME_MATCH;
@@ -72,6 +74,8 @@ public final class Constants {
 		}
 
 		public static final class Product {
+			public static final int PRODUCT_MINIMUM_COUNT = 10;
+			
 			public static final class Pattern {
 				public static final String ID_MATCH = "(\\w+)" + ID_SEPTR + "(\\d+)";
 				public static final String CATEGORY_REPLACE = "$1";
@@ -98,6 +102,7 @@ public final class Constants {
 
 		public static final class Member {
 			public static final int LOYALTY_NEW_MEMBER = -1;
+			public static final int MEMBER_MINIMUM_COUNT = 10;
 
 			public static final class Pattern {
 				public static final String MEMBER_ID_MATCH = "^[a-zA-Z0-9]+$";
@@ -108,6 +113,7 @@ public final class Constants {
 		public static final class Discount {
 			public static final String ALWAYS = "ALWAYS";
 			public static final int ALWAYS_VAL = -1;
+			public static final int DISCOUNT_MINIMUM_COUNT = 5;
 
 			public static final class Pattern {
 				public static final String CODE_MATCH = Common.Pattern.CODE_MATCH;

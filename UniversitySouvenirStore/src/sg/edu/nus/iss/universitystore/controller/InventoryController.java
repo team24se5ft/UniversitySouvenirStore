@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.InventoryManager;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
@@ -176,31 +177,38 @@ public class InventoryController implements IInventoryDelegate {
 
 	@Override
 	public void deleteCategoryClicked(int index) {
-		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame,
-				ViewConstants.Labels.STR_DELETE_CATEGORY, ViewConstants.Controller.InventoryController.DEL_CAT_CONF) {
+		// The category cannot have less than five items
+		if(arrCategory.size() > Constants.Data.Category.CATEGORY_MINIMUM_COUNT) {
+			ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame,
+					ViewConstants.Labels.STR_DELETE_CATEGORY, ViewConstants.Controller.InventoryController.DEL_CAT_CONF) {
 
-			private static final long serialVersionUID = 1L;
+				private static final long serialVersionUID = 1L;
 
-			@Override
-			protected boolean confirmClicked() {
-				Category category = arrCategory.get(index);
-				try {
-					// Update the backend
-					inventoryManager.deleteCategory(category.getCode());
-					// Update the local copy
-					arrCategory = inventoryManager.getAllCategories();
-					// Update the table
-					inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
-							TableDataUtils.getHeadersForCategoryTable());
-				} catch (InventoryException inventoryExp) {
-					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
-							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
+				@Override
+				protected boolean confirmClicked() {
+					Category category = arrCategory.get(index);
+					try {
+						// Update the backend
+						inventoryManager.deleteCategory(category.getCode());
+						// Update the local copy
+						arrCategory = inventoryManager.getAllCategories();
+						// Update the table
+						inventoryPanel.setCategoryTableData(TableDataUtils.getFormattedCategoryListForTable(arrCategory),
+								TableDataUtils.getHeadersForCategoryTable());
+					} catch (InventoryException inventoryExp) {
+						UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+								inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
+					}
+					// Remove the dialog
+					return true;
 				}
-				// Remove the dialog
-				return true;
-			}
-		};
-		confirmationDialog.setVisible(true);
+			};
+			confirmationDialog.setVisible(true);
+		}else {
+			UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+					Messages.Error.Category.CATEGORY_COUNT_LESS_THAN_EXPECTED, DialogType.ERROR_MESSAGE);
+		}
+		
 	}
 
 	/***********************************************************/
@@ -311,32 +319,39 @@ public class InventoryController implements IInventoryDelegate {
 
 	@Override
 	public void deleteProductClicked(int index) {
-		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame,
-				ViewConstants.Controller.InventoryController.DEL_PRODUCT,
-				ViewConstants.Controller.InventoryController.DEL_PROD_CONF) {
+		// Minium number of products to be retained.
+		if(arrProduct.size() > Constants.Data.Product.PRODUCT_MINIMUM_COUNT) {
+			ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame,
+					ViewConstants.Controller.InventoryController.DEL_PRODUCT,
+					ViewConstants.Controller.InventoryController.DEL_PROD_CONF) {
 
-			private static final long serialVersionUID = 1L;
+				private static final long serialVersionUID = 1L;
 
-			@Override
-			protected boolean confirmClicked() {
-				Product product = arrProduct.get(index);
-				try {
-					// Update the backend
-					inventoryManager.deleteProduct(product);
-					// Update the local copy
-					arrProduct = inventoryManager.getAllProducts();
-					// Update the table
-					inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
-							TableDataUtils.getHeadersForProductTable());
-				} catch (InventoryException inventoryExp) {
-					UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
-							inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
+				@Override
+				protected boolean confirmClicked() {
+					Product product = arrProduct.get(index);
+					try {
+						// Update the backend
+						inventoryManager.deleteProduct(product);
+						// Update the local copy
+						arrProduct = inventoryManager.getAllProducts();
+						// Update the table
+						inventoryPanel.setProductTableData(TableDataUtils.getFormattedProductListForTable(arrProduct),
+								TableDataUtils.getHeadersForProductTable());
+					} catch (InventoryException inventoryExp) {
+						UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+								inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
+					}
+					// Remove the dialog
+					return true;
 				}
-				// Remove the dialog
-				return true;
-			}
-		};
-		confirmationDialog.setVisible(true);
+			};
+			confirmationDialog.setVisible(true);
+		}else {
+			UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+					Messages.Error.Product.PRODUCT_COUNT_LESS_THAN_EXPECTED, DialogType.ERROR_MESSAGE);
+		}
+		
 	}
 
 	@Override

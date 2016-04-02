@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.DiscountManager;
 import sg.edu.nus.iss.universitystore.exception.DiscountException;
+import sg.edu.nus.iss.universitystore.messages.Messages;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
@@ -84,32 +86,30 @@ public class DiscountController implements IDiscountDelegate {
 	// given row.
 	@Override
 	public void deleteDiscount(int row) {
-		if (row < 0) {
-			return;
-		}
-		if(discountList.size()<=5){
-			UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, "discount cannot be less than 5 lines!",
-					DialogType.ERROR_MESSAGE);
-			return;
-		}
-		Discount discount = discountList.get(row);
-		new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "ConfirmDialog",
-				ViewConstants.Controller.Discount.DELETE_DISCOUNT + discount.getCode()) {			
+		// Only if the count is greated than five, we proceed with deleting.
+		if(discountList.size() > Constants.Data.Discount.DISCOUNT_MINIMUM_COUNT){
+			Discount discount = discountList.get(row);
+			new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "ConfirmDialog",
+					ViewConstants.Controller.Discount.DELETE_DISCOUNT + discount.getCode()) {			
 
-			@Override
-			protected boolean confirmClicked() {
-				boolean flag = false;
-				// TODO dataModify
-				try {
-					flag = discountManager.deleteDiscount(discount.getCode(), false);
-					discountList = discountManager.getAllDiscounts();
-				} catch (DiscountException e) {
-					UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
-							DialogType.ERROR_MESSAGE);
+				@Override
+				protected boolean confirmClicked() {
+					boolean flag = false;
+					// TODO dataModify
+					try {
+						flag = discountManager.deleteDiscount(discount.getCode(), false);
+						discountList = discountManager.getAllDiscounts();
+					} catch (DiscountException e) {
+						UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
+								DialogType.ERROR_MESSAGE);
+					}
+					return isUpdateUI(flag);
 				}
-				return isUpdateUI(flag);
-			}
-		}.setVisible(true);
+			}.setVisible(true);
+		}else {
+			UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, Messages.Error.Discount.DISCOUNT_COUNT_LESS_THAN_EXPECTED,
+					DialogType.ERROR_MESSAGE);
+		}
 	}
 
 	@Override

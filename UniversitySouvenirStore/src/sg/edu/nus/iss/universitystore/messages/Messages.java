@@ -28,6 +28,7 @@ public final class Messages {
 			public static final String INVALID_CATEGORY_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS)
 					.append(Constants.Common.NEW_LINE).append(Category.INVALID_CODE).append(Constants.Common.NEW_LINE)
 					.append(INVALID_NAME).toString();
+			public static final String CATEGORY_COUNT_LESS_THAN_EXPECTED = "The total number of categories cannot be less than 5.";
 		}
 
 		public static final class Product {
@@ -55,6 +56,7 @@ public final class Messages {
 			public static final String PRODUCT_ZERO = "No products have been added to the store.";
 			public static final String PRODUCT_NOT_AVAILABLE = "The Product Identifier doesn't exist";
 			public static final String PRODUCT_BAR_CODE_EXISTS = "The Product Bar Code already exists";
+			public static final String PRODUCT_COUNT_LESS_THAN_EXPECTED = "The total number of product cannot be less than 10.";
 		}
 
 		public static final class Login {
@@ -78,6 +80,7 @@ public final class Messages {
 			public static final String ADD_EMPTY_MEMBER_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS)
 					.append(Constants.Common.NEW_LINE).append(INVALID_MEMBER_ID).append(Constants.Common.NEW_LINE)
 					.append(INVALID_MEMBER_NAME).toString();
+			public static final String MEMBER_COUNT_LESS_THAN_EXPECTED = "The total number of members cannot be less than 10.";
 		}
 
 		public static final class Discount {
@@ -102,6 +105,7 @@ public final class Messages {
 					.append(INVALID_PERCENTAGE).append(Constants.Common.NEW_LINE).append(INVALID_ELIGIBILITY)
 					.append(Constants.Common.NEW_LINE).append(INVALID_START_DATE).append(Constants.Common.NEW_LINE)
 					.append(INVALID_PERIOD).toString();
+			public static final String DISCOUNT_COUNT_LESS_THAN_EXPECTED = "The total number of discounts cannot be less than 5.";
 		}
 
 		public static final class Transaction {

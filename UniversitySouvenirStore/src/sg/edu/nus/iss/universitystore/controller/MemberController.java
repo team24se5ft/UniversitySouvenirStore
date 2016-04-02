@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
+import sg.edu.nus.iss.universitystore.messages.Messages;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
@@ -123,30 +125,36 @@ public class MemberController implements IMemberDelegate {
 	 */
 	@Override
 	public void deleteMemberClicked(int index) {
-		ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Member",
-				"Do u really want to delete the member?") {
+		if(arrMember.size() > Constants.Data.Member.MEMBER_MINIMUM_COUNT) {
+			ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Member",
+					"Do u really want to delete the member?") {
 
-			private static final long serialVersionUID = 1L;
+				private static final long serialVersionUID = 1L;
 
-			@Override
-			protected boolean confirmClicked() {
-				Member member = arrMember.get(index);
-				try {
-					// Update the backend
-					memberManager.removeMember(member.getIdentifier());
-					// Update Table
-					arrMember = memberManager.getAllMembers();
-					memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
-							TableDataUtils.getHeadersForMemberTable());
-				} catch (MemberException memberExp) {
-					UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.ERROR,
-							memberExp.getMessage(), DialogType.ERROR_MESSAGE);
+				@Override
+				protected boolean confirmClicked() {
+					Member member = arrMember.get(index);
+					try {
+						// Update the backend
+						memberManager.removeMember(member.getIdentifier());
+						// Update Table
+						arrMember = memberManager.getAllMembers();
+						memberPanel.updateTable(TableDataUtils.getFormattedMemberListForTable(arrMember),
+								TableDataUtils.getHeadersForMemberTable());
+					} catch (MemberException memberExp) {
+						UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.ERROR,
+								memberExp.getMessage(), DialogType.ERROR_MESSAGE);
+					}
+					// Remove the dialog
+					return true;
 				}
-				// Remove the dialog
-				return true;
-			}
-		};
-		confirmationDialog.setVisible(true);
+			};
+			confirmationDialog.setVisible(true);
+		}else {
+			UIUtils.showMessageDialog(memberPanel, ViewConstants.StatusMessage.ERROR,
+					Messages.Error.Member.MEMBER_COUNT_LESS_THAN_EXPECTED, DialogType.ERROR_MESSAGE);
+		}
+		
 	}
 
 	@Override
