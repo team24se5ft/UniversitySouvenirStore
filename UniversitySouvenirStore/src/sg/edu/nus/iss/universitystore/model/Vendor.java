@@ -1,5 +1,11 @@
 package sg.edu.nus.iss.universitystore.model;
 
+/**
+ * Vendor Domain ObjectW
+ * 
+ * @author Sanjay
+ *
+ */
 public class Vendor {
 
 	/***********************************************************/
@@ -12,6 +18,12 @@ public class Vendor {
 	// Constructors
 	/***********************************************************/
 
+	/**
+	 * Vendor Constructor
+	 * 
+	 * @param name
+	 * @param description
+	 */
 	public Vendor(String name, String description) {
 		this.name = name;
 		this.description = description;

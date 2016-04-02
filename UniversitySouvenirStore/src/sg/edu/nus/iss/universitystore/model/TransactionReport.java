@@ -9,10 +9,18 @@ import java.time.LocalDate;
  *
  */
 public class TransactionReport {
+	
+	/***********************************************************/
+	//Instance Variables
+	/***********************************************************/
 	private int identifier;
-	private TransactionItem item;// item need to be shown in report
-	private String memberId; // memberId
-	private LocalDate date; // transaction created date
+	private TransactionItem item;
+	private String memberId;
+	private LocalDate date;
+	
+	/***********************************************************/
+	//Constructors
+	/***********************************************************/
 	
 	/**
 	 * Transaction Report Constructor
@@ -28,6 +36,10 @@ public class TransactionReport {
 		this.memberId = memberId;
 		this.date = LocalDate.parse(date);
 	}
+	
+	/***********************************************************/
+	// Getters & Setters
+	/***********************************************************/
 
 	/**
 	 * @return the item
@@ -36,32 +48,25 @@ public class TransactionReport {
 		return item;
 	}
 
-	public void setItem(TransactionItem item) {
-		this.item = item;
-	}
-
+	/**
+	 * @return the member id
+	 */
 	public String getMemberId() {
 		return memberId;
 	}
 
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
-
+	/**
+	 * @return the date
+	 */
 	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
+	/**
+	 * @return the identifier
+	 */
 	public int getIdentifier() {
 		return identifier;
-	}
-
-	public void setIdentifier(int identifier) {
-		this.identifier = identifier;
 	}
 	
 
