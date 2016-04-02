@@ -69,7 +69,7 @@ public class ViewConstants {
 		public static final String LOGOUT_CONFIRM_MSG="Are you sure you want to log out?";
 		
 		//Dashboard Options Panel Headers
-		public static final String SALE_ICON_IMG="Resources/sale_icon.png";
+		public static final String SALE_ICON_IMG="Resources/cart_icon.png";
 		public static final String INVENTORY_ICON_IMG="Resources/inventory_icon.png";
 		public static final String MEMBER_ICON_IMG="Resources/member_icon.png";
 		public static final String DISCOUNT_ICON_IMG="Resources/discount_icon.png";
