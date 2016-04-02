@@ -19,19 +19,23 @@ import sg.edu.nus.iss.universitystore.view.intf.ILoginDelegate;
 public class LoginController implements ILoginDelegate {
 
 	/***********************************************************/
-	// Constants
-	/***********************************************************/
-	public static final String STR_INCORRECT_LOGIN_MESSAGE = "The username or password you have entered is invalid. Please try again..";
-	public static final String STR_USERNAME_CANNOT_BE_EMPTY = "The username or password cannot be empty.";
-	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
+	/**
+	 * the panel associated to the controller
+	 */
 	private LoginPanel loginPanel;
+	/**
+	 * Reference to Login Manager
+	 */
 	private LoginManager loginManager;
 
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
+	/**
+	 * LoginController Constructor
+	 */
 	public LoginController() {
 		// Instantiate the panel & set its listener to this.
 		loginPanel = new LoginPanel();

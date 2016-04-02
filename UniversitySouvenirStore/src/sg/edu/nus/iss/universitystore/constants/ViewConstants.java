@@ -248,5 +248,10 @@ public class ViewConstants {
 			public static final String END_DATE="End_date(yyyy-MM-dd):";
 			public static final String SEARCH="SEARCH";
 		}
+		
+		public static final class LoginController{
+			public static final String STR_INCORRECT_LOGIN_MESSAGE = "The username or password you have entered is invalid. Please try again..";
+			public static final String STR_USERNAME_CANNOT_BE_EMPTY = "The username or password cannot be empty.";
+		}
 	}
 }
