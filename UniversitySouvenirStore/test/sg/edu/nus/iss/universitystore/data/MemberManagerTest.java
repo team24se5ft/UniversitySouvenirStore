@@ -1,11 +1,8 @@
 package sg.edu.nus.iss.universitystore.data;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
-
-import sg.edu.nus.iss.universitystore.model.Member;
-import sg.edu.nus.iss.universitystore.utility.JUnitUtility;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -14,11 +11,12 @@ import org.junit.Test;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.JUnitConstants;
-import sg.edu.nus.iss.universitystore.exception.DiscountException;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.exception.MemberException.MemberError;
 import sg.edu.nus.iss.universitystore.intf.UniversityStoreJUnit;
 import sg.edu.nus.iss.universitystore.messages.JUnitMessages;
+import sg.edu.nus.iss.universitystore.model.Member;
+import sg.edu.nus.iss.universitystore.utility.JUnitUtility;
 
 /**
  * @author Deepak

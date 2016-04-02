@@ -1,15 +1,10 @@
 package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTable;
 
 import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.IMemberDelegate;

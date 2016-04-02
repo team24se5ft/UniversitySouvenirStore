@@ -3,7 +3,6 @@ package sg.edu.nus.iss.universitystore.validation;
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryError;
-import sg.edu.nus.iss.universitystore.model.Category;
 
 /**
  * Validations for Inventory

@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.universitystore.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;

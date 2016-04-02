@@ -11,7 +11,6 @@ import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.model.Product;
-import sg.edu.nus.iss.universitystore.model.Transaction;
 import sg.edu.nus.iss.universitystore.model.TransactionItem;
 import sg.edu.nus.iss.universitystore.model.TransactionReport;
 

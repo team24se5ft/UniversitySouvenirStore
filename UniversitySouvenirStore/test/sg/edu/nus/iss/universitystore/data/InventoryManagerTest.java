@@ -55,7 +55,7 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 	/**
 	 * Product Bar Code
 	 */
-	private Integer productBarCode1, productBarCode2, productBarCode3;
+	private Integer productBarCode1, productBarCode2, productBarCode3, invalidProductBarCode;
 	/**
 	 * Product Reorder Threshold
 	 */
@@ -149,6 +149,7 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 		// Invalid Product
 		invalidProdID1 = "BOA/15";
 		invalidProdID2 = "BOAZ/15";
+		invalidProductBarCode = 1234;
 
 		// Product Set 4
 		prodName1 = "Nike Cloths";
@@ -176,7 +177,7 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 		productDescription1 = productDescription2 = productDescription3 = null;
 		productQuantity1 = productQuantity2 = productQuantity3 = null;
 		productPrice1 = productPrice2 = productPrice3 = null;
-		productBarCode1 = productBarCode2 = productBarCode3 = null;
+		productBarCode1 = productBarCode2 = productBarCode3 = invalidProductBarCode = null;
 		productReorderThreshold1 = productReorderThreshold2 = productReorderThreshold3 = null;
 		productReorderQuantity1 = productReorderQuantity2 = productReorderQuantity3 = null;
 
@@ -644,4 +645,42 @@ public class InventoryManagerTest extends UniversityStoreJUnit {
 			Assert.assertEquals(InventoryError.PRODUCT_ZERO.toString(), inventoryExp.getMessage());
 		}
 	}
+	
+	@Test
+	public void testProductBarCodeExists() {
+		try {
+			// Copy Test File Product.dat
+			JUnitUtility.copyFile(Constants.Data.FileName.CATEGORY_DAT,
+					JUnitConstants.Data.FILE_FOLDER.INVENTORY.toString().toLowerCase()
+							+ Constants.Data.FILE_PATH_SEPTR);
+
+			InventoryManager inventoryManager = InventoryManager.getInstance();
+
+			// Check Initial Conditions
+			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.CATEGORY_DAT, 1));
+			Assert.assertTrue(inventoryManager.getAllCategories().size() == 1);
+			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.PRODUCT_DAT, 1));
+			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.VENDOR_DAT, 1));
+
+			// Add New Category
+			Assert.assertTrue(inventoryManager.addCategory(categoryCode1, categoryName1));
+			Assert.assertTrue(JUnitUtility.checkFileCount(Constants.Data.FileName.VENDOR_DAT, 2));
+
+			// Add New Product
+			Product newProduct = inventoryManager.addProduct(category1.getCode(), productName1, productDescription1,
+					String.valueOf(productQuantity1), String.valueOf(productPrice1), String.valueOf(prodBarCode1),
+					String.valueOf(productReorderThreshold1), String.valueOf(productReorderQuantity1));
+			// Add another product with same Barcode as before
+			Product newProduct2 = inventoryManager.addProduct(category1.getCode(), productName2, productDescription2,
+					String.valueOf(productQuantity2), String.valueOf(productPrice2), String.valueOf(prodBarCode1),
+					String.valueOf(productReorderThreshold2), String.valueOf(productReorderQuantity2));
+			fail(JUnitMessages.Error.JUNIT_FAIL);
+		} catch (IOException exception) {
+			fail(JUnitMessages.Error.JUNIT_FAIL);
+		} catch (InventoryException inventoryExp) {
+			Assert.assertEquals(InventoryError.PRODUCT_BAR_CODE_EXISTS.toString(), inventoryExp.getMessage());
+		}
+	}
+	
+	
 }

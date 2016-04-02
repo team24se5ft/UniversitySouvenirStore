@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.universitystore.messages;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
-import sg.edu.nus.iss.universitystore.constants.Constants.Data;
 
 public final class Messages {
 	public static final class Error {
