@@ -117,6 +117,7 @@ public class ViewConstants {
 		
 		//Product Scan Dialog Headers
 		public static final String PROD_CODE="Product Code :";
+		public static final String SCAN_PRODUCT = "Scan Product";
 		
 		//Receipt Dialog Headers
 		public static final String STORE_HEADER="NUS SOUVENIR STORE";
