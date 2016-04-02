@@ -92,10 +92,7 @@ public class DiscountManager {
 	/**
 	 * Discount Manager Constructor
 	 * 
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws StoreException
-	 * @throws MemberNotFound
+	 * @throws DiscountException
 	 */
 	private DiscountManager() throws DiscountException {
 		try {
@@ -125,8 +122,8 @@ public class DiscountManager {
 	/***********************************************************/
 
 	/**
-	 * Validates the format of Data in a row of Data File and
-	 * if the period is >=0 and if percentage is < 100
+	 * Validates the format of Data in a row of Data File and if the period is
+	 * >=0 and if percentage is < 100
 	 * 
 	 * @param dataLine
 	 * @return Boolean
@@ -137,9 +134,8 @@ public class DiscountManager {
 		try {
 			if (discountList.length == 6) {
 				status = DiscountValidation.isValidData(discountList[DiscountArg.CODE.ordinal()],
-						discountList[DiscountArg.DESCRIPTION.ordinal()],
-						discountList[DiscountArg.START_DATE.ordinal()], discountList[DiscountArg.PERIOD.ordinal()],
-						discountList[DiscountArg.PERCENTAGE.ordinal()],
+						discountList[DiscountArg.DESCRIPTION.ordinal()], discountList[DiscountArg.START_DATE.ordinal()],
+						discountList[DiscountArg.PERIOD.ordinal()], discountList[DiscountArg.PERCENTAGE.ordinal()],
 						discountList[DiscountArg.ELIGIBILITY.ordinal()]);
 			}
 		} catch (DiscountException exception) {
@@ -148,7 +144,7 @@ public class DiscountManager {
 
 		return status;
 	}
-	
+
 	/**
 	 * Validates if the Discount is for New Member or Existing Member
 	 * 
@@ -189,9 +185,9 @@ public class DiscountManager {
 	/***********************************************************/
 	// Private Methods for Discount
 	/***********************************************************/
-	
+
 	/**
-	 * (3.2.c) Get all Valid Discounts applicable for current system date
+	 * Get all Valid Discounts applicable for current system date
 	 * 
 	 * @return List of Discounts
 	 * @throws IOException
@@ -201,7 +197,7 @@ public class DiscountManager {
 		ArrayList<Discount> memberDiscountList = new ArrayList<>();
 
 		for (Discount discount : discountList) {
-			
+
 			if (discount.getCode().equals(Constants.Data.Discount.Member.Existing.CODE)
 					|| discount.getCode().equals(Constants.Data.Discount.Member.New.CODE))
 				continue;
@@ -218,7 +214,7 @@ public class DiscountManager {
 	}
 
 	/**
-	 * (3.2.c) Return all discount applicable to non-members
+	 * Return all discount applicable to non-members
 	 * 
 	 * @return List of Discounts applicable to the Public
 	 * @throws IOException
@@ -234,7 +230,7 @@ public class DiscountManager {
 
 		return publicDiscountList;
 	}
-	
+
 	/**
 	 * Checks if Current Date is within the Discount Start Date and Period or if
 	 * it is set as 'ALWAYS'
@@ -245,9 +241,9 @@ public class DiscountManager {
 	 */
 	private boolean isApplicableDate(String startDate, int period) {
 		// Checks if start date is set as 'ALWAYS'
-		if(startDate.equalsIgnoreCase(Constants.Data.Discount.ALWAYS))
+		if (startDate.equalsIgnoreCase(Constants.Data.Discount.ALWAYS))
 			return true;
-		
+
 		LocalDate discountStrtDate = LocalDate.parse(startDate);
 
 		// Is applicable if Current Date is equal to or after discount date
@@ -295,7 +291,7 @@ public class DiscountManager {
 		for (String discountStr : discountStrLst) {
 
 			String[] discountStrSpltLst = splitDiscountData(discountStr);
-			
+
 			// Checks if line in Data file is of valid
 			if (!isValidDiscount(discountStrSpltLst))
 				continue;
@@ -313,7 +309,7 @@ public class DiscountManager {
 	}
 
 	/**
-	 * (3.2.a, 3.2.b) Get Discount Percentage for a Customer
+	 * Get Discount Percentage for a Customer
 	 * 
 	 * @param member
 	 * @return
@@ -347,7 +343,7 @@ public class DiscountManager {
 	}
 
 	/**
-	 * (3.2.d) Get Discount for Customer
+	 * Get Discount for Customer
 	 * 
 	 * @param memberID
 	 * @return Max Discount
@@ -451,10 +447,10 @@ public class DiscountManager {
 
 		if (hasDiscount(code)) {
 			Discount discount = findDiscount(code);
-			
-			if(!fromUpdate && isDefaultDiscount(discount))
+
+			if (!fromUpdate && isDefaultDiscount(discount))
 				throw new DiscountException(DiscountError.DEFAULT_DISCOUNT_NOT_DELETABLE);
-			
+
 			try {
 				return discountData.delete(discount.toString());
 			} catch (IOException ioExp) {
@@ -473,12 +469,12 @@ public class DiscountManager {
 	 * @throws DiscountException
 	 */
 	public boolean updateDiscount(Discount oldDiscount, Discount newDiscount) throws DiscountException {
-		
+
 		if (updateDefaultDiscount(oldDiscount, newDiscount) | deleteDiscount(oldDiscount.getCode(), true)) {
 			return addDiscount(newDiscount);
 		}
-		
+
 		return false;
 	}
-	
+
 }

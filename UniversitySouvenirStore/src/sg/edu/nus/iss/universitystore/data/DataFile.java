@@ -24,8 +24,7 @@ class DataFile<T> {
 	private String file;
 
 	DataFile(String fileName) throws FileNotFoundException, IOException {
-		String filePath = InitializeTest.isJUnit() ?
-				Constants.Data.TEST_FILE_PATH : Constants.Data.FILE_PATH;
+		String filePath = InitializeTest.isJUnit() ? Constants.Data.TEST_FILE_PATH : Constants.Data.FILE_PATH;
 		this.file = filePath + fileName + Constants.Data.FILE_EXT;
 		initialize();
 
@@ -47,7 +46,7 @@ class DataFile<T> {
 	 * Create an entry to Data File
 	 * 
 	 * @param t
-	 * @return
+	 * @return Boolean
 	 * @throws IOException
 	 */
 	public boolean add(T t) throws IOException {
@@ -71,7 +70,7 @@ class DataFile<T> {
 			newContent.append(line);
 			newContent.append(Constants.Common.NEW_LINE);
 		}
-		// Do some manipulation
+
 		return writeStringToFile(newContent.toString(), file);
 
 	}
@@ -112,12 +111,13 @@ class DataFile<T> {
 	public String[] getAll() throws IOException {
 		return getStringFromFile(file).split(Constants.Common.NEW_LINE);
 	}
-	
+
 	/**
 	 * Delete File
+	 * 
 	 * @return
 	 */
-	public boolean delete(){
+	public boolean delete() {
 		return (new File(file)).delete();
 	}
 

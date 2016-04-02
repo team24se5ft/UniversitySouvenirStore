@@ -39,7 +39,8 @@ public class InventoryManager {
 	 * Product Arguments
 	 */
 	public enum ProductArg {
-		IDENTIFIER(0), NAME(1), QUANTITY(2), PRICE(3), BAR_CODE(4), REORDERTHRESHOLD(5), REORDERQUANTITY(6), DESCRIPTION(7);
+		IDENTIFIER(0), NAME(1), QUANTITY(2), PRICE(3), BAR_CODE(4), REORDERTHRESHOLD(5), REORDERQUANTITY(
+				6), DESCRIPTION(7);
 
 		private int position;
 
@@ -99,7 +100,7 @@ public class InventoryManager {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public static InventoryManager getInstance() throws InventoryException {
 		if (instance == null) {
@@ -129,7 +130,7 @@ public class InventoryManager {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public InventoryManager() throws InventoryException {
 		productID = (productID == null) ? Constants.Data.Product.INITIALIZED_COUNT : productID;
@@ -146,7 +147,7 @@ public class InventoryManager {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	private void initialize() throws InventoryException {
 		try {
@@ -164,7 +165,7 @@ public class InventoryManager {
 	 * 
 	 * @throws IOException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	private void initializeVendors() throws InventoryException {
 		vendorMap = new HashMap<>();
@@ -183,12 +184,12 @@ public class InventoryManager {
 	/***********************************************************/
 
 	/**
-	 * (3.6.b) Get All Categories from Data File
+	 * Get All Categories from Data File
 	 * 
 	 * @return
 	 * @throws IOException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public ArrayList<Category> getAllCategories() throws InventoryException {
 		ArrayList<Category> categoryList = new ArrayList<>();
@@ -202,7 +203,7 @@ public class InventoryManager {
 		for (String categoryStr : categoriesStrList) {
 
 			String[] categoryStrSplt = categoryStr.split(Constants.Data.FILE_SEPTR);
-			
+
 			// If line in Data file is empty, skip line
 			if (!isValidCategoryData(categoryStrSplt))
 				continue;
@@ -215,29 +216,29 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.6.a, 3.8.a) Add new Category Add new Vendor for new Category
+	 * Add new Category Add new Vendor for new Category
 	 * 
 	 * @param category
 	 * @throws IOException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public boolean addCategory(String categoryCode, String categoryName) throws InventoryException {
-		if(!InventoryValidation.Catgory.isValidData(categoryCode, categoryName))
+		if (!InventoryValidation.Catgory.isValidData(categoryCode, categoryName))
 			return false;
-		
+
 		Category category = new Category(categoryCode, categoryName);
 
 		// Check if category code already exists
 		if (hasCategory(categoryCode)) {
 			throw new InventoryException(InventoryError.CATEGORY_ALREADY_PRESENT);
-		}else {
+		} else {
 			try {
 				categoryData.add(category);
 			} catch (IOException ioExp) {
 				throw new InventoryException(InventoryError.UNKNOWN_ERROR);
 			}
-		
+
 			// Add Vendor Data file
 			addVendorDataFile(category.getCode());
 		}
@@ -246,20 +247,20 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.6.e) Delete a Category
+	 * Delete a Category
 	 * 
 	 * @param category
 	 * @throws IOException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public boolean deleteCategory(String categoryCode) throws InventoryException {
 		boolean status = false;
 
 		if (hasCategory(categoryCode)) {
 			Category category = findCategory(categoryCode);
-			
-			try{
+
+			try {
 				if (deleteAllVendors(categoryCode)) {
 					status = categoryData.delete(category.toString());
 				}
@@ -272,14 +273,14 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.6.f) Update a Category
+	 * Update a Category
 	 * 
 	 * @param oldCategory
 	 *            The category object that needs to be updated.
 	 * @param updatedCategory
 	 *            The new category object.
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public void updateCategory(Category oldCategory, Category updatedCategory) throws InventoryException {
 		// Check if the category exists
@@ -298,12 +299,12 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.9.a)Find Category
+	 * Find Category
 	 * 
 	 * @param categoryCode
 	 * @throws IOException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public Category findCategory(String categoryCode) throws InventoryException {
 		ArrayList<Category> categoryList = getAllCategories();
@@ -318,13 +319,13 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.9.b) Checks if Category exists
+	 * Checks if Category exists
 	 * 
 	 * @param categoryCode
 	 * @return
 	 * @throws IOException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public boolean hasCategory(String categoryCode) throws InventoryException {
 		return InventoryValidation.Catgory.isValidCatgoryCode(categoryCode) && findCategory(categoryCode) != null;
@@ -340,7 +341,8 @@ public class InventoryManager {
 	private boolean isValidCategoryData(String[] categoryList) {
 		boolean status = false;
 		try {
-			if(categoryList.length == 2 && InventoryValidation.Catgory.isValidData(categoryList[CategoryArg.CODE.ordinal()], categoryList[CategoryArg.NAME.ordinal()])){
+			if (categoryList.length == 2 && InventoryValidation.Catgory
+					.isValidData(categoryList[CategoryArg.CODE.ordinal()], categoryList[CategoryArg.NAME.ordinal()])) {
 				status = true;
 			}
 		} catch (InventoryException e) {
@@ -354,9 +356,9 @@ public class InventoryManager {
 	/***********************************************************/
 
 	/**
-	 * (3.5.a, 3.8.b) Get All Products from Data File
+	 * Get All Products from Data File
 	 * 
-	 * @return
+	 * @return List of Products
 	 * @throws IOException
 	 */
 	public ArrayList<Product> getAllProducts() throws InventoryException {
@@ -369,17 +371,18 @@ public class InventoryManager {
 		}
 
 		for (String productStr : productStrList) {
-			
+
 			String[] productStrSpltLst = splitProductData(productStr);
 
 			// If line in Data file is empty, skip line
 			if (!isValidProductData(productStrSpltLst))
-				continue;			
+				continue;
 
 			productList.add(new Product(productStrSpltLst[ProductArg.IDENTIFIER.ordinal()],
 					productStrSpltLst[ProductArg.NAME.ordinal()], productStrSpltLst[ProductArg.DESCRIPTION.ordinal()],
 					productStrSpltLst[ProductArg.QUANTITY.ordinal()], productStrSpltLst[ProductArg.PRICE.ordinal()],
-					productStrSpltLst[ProductArg.BAR_CODE.ordinal()], productStrSpltLst[ProductArg.REORDERTHRESHOLD.ordinal()],
+					productStrSpltLst[ProductArg.BAR_CODE.ordinal()],
+					productStrSpltLst[ProductArg.REORDERTHRESHOLD.ordinal()],
 					productStrSpltLst[ProductArg.REORDERQUANTITY.ordinal()]));
 		}
 
@@ -387,33 +390,26 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.5.i) Add Product for vendor
+	 * Add a Product
 	 * 
-	 * @param goods
-	 * @throws IOException
-	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @param categoryCode
+	 * @param name
+	 * @param description
+	 * @param quantity
+	 * @param price
+	 * @param barCode
+	 * @param reorderThreshold
+	 * @param reorderQuantity
+	 * @return Product
+	 * @throws InventoryException
 	 */
-	/*public Product addProduct(Goods goods) throws InventoryException {
-
-		return addProduct(goods.getCategory().getCode(), goods.getName(), goods.getDescription(),
-				String.valueOf(goods.getQuantity()), String.valueOf(goods.getPrice()),
-				String.valueOf(goods.getReorderThreshold()), String.valueOf(goods.getReorderQuantity()));
-	}*/
-
-	/**
-	 * (3.5.b, 3.5.c.2) Add Product
-	 * 
-	 * @param goods
-	 * @throws InventoryException 
-	 */
-	public Product addProduct(String categoryCode, String name, String description, String quantity, String price, String barCode,
-			String reorderThreshold, String reorderQuantity) throws InventoryException {
+	public Product addProduct(String categoryCode, String name, String description, String quantity, String price,
+			String barCode, String reorderThreshold, String reorderQuantity) throws InventoryException {
 
 		if (!hasCategory(categoryCode))
 			return null;
-		
-		if(productBarCodeExists(barCode))
+
+		if (productBarCodeExists(barCode))
 			throw new InventoryException(InventoryError.PRODUCT_BAR_CODE_EXISTS);
 
 		StringBuffer productID = new StringBuffer();
@@ -421,8 +417,8 @@ public class InventoryManager {
 		productID.append(Constants.Data.ID_SEPTR);
 		productID.append(getProductId(categoryCode));
 
-		Product product = new Product(productID.toString(), name, description, quantity, price, barCode, reorderThreshold,
-				reorderQuantity);
+		Product product = new Product(productID.toString(), name, description, quantity, price, barCode,
+				reorderThreshold, reorderQuantity);
 
 		try {
 			return productData.add(product) ? product : null;
@@ -432,15 +428,15 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.5.d) Find Product
+	 * Find Product
 	 * 
 	 * @param productID
-	 * @return Product found
-	 * @throws InventoryException 
+	 * @return Product, null if not found
+	 * @throws InventoryException
 	 */
 	public Product findProduct(String productID) throws InventoryException {
 		ArrayList<Product> productList = getAllProducts();
-		
+
 		Product productFound = null;
 
 		for (Product product : productList) {
@@ -452,17 +448,17 @@ public class InventoryManager {
 
 		return productFound;
 	}
-	
+
 	/**
 	 * Find Product by BarCode
 	 * 
 	 * @param barCode
-	 * @return
+	 * @return Product, null if not found
 	 * @throws InventoryException
 	 */
 	public Product findProductByBarCode(String barCode) throws InventoryException {
 		ArrayList<Product> productList = getAllProducts();
-		
+
 		Product productFound = null;
 
 		for (Product product : productList) {
@@ -474,26 +470,26 @@ public class InventoryManager {
 
 		return productFound;
 	}
-	
+
 	/**
-	 * Checks if Product has existing BarCode
+	 * Checks if BarCode already exists
 	 * 
 	 * @param barCode
-	 * @return
-	 * @throws InventoryException 
+	 * @return Boolean
+	 * @throws InventoryException
 	 */
 	public boolean productBarCodeExists(String barCode) throws InventoryException {
 		return findProductByBarCode(barCode) != null;
 	}
 
 	/**
-	 * (3.5.e) Check if the product id entered is valid.
+	 * Check if the product id entered is valid.
 	 * 
 	 * @param productID
-	 * @return
+	 * @return Boolean
 	 * @throws IOException
 	 * @throws StoreException
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public boolean isValidProduct(String productID) throws InventoryException {
 		boolean status = false;
@@ -508,11 +504,11 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.5.f) Delete a Product from the store
+	 * Delete a Product from the store
 	 * 
 	 * @param product
 	 * @return
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public boolean deleteProduct(Product product) throws InventoryException {
 		boolean status = false;
@@ -533,19 +529,19 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.5.g) Update details of the product
+	 * Update details of the product
 	 * 
 	 * @param newProduct
 	 * @return
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public boolean updateProduct(Product newProduct) throws InventoryException {
 		boolean status = false;
 
 		if (!isValidProduct(newProduct.getIdentifier()))
 			throw new InventoryException(InventoryError.PRODUCT_NOT_AVAILABLE);
-		
-		if(productBarCodeExists(newProduct.getBarCode()))
+
+		if (productBarCodeExists(newProduct.getBarCode()))
 			throw new InventoryException(InventoryError.PRODUCT_BAR_CODE_EXISTS);
 
 		Product existingProduct = findProduct(newProduct.getIdentifier());
@@ -559,13 +555,13 @@ public class InventoryManager {
 
 		return status;
 	}
-	
+
 	/**
-	 * (3.5.g) Update details of the product
+	 * Update details of the product
 	 * 
 	 * @param newProduct
 	 * @return
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public boolean updateProductForTransaction(Product newProduct) throws InventoryException {
 		boolean status = false;
@@ -586,10 +582,10 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.3.a, 3.3.b) Get List of Products below Threshold
+	 * Get List of Products below Threshold
 	 * 
 	 * @return List of Products
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public ArrayList<Product> getProductsBelowThreshold() throws InventoryException {
 		ArrayList<Product> productList = getAllProducts();
@@ -607,7 +603,7 @@ public class InventoryManager {
 
 		return blwTheshProdList;
 	}
-	
+
 	/**
 	 * Checks if Data is Valid
 	 * 
@@ -634,7 +630,7 @@ public class InventoryManager {
 
 		return status;
 	}
-	
+
 	/**
 	 * Splits Row of Data File into a list of Strings
 	 * 
@@ -644,8 +640,7 @@ public class InventoryManager {
 	private String[] splitProductData(String productRow) {
 
 		return DateUtils.extractContent(productRow, Constants.Data.Product.Pattern.LINE_MATCH,
-				Constants.Data.Product.Pattern.DESCRIPTION_REPLACE,
-				Constants.Data.Product.Pattern.OTHER_CNTNT_REPLACE);
+				Constants.Data.Product.Pattern.DESCRIPTION_REPLACE, Constants.Data.Product.Pattern.OTHER_CNTNT_REPLACE);
 	}
 
 	/***********************************************************/
@@ -654,28 +649,31 @@ public class InventoryManager {
 
 	/**
 	 * Method to get the product Id that will be assigned to the new product.
-	 * @param The category code to which the product belongs to.
+	 * 
+	 * @param The
+	 *            category code to which the product belongs to.
 	 * @return The product Id that will be assigned to the new product.
 	 */
-	private int getProductId(String categoryCode) throws InventoryException{
+	private int getProductId(String categoryCode) throws InventoryException {
 		// Initialize the return value
 		int productId = 0;
-		
+
 		// Check the category code in file
 		// Get all categories
 		ArrayList<Product> arrProducts = getAllProducts();
-		
-		for(Product product : arrProducts) {
+
+		for (Product product : arrProducts) {
 			String[] parts = product.getIdentifier().split(Constants.Data.ID_SEPTR);
-			// If found, then check if the current value is greater than found value
-			if(parts[0].equals(categoryCode)) {
+			// If found, then check if the current value is greater than found
+			// value
+			if (parts[0].equals(categoryCode)) {
 				int parsedValue = Integer.parseInt(parts[1]);
-				if(productId < parsedValue) {
+				if (productId < parsedValue) {
 					productId = parsedValue;
 				}
 			}
 		}
-		
+
 		// Add one to the new product.
 		return ++productId;
 	}
@@ -684,9 +682,9 @@ public class InventoryManager {
 	/***********************************************************/
 
 	/**
-	 * (3.3.d) Get All Vendors from Data File
+	 * Get All Vendors from Data File
 	 * 
-	 * @return
+	 * @return List of Vendors
 	 * @throws IOException
 	 */
 	public ArrayList<Vendor> getAllVendors(String categoryCode) throws InventoryException {
@@ -713,25 +711,25 @@ public class InventoryManager {
 
 		return vendorList;
 	}
+
 	/**
 	 * Add New Vendor Data File
 	 * 
 	 * @param categoryCode
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public void addVendorDataFile(String categoryCode) throws InventoryException {		
+	public void addVendorDataFile(String categoryCode) throws InventoryException {
 		try {
-			vendorMap.put(categoryCode,
-					new DataFile<Vendor>(Constants.Data.FileName.VENDOR_DAT + categoryCode));
+			vendorMap.put(categoryCode, new DataFile<Vendor>(Constants.Data.FileName.VENDOR_DAT + categoryCode));
 		} catch (IOException ioExp) {
 			throw new InventoryException(InventoryError.UNKNOWN_ERROR);
 		}
 	}
 
 	/**
-	 * (3.10.a) Add a Vendor
+	 * Add a Vendor
 	 * 
 	 * @param categoryCode
 	 * @param vendorName
@@ -739,16 +737,17 @@ public class InventoryManager {
 	 * @return Status
 	 * @throws IOException
 	 */
-	public boolean addVendor(String categoryCode, String vendorName, String vendorDescription) throws InventoryException {
+	public boolean addVendor(String categoryCode, String vendorName, String vendorDescription)
+			throws InventoryException {
 		if (!hasCategory(categoryCode)) {
 			throw new InventoryException(InventoryError.CATEGORY_NOT_AVAILABLE);
 		}
-		
+
 		DataFile<Vendor> vendorList = vendorMap.get(categoryCode);
 		if (vendorList == null) {
 			throw new InventoryException(InventoryError.CATEGORY_UNKNOWN_ERROR);
 		}
-		
+
 		try {
 			return vendorList.add(new Vendor(vendorName, vendorDescription));
 		} catch (IOException ioExp) {
@@ -757,11 +756,11 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.10.b) Delete all Vendors
+	 * Delete all Vendors
 	 * 
 	 * @param categoryCode
 	 * @return
-	 * @throws InventoryException 
+	 * @throws InventoryException
 	 */
 	public boolean deleteAllVendors(String categoryCode) throws InventoryException {
 		boolean status = false;
@@ -779,7 +778,7 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.10.c) Delete a Vendor from a category
+	 * Delete a Vendor from a category
 	 * 
 	 * @param categoryCode
 	 * @param vendorName
@@ -793,11 +792,11 @@ public class InventoryManager {
 		}
 
 		DataFile<Vendor> vendorData = vendorMap.get(categoryCode);
-		Vendor vendor = findVendor(categoryCode, vendorName);		
+		Vendor vendor = findVendor(categoryCode, vendorName);
 		if (vendorData == null || vendor == null) {
 			throw new InventoryException(InventoryError.CATEGORY_UNKNOWN_ERROR);
 		}
-		
+
 		try {
 			status = vendorData.delete(vendor.toString());
 		} catch (IOException ioExp) {
@@ -808,11 +807,12 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.10.d) Find Vendor
+	 * Find Vendor
 	 * 
 	 * @param categoryCode
 	 * @param vendorName
-	 * @return Vendor as per Category Code and Vendor Name, returns null if not found.
+	 * @return Vendor as per Category Code and Vendor Name, returns null if not
+	 *         found.
 	 * @throws InventoryException
 	 */
 	public Vendor findVendor(String categoryCode, String vendorName) throws InventoryException {
@@ -830,7 +830,7 @@ public class InventoryManager {
 	}
 
 	/**
-	 * (3.3.c.1) Get Vendors based on Product
+	 * Get Vendors based on Product
 	 * 
 	 * @param product
 	 * @return List of Vendors
