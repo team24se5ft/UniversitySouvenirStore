@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.print.DocFlavor.STRING;
+
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryError;
@@ -157,9 +159,6 @@ public class InventoryManager {
 		}
 
 		initializeVendors();
-		if(productID == Constants.Data.Product.INITIALIZED_COUNT){
-			initializeProductCounter();			
-		}
 	}
 
 	/**
@@ -179,23 +178,6 @@ public class InventoryManager {
 			addVendorDataFile(category.getCode());
 		}
 
-	}
-	
-	/**
-	 * Initializes Product Counter based on the highest value in the Product
-	 * Data File
-	 * 
-	 * @throws InventoryException 
-	 */
-	private void initializeProductCounter() throws InventoryException  {
-		ArrayList<Product> productList = getAllProducts();
-
-		for (Product product : productList) {
-			int rowCount = Integer.parseInt(product.getIdentifier().replaceAll(Constants.Data.Product.Pattern.ID_MATCH,
-					Constants.Data.Product.Pattern.COUNT_REPLACE));
-			if(rowCount > productID)
-				productID = rowCount;
-		}
 	}
 
 	/***********************************************************/
@@ -439,7 +421,7 @@ public class InventoryManager {
 		StringBuffer productID = new StringBuffer();
 		productID.append(categoryCode);
 		productID.append(Constants.Data.ID_SEPTR);
-		productID.append(generateProductID());
+		productID.append(getProductId(categoryCode));
 
 		Product product = new Product(productID.toString(), name, description, quantity, price, barCode, reorderThreshold,
 				reorderQuantity);
@@ -648,14 +630,32 @@ public class InventoryManager {
 	/***********************************************************/
 
 	/**
-	 * (3.5.c.1) Generate Product ID
-	 * 
-	 * @return Product ID
+	 * Method to get the product Id that will be assigned to the new product.
+	 * @param The category code to which the product belongs to.
+	 * @return The product Id that will be assigned to the new product.
 	 */
-	private int generateProductID() {
-		return ++productID;
+	private int getProductId(String categoryCode) throws InventoryException{
+		// Initialize the return value
+		int productId = 0;
+		
+		// Check the category code in file
+		// Get all categories
+		ArrayList<Product> arrProducts = getAllProducts();
+		
+		for(Product product : arrProducts) {
+			String[] parts = product.getIdentifier().split(Constants.Data.ID_SEPTR);
+			// If found, then check if the current value is greater than found value
+			if(parts[0].equals(categoryCode)) {
+				int parsedValue = Integer.parseInt(parts[1]);
+				if(productId < parsedValue) {
+					productId = parsedValue;
+				}
+			}
+		}
+		
+		// Add one to the new product.
+		return ++productId;
 	}
-
 	/***********************************************************/
 	// Public Methods for Vendor
 	/***********************************************************/
