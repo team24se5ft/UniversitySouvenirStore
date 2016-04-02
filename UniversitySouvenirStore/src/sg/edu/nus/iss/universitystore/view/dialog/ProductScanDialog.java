@@ -1,11 +1,8 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.TextField;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;

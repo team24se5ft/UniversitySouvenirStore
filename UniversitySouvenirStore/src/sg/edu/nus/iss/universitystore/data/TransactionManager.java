@@ -2,7 +2,6 @@ package sg.edu.nus.iss.universitystore.data;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -173,7 +172,7 @@ public class TransactionManager {
 			Product product = transactionItem.getProduct();
 			int updatedQuantity = product.getQuantity() - transactionItem.getQuantity();
 			product.setQuantity(updatedQuantity);
-			if (!inventoryManager.updateProduct(product)) {
+			if (!inventoryManager.updateProductForTransaction(product)) {
 				status = false;
 			}
 		}
@@ -219,6 +218,13 @@ public class TransactionManager {
 			}
 		}
 		return instance;
+	}
+	
+	/**
+	 * Delete instance of Data File Manager
+	 */
+	public static void deleteInstance() {
+		instance = null;
 	}
 
 	/**
@@ -311,54 +317,6 @@ public class TransactionManager {
 			}
 		}
 		sortTransactionReport(transactionList);
-		return transactionList;
-	}
-
-	/**
-	 * (3.3.d) Get All Transactions from Data File,reserve for future utilize
-	 * 
-	 * @return
-	 * @throws IOException
-	 */
-	public ArrayList<Transaction> getAllTransaction() throws TransactionException {
-		ArrayList<Transaction> transactionList = new ArrayList<>();
-
-		String[] transactionStrList;
-		try {
-			transactionStrList = transactionData.getAll();
-		} catch (IOException e) {
-			throw new TransactionException(TransactionError.UNKNOWN_ERROR);
-		}
-		String tempId = "1";
-		for (String transactionStr : transactionStrList) {
-			// If line in Data file is empty, skip line
-			if (transactionStr.isEmpty())
-				continue;
-
-			String[] transactionStrSplt = transactionStr.split(Constants.Data.FILE_SEPTR);
-			String productId = transactionStrSplt[TransactionArg.PRODUCT_ID.ordinal()];
-			Product product;
-			try {
-				product = InventoryManager.getInstance().findProduct(productId);
-				if (product == null) {
-					continue;
-				}
-				int quantity = Integer.valueOf(transactionStrSplt[TransactionArg.QUANTITY.ordinal()]);
-				String memberId = transactionStrSplt[TransactionArg.MEMBER_ID.ordinal()];
-				String date = transactionStrSplt[TransactionArg.DATE.ordinal()];
-				String Identifider = transactionStrSplt[TransactionArg.IDENTIFIER.ordinal()];
-				TransactionItem transactionitem = new TransactionItem(product, quantity);
-				ArrayList<TransactionItem> list = new ArrayList<TransactionItem>();
-				if (Identifider.equals(String.valueOf(Identifider))) {
-					list.add(transactionitem);
-				} else {
-					tempId = Identifider;
-					transactionList.add(new Transaction(Identifider, list, memberId, date));
-				}
-			} catch (InventoryException e) {
-				e.printStackTrace();
-			}
-		}
 		return transactionList;
 	}
 

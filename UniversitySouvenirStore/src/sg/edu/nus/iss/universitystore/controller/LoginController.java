@@ -1,12 +1,9 @@
 package sg.edu.nus.iss.universitystore.controller;
 
-import java.io.IOException;
-
 import javax.swing.JPanel;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.data.LoginManager;
-import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.LoginException;
 import sg.edu.nus.iss.universitystore.model.StoreKeeper;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;

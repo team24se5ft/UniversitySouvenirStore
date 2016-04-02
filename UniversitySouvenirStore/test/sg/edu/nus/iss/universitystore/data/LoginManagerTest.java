@@ -2,7 +2,7 @@ package sg.edu.nus.iss.universitystore.data;
 
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
@@ -11,16 +11,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-
-import sg.edu.nus.iss.universitystore.model.StoreKeeper;
-import sg.edu.nus.iss.universitystore.utility.JUnitUtility;
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.JUnitConstants;
-import sg.edu.nus.iss.universitystore.data.LoginManager;
 import sg.edu.nus.iss.universitystore.exception.LoginException;
 import sg.edu.nus.iss.universitystore.exception.LoginException.LoginError;
-import sg.edu.nus.iss.universitystore.intf.UniversityStoreJUnit;
 import sg.edu.nus.iss.universitystore.messages.JUnitMessages;
+import sg.edu.nus.iss.universitystore.model.StoreKeeper;
+import sg.edu.nus.iss.universitystore.utility.JUnitUtility;
 
 public class LoginManagerTest {
 

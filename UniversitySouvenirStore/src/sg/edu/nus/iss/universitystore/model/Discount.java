@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.universitystore.model;
 
-import java.time.LocalDate;
-
 import sg.edu.nus.iss.universitystore.constants.Constants;
 
 public class Discount {

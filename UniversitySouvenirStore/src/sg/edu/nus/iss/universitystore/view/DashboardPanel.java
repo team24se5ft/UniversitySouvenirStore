@@ -15,11 +15,6 @@ import sg.edu.nus.iss.universitystore.controller.ReportController;
 import sg.edu.nus.iss.universitystore.controller.SalesController;
 import sg.edu.nus.iss.universitystore.utility.UIUtils;
 import sg.edu.nus.iss.universitystore.view.intf.IDashBoardOptionChangeDelegate;
-import sg.edu.nus.iss.universitystore.view.subpanel.DiscountPanel;
-import sg.edu.nus.iss.universitystore.view.subpanel.InventoryPanel;
-import sg.edu.nus.iss.universitystore.view.subpanel.MemberPanel;
-import sg.edu.nus.iss.universitystore.view.subpanel.ReportPanel;
-import sg.edu.nus.iss.universitystore.view.subpanel.SalesPanel;
 
 /**
  * @author Samrat

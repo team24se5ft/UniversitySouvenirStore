@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.universitystore.constants;
 
-import sg.edu.nus.iss.universitystore.constants.Constants;
-
 public final class JUnitConstants {
 	
 	public static final class Common {
@@ -9,7 +7,7 @@ public final class JUnitConstants {
 	}
 	
 	public static final class Data {
-		public enum FILE_FOLDER { TEST,DATA,BACKUP,INVENTORY,STOREKEEPER,MEMBER,DISCOUNT;}
+		public enum FILE_FOLDER { TEST,DATA,BACKUP,INVENTORY,STOREKEEPER,MEMBER,DISCOUNT,TRANSACTION;}
 		
 		public static final String TEST_FILE_PATH = System.getProperty("user.dir") + 
 				Constants.Data.FILE_PATH_SEPTR + FILE_FOLDER.TEST.toString().toLowerCase() + 

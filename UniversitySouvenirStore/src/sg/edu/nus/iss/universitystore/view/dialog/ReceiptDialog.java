@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
-import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.model.TransactionItem;
 
 public class ReceiptDialog extends JDialog {

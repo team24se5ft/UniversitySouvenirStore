@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.print.DocFlavor.STRING;
-
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.exception.InventoryException;
 import sg.edu.nus.iss.universitystore.exception.InventoryException.InventoryError;
@@ -549,6 +547,31 @@ public class InventoryManager {
 		
 		if(productBarCodeExists(newProduct.getBarCode()))
 			throw new InventoryException(InventoryError.PRODUCT_BAR_CODE_EXISTS);
+
+		Product existingProduct = findProduct(newProduct.getIdentifier());
+		if (deleteProduct(existingProduct)) {
+			try {
+				status = productData.add(newProduct);
+			} catch (IOException ioExp) {
+				throw new InventoryException(InventoryError.UNKNOWN_ERROR);
+			}
+		}
+
+		return status;
+	}
+	
+	/**
+	 * (3.5.g) Update details of the product
+	 * 
+	 * @param newProduct
+	 * @return
+	 * @throws InventoryException 
+	 */
+	public boolean updateProductForTransaction(Product newProduct) throws InventoryException {
+		boolean status = false;
+
+		if (!isValidProduct(newProduct.getIdentifier()))
+			throw new InventoryException(InventoryError.PRODUCT_NOT_AVAILABLE);
 
 		Product existingProduct = findProduct(newProduct.getIdentifier());
 		if (deleteProduct(existingProduct)) {

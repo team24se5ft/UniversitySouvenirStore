@@ -1,18 +1,11 @@
 package sg.edu.nus.iss.universitystore;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
-import sg.edu.nus.iss.universitystore.controller.DashboardController;
 import sg.edu.nus.iss.universitystore.controller.LoginController;
 import sg.edu.nus.iss.universitystore.view.MainPanel;
 
