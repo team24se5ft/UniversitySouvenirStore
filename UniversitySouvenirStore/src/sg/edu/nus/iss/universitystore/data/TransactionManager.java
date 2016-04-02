@@ -412,7 +412,8 @@ public class TransactionManager {
 			if (!memberId.equals(ViewConstants.Labels.STR_PUBLIC)) {
 				try {
 					Member member = memberManager.getMember(memberId);
-					if(member.getLoyaltyPoints() < loyaltyPoints) {
+					if (member.getLoyaltyPoints() != Constants.Data.Member.LOYALTY_NEW_MEMBER
+							&& member.getLoyaltyPoints() < loyaltyPoints) {
 						throw new TransactionException(TransactionError.INVALID_LOYALTY_POINTS_APPLIED);
 					}
 				} catch (MemberException e) {
