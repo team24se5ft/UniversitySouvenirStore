@@ -53,7 +53,7 @@ public class ReceiptDialog extends JDialog {
 	 */
 	public ReceiptDialog(JFrame parent, ArrayList<TransactionItem> receiptDataList, String[] calculations,
 			String currentDiscountPercentage, String currentMemberId) {
-		super(parent, "here is your receipt");
+		super(parent, ViewConstants.Receipt.RECEIPT_TITLE);
 		this.setModal(true);
 		this.setLayout(new BorderLayout());
 		this.setSize(400, 500);
