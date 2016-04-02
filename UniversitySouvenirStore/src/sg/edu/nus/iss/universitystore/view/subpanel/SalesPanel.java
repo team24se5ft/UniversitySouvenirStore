@@ -16,6 +16,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -48,13 +49,15 @@ public class SalesPanel extends BaseTablePanel {
 	private JTextField cashText; // key in received cash
 	private JTextField LoyalPointText; // key in limit loyalPoint
 	private JLabel ChangeText; // automatic calculate the changes
-
+   
+	private JButton check;
 	private JPanel customerInfoPanel;
 
 	private ISalesDelegate delegate;
 
 	// used for changeMember tip switch
 	private String memberText = ViewConstants.SalesPanel.MEMBER_OPTION_LABEL;
+	 
 
 	/***********************************************************/
 	// Constructors
@@ -103,7 +106,8 @@ public class SalesPanel extends BaseTablePanel {
 		add(getButtonPanel(), BorderLayout.SOUTH);
 		initCalculationEvent();
 	}
-
+	
+	
 	/**
 	 * 1.set loyalPoint and cash can only be input as digit 2.make loyalPoint
 	 * not over avaliablePoint
