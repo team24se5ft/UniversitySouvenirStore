@@ -160,12 +160,27 @@ public final class Constants {
 		}
 
 		public static final class Product {
+			/**
+			 * Minimum Count for Delete Row
+			 */
 			public static final int PRODUCT_MINIMUM_COUNT = 10;
 
 			public static final class Pattern {
+				/**
+				 * Product Code Regex
+				 */
 				public static final String ID_MATCH = "(\\w+)" + ID_SEPTR + "(\\d+)";
+				/**
+				 * Product Category Code Regex
+				 */
 				public static final String CATEGORY_REPLACE = "$1";
+				/**
+				 * Product Count Regex
+				 */
 				public static final String COUNT_REPLACE = "$2";
+				/**
+				 * Product Code Regex
+				 */
 				public static final String NAME_MATCH = Common.Pattern.NAME_MATCH;
 				public static final String QUANTITY_MATCH = Common.Pattern.NUMBER_MATCH;
 				public static final String PRICE_MATCH = Common.Pattern.FLOAT_MATCH;
