@@ -29,6 +29,8 @@ import javax.swing.border.EmptyBorder;
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
+import sg.edu.nus.iss.universitystore.utility.UIUtils;
+import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
 
@@ -128,6 +130,8 @@ public class SalesPanel extends BaseTablePanel {
 				int availableLoyalPoint = avaiLableLoyalPoint.getText().isEmpty() ? 0
 						: Integer.valueOf(avaiLableLoyalPoint.getText());
 				if (availableLoyalPoint < loyalPoint) {
+					UIUtils.showMessageDialog(SalesPanel.this, ViewConstants.StatusMessage.ERROR,
+							ViewConstants.SalesPanel.INSUFFICIENT_LOYALTY_POINTS, DialogType.ERROR_MESSAGE);
 					e.consume();
 				}
 			}
@@ -183,6 +187,11 @@ public class SalesPanel extends BaseTablePanel {
 		double change = cash + loyal - Constants.Data.Transaction.LOYALTY_POINTS_TO_CURRENCY_CONVERSION_RATE * total;
 		BigDecimal b = new BigDecimal(change);
 		double result = b.setScale(3, RoundingMode.HALF_UP).doubleValue();
+		if(result<0){
+			ChangeText.setForeground(Color.red);
+		}else{
+			ChangeText.setForeground(new Color(45, 117, 69));//dark green color
+		}
 		ChangeText.setText(String.valueOf(result));
 	}
 

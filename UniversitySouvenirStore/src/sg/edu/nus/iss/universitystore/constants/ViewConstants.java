@@ -209,6 +209,7 @@ public class ViewConstants {
 		public static final String CASH_LABEL = "Cash:";
 		public static final String CHANGE_LABEL = "Change:";
 		public static final String CHANGE_MEMBER="Change Member:";
+		public static final String INSUFFICIENT_LOYALTY_POINTS="Insufficient Loyalty Points";
 		
 		
 	}
