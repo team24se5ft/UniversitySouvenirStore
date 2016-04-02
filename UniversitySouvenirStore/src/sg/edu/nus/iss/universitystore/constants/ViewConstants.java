@@ -242,5 +242,11 @@ public class ViewConstants {
 			public static final String ADD_PRODUCT = "Add Product";
 			public static final String DEL_CAT_CONF = "Do you really wish to delete this category?";
 		}
+		
+		public static final class ReportController{
+			public static final String START_DATE="Start_date(yyyy-MM-dd):";
+			public static final String END_DATE="End_date(yyyy-MM-dd):";
+			public static final String SEARCH="SEARCH";
+		}
 	}
 }

@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
 import sg.edu.nus.iss.universitystore.view.intf.IReportDelegate;
 
@@ -47,13 +48,13 @@ public class TransactionPanel extends BaseTablePanel {
 		jpanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		startDate = new JTextField();
 		endDate = new JTextField();
-		queryBtn = new JButton("query");
+		queryBtn = new JButton(ViewConstants.Controller.ReportController.SEARCH);
 		startDate.setPreferredSize(new Dimension(100, 30));
 		endDate.setPreferredSize(new Dimension(100, 30));
 		queryBtn.setPreferredSize(new Dimension(80, 30));
-		jpanel.add(new JLabel("Start_date:"));
+		jpanel.add(new JLabel(ViewConstants.Controller.ReportController.START_DATE));
 		jpanel.add(startDate);
-		jpanel.add(new JLabel("End_date:"));
+		jpanel.add(new JLabel(ViewConstants.Controller.ReportController.END_DATE));
 		jpanel.add(endDate);
 		jpanel.add(queryBtn);
 		queryBtn.addActionListener(new ActionListener() {
