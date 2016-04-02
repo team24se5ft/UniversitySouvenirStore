@@ -26,6 +26,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
 import sg.edu.nus.iss.universitystore.utility.TableDataUtils;
 import sg.edu.nus.iss.universitystore.view.BaseTablePanel;
@@ -179,7 +180,7 @@ public class SalesPanel extends BaseTablePanel {
 		float cash = cashText.getText().isEmpty() ? 0 : Float.valueOf(cashText.getText());
 		float total = totalText.getText().isEmpty() ? 0 : Float.valueOf(totalText.getText());
 		float loyal = LoyalPointText.getText().isEmpty() ? 0 : Float.valueOf(LoyalPointText.getText());
-		double change = cash + loyal - total;
+		double change = cash + loyal - Constants.Data.Transaction.LOYALTY_POINTS_TO_CURRENCY_CONVERSION_RATE * total;
 		BigDecimal b = new BigDecimal(change);
 		double result = b.setScale(3, RoundingMode.HALF_UP).doubleValue();
 		ChangeText.setText(String.valueOf(result));
