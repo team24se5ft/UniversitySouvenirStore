@@ -35,35 +35,6 @@ public class MainFrame extends JFrame{
 	public MainPanel getMainPanel() {
 		return mainPanel;
 	}
-	
-	/***********************************************************/
-	//Private Methods
-	/***********************************************************/
-	private void addMenuToFrame() {
-		JMenuBar menuBar = new JMenuBar();
-		//Add menus
-		JMenu fileMenu = new JMenu(ViewConstants.MainFrame.MenuBar.FILE);
-		menuBar.add(fileMenu);
-
-		//Add menus
-		JMenu editMenu = new JMenu(ViewConstants.MainFrame.MenuBar.EDIT);
-		menuBar.add(editMenu);
-
-		//Add menus
-		JMenu soureMenu = new JMenu(ViewConstants.MainFrame.MenuBar.SOURCE);
-		menuBar.add(soureMenu);
-
-		JMenuItem item = new JMenuItem(ViewConstants.MainFrame.MenuBar.EXIT);
-		item.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		fileMenu.add(item);
-
-		this.setJMenuBar(menuBar);
-	}
 
 	/***********************************************************/
 	//Public Methods
@@ -76,8 +47,6 @@ public class MainFrame extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		//Add components and stuff
 		this.setContentPane(mainPanel);
-		//Add the menu bar
-		addMenuToFrame();
 		//Optional: center on screen
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
