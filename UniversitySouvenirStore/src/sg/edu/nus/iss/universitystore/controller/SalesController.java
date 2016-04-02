@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.text.View;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
@@ -109,11 +110,11 @@ public class SalesController implements ISalesDelegate {
 						Messages.Error.Controller.NO_PRODUCTS_PRS, DialogType.ERROR_MESSAGE);
 			} else {
 				productDialog = new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
-						"Scan Product") {
+						ViewConstants.DialogHeaders.SCAN_PRODUCT) {
 					@Override
 					public boolean onProductScanResult(String productCode, int quantity) {
 						// add query product entity
-						addProductByBarCode(productCode, quantity);
+						addProductByBarCode(productCode.toUpperCase(), quantity);
 						return true;
 					}
 				};
@@ -123,16 +124,6 @@ public class SalesController implements ISalesDelegate {
 			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
 					DialogType.ERROR_MESSAGE);
 		}
-
-	}
-
-	/**
-	 * test space in barcode FIXME no invoke from other code,reserve for scanner
-	 * function
-	 */
-	public void scanBarCode() {
-		String productCode = "test";
-		addProductByBarCode(productCode, 1);
 
 	}
 
@@ -204,11 +195,11 @@ public class SalesController implements ISalesDelegate {
 		// generate a receipt
 		if (transactionItemList.size() <= 0) {
 			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
-					"No products added for checking out.", DialogType.ERROR_MESSAGE);
+					Messages.Error.Transaction.NO_PRODUCTS_ADDED_IN_CART, DialogType.ERROR_MESSAGE);
 			return;
 		}
 		ConfirmationDialog dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
-				"Check OUT", "Do you confirm to check out?") {
+				"Check Out", "Confirm check out?") {
 
 			@Override
 			protected boolean confirmClicked() {
@@ -267,8 +258,8 @@ public class SalesController implements ISalesDelegate {
 	public void cancel(int row) {
 		ConfirmationDialog dlg;
 		if (row < 0) {
-			dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "deleteConfirm",
-					"Do you want to remove all the productItem") {
+			dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Confirm",
+					"Do you want to remove all the products from the cart?") {
 
 				@Override
 				protected boolean confirmClicked() {
@@ -280,8 +271,8 @@ public class SalesController implements ISalesDelegate {
 				}
 			};
 		} else {
-			dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "deleteConfirm",
-					"Do you want to remove productItem:" + transactionItemList.get(row).getProduct().getName()) {
+			dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Confirm",
+					"Do you want to remove the selected item from the cart?" + transactionItemList.get(row).getProduct().getName()) {
 
 				@Override
 				protected boolean confirmClicked() {
@@ -385,11 +376,11 @@ public class SalesController implements ISalesDelegate {
 				salesPanel
 						.setTotal((TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode())));
 			} else {
-				salesPanel.onSetDiscount("none discount", "0.0%");
+				salesPanel.onSetDiscount("No discount applicable", "0.0%");
 				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
 			}
 		} catch (DiscountException e) {
-			salesPanel.onSetDiscount("none discount", "0.0%");
+			salesPanel.onSetDiscount("No discount applicable", "0.0%");
 			try {
 				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
 			} catch (TransactionException e1) {

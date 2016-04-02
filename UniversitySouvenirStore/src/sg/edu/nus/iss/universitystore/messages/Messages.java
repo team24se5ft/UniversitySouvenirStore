@@ -118,6 +118,7 @@ public final class Messages {
 					.append(Common.INVALID_DATE).toString();
 			public static final String END_DATE_BEFORE_START_DATE = "End Date must be after Start Date";
 			public static final String INVALID_LOYALTY_POINTS_APPLIED = "The loyalty points applied is incorrect.";
+			public static final String NO_PRODUCTS_ADDED_IN_CART = "No products present in cart for checking out.";
 		}
 
 		public static final class Controller {
