@@ -12,6 +12,7 @@ package sg.edu.nus.iss.universitystore.data;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.junit.After;
@@ -339,7 +340,9 @@ public class TransactionManagerTest extends UniversityStoreJUnit {
 			// Add Transaction Items to Transaction
 			Assert.assertTrue(transactionManager.addTransaction(arrTransactionItmLst,
 					discountManager.getDiscount(memberID).getCode(), memberID));
-			//Assert.assertTrue(transactionManager.getTransactionReport(startDate, endDate)().size() == 3);
+			Assert.assertTrue(transactionManager.getTransactionReport(LocalDate.now(), LocalDate.now()).size() == 3);
+			Assert.assertTrue(transactionManager.getTransactionReport(LocalDate.now(), LocalDate.now().plusDays(2)).size() == 3);
+			Assert.assertTrue(transactionManager.getTransactionReport(LocalDate.now().minusDays(3), LocalDate.now().minusDays(1)).size() == 0);
 		} catch (TransactionException | InventoryException | DiscountException exp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
@@ -380,6 +383,10 @@ public class TransactionManagerTest extends UniversityStoreJUnit {
 			Assert.assertTrue(transactionManager.addTransaction(arrTransactionItmLst,
 					discountManager.getDiscount(memberID).getCode(), memberID));
 			Assert.assertTrue(transactionManager.getTransactionReport().size() == 3);
+			
+			Assert.assertTrue(invantoryManager.findProduct(productID1).getQuantity() == (productQuantity1 - 1));
+			Assert.assertTrue(invantoryManager.findProduct(productID2).getQuantity() == (productQuantity2 - 2));
+			Assert.assertTrue(invantoryManager.findProduct(productID3).getQuantity() == (productQuantity3 - 3));
 		} catch (TransactionException | InventoryException | DiscountException exp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
