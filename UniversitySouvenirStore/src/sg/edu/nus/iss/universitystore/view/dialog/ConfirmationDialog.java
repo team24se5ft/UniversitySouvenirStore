@@ -15,7 +15,7 @@ public abstract class ConfirmationDialog extends BaseDialog{
 		super(parent, title);
 		messageLabel.setText(message);
 		this.addWindowListener(this);
-		this.setSize(300, 100);
+		this.setSize(400, 100);
 		this.setResizable(false);
 		this.setLocationRelativeTo(parent);
 	}

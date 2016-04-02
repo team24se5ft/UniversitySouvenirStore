@@ -287,23 +287,31 @@ public class SalesController implements ISalesDelegate {
 	 */
 	@Override
 	public void cancel(int row) {
-		ConfirmationDialog dlg;
-		if (row < 0) {
-			dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Confirm",
-					"Do you want to remove all the products from the cart?") {
+		if (row >= 0) {
+			ConfirmationDialog dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "deleteConfirm",
+					ViewConstants.Controller.SalesCOntroller.DEL_TRAN_CONF + transactionItemList.get(row).getProduct().getName()) {
 
 				@Override
 				protected boolean confirmClicked() {
-					transactionItemList.clear();
-					salesPanel.setTotal((float) 0.0);
-					salesPanel.updateTable(TableDataUtils.getFormattedTransactionItemListForTable(transactionItemList),
-							TableDataUtils.getHeadersForTransactionItemTable());
+					try {
+						transactionItemList.remove(row);
+						if (currentDiscount != null) {
+							salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList,
+									currentDiscount.getCode()));
+						} else {
+							salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
+						}
+						salesPanel.updateTable(
+								TableDataUtils.getFormattedTransactionItemListForTable(transactionItemList),
+								TableDataUtils.getHeadersForTransactionItemTable());
+					} catch (TransactionException e) {
+						UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, e.getMessage(),
+								DialogType.WARNING_MESSAGE);
+					}
 					return true;
 				}
 			};
 			dlg.setVisible(true);
-		} else {
-
 		}
 	}
 
@@ -328,7 +336,7 @@ public class SalesController implements ISalesDelegate {
 							// Display message
 							UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
 									Messages.Error.Transaction.MEMBER_CODE_EMPTY, DialogType.ERROR_MESSAGE);
-							// Refresh 
+							// Refresh
 							refreshSalesData(ViewConstants.Labels.STR_PUBLIC, true);
 						} else {
 							refreshSalesData(MemberCode, true);
