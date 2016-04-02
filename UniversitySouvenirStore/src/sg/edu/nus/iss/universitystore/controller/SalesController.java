@@ -34,11 +34,35 @@ public class SalesController implements ISalesDelegate {
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
+	
+	/**
+	 * The panel associated with this controller.
+	 */
 	private SalesPanel salesPanel;
+	
+	/**
+	 * The list of transaction items
+	 */
 	private ArrayList<TransactionItem> transactionItemList = new ArrayList<TransactionItem>();
+	
+	/**
+	 * The discount associated to the sale.
+	 */
 	private Discount currentDiscount;
+	
+	/**
+	 * The member associated with the sale.
+	 */
 	private Member currentMember;
+	
+	/**
+	 * The member dialog object.
+	 */
 	MemberScanDialog memberDialog;
+	
+	/**
+	 * The product dialog object. 
+	 */
 	ProductScanDialog productDialog;
 
 	/**
