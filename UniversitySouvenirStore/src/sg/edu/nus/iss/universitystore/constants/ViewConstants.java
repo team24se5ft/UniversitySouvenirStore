@@ -105,6 +105,7 @@ public class ViewConstants {
 		
 		//Member Scan Dialog Headers
 		public static final String MEMBER_CODE="Member Code";
+		public static final String ENTER_MEMBER_DETAILS = "Enter Member Details";
 		
 		//Product Dialog Headers
 		public static final String PROD_NAME="Product Name :";
@@ -215,7 +216,7 @@ public class ViewConstants {
 	}
 	
 	public static final class Receipt{
-		public static final String RECEIPT_TITLE="Here is receipt";
+		public static final String RECEIPT_TITLE = "Customer Receipt";
 	}
 
 	public static final class ValidationMessage {

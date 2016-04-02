@@ -294,14 +294,18 @@ public class SalesController implements ISalesDelegate {
 			memberManager = MemberManager.getInstance();
 			if (memberManager.getAllMembers().size() == 0) {
 				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
-						"No members enrolled in the store.", DialogType.ERROR_MESSAGE);
+						Messages.Error.Transaction.NO_MEMBERS_ENROLLED_IN_STORE, DialogType.ERROR_MESSAGE);
 			} else {
 				memberDialog = new MemberScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
-						"Enter Member Details") {
+						ViewConstants.DialogHeaders.ENTER_MEMBER_DETAILS) {
 
 					@Override
 					public boolean onMemberIdentification(String MemberCode) {
 						if (MemberCode.length() == 0) {
+							// Display message
+							UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
+									Messages.Error.Transaction.MEMBER_CODE_EMPTY, DialogType.ERROR_MESSAGE);
+							// Refresh 
 							refreshSalesData(ViewConstants.Labels.STR_PUBLIC, true);
 						} else {
 							refreshSalesData(MemberCode, true);
@@ -397,7 +401,8 @@ public class SalesController implements ISalesDelegate {
 			if (arrThreshold.size() != 0) {
 				// Create the custom message
 				StringBuilder stringBuilder = new StringBuilder();
-				stringBuilder.append("The following products are below threshold quantity:\n");
+				stringBuilder.append(Constants.Data.Transaction.STR_PRODUCTS_BELOW_THRESHOLD);
+				stringBuilder.append("\n");
 				for (Product product : arrThreshold) {
 					stringBuilder.append(product.getIdentifier() + " " + "-" + " ");
 					stringBuilder.append(product.getName() + "\n");
