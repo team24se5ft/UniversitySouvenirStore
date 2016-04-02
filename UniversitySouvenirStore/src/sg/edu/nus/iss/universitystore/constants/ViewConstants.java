@@ -244,9 +244,9 @@ public class ViewConstants {
 		}
 		
 		public static final class ReportController{
-			public static final String START_DATE="Start_date(yyyy-MM-dd):";
-			public static final String END_DATE="End_date(yyyy-MM-dd):";
-			public static final String SEARCH="SEARCH";
+			public static final String START_DATE ="Start date(yyyy-mm-dd):";
+			public static final String END_DATE ="End date(yyyy-mm-dd):";
+			public static final String SEARCH = "Search";
 		}
 		
 		public static final class LoginController{

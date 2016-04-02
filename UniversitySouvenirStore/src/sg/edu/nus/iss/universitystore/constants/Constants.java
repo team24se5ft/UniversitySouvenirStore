@@ -292,7 +292,7 @@ public final class Constants {
 		public static final String STR_DISCOUNT_DESCRIPTION = "Description";
 		public static final String STR_DISCOUNT_START_DATE = "Start Date";
 		public static final String STR_DISCOUNT_PERIOD = "Period";
-		public static final String STR_DISCOUNT_PERCENTAGE = "Rate";
+		public static final String STR_DISCOUNT_PERCENTAGE = "Rate (%)";
 		public static final String STR_DISCOUNT_ELIGIBILITY = "Eligibility";
 
 		// Member

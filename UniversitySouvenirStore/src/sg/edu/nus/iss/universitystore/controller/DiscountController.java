@@ -98,7 +98,7 @@ public class DiscountController implements IDiscountDelegate {
 		// Only if the count is greated than five, we proceed with deleting.
 		if(discountList.size() > Constants.Data.Discount.DISCOUNT_MINIMUM_COUNT){
 			Discount discount = discountList.get(row);
-			new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), "ConfirmDialog",
+			new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(discountPanel), ViewConstants.Labels.STR_DELETE_DISCOUNT,
 					ViewConstants.Controller.Discount.DELETE_DISCOUNT + discount.getCode()) {			
 
 				@Override
