@@ -18,6 +18,10 @@ import sg.edu.nus.iss.universitystore.validation.MemberValidation;
  *
  */
 public class MemberManager {
+	
+	/***********************************************************/
+	// Enums
+	/***********************************************************/
 
 	/**
 	 * Member Arguments

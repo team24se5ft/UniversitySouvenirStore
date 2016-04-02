@@ -21,6 +21,10 @@ import sg.edu.nus.iss.universitystore.validation.InventoryValidation;
  *
  */
 public class InventoryManager {
+	
+	/***********************************************************/
+	// Enums
+	/***********************************************************/
 
 	/**
 	 * Category Arguments

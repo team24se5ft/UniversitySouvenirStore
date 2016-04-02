@@ -75,7 +75,7 @@ public class TransactionManager {
 	private MemberManager memberManager;
 
 	/***********************************************************/
-	// Private Methods
+	// Constructors
 	/***********************************************************/
 
 	/**
@@ -92,15 +92,18 @@ public class TransactionManager {
 			throw new TransactionException(TransactionError.UNKNOWN_ERROR);
 		}
 	}
+	
+	/***********************************************************/
+	// Private Methods
+	/***********************************************************/
 
 	/**
 	 * Initialize all Data Files
 	 * 
-	 * @throws FileNotFoundException
-	 * 
-	 * @throws StoreException
-	 * @throws IOException
+	 * @throws DiscountException
+	 * @throws MemberException
 	 * @throws InventoryException
+	 * @throws IOException
 	 */
 	private void initialize() throws DiscountException, MemberException, InventoryException, IOException {
 		transactionData = new DataFile<>(Constants.Data.FileName.TRANSACTION_DAT);

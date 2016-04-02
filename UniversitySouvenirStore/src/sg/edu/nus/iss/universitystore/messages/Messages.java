@@ -9,7 +9,7 @@ public final class Messages {
 			public static final String INVALID_NUMBER = "Please Enter a Valid Positive Number. For example, \"123\"";
 			public static final String INVALID_FLOAT = "Please Enter a Valid Positive Number with a maximum of two decimals. For example, \"50.0\" or \"30.25\"";
 			public static final String INVALID_DATE = "Please Enter a Valid Date. Eg. 2000-10-20";
-			public static final String INVALID_CODE = "Code must consist of capital alphabets only!";
+			public static final String INVALID_CODE = "Code must consist of alphabets and underscore '_' only";
 			public static final String INVALID_NAME = "Name can only contain alphabets, numbers and spaces";
 			public static final String EMPTY_FIELDS = "All fields are mandatory.";
 			public static final String OTHER_ERROR = "Error in functionality.";
@@ -91,7 +91,8 @@ public final class Messages {
 					.append(Common.INVALID_DATE).append(" or ALWAYS").toString();
 			public static final String INVALID_PERCENTAGE = new StringBuffer().append("Percentage: ")
 					.append(Common.INVALID_FLOAT).toString();
-			public static final String INVALID_CODE = "Discount Code must only contain alphabets.";
+			public static final String INVALID_CODE = new StringBuffer().append("Discount ").append(Common.INVALID_CODE)
+					.toString();
 			public static final String INVALID_ELIGIBILITY = "Eligibility should be selected as \"Member\" or \"Public\"";
 			public static final String INVALID_PERCENTAGE_RANGE = "Percentage should be bewteen 1 and 100";
 			public static final String NEWMEMBER_PERCENTAGE_ONLY = "Only Percentage can be updated for New Member Discount";

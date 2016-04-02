@@ -22,6 +22,10 @@ import sg.edu.nus.iss.universitystore.validation.DiscountValidation;
  *
  */
 public class DiscountManager {
+	
+	/***********************************************************/
+	// Enums
+	/***********************************************************/
 
 	/**
 	 * Discount Arguments
