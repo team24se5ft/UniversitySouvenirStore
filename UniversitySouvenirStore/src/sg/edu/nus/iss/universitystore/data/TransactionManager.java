@@ -165,7 +165,7 @@ public class TransactionManager {
 	 * @throws StoreException
 	 * @throws InventoryException
 	 */
-	private boolean updateInventoryAfterSale(Transaction transaction) throws IOException, InventoryException {
+	private boolean updateInventoryAfterSale(Transaction transaction) throws InventoryException {
 		boolean status = true;
 		for (int i = 0; i < transaction.getTransactionItemList().size(); i++) {
 			TransactionItem transactionItem = transaction.getTransactionItemList().get(i);
@@ -179,7 +179,15 @@ public class TransactionManager {
 		return status;
 	}
 
-	private boolean updateLoyaltyPointsOfMemberAfterSale(String memberId, float totalAmount)
+	/**
+	 * Method to update the loyalty points of the member after a transaction.
+	 * @param memberId The memberId associated with the transaction.
+	 * @param totalAmount The total amount of the transaction.
+	 * @param usedLoyaltyPoints The loyalty points that was used in the transaction. 
+	 * @return true if the update is successful, else false. 
+	 * @throws TransactionException
+	 */
+	private boolean updateLoyaltyPointsOfMemberAfterSale(String memberId, float totalAmount, int usedLoyaltyPoints)
 			throws TransactionException {
 		// Update the member loyalty points
 		if (!memberId.equals(ViewConstants.Labels.STR_PUBLIC)) {
@@ -187,9 +195,9 @@ public class TransactionManager {
 				// Get member to update the loyalty point
 				Member updatedMember = memberManager.getMember(memberId);
 				// Calculate the loyalty points earned
-				int earnedLoyaltyPoints = (int) totalAmount / 10;
+				int earnedLoyaltyPoints = (int) totalAmount / Constants.Data.Transaction.CURRENCY_TO_LOYALTY_POINTS_CONVERSION_RATE;
 				// Set the loyalty points to the new member
-				updatedMember.setLoyaltyPoints(updatedMember.getLoyaltyPoints() + earnedLoyaltyPoints);
+				updatedMember.setLoyaltyPoints(updatedMember.getLoyaltyPoints() + earnedLoyaltyPoints - usedLoyaltyPoints);
 				// Update the dB
 				return memberManager.updateMember(memberManager.getMember(memberId), updatedMember);
 			} catch (MemberException e) {
@@ -377,9 +385,10 @@ public class TransactionManager {
 	 *            The discountId applied to the transaction.
 	 * @param memberId
 	 *            The member who is associated with the transaction.
+	 * @param loyaltyPoints The loyalty Points that was redeemed for this transaction
 	 * @return true is successfully written to file, else false.
 	 */
-	public boolean addTransaction(ArrayList<TransactionItem> arrTransactionItem, String discountId, String memberId)
+	public boolean addTransaction(ArrayList<TransactionItem> arrTransactionItem, String discountId, String memberId, int loyaltyPoints)
 			throws TransactionException {
 		// Get the transactionId
 		int transactionId = getTransactionId();
@@ -396,11 +405,14 @@ public class TransactionManager {
 			}
 		}
 
-		// Check if it is a valid member
-		if (memberId != null || memberId.length() != 0) {
+		// Check if it is a valid member & also the loyalty points.
+		if (memberId != null && memberId.length() != 0) {
 			if (!memberId.equals(ViewConstants.Labels.STR_PUBLIC)) {
 				try {
-					memberManager.getMember(memberId);
+					Member member = memberManager.getMember(memberId);
+					if(member.getLoyaltyPoints() < loyaltyPoints) {
+						throw new TransactionException(TransactionError.INVALID_LOYALTY_POINTS_APPLIED);
+					}
 				} catch (MemberException e) {
 					throw new TransactionException(TransactionError.INVALID_MEMBER_ID);
 				}
@@ -415,7 +427,7 @@ public class TransactionManager {
 		try {
 			transactionData.add(transaction);
 			if (updateInventoryAfterSale(transaction)) {
-				return updateLoyaltyPointsOfMemberAfterSale(memberId, getTotal(arrTransactionItem, discountId));
+				return updateLoyaltyPointsOfMemberAfterSale(memberId, getTotal(arrTransactionItem, discountId), loyaltyPoints);
 			} else {
 				// TODO : Remove all the items that have been written because
 				// something went wrong

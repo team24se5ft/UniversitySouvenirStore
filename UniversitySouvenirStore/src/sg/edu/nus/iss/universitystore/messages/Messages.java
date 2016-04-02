@@ -117,6 +117,7 @@ public final class Messages {
 			public static final String INVALID_END_DATE = new StringBuffer().append("End Date: ")
 					.append(Common.INVALID_DATE).toString();
 			public static final String END_DATE_BEFORE_START_DATE = "End Date must be after Start Date";
+			public static final String INVALID_LOYALTY_POINTS_APPLIED = "The loyalty points applied is incorrect.";
 		}
 
 		public static final class Controller {

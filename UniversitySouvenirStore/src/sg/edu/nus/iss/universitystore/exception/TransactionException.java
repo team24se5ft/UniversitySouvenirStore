@@ -23,6 +23,7 @@ public class TransactionException extends Exception{
 		INVALID_START_DATE(Messages.Error.Transaction.INVALID_START_DATE),
 		INVALID_END_DATE(Messages.Error.Transaction.INVALID_END_DATE),
 		END_DATE_BEFORE_START_DATE(Messages.Error.Transaction.END_DATE_BEFORE_START_DATE),
+		INVALID_LOYALTY_POINTS_APPLIED(Messages.Error.Transaction.INVALID_LOYALTY_POINTS_APPLIED),
 	    UNKNOWN_ERROR(Messages.Error.Common.UNKNOWN_ERROR)
 	    ;
 		
