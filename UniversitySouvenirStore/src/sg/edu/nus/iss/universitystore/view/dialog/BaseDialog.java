@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.universitystore.view.dialog;
 
+import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -25,8 +26,8 @@ public abstract class BaseDialog extends JDialog implements WindowListener{
 	public BaseDialog (JFrame parent, String title) {
 		super (parent, title);
 		this.setModal(true);
-		add ("Center", getPanelToAddToDialog());
-		add ("South",  createButtonPanel());
+		add (BorderLayout.CENTER, getPanelToAddToDialog());
+		add (BorderLayout.SOUTH,  createButtonPanel());
 	}
 
 	public BaseDialog (JFrame parent) {

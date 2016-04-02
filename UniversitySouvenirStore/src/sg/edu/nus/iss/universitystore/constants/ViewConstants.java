@@ -121,8 +121,13 @@ public class ViewConstants {
 		//Receipt Dialog Headers
 		public static final String STORE_HEADER="NUS SOUVENIR STORE";
 		public static final String HEADER="Bill\t\tQuantity\t\tPrice";
-		public static final String NORTH="North";
-		public static final String CENTER="Center";
+		
+		public static final String MEMBER_ID_HEADER = "MemberID : ";
+		public static final String DISCOUNT_NAME_HEADER = "DISCOUNT : ";
+		public static final String LOYAL_POINT_HEADER = "LOYALPOINT : ";
+		public static final String TOTAL_HEADER = "TOTAL : ";
+		public static final String CASH_HEADER = "CASH : ";
+		public static final String CHANGE_HEADER = "CHANGE : ";
 	}
 	
 	

@@ -26,6 +26,7 @@ import sg.edu.nus.iss.universitystore.utility.UIUtils.DialogType;
 import sg.edu.nus.iss.universitystore.view.dialog.ConfirmationDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.MemberScanDialog;
 import sg.edu.nus.iss.universitystore.view.dialog.ProductScanDialog;
+import sg.edu.nus.iss.universitystore.view.dialog.ReceiptDialog;
 import sg.edu.nus.iss.universitystore.view.intf.ISalesDelegate;
 import sg.edu.nus.iss.universitystore.view.subpanel.SalesPanel;
 
@@ -201,9 +202,9 @@ public class SalesController implements ISalesDelegate {
 	@Override
 	public void checkOut() {
 		// generate a receipt
-		if(transactionItemList.size()<=0){
-			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, "No products added for checking out.",
-					DialogType.ERROR_MESSAGE);
+		if (transactionItemList.size() <= 0) {
+			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
+					"No products added for checking out.", DialogType.ERROR_MESSAGE);
 			return;
 		}
 		ConfirmationDialog dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
@@ -217,7 +218,8 @@ public class SalesController implements ISalesDelegate {
 								currentDiscount.getCode() == Constants.Data.Discount.Member.Public.CODE ? null
 										: currentDiscount.getCode(),
 								currentMember == null ? ViewConstants.Labels.STR_PUBLIC
-										: currentMember.getIdentifier());
+										: currentMember.getIdentifier(),Integer.valueOf(salesPanel.getTotal()[3]));
+						createReceipt();
 						// show receipt here
 						// clear salesPanel here
 						clearSalesPanel();
@@ -235,6 +237,15 @@ public class SalesController implements ISalesDelegate {
 
 		};
 		dlg.setVisible(true);
+	}
+	
+	private void createReceipt(){
+		ReceiptDialog receiptDlg;
+		String discountPercentage = currentDiscount == null ? ViewConstants.SalesPanel.NONE_DISCOUNT : currentDiscount.getPercentage()+"%";
+		String memberId = currentMember == null ? ViewConstants.Labels.STR_PUBLIC : currentMember.getIdentifier();
+		receiptDlg = new ReceiptDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), transactionItemList,
+				salesPanel.getTotal(), discountPercentage, memberId);
+		receiptDlg.setVisible(true);
 	}
 
 	private void clearSalesPanel() {
@@ -351,7 +362,8 @@ public class SalesController implements ISalesDelegate {
 			Member member = MemberManager.getInstance().getMember(memberCode);
 			currentMember = member;
 			if (member != null) {
-				String loyaltyPoints = (member.getLoyaltyPoints() == -1)?"0":String.valueOf(member.getLoyaltyPoints());
+				String loyaltyPoints = (member.getLoyaltyPoints() == -1) ? "0"
+						: String.valueOf(member.getLoyaltyPoints());
 				salesPanel.onMemberIdentification(member.getName(), loyaltyPoints);
 			} else {
 				salesPanel.onMemberIdentification(ViewConstants.SalesPanel.MEMBER_OPTION_LABEL, "0");
@@ -394,15 +406,17 @@ public class SalesController implements ISalesDelegate {
 	/***********************************************************/
 	// Private Methods
 	/***********************************************************/
+
 	/**
-	 * Method to check whether any product has reached its threshold value after checkout.
+	 * Method to check whether any product has reached its threshold value after
+	 * checkout.
 	 */
 	private void checkIfAnyProductHasReachedThreshold() {
 		try {
 			// Get the array with the list of threshold products
 			ArrayList<Product> arrThreshold = inventoryManager.getProductsBelowThreshold();
 			// Only if any threshold value has been reached, we will proceed.
-			if(arrThreshold.size() != 0) {
+			if (arrThreshold.size() != 0) {
 				// Create the custom message
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.append("The following products are below threshold quantity:\n");
@@ -413,7 +427,7 @@ public class SalesController implements ISalesDelegate {
 				// Display a dialog to inform the same
 				UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, stringBuilder.toString(),
 						DialogType.WARNING_MESSAGE);
-				
+
 				// Now update the announcement pane.
 				UIUtils.getDashBoardController().getDashboardPanel().setAnnouncementPaneText(stringBuilder.toString());
 			}

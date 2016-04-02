@@ -15,8 +15,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -49,15 +50,13 @@ public class SalesPanel extends BaseTablePanel {
 	private JTextField cashText; // key in received cash
 	private JTextField LoyalPointText; // key in limit loyalPoint
 	private JLabel ChangeText; // automatic calculate the changes
-   
-	private JButton check;
+
 	private JPanel customerInfoPanel;
 
 	private ISalesDelegate delegate;
 
 	// used for changeMember tip switch
 	private String memberText = ViewConstants.SalesPanel.MEMBER_OPTION_LABEL;
-	 
 
 	/***********************************************************/
 	// Constructors
@@ -106,8 +105,7 @@ public class SalesPanel extends BaseTablePanel {
 		add(getButtonPanel(), BorderLayout.SOUTH);
 		initCalculationEvent();
 	}
-	
-	
+
 	/**
 	 * 1.set loyalPoint and cash can only be input as digit 2.make loyalPoint
 	 * not over avaliablePoint
@@ -181,7 +179,10 @@ public class SalesPanel extends BaseTablePanel {
 		float cash = cashText.getText().isEmpty() ? 0 : Float.valueOf(cashText.getText());
 		float total = totalText.getText().isEmpty() ? 0 : Float.valueOf(totalText.getText());
 		float loyal = LoyalPointText.getText().isEmpty() ? 0 : Float.valueOf(LoyalPointText.getText());
-		ChangeText.setText(String.valueOf(cash + loyal - total));
+		double change = cash + loyal - total;
+		BigDecimal b = new BigDecimal(change);
+		double result = b.setScale(3, RoundingMode.HALF_UP).doubleValue();
+		ChangeText.setText(String.valueOf(result));
 	}
 
 	/**
@@ -334,6 +335,7 @@ public class SalesPanel extends BaseTablePanel {
 
 	/**
 	 * for discount input in
+	 * 
 	 * @param discountCode
 	 * @param off
 	 */
@@ -351,6 +353,17 @@ public class SalesPanel extends BaseTablePanel {
 	public void setTotal(float total) {
 		totalText.setText(String.valueOf(total));
 		refreshCalculation();
+	}
+
+	/**
+	 * gain total for receipt
+	 * 
+	 * @return
+	 */
+	public String[] getTotal() {
+		String[] total = { totalText.getText(), cashText.getText().isEmpty() ? "0.0" : cashText.getText(),
+				ChangeText.getText(), LoyalPointText.getText().isEmpty() ? "0" : LoyalPointText.getText() };
+		return total;
 	}
 
 	public void clear() {
