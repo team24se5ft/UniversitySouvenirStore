@@ -24,8 +24,17 @@ public class DiscountController implements IDiscountDelegate {
 	/***********************************************************/
 	// Instance Variables
 	/***********************************************************/
+	/**
+	 * The panel associated with this controller.
+	 */
 	private DiscountPanel discountPanel;
+	/**
+	 * Reference to Discount Manager
+	 */
 	private DiscountManager discountManager;
+	/**
+	 * the List of discountItem
+	 */
 	private ArrayList<Discount> discountList;
 
 	/***********************************************************/
