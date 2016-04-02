@@ -1,6 +1,8 @@
 package sg.edu.nus.iss.universitystore.view.subpanel;
 
 import java.awt.BorderLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -90,11 +92,22 @@ public class InventoryPanel extends JPanel{
 
 	private void createTabbedPane(JPanel categoryPanel, JPanel productPanel) {
 		tabbedPane = new JTabbedPane();
-		// TODO - Add image to the tabbed pane?
 		tabbedPane.addTab(ViewConstants.PaneHeaders.INV_CATEGORY_PANE, null, categoryPanel,
 				ViewConstants.PaneHeaders.INV_CATEGORY_PANE_DESC);
 		tabbedPane.addTab(ViewConstants.PaneHeaders.INV_PRODUCT_PANE, null, productPanel,
 				ViewConstants.PaneHeaders.INV_PRODUCT_PANE_DESC);
 		add(tabbedPane, BorderLayout.CENTER);
+		
+		// Add the component listener since this class needs to be updated when
+		// there is a change on the other fields.
+		addComponentListener(new ComponentAdapter() {
+			public void componentShown(ComponentEvent e) {
+				// Inform the controller that the panel is visible.
+				if(delegate != null) {
+					delegate.onProductPanelVisible();
+				}
+			}
+		});
+
 	}
 }

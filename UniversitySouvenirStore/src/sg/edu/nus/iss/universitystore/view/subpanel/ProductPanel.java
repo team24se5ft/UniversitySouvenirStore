@@ -47,17 +47,6 @@ public class ProductPanel extends BaseTablePanel {
 		// the data from table is available.
 		add(getScrollPaneWithTable(null, null), BorderLayout.CENTER);
 		add(getButtonPanel(), BorderLayout.SOUTH);
-
-		// Add the component listener since this class needs to be updated when
-		// there is a change on the other fields.
-		addComponentListener(new ComponentAdapter() {
-			public void componentShown(ComponentEvent e) {
-				// Inform the controller that the panel is visible.
-				if(delegate != null) {
-					delegate.onProductPanelVisible();
-				}
-			}
-		});
 	}
 
 	/***********************************************************/
