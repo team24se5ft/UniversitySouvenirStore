@@ -3,71 +3,157 @@ package sg.edu.nus.iss.universitystore.constants;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Data Constants
+ * 
+ * @author Sanjay
+ *
+ */
 public final class Constants {
 
 	public static final class DateTime {
+		/**
+		 * System Date
+		 */
 		public static final LocalDate CURRENT_DATE = LocalDate.now();
 	}
 
 	public static final class Common {
+		/**
+		 * Empty String
+		 */
 		public static final String EMPTY_STR = "";
+		/**
+		 * New Line Character
+		 */
 		public static final String NEW_LINE = "\n";
 
 		public static final class Pattern {
+			/**
+			 * Positive Number Regex
+			 */
 			public static final String NUMBER_MATCH = "\\d+";
+			/**
+			 * Positive Float Regex
+			 */
 			public static final String FLOAT_MATCH = "\\d+(\\.\\d+)?";
+			/**
+			 * yyyy-MM-dd Regex
+			 */
 			public static final String DATE_MATCH = "\\d{4}\\-\\d{2}\\-\\d{2}";
+			/**
+			 * Code Regex
+			 */
 			public static final String CODE_MATCH = "[A-Z_]+";
+			/**
+			 * Name Regex
+			 */
 			public static final String NAME_MATCH = "[a-zA-Z0-9 ]+";
 		}
 
+		/**
+		 * Date Time Formatter yyyy-MM-dd
+		 */
 		public static final DateTimeFormatter YYYY_MM_DD_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	}
 
 	public static final class Data {
-
-		// TODO: Is this the best solution
+		/**
+		 * Folder Locations for Junits and Normal Data operations
+		 */
 		public enum FILE_FOLDER {
 			TEST, DATA;
 		}
-
-		// TODO: Come up with better solution
+		/**
+		 * Directory Separators for WIN '\' and MAC '/'
+		 */
 		public static final String FILE_PATH_SEPTR = System.getProperty("os.name").toUpperCase().startsWith("WIN")
 				? "\\" : "//";
+		/**
+		 * Data File Extension
+		 */
 		public static final String FILE_EXT = ".dat";
+		/**
+		 * Date File Line Separator
+		 */
 		public static final String FILE_SEPTR = ",";
-		public static final String FILE_FLDR = "data";
+		/**
+		 * Data File Path for normal data operations
+		 */
 		public static final String FILE_PATH = System.getProperty("user.dir") + FILE_PATH_SEPTR
 				+ FILE_FOLDER.DATA.toString().toLowerCase() + FILE_PATH_SEPTR;
-
+		/**
+		 * Product Id Spearator
+		 */
 		public static final String ID_SEPTR = "/";
-
+		/**
+		 * Data File Path for running JUnits
+		 */
 		public static final String TEST_FILE_PATH = System.getProperty("user.dir") + FILE_PATH_SEPTR
 				+ FILE_FOLDER.TEST.toString().toLowerCase() + FILE_PATH_SEPTR
 				+ FILE_FOLDER.DATA.toString().toLowerCase() + FILE_PATH_SEPTR;
 
 		public static final class FileName {
+			/**
+			 * File Name for Category
+			 */
 			public static final String CATEGORY_DAT = "Category";
+			/**
+			 * File Name for Discount
+			 */
 			public static final String DISCOUNT_DAT = "Discount";
+			/**
+			 * File Name for Member
+			 */
 			public static final String MEMBER_DAT = "Member";
+			/**
+			 * File Name for Product
+			 */
 			public static final String PRODUCT_DAT = "Product";
+			/**
+			 * File Name for Store Keeper
+			 */
 			public static final String STORE_KEEPER_DAT = "StoreKeeper";
+			/**
+			 * File Name for Transaction
+			 */
 			public static final String TRANSACTION_DAT = "Transaction";
+			/**
+			 * File Name for Vendor
+			 */
 			public static final String VENDOR_DAT = "Vendor";
 
 		}
 
 		public static final class Pattern {
+			/**
+			 * Regex for Data File Line Separator
+			 */
 			public static final String FILE_SEPTR_MATCH = "\\" + FILE_SEPTR;
+			/**
+			 * Description Regex
+			 */
 			public static final String DESCRIPTION_MATCH = "(\\\"(?!\\\")(.*?)\\\"" + FILE_SEPTR_MATCH + ")";
 		}
 
 		public static final class Category {
+			/**
+			 * Minimum Count for Delete Row
+			 */
 			public static final int CATEGORY_MINIMUM_COUNT = 5;
-			
+
 			public static final class Pattern {
+				/**
+				 * Category Code Regex
+				 */
 				public static final String CODE_MATCH = "[A-Z]{3}";
+				/**
+				 * Category Name Regex
+				 */
 				public static final String NAME_MATCH = Common.Pattern.NAME_MATCH;
+				/**
+				 * Category Data Line Regex 
+				 */
 				public static final String LINE_MATCH = "^" + CODE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + NAME_MATCH
 						+ "$";
 			}
@@ -75,7 +161,7 @@ public final class Constants {
 
 		public static final class Product {
 			public static final int PRODUCT_MINIMUM_COUNT = 10;
-			
+
 			public static final class Pattern {
 				public static final String ID_MATCH = "(\\w+)" + ID_SEPTR + "(\\d+)";
 				public static final String CATEGORY_REPLACE = "$1";
@@ -151,7 +237,7 @@ public final class Constants {
 				}
 			}
 		}
-		
+
 		public static final class Transaction {
 			public static final int CURRENCY_TO_LOYALTY_POINTS_CONVERSION_RATE = 10;
 			public static final int LOYALTY_POINTS_TO_CURRENCY_CONVERSION_RATE = 10;
