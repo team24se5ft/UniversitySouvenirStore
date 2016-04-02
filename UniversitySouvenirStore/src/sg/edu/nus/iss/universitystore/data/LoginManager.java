@@ -17,6 +17,10 @@ import sg.edu.nus.iss.universitystore.validation.LoginValidation;
  *
  */
 public class LoginManager {
+	
+	/***********************************************************/
+	// Enums
+	/***********************************************************/
 
 	/**
 	 * Login Arguments
