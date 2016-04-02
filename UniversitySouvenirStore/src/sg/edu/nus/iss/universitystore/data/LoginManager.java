@@ -17,7 +17,7 @@ import sg.edu.nus.iss.universitystore.validation.LoginValidation;
  *
  */
 public class LoginManager {
-	
+
 	/**
 	 * Login Arguments
 	 */
@@ -31,17 +31,22 @@ public class LoginManager {
 		}
 	}
 
-	private static LoginManager instance;
+	/***********************************************************/
+	// Instance Variables
+	/***********************************************************/
 
+	/**
+	 * Instance of Login Manager
+	 */
+	private static LoginManager instance;
+	/**
+	 * Data File for Store Keeper
+	 */
 	private DataFile<StoreKeeper> storeKeeperData;
 
-	private LoginManager() throws LoginException {
-		try {
-			initialize();
-		} catch (IOException e) { 
-			throw new LoginException(LoginError.UNKNOWN_ERROR);
-		}
-	}
+	/***********************************************************/
+	// Singleton
+	/***********************************************************/
 
 	/**
 	 * Get a single instance of Data File Manager
@@ -60,6 +65,34 @@ public class LoginManager {
 	}
 
 	/**
+	 * Delete instance of Data File Manager
+	 */
+	public static void deleteInstance() {
+		instance = null;
+	}
+
+	/***********************************************************/
+	// Constructors
+	/***********************************************************/
+
+	/**
+	 * Login Manager Constructor
+	 * 
+	 * @throws LoginException
+	 */
+	private LoginManager() throws LoginException {
+		try {
+			initialize();
+		} catch (IOException e) {
+			throw new LoginException(LoginError.UNKNOWN_ERROR);
+		}
+	}
+
+	/***********************************************************/
+	// Private Methods for Constructors
+	/***********************************************************/
+
+	/**
 	 * Initialize all Date Files
 	 * 
 	 * @throws FileNotFoundException
@@ -69,38 +102,34 @@ public class LoginManager {
 		storeKeeperData = new DataFile<>(Constants.Data.FileName.STORE_KEEPER_DAT);
 	}
 
-	/**
-	 * Delete instance of Data File Manager
-	 */
-	public static void deleteInstance() {
-		instance = null;
-	}
+	/***********************************************************/
+	// Validation for Login
+	/***********************************************************/
 
 	/**
-	 * Checks if Entered Credentials are Valid
+	 * Validates Login Data
 	 * 
-	 * @param enteredCredentials
-	 *            Store Keeper Credentials
+	 * @param dataList
 	 * @return Boolean
-	 * @throws IOException
 	 */
-	public boolean isValidCredentials(StoreKeeper enteredCredentials) throws LoginException {
-		// Check if the data matches as in dB
-		ArrayList<StoreKeeper> credentials = getLoginCredentials();
-		for (StoreKeeper credentailsData : credentials) {
-			if(credentailsData.equals(enteredCredentials)) {
-				return true;
-			}
+	public boolean isValidLoginData(String[] dataList) {
+		try {
+			return LoginValidation.isValidData(dataList[LoginArg.USERNAME.ordinal()],
+					dataList[LoginArg.PASSWORD.ordinal()]);
+		} catch (LoginException e) {
+			return false;
 		}
-		// Throw an exception.
-		throw new LoginException(LoginError.INVALID_CREDENTIALS);
 	}
+
+	/***********************************************************/
+	// Private Methods for Login
+	/***********************************************************/
 
 	/**
 	 * Get All Login credentials
 	 * 
 	 * @return All Store Keeper Credentials
-	 * @throws UniversityStoreLoginException
+	 * @throws LoginException
 	 */
 	private ArrayList<StoreKeeper> getLoginCredentials() throws LoginException {
 		// Catch the exception from parent & inform the controller.
@@ -113,30 +142,41 @@ public class LoginManager {
 
 		ArrayList<StoreKeeper> storeKeeper = new ArrayList<>();
 		for (String storKprStr : storeKprStrList) {
-			
+
 			String[] storLprStrSpltLst = storKprStr.split(Constants.Data.FILE_SEPTR);
 
 			if (storLprStrSpltLst.length != 2 || !isValidLoginData(storLprStrSpltLst))
 				continue;
 
-			storeKeeper.add(new StoreKeeper(storLprStrSpltLst[LoginArg.USERNAME.ordinal()], storLprStrSpltLst[LoginArg.PASSWORD.ordinal()]));
+			storeKeeper.add(new StoreKeeper(storLprStrSpltLst[LoginArg.USERNAME.ordinal()],
+					storLprStrSpltLst[LoginArg.PASSWORD.ordinal()]));
 		}
 
 		return storeKeeper;
 	}
-	
+
+	/***********************************************************/
+	// Public Methods for Login
+	/***********************************************************/
+
 	/**
-	 * Validates Login Data
+	 * Checks if Entered Credentials are Valid
 	 * 
-	 * @param dataList
-	 * @return
+	 * @param enteredCredentials
+	 *            Store Keeper Credentials
+	 * @return Boolean
+	 * @throws LoginException
 	 */
-	public boolean isValidLoginData(String[] dataList) {
-		try {
-			return LoginValidation.isValidData(dataList[LoginArg.USERNAME.ordinal()], dataList[LoginArg.PASSWORD.ordinal()]);
-		} catch (LoginException e) {
-			return false;
+	public boolean isValidCredentials(StoreKeeper enteredCredentials) throws LoginException {
+		// Check if the data matches as in dB
+		ArrayList<StoreKeeper> credentials = getLoginCredentials();
+		for (StoreKeeper credentailsData : credentials) {
+			if (credentailsData.equals(enteredCredentials)) {
+				return true;
+			}
 		}
+		// Throw an exception.
+		throw new LoginException(LoginError.INVALID_CREDENTIALS);
 	}
 
 }

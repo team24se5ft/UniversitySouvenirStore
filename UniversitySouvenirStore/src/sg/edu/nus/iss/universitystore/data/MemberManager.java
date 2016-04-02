@@ -12,14 +12,13 @@ import sg.edu.nus.iss.universitystore.model.Member;
 import sg.edu.nus.iss.universitystore.validation.MemberValidation;
 
 /**
- * Managing member data
+ * Manages Member Data File
  * 
  * @author Deepak Raaj
  *
  */
-
 public class MemberManager {
-	
+
 	/**
 	 * Member Arguments
 	 */
@@ -50,10 +49,15 @@ public class MemberManager {
 	// Private Method for Constructors
 	/***********************************************************/
 
-	private MemberManager() throws MemberException{
+	/**
+	 * Member Constructor
+	 * 
+	 * @throws MemberException
+	 */
+	private MemberManager() throws MemberException {
 		try {
 			initialize();
-		} catch (IOException e) { 
+		} catch (IOException e) {
 			throw new MemberException(MemberError.UNKNOWN_ERROR);
 		}
 	}
@@ -66,8 +70,7 @@ public class MemberManager {
 	 * Get a single instance of MemberManager
 	 * 
 	 * @return The instance of MemberManager
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * @throws MemberException
 	 */
 	public static MemberManager getInstance() throws MemberException {
 		if (instance == null) {
@@ -79,7 +82,7 @@ public class MemberManager {
 		}
 		return instance;
 	}
-	
+
 	/**
 	 * Delete instance of Data File Manager
 	 */
@@ -87,7 +90,12 @@ public class MemberManager {
 		instance = null;
 	}
 
+	/***********************************************************/
+	// Private Methods for Constructors
+	/***********************************************************/
+
 	/**
+	 * Initialize Member Data File
 	 * 
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -97,15 +105,35 @@ public class MemberManager {
 	}
 
 	/***********************************************************/
-	// Member
+	// Validation for Discount
 	/***********************************************************/
 
 	/**
-	 * (3.4.d)Adding new member
+	 * Validates Member Data
+	 * 
+	 * @param dataStrList
+	 * @return Boolean
+	 * @throws MemberException
+	 */
+	private boolean isValidMemberData(String[] dataStrList) {
+		try {
+			return MemberValidation.isValidData(dataStrList[MemberArg.MEMBER_ID.ordinal()],
+					dataStrList[MemberArg.NAME.ordinal()], dataStrList[MemberArg.LOYALTY_POINTS.ordinal()]);
+		} catch (MemberException memberExp) {
+			return false;
+		}
+	}
+
+	/***********************************************************/
+	// Public Methods for Member
+	/***********************************************************/
+
+	/**
+	 * Adding new member
 	 * 
 	 * @param name
 	 * @param identifier
-	 * @return
+	 * @return Boolean
 	 * @throws IOException
 	 */
 	public boolean addNewMember(String identifier, String name) throws MemberException {
@@ -124,13 +152,13 @@ public class MemberManager {
 	}
 
 	/**
-	 * (3.4.e.1)Finding member using id
+	 * Finding member using id
 	 * 
 	 * @param identifier
-	 * @return
+	 * @return Member, if member not found return null
 	 * @throws MemberException
 	 */
-	public Member getMember(String identifier) throws MemberException{
+	public Member getMember(String identifier) throws MemberException {
 		// First check the list
 		Member memberResult = null;
 		Iterator<Member> list = getAllMembers().iterator();
@@ -141,19 +169,19 @@ public class MemberManager {
 				break;
 			}
 		}
-		
+
 		// If the member was not found, we throw an exception
-		if(memberResult == null) {
+		if (memberResult == null) {
 			throw new MemberException(MemberError.MEMBER_NOT_PRESENT_IN_FILE);
 		}
-		
+
 		return memberResult;
 	}
 
 	/**
-	 * (3.8.f) Displaying all member data
+	 * Displaying all member data
 	 * 
-	 * @return
+	 * @return List of Members
 	 * @throws IOException
 	 */
 	public ArrayList<Member> getAllMembers() throws MemberException {
@@ -178,49 +206,38 @@ public class MemberManager {
 		}
 		return storedMembers;
 	}
-	
-	/**
-	 * Validates Member Data
-	 * 
-	 * @param dataStrList
-	 * @return Boolean
-	 * @throws MemberException
-	 */
-	private boolean isValidMemberData(String[] dataStrList) {
-		try {
-			return MemberValidation.isValidData(dataStrList[MemberArg.MEMBER_ID.ordinal()],
-					dataStrList[MemberArg.NAME.ordinal()], dataStrList[MemberArg.LOYALTY_POINTS.ordinal()]);
-		} catch (MemberException memberExp) {
-			return false;
-		}
-	}
 
 	/**
-	 * (3.4.c.2)checks whether member exists
-	 * If the
+	 * (3.4.c.2)checks whether member exists If the
+	 * 
 	 * @param identifier
 	 * @return
 	 * @throws MemberException
 	 */
 	public boolean isMember(String identifier) {
 		try {
-			// The below line will throw an exception if the member is not present.
+			// The below line will throw an exception if the member is not
+			// present.
 			getMember(identifier);
 			return true;
 		} catch (MemberException e) {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Method to update an existing member. The update will only take place if the member is already present.
-	 * @param oldMember The old member object that needs to be updated. 
-	 * @param updatedMember The new member object.
+	 * Method to update an existing member. The update will only take place if
+	 * the member is already present.
+	 * 
+	 * @param oldMember
+	 *            The old member object that needs to be updated.
+	 * @param updatedMember
+	 *            The new member object.
 	 * @return true if successful, else false
 	 */
 	public boolean updateMember(Member oldMember, Member updatedMember) throws MemberException {
 		// The below line will throw an exception if the member is not present.
-		if(isMember(oldMember.getIdentifier())) {
+		if (isMember(oldMember.getIdentifier())) {
 			removeMember(oldMember.getIdentifier());
 			try {
 				memberData.add(updatedMember);
@@ -228,16 +245,16 @@ public class MemberManager {
 			} catch (IOException e) {
 				throw new MemberException(MemberError.UNKNOWN_ERROR);
 			}
-		}else {
+		} else {
 			throw new MemberException(MemberError.MEMBER_NOT_PRESENT_IN_FILE);
 		}
 	}
 
 	/**
-	 * (3.4.h)Removing member object
+	 * Removing member object
 	 * 
 	 * @param identifier
-	 * @return
+	 * @return Boolean
 	 * @throws IOException
 	 */
 	public boolean removeMember(String identifier) throws MemberException {
@@ -250,7 +267,7 @@ public class MemberManager {
 			} catch (Exception e) {
 				throw new MemberException(MemberError.UNKNOWN_ERROR);
 			}
-		}else {
+		} else {
 			throw new MemberException(MemberError.MEMBER_NOT_PRESENT_IN_FILE);
 		}
 	}
