@@ -84,7 +84,7 @@ public class DiscountValidation extends Validation {
 		
 		int period = Integer.parseInt(periodStr);
 
-		if (!(period >= 0))
+		if (!(period > 0))
 			throw new DiscountException(DiscountError.INVALID_PERIOD);
 
 		return true;

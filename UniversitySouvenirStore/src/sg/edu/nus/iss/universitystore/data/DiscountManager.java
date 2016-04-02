@@ -207,7 +207,7 @@ public class DiscountManager {
 				continue;
 
 			// Checks if discount is applicable for current date
-			if (!isApplicableDate(discount.getStartDate(), discount.getPeriod()))
+			if (!isApplicableDate(discount.getStartDate(), discount.getPeriod() - 1))
 				continue;
 
 			// Add Discount

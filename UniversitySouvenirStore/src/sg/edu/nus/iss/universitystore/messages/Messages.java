@@ -85,8 +85,7 @@ public final class Messages {
 		public static final class Discount {
 			public static final String DISCOUNT_NOT_PRESENT_IN_FILE = "The Discount does not exist!";
 			public static final String DISCOUNT_ALREADY_PRESENT = "The Discount Code already exists!";
-			public static final String INVALID_PERIOD = new StringBuffer().append("Period: ")
-					.append(Common.INVALID_NUMBER).append(" or ALWAYS").toString();
+			public static final String INVALID_PERIOD = "Period must be set as value greater than 0 or set as 'ALWAYS'";
 			public static final String INVALID_START_DATE = new StringBuffer().append("Start Date: ")
 					.append(Common.INVALID_DATE).append(" or ALWAYS").toString();
 			public static final String INVALID_PERCENTAGE = new StringBuffer().append("Percentage: ")
