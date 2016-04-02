@@ -2,6 +2,12 @@ package sg.edu.nus.iss.universitystore.exception;
 
 import sg.edu.nus.iss.universitystore.messages.Messages;
 
+/**
+ * Login Exception
+ * 
+ * @author Samrat
+ *
+ */
 public class LoginException extends Exception {
 
 	/***********************************************************/

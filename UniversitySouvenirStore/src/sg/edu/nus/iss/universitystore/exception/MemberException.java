@@ -6,13 +6,15 @@ package sg.edu.nus.iss.universitystore.exception;
 import sg.edu.nus.iss.universitystore.messages.Messages;
 
 /**
+ * Member Exception
+ * 
  * @author Samrat
  *
  */
 public class MemberException extends Exception {
 
 	/***********************************************************/
-	// Enum listing all possible errors possible during login
+	// Enum listing all possible errors possible during member
 	/***********************************************************/
 	public enum MemberError {
 		

@@ -6,12 +6,14 @@ package sg.edu.nus.iss.universitystore.exception;
 import sg.edu.nus.iss.universitystore.messages.Messages;
 
 /**
+ * Inventory Exception
+ * 
  * @author Samrat
  *
  */
 public class InventoryException extends Exception{
 	/***********************************************************/
-	// Enum listing all possible errors possible during login
+	// Enum listing all possible errors possible during inventory
 	/***********************************************************/
 	public enum InventoryError {
 		// Category

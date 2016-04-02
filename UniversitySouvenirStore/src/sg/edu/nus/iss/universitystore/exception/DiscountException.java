@@ -3,13 +3,15 @@ package sg.edu.nus.iss.universitystore.exception;
 import sg.edu.nus.iss.universitystore.messages.Messages;
 
 /**
+ * Discount Exception
+ * 
  * @author Samrat
  *
  */
 public class DiscountException extends Exception {
 
 	/***********************************************************/
-	// Enum listing all possible errors possible during login
+	// Enum listing all possible errors possible during discount
 	/***********************************************************/
 	public enum DiscountError {
 	    EMPTY_DISCOUNT_FIELDS(Messages.Error.Discount.EMPTY_DISCOUNT_FIELDS),

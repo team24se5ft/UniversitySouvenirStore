@@ -7,12 +7,14 @@ import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.messages.Messages;
 
 /**
+ * Transaction Exception
+ * 
  * @author Samrat
  *
  */
 public class TransactionException extends Exception{
 	/***********************************************************/
-	// Enum listing all possible errors possible during login
+	// Enum listing all possible errors possible during transaction
 	/***********************************************************/
 	public enum TransactionError {
 		INVALID_DISCOUNT_ID(Messages.Error.Transaction.INVALID_DISCOUNT_ID),
