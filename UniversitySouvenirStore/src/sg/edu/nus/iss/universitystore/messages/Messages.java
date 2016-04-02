@@ -92,7 +92,7 @@ public final class Messages {
 					.append(Common.INVALID_DATE).append(" or ALWAYS").toString();
 			public static final String INVALID_PERCENTAGE = new StringBuffer().append("Percentage: ")
 					.append(Common.INVALID_FLOAT).toString();
-			public static final String INVALID_CODE = new StringBuffer().append(Common.INVALID_CODE).toString();
+			public static final String INVALID_CODE = "Discount Code must only contain alphabets.";
 			public static final String INVALID_ELIGIBILITY = "Eligibility should be selected as \"Member\" or \"Public\"";
 			public static final String INVALID_PERCENTAGE_RANGE = "Percentage should be bewteen 1 and 100";
 			public static final String NEWMEMBER_PERCENTAGE_ONLY = "Only Percentage can be updated for New Member Discount";

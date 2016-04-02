@@ -65,8 +65,8 @@ public class DiscountController implements IDiscountDelegate {
 				boolean flag = false;
 				
 				try {
-					if(DiscountValidation.isValidData(code, description, startDate, period, percentage, eligibilty)) {
-						Discount discount = new Discount(code, description, startDate, period, percentage, eligibilty);
+					if(DiscountValidation.isValidData(code.toUpperCase(), description, startDate, period, percentage, eligibilty)) {
+						Discount discount = new Discount(code.toUpperCase(), description, startDate, period, percentage, eligibilty);
 						flag = discountManager.addDiscount(discount);
 						discountList = discountManager.getAllDiscounts();
 					}
