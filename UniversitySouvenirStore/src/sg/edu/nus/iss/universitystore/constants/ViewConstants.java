@@ -75,7 +75,7 @@ public class ViewConstants {
 		public static final String DISCOUNT_ICON_IMG="Resources/discount_icon.png";
 		public static final String REPORT_ICON_IMG="Resources/report_icon.png";
 		public static final String LOGOUT_ICON_IMG="Resources/logout_icon.png";
-		public static final String ANNOUNCEMENT_DEMO="03/03: Linc Pen stock low.\n\n27/02: Member A001482497 successfully created.";
+		public static final String ANNOUNCEMENT_DEMO="";
 		
 		//Base Table Panel Headers
 		public static final String ADD_ICON_IMG="Resources/add_icon.png";

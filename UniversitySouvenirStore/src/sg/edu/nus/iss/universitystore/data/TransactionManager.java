@@ -145,7 +145,6 @@ public class TransactionManager {
 			try {
 				product = inventoryManager.findProduct(transactionItem.getProduct().getIdentifier());
 			} catch (InventoryException inventoryExp) {
-				// TODO: Check functionality
 				throw new TransactionException(TransactionError.OTHER_ERROR, inventoryExp.getMessage());
 			}
 			int availableQuantity = product.getQuantity();

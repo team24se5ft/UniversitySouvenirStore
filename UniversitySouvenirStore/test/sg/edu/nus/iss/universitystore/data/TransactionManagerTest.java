@@ -33,6 +33,7 @@ import sg.edu.nus.iss.universitystore.messages.JUnitMessages;
 import sg.edu.nus.iss.universitystore.model.Category;
 import sg.edu.nus.iss.universitystore.model.Discount;
 import sg.edu.nus.iss.universitystore.model.Member;
+import sg.edu.nus.iss.universitystore.model.Product;
 import sg.edu.nus.iss.universitystore.model.TransactionItem;
 import sg.edu.nus.iss.universitystore.utility.JUnitUtility;
 
@@ -339,10 +340,12 @@ public class TransactionManagerTest extends UniversityStoreJUnit {
 
 			// Add Transaction Items to Transaction
 			Assert.assertTrue(transactionManager.addTransaction(arrTransactionItmLst,
-					discountManager.getDiscount(memberID).getCode(), memberID));
+					discountManager.getDiscount(memberID).getCode(), memberID, 20));
 			Assert.assertTrue(transactionManager.getTransactionReport(LocalDate.now(), LocalDate.now()).size() == 3);
-			Assert.assertTrue(transactionManager.getTransactionReport(LocalDate.now(), LocalDate.now().plusDays(2)).size() == 3);
-			Assert.assertTrue(transactionManager.getTransactionReport(LocalDate.now().minusDays(3), LocalDate.now().minusDays(1)).size() == 0);
+			Assert.assertTrue(
+					transactionManager.getTransactionReport(LocalDate.now(), LocalDate.now().plusDays(2)).size() == 3);
+			Assert.assertTrue(transactionManager
+					.getTransactionReport(LocalDate.now().minusDays(3), LocalDate.now().minusDays(1)).size() == 0);
 		} catch (TransactionException | InventoryException | DiscountException exp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
@@ -355,7 +358,38 @@ public class TransactionManagerTest extends UniversityStoreJUnit {
 	 */
 	@Test
 	public void testGetTotal() {
-		fail("Not yet implemented");
+		try {
+			Assert.assertTrue(initializeManagerDetails());
+
+			// Instantiate Discount Manager
+			TransactionManager transactionManager = TransactionManager.getInstance();
+			InventoryManager invantoryManager = InventoryManager.getInstance();
+			DiscountManager discountManager = DiscountManager.getInstance();
+
+			// Create Transaction Items List
+			ArrayList<TransactionItem> arrTransactionItmLst = new ArrayList<>();
+			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID1), 1));
+			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID2), 2));
+			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID3), 3));
+
+			Product product1 = invantoryManager.findProduct(productID1);
+			Product product2 = invantoryManager.findProduct(productID2);
+			Product product3 = invantoryManager.findProduct(productID3);
+
+			float discountCode = discountManager.getDiscount(memberID).getPercentage();
+
+			double totalPrice = product1.getPrice() * 1 + product2.getPrice() * 2 + product3.getPrice() * 3;
+			float expectedTotalPrice = (float) (totalPrice * ((100 - discountCode) / 100));
+
+			// Add Transaction Items to Transaction
+			float actualTotal = transactionManager.getTotal(arrTransactionItmLst,
+					discountManager.getDiscount(memberID).getCode());
+
+			Assert.assertEquals(expectedTotalPrice, actualTotal, 0);
+
+		} catch (TransactionException | InventoryException | DiscountException exp) {
+			fail(JUnitMessages.Error.JUNIT_FAIL);
+		}
 	}
 
 	/**
@@ -372,6 +406,7 @@ public class TransactionManagerTest extends UniversityStoreJUnit {
 			TransactionManager transactionManager = TransactionManager.getInstance();
 			InventoryManager invantoryManager = InventoryManager.getInstance();
 			DiscountManager discountManager = DiscountManager.getInstance();
+			MemberManager memberManager = MemberManager.getInstance();
 
 			// Create Transaction Items List
 			ArrayList<TransactionItem> arrTransactionItmLst = new ArrayList<>();
@@ -379,15 +414,31 @@ public class TransactionManagerTest extends UniversityStoreJUnit {
 			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID2), 2));
 			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID3), 3));
 
+			// Get Loyalty Points before transaction
+			int beforeTransaction = memberManager.getMember(memberID).getLoyaltyPoints();
+			int usedLoyaltyPoints = 20;
+
 			// Add Transaction Items to Transaction
 			Assert.assertTrue(transactionManager.addTransaction(arrTransactionItmLst,
-					discountManager.getDiscount(memberID).getCode(), memberID));
+					discountManager.getDiscount(memberID).getCode(), memberID, usedLoyaltyPoints));
 			Assert.assertTrue(transactionManager.getTransactionReport().size() == 3);
-			
+
+			// Check if Product Quantities have been reduced after Transaction
 			Assert.assertTrue(invantoryManager.findProduct(productID1).getQuantity() == (productQuantity1 - 1));
 			Assert.assertTrue(invantoryManager.findProduct(productID2).getQuantity() == (productQuantity2 - 2));
 			Assert.assertTrue(invantoryManager.findProduct(productID3).getQuantity() == (productQuantity3 - 3));
-		} catch (TransactionException | InventoryException | DiscountException exp) {
+
+			// Get Total of Transaction
+			float actualTotal = transactionManager.getTotal(arrTransactionItmLst,
+					discountManager.getDiscount(memberID).getCode());
+			// Get Gained points
+			int gainedPoints = (int) actualTotal
+					/ Constants.Data.Transaction.CURRENCY_TO_LOYALTY_POINTS_CONVERSION_RATE;
+			// Get Points for member after transaction
+			int afterTransaction = memberManager.getMember(memberID).getLoyaltyPoints();
+			// Check Loyalty Points gained
+			Assert.assertTrue((beforeTransaction - usedLoyaltyPoints + gainedPoints) == afterTransaction);
+		} catch (TransactionException | InventoryException | DiscountException | MemberException exp) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		}
 	}
@@ -415,7 +466,7 @@ public class TransactionManagerTest extends UniversityStoreJUnit {
 
 			// Add Transaction Items to Transaction
 			Assert.assertFalse(transactionManager.addTransaction(arrTransactionItmLst,
-					discountManager.getDiscount(memberID).getCode(), invalidMemberID));
+					discountManager.getDiscount(memberID).getCode(), invalidMemberID, 20));
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		} catch (TransactionException | InventoryException | DiscountException exp) {
 			Assert.assertEquals(TransactionError.INVALID_MEMBER_ID.toString(), exp.getMessage());
@@ -435,7 +486,6 @@ public class TransactionManagerTest extends UniversityStoreJUnit {
 			// Instantiate Discount Manager
 			TransactionManager transactionManager = TransactionManager.getInstance();
 			InventoryManager invantoryManager = InventoryManager.getInstance();
-			DiscountManager discountManager = DiscountManager.getInstance();
 
 			// Create Transaction Items List
 			ArrayList<TransactionItem> arrTransactionItmLst = new ArrayList<>();
@@ -445,10 +495,72 @@ public class TransactionManagerTest extends UniversityStoreJUnit {
 
 			// Add Transaction Items to Transaction
 			Assert.assertFalse(
-					transactionManager.addTransaction(arrTransactionItmLst, invalidDiscount, invalidMemberID));
+					transactionManager.addTransaction(arrTransactionItmLst, invalidDiscount, invalidMemberID, 20));
+			fail(JUnitMessages.Error.JUNIT_FAIL);
+		} catch (TransactionException | InventoryException exp) {
+			Assert.assertEquals(TransactionError.INVALID_DISCOUNT_ID.toString(), exp.getMessage());
+		}
+	}
+
+	/**
+	 * Test Loyalty Point Exception method for
+	 * {@link sg.edu.nus.iss.universitystore.data.TransactionManager#addTransaction(java.util.ArrayList, java.lang.String, java.lang.String)}
+	 * .
+	 */
+	@Test
+	public void testAddTransactionInvalidLoyalPoint() {
+		try {
+			Assert.assertTrue(initializeManagerDetails());
+
+			// Instantiate Discount Manager
+			TransactionManager transactionManager = TransactionManager.getInstance();
+			InventoryManager invantoryManager = InventoryManager.getInstance();
+			DiscountManager discountManager = DiscountManager.getInstance();
+
+			// Create Transaction Items List
+			ArrayList<TransactionItem> arrTransactionItmLst = new ArrayList<>();
+			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID1), 1));
+			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID2), 2));
+			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID3), 3));
+
+			// Add Transaction Items to Transaction with invalid Loyalty Point
+			// of 70
+			Assert.assertFalse(transactionManager.addTransaction(arrTransactionItmLst,
+					discountManager.getDiscount(memberID).getCode(), memberID, 70));
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		} catch (TransactionException | InventoryException | DiscountException exp) {
-			Assert.assertEquals(TransactionError.INVALID_DISCOUNT_ID.toString(), exp.getMessage());
+			Assert.assertEquals(TransactionError.INVALID_LOYALTY_POINTS_APPLIED.toString(), exp.getMessage());
+		}
+	}
+
+	/**
+	 * Test Large Quantity Exception method for
+	 * {@link sg.edu.nus.iss.universitystore.data.TransactionManager#addTransaction(java.util.ArrayList, java.lang.String, java.lang.String)}
+	 * .
+	 */
+	@Test
+	public void testAddTransactionLargeQuantity() {
+		try {
+			Assert.assertTrue(initializeManagerDetails());
+
+			// Instantiate Discount Manager
+			TransactionManager transactionManager = TransactionManager.getInstance();
+			InventoryManager invantoryManager = InventoryManager.getInstance();
+			DiscountManager discountManager = DiscountManager.getInstance();
+
+			// Create Transaction Items List
+			ArrayList<TransactionItem> arrTransactionItmLst = new ArrayList<>();
+			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID1), 1));
+			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID2), 2));
+			// Added 1000 quantity
+			arrTransactionItmLst.add(new TransactionItem(invantoryManager.findProduct(productID3), 1000));
+
+			// Add Transaction Items to Transaction
+			Assert.assertFalse(transactionManager.addTransaction(arrTransactionItmLst,
+					discountManager.getDiscount(memberID).getCode(), memberID, 20));
+			fail(JUnitMessages.Error.JUNIT_FAIL);
+		} catch (TransactionException | InventoryException | DiscountException exp) {
+			Assert.assertEquals(TransactionError.REQUESTED_QUANTITY_MORE_THAN_AVAILABLE.toString(), exp.getMessage());
 		}
 	}
 
