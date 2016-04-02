@@ -23,5 +23,9 @@ public interface ISalesDelegate {
 	 * invoked when salesPanel visible
 	 */
 	public void onSalesPanelVisible();
+	/**
+	 * row not selected
+	 */
+	public void rowNotSelected();
 	
 }

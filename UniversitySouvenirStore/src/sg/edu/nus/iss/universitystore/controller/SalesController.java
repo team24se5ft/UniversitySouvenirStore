@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.text.View;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
@@ -210,8 +209,11 @@ public class SalesController implements ISalesDelegate {
 										: currentDiscount.getCode(),
 								currentMember == null ? ViewConstants.Labels.STR_PUBLIC
 										: currentMember.getIdentifier(),Integer.valueOf(salesPanel.getTotal()[3]));
-						createReceipt();
+						//dispose the confirm dialog
+						this.setVisible(false);
+						this.dispose();
 						// show receipt here
+						createReceipt();
 						// clear salesPanel here
 						clearSalesPanel();
 						// Show the threshold dialog if required.
@@ -270,31 +272,10 @@ public class SalesController implements ISalesDelegate {
 					return true;
 				}
 			};
+			dlg.setVisible(true);
 		} else {
-			dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "Confirm",
-					"Do you want to remove the selected item from the cart?" + transactionItemList.get(row).getProduct().getName()) {
-
-				@Override
-				protected boolean confirmClicked() {
-					try {
-						transactionItemList.remove(row);
-						if (currentDiscount != null) {
-							salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList,
-									currentDiscount.getCode()));
-						} else {
-							salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
-						}
-						salesPanel.updateTable(
-								TableDataUtils.getFormattedTransactionItemListForTable(transactionItemList),
-								TableDataUtils.getHeadersForTransactionItemTable());
-					} catch (TransactionException e) {
-						e.printStackTrace();
-					}
-					return true;
-				}
-			};
+			
 		}
-		dlg.setVisible(true);
 	}
 
 	/**
@@ -426,5 +407,11 @@ public class SalesController implements ISalesDelegate {
 			UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, e.getMessage(),
 					DialogType.WARNING_MESSAGE);
 		}
+	}
+
+	@Override
+	public void rowNotSelected() {
+		UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR, ViewConstants.Controller.PLEASE_SELECT_ROW,
+				DialogType.WARNING_MESSAGE);
 	}
 }
