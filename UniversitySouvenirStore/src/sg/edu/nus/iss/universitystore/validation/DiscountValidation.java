@@ -79,6 +79,9 @@ public class DiscountValidation extends Validation {
 		if(startDateStr.equals(Constants.Data.Discount.ALWAYS) && !periodStr.equals(Constants.Data.Discount.ALWAYS))
 			throw new DiscountException(DiscountError.START_DATE_PERIOD_ALWAYS);
 		
+		if(!startDateStr.equals(Constants.Data.Discount.ALWAYS) && periodStr.equals(Constants.Data.Discount.ALWAYS))
+			throw new DiscountException(DiscountError.PERIOD_START_DATE_ALWAYS);
+		
 		if(periodStr.equals(Constants.Data.Discount.ALWAYS))
 			return true;
 		

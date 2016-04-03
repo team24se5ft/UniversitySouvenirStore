@@ -100,7 +100,8 @@ public final class Messages {
 			public static final String EXTNGMEMBER_PERCENTAGE_ONLY = "Only Percentage can be updated for Existing Member Discount";
 			public static final String DEFAULT_DISCOUNT_NOT_UPDATABLE = "Default Customer Discount cannot be modified";
 			public static final String DEFAULT_DISCOUNT_NOT_DELETABLE = "Default Customer Discount cannot be deleted";
-			public static final String START_DATE_PERIOD_ALWAYS = "When Start Date is 'ALWAYS' period must be 'ALWAYS'";
+			public static final String START_DATE_PERIOD_ALWAYS = "When Start Date is 'ALWAYS' Period must be 'ALWAYS'";
+			public static final String PERIOD_START_DATE_ALWAYS = "When Period is 'ALWAYS' Start Date must be 'ALWAYS'";
 			public static final String EMPTY_DISCOUNT_FIELDS = new StringBuffer().append(Common.EMPTY_FIELDS)
 					.append(Constants.Common.NEW_LINE).append(INVALID_CODE).append(Constants.Common.NEW_LINE)
 					.append(INVALID_PERCENTAGE).append(Constants.Common.NEW_LINE).append(INVALID_ELIGIBILITY)

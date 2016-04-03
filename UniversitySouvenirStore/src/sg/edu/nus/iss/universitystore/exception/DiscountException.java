@@ -29,6 +29,7 @@ public class DiscountException extends Exception {
 	    DEFAULT_DISCOUNT_NOT_UPDATABLE(Messages.Error.Discount.DEFAULT_DISCOUNT_NOT_UPDATABLE),
 	    DEFAULT_DISCOUNT_NOT_DELETABLE(Messages.Error.Discount.DEFAULT_DISCOUNT_NOT_DELETABLE),
 	    START_DATE_PERIOD_ALWAYS(Messages.Error.Discount.START_DATE_PERIOD_ALWAYS),
+	    PERIOD_START_DATE_ALWAYS(Messages.Error.Discount.PERIOD_START_DATE_ALWAYS),
 	    UNKNOWN_ERROR(Messages.Error.Common.UNKNOWN_ERROR)
 	    ;
 		
