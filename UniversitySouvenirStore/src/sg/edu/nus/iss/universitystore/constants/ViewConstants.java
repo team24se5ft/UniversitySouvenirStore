@@ -245,6 +245,13 @@ public class ViewConstants {
 			public static final String DEL_CAT_CONF = "Do you really wish to delete this category?";
 		}
 		
+		public static final class MemberController{
+			public static final String ADD_PRODUCT = "Add Member";
+			public static final String DELETE_MEMBER = "Delete Member";
+			public static final String DEL_MEM_CONF = "Do u really want to delete the member?";
+			public static final String EDIT_MEMBER = "Edit Member";
+		}
+		
 		public static final class ReportController{
 			public static final String START_DATE ="Start date(yyyy-mm-dd):";
 			public static final String END_DATE ="End date(yyyy-mm-dd):";
@@ -256,8 +263,13 @@ public class ViewConstants {
 			public static final String STR_USERNAME_CANNOT_BE_EMPTY = "The username or password cannot be empty.";
 		}
 		
-		public static final class SalesCOntroller{
-			public static final String DEL_TRAN_CONF = "Do you want to remove productItem:";
+		public static final class SalesController{
+			public static final String DEL_TRAN_CONF = "Do you want to remove Product Item:";
+			public static final String CHECK_OUT = "Check Out";
+			public static final String CHECK_OUT_CONF = "Confirm Check Out?";
+			public static final String DELETE_CONFIRM = "Delete Confirm";
+			public static final String NO_DISCOUNT = "No discount applicable";
+			public static final String ZERO_DISCOUNT = "0.0%";
 		}
 	}
 }

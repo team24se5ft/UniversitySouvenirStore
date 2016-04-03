@@ -119,13 +119,15 @@ public class SalesController implements ISalesDelegate {
 			} else {
 				productDialog = new ProductScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
 						ViewConstants.DialogHeaders.SCAN_PRODUCT) {
+					private static final long serialVersionUID = 1L;
+					
 					@Override
 					public boolean onProductScanResult(String barCode, String quantity) {
 						// add query product entity
 						try {
 							if (TransactionValidation.isValidForScanProduct(barCode, quantity)) {
 								int quantities = Integer.valueOf(quantity);
-								if (barCode == null && barCode.length() <= 0) {
+								if (barCode == null || barCode.length() <= 0) {
 									UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.ERROR,
 											Messages.Error.Controller.PRODUCT_CODE_EMPTY, DialogType.ERROR_MESSAGE);
 								} else if (quantities <= 0) {
@@ -160,7 +162,6 @@ public class SalesController implements ISalesDelegate {
 	 * @param quantity
 	 */
 	private void addProductByBarCode(String barCode, int quantity) {
-		// FIXME the same Item exist in the list need directly add
 		try {
 			Product product = InventoryManager.getInstance().findProductByBarCode(barCode);
 			if (product == null) {
@@ -226,7 +227,9 @@ public class SalesController implements ISalesDelegate {
 			return;
 		}
 		ConfirmationDialog dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
-				"Check Out", "Confirm check out?") {
+				ViewConstants.Controller.SalesController.CHECK_OUT,
+				ViewConstants.Controller.SalesController.CHECK_OUT_CONF) {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected boolean confirmClicked() {
@@ -252,8 +255,8 @@ public class SalesController implements ISalesDelegate {
 						e.printStackTrace();
 					}
 				} else {
-					UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING, "no enough payment",
-							DialogType.WARNING_MESSAGE);
+					UIUtils.showMessageDialog(salesPanel, ViewConstants.StatusMessage.WARNING,
+							Messages.Error.Transaction.NOT_ENOUGH_PAYMENT, DialogType.WARNING_MESSAGE);
 				}
 				return true;
 			}
@@ -291,8 +294,10 @@ public class SalesController implements ISalesDelegate {
 	public void cancel(int row) {
 		if (row >= 0) {
 			ConfirmationDialog dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
-					"deleteConfirm", ViewConstants.Controller.SalesCOntroller.DEL_TRAN_CONF
+					ViewConstants.Controller.SalesController.DELETE_CONFIRM,
+					ViewConstants.Controller.SalesController.DEL_TRAN_CONF
 							+ transactionItemList.get(row).getProduct().getName()) {
+				private static final long serialVersionUID = 1L;
 
 				@Override
 				protected boolean confirmClicked() {
@@ -332,6 +337,7 @@ public class SalesController implements ISalesDelegate {
 			} else {
 				memberDialog = new MemberScanDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
 						ViewConstants.DialogHeaders.ENTER_MEMBER_DETAILS) {
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public boolean onMemberIdentification(String MemberCode) {
@@ -401,11 +407,13 @@ public class SalesController implements ISalesDelegate {
 				salesPanel
 						.setTotal((TransactionManager.getInstance().getTotal(transactionItemList, discount.getCode())));
 			} else {
-				salesPanel.onSetDiscount("No discount applicable", "0.0%");
+				salesPanel.onSetDiscount(ViewConstants.Controller.SalesController.NO_DISCOUNT,
+						ViewConstants.Controller.SalesController.ZERO_DISCOUNT);
 				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
 			}
 		} catch (DiscountException e) {
-			salesPanel.onSetDiscount("No discount applicable", "0.0%");
+			salesPanel.onSetDiscount(ViewConstants.Controller.SalesController.NO_DISCOUNT,
+					ViewConstants.Controller.SalesController.ZERO_DISCOUNT);
 			try {
 				salesPanel.setTotal(TransactionManager.getInstance().getTotal(transactionItemList, null));
 			} catch (TransactionException e1) {

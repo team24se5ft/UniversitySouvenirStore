@@ -239,6 +239,16 @@ public class DiscountManagerTest extends UniversityStoreJUnit {
 
 			// Get Discount for New Member
 			Assert.assertTrue(discountManager.getDiscount(memberID).getPercentage() == 20);
+			
+			// Update Discount to 'ALWAYS'
+			Discount updatedDiscount2 = new Discount(discount1.getCode(), discount1.getDescription(),
+					Constants.Data.Discount.ALWAYS, Constants.Data.Discount.ALWAYS_VAL, discount1.getPercentage(),
+					discount1.getEligibilty());
+			Assert.assertTrue(discountManager.updateDiscount(updatedDiscount, updatedDiscount2));
+
+			// Get Discount for New Member
+			Assert.assertTrue(
+					discountManager.getDiscount(memberID).getPercentage() == Float.parseFloat(discountPercentage1));
 		} catch (IOException e) {
 			fail(JUnitMessages.Error.JUNIT_FAIL);
 		} catch (MemberException | DiscountException exp) {

@@ -74,8 +74,10 @@ public class DiscountController implements IDiscountDelegate {
 				boolean flag = false;
 				
 				try {
-					if(DiscountValidation.isValidData(code.toUpperCase(), description, startDate, period, percentage, eligibilty)) {
-						Discount discount = new Discount(code.toUpperCase(), description, startDate, period, percentage, eligibilty);
+					if (DiscountValidation.isValidData(code.toUpperCase(), description, startDate.toUpperCase(),
+							period.toUpperCase(), percentage, eligibilty)) {
+						Discount discount = new Discount(code.toUpperCase(), description, startDate.toUpperCase(),
+								period.toUpperCase(), percentage, eligibilty);
 						flag = discountManager.addDiscount(discount);
 						discountList = discountManager.getAllDiscounts();
 					}
@@ -91,8 +93,6 @@ public class DiscountController implements IDiscountDelegate {
 		dlg.setVisible(true);
 	}
 
-	// TODO keep a list of discount in the controller and modify according to
-	// given row.
 	@Override
 	public void deleteDiscount(int row) {
 		// Only if the count is greated than five, we proceed with deleting.
@@ -104,7 +104,6 @@ public class DiscountController implements IDiscountDelegate {
 				@Override
 				protected boolean confirmClicked() {
 					boolean flag = false;
-					// TODO dataModify
 					try {
 						flag = discountManager.deleteDiscount(discount.getCode(), false);
 						discountList = discountManager.getAllDiscounts();
@@ -139,10 +138,12 @@ public class DiscountController implements IDiscountDelegate {
 				boolean flag = false;
 				
 				try {
-					if(DiscountValidation.isValidData(code, description, startDate, period, percentage, eligibilty)) {
-						
-						Discount newDiscount = new Discount(code, description, startDate, period, percentage, eligibilty);
-						
+					if (DiscountValidation.isValidData(code.toUpperCase(), description, startDate.toUpperCase(),
+							period.toUpperCase(), percentage, eligibilty)) {
+
+						Discount newDiscount = new Discount(code.toUpperCase(), description, startDate.toUpperCase(),
+								period.toUpperCase(), percentage, eligibilty);
+
 						flag = discountManager.updateDiscount(oldDiscount, newDiscount);
 						discountList = discountManager.getAllDiscounts();
 					}
@@ -181,8 +182,6 @@ public class DiscountController implements IDiscountDelegate {
 					TableDataUtils.getHeadersForDiscountTable());
 			return true;
 		} else {
-			/*UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR,
-					ViewConstants.ValidationMessage.VALIDATION_Failed, DialogType.WARNING_MESSAGE);*/
 			return false;
 		}
 	}

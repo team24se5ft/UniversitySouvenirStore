@@ -260,8 +260,9 @@ public class InventoryController implements IInventoryDelegate {
 				// Show the dialog.
 				productDialog.setVisible(true);
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (InventoryException inventoryExp) {
+			UIUtils.showMessageDialog(inventoryPanel, ViewConstants.StatusMessage.ERROR,
+					inventoryExp.getMessage(), DialogType.ERROR_MESSAGE);
 		}
 		
 		
@@ -274,6 +275,7 @@ public class InventoryController implements IInventoryDelegate {
 
 		ProductDialog productDialog = new ProductDialog(topFrame,
 				ViewConstants.Controller.InventoryController.EDIT_PRODUCT) {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean productCallback(String productID, String name, String description, String quantity,

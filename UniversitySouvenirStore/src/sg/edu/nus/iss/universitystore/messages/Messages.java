@@ -125,6 +125,7 @@ public final class Messages {
 			public static final String NO_MEMBERS_ENROLLED_IN_STORE = "No members enrolled in the store.";
 			public static final String INVALID_BARCODE = new StringBuffer().append("BarCode ").append(Common.INVALID_NUMBER).toString();
 			public static final String INVALID_QUANTITY = new StringBuffer().append("Quantity ").append(Common.INVALID_NUMBER).toString();
+			public static final String NOT_ENOUGH_PAYMENT = "Not Enough Payment";
 		}
 
 		public static final class Controller {

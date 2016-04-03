@@ -126,61 +126,28 @@ public final class Constants {
 		}
 
 		public static final class Pattern {
-			/**
-			 * Regex for Data File Line Separator
-			 */
 			public static final String FILE_SEPTR_MATCH = "\\" + FILE_SEPTR;
-			/**
-			 * Description Regex
-			 */
 			public static final String DESCRIPTION_MATCH = "(\\\"(?!\\\")(.*?)\\\"" + FILE_SEPTR_MATCH + ")";
 		}
 
 		public static final class Category {
-			/**
-			 * Minimum Count for Delete Row
-			 */
 			public static final int CATEGORY_MINIMUM_COUNT = 5;
 
 			public static final class Pattern {
-				/**
-				 * Category Code Regex
-				 */
 				public static final String CODE_MATCH = "[A-Z]{3}";
-				/**
-				 * Category Name Regex
-				 */
 				public static final String NAME_MATCH = Common.Pattern.NAME_MATCH;
-				/**
-				 * Category Data Line Regex 
-				 */
 				public static final String LINE_MATCH = "^" + CODE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + NAME_MATCH
 						+ "$";
 			}
 		}
 
 		public static final class Product {
-			/**
-			 * Minimum Count for Delete Row
-			 */
 			public static final int PRODUCT_MINIMUM_COUNT = 10;
 
 			public static final class Pattern {
-				/**
-				 * Product Code Regex
-				 */
 				public static final String ID_MATCH = "(\\w+)" + ID_SEPTR + "(\\d+)";
-				/**
-				 * Product Category Code Regex
-				 */
 				public static final String CATEGORY_REPLACE = "$1";
-				/**
-				 * Product Count Regex
-				 */
 				public static final String COUNT_REPLACE = "$2";
-				/**
-				 * Product Code Regex
-				 */
 				public static final String NAME_MATCH = Common.Pattern.NAME_MATCH;
 				public static final String QUANTITY_MATCH = Common.Pattern.NUMBER_MATCH;
 				public static final String PRICE_MATCH = Common.Pattern.FLOAT_MATCH;
@@ -192,16 +159,24 @@ public final class Constants {
 						+ Data.Pattern.FILE_SEPTR_MATCH + PRICE_MATCH + Data.Pattern.FILE_SEPTR_MATCH + BARCODE_MATCH
 						+ Data.Pattern.FILE_SEPTR_MATCH + REORDER_THRESHOLD_MATCH + Data.Pattern.FILE_SEPTR_MATCH
 						+ REORDER_QUANTITY_MATCH + ")$";
+				/**
+				 * Product Description Replace
+				 */
 				public static final String DESCRIPTION_REPLACE = "$5";
+				/**
+				 * Product Other Content Replace
+				 */
 				public static final String OTHER_CNTNT_REPLACE = "$1$6";
 			}
-
 			public static final int PRODUCT_ZERO = 0;
 			public static final int DATA_SPLT_LENGTH = 8;
 			public static final int INITIALIZED_COUNT = 0;
 		}
 
 		public static final class Member {
+			/**
+			 * New Loyalty Member Points
+			 */
 			public static final int LOYALTY_NEW_MEMBER = -1;
 			public static final int MEMBER_MINIMUM_COUNT = 10;
 
@@ -212,7 +187,13 @@ public final class Constants {
 		}
 
 		public static final class Discount {
+			/**
+			 * Discount Start Date and Period Value 'ALWAYS'
+			 */
 			public static final String ALWAYS = "ALWAYS";
+			/**
+			 * Discount Period 'ALWAYS' Value
+			 */
 			public static final int ALWAYS_VAL = -1;
 			public static final int DISCOUNT_MINIMUM_COUNT = 5;
 
@@ -226,7 +207,13 @@ public final class Constants {
 						+ Data.Pattern.DESCRIPTION_MATCH + "(" + START_DATE_MATCH + Data.Pattern.FILE_SEPTR_MATCH
 						+ PERIOD_MATCH + Data.Pattern.FILE_SEPTR_MATCH + PERCENTAGE_MATCH
 						+ Data.Pattern.FILE_SEPTR_MATCH + ELIGIBILITY_MATCH + ")$";
+				/**
+				 * Product Description Replace
+				 */
 				public static final String DESCRIPTION_REPLACE = "$3";
+				/**
+				 * Product Other Content Replace
+				 */
 				public static final String OTHER_CNTNT_REPLACE = "$1$4";
 			}
 

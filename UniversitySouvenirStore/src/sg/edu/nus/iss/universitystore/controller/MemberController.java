@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 import sg.edu.nus.iss.universitystore.constants.Constants;
 import sg.edu.nus.iss.universitystore.constants.ViewConstants;
+import sg.edu.nus.iss.universitystore.constants.ViewConstants.Controller;
 import sg.edu.nus.iss.universitystore.data.MemberManager;
 import sg.edu.nus.iss.universitystore.exception.MemberException;
 import sg.edu.nus.iss.universitystore.messages.Messages;
@@ -87,7 +88,7 @@ public class MemberController implements IMemberDelegate {
 
 	@Override
 	public void addMemberClicked() {
-		MemberDialog memberDialog = new MemberDialog(topFrame, "Add Member") {
+		MemberDialog memberDialog = new MemberDialog(topFrame, Controller.MemberController.ADD_PRODUCT) {
 			
 			private static final long serialVersionUID = 1L;
 			
@@ -126,8 +127,8 @@ public class MemberController implements IMemberDelegate {
 	@Override
 	public void deleteMemberClicked(int index) {
 		if(arrMember.size() > Constants.Data.Member.MEMBER_MINIMUM_COUNT) {
-			ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, "Delete Member",
-					"Do u really want to delete the member?") {
+			ConfirmationDialog confirmationDialog = new ConfirmationDialog(topFrame, Controller.MemberController.DELETE_MEMBER,
+					Controller.MemberController.DEL_MEM_CONF) {
 
 				private static final long serialVersionUID = 1L;
 
@@ -162,7 +163,7 @@ public class MemberController implements IMemberDelegate {
 		// Get the object at the index
 				Member member = arrMember.get(index);
 				// Implement an instance of the member dialog
-				MemberDialog memberDialog = new MemberDialog(topFrame, "Edit Member") {
+				MemberDialog memberDialog = new MemberDialog(topFrame, Controller.MemberController.EDIT_MEMBER) {
 
 					private static final long serialVersionUID = 1L;
 
