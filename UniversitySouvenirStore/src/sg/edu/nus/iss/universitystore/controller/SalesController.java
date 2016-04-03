@@ -246,6 +246,8 @@ public class SalesController implements ISalesDelegate {
 						clearSalesPanel();
 						// Show the threshold dialog if required.
 						checkIfAnyProductHasReachedThreshold();
+						// clear Member reference after checkOUT
+						currentMember = null;
 					} catch (TransactionException e) {
 						e.printStackTrace();
 					}
@@ -288,8 +290,9 @@ public class SalesController implements ISalesDelegate {
 	@Override
 	public void cancel(int row) {
 		if (row >= 0) {
-			ConfirmationDialog dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel), "deleteConfirm",
-					ViewConstants.Controller.SalesCOntroller.DEL_TRAN_CONF + transactionItemList.get(row).getProduct().getName()) {
+			ConfirmationDialog dlg = new ConfirmationDialog((JFrame) SwingUtilities.getWindowAncestor(salesPanel),
+					"deleteConfirm", ViewConstants.Controller.SalesCOntroller.DEL_TRAN_CONF
+							+ transactionItemList.get(row).getProduct().getName()) {
 
 				@Override
 				protected boolean confirmClicked() {
