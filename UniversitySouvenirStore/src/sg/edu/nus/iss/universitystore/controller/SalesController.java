@@ -215,7 +215,7 @@ public class SalesController implements ISalesDelegate {
 	}
 
 	/**
-	 * after click checkout,this function will 1.
+	 * after click checkout,this function will be invoked
 	 * 
 	 */
 	@Override
@@ -265,6 +265,9 @@ public class SalesController implements ISalesDelegate {
 		dlg.setVisible(true);
 	}
 
+	/**
+	 * method for create receipt
+	 */
 	private void createReceipt() {
 		ReceiptDialog receiptDlg;
 		String discountPercentage = currentDiscount == null ? ViewConstants.SalesPanel.NONE_DISCOUNT
@@ -275,6 +278,9 @@ public class SalesController implements ISalesDelegate {
 		receiptDlg.setVisible(true);
 	}
 
+	/**
+	 * clear transactionList,memberInfoPanel and refresh the calculation result
+	 */
 	private void clearSalesPanel() {
 		// clear transaction item list
 		transactionItemList.clear();
@@ -288,7 +294,7 @@ public class SalesController implements ISalesDelegate {
 	}
 
 	/**
-	 * click one line
+	 * click one line and do the delete confirm
 	 */
 	@Override
 	public void cancel(int row) {

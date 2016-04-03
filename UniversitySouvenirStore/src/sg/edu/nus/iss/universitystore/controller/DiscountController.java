@@ -40,6 +40,9 @@ public class DiscountController implements IDiscountDelegate {
 	/***********************************************************/
 	// Constructors
 	/***********************************************************/
+	/**
+	 * Discount Controller Constructor
+	 */
 	public DiscountController() {
 		try {
 			discountManager = DiscountManager.getInstance();
@@ -71,14 +74,14 @@ public class DiscountController implements IDiscountDelegate {
 			@Override
 			public boolean onDiscountCallBack(String code, String description, String startDate, String period,
 					String percentage, String eligibilty) {
-				boolean flag = false;
+				boolean flag = false;//used to judge whether the data operation is success
 				
 				try {
 					if (DiscountValidation.isValidData(code.toUpperCase(), description, startDate.toUpperCase(),
 							period.toUpperCase(), percentage, eligibilty)) {
 						Discount discount = new Discount(code.toUpperCase(), description, startDate.toUpperCase(),
 								period.toUpperCase(), percentage, eligibilty);
-						flag = discountManager.addDiscount(discount);
+						flag = discountManager.addDiscount(discount);//add discount operation
 						discountList = discountManager.getAllDiscounts();
 					}
 				} catch (DiscountException e) {
@@ -103,9 +106,9 @@ public class DiscountController implements IDiscountDelegate {
 
 				@Override
 				protected boolean confirmClicked() {
-					boolean flag = false;
+					boolean flag = false;//used to judge whether the data operation is success
 					try {
-						flag = discountManager.deleteDiscount(discount.getCode(), false);
+						flag = discountManager.deleteDiscount(discount.getCode(), false);//delete discount operation
 						discountList = discountManager.getAllDiscounts();
 					} catch (DiscountException e) {
 						UIUtils.showMessageDialog(discountPanel, ViewConstants.StatusMessage.ERROR, e.getMessage(),
@@ -144,7 +147,7 @@ public class DiscountController implements IDiscountDelegate {
 						Discount newDiscount = new Discount(code.toUpperCase(), description, startDate.toUpperCase(),
 								period.toUpperCase(), percentage, eligibilty);
 
-						flag = discountManager.updateDiscount(oldDiscount, newDiscount);
+						flag = discountManager.updateDiscount(oldDiscount, newDiscount);//update discount operation
 						discountList = discountManager.getAllDiscounts();
 					}
 				} catch (DiscountException e) {
