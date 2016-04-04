@@ -185,7 +185,11 @@ public abstract class BaseTablePanel extends JPanel {
 		Image newimg = img.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon newIcon = new ImageIcon(newimg);
 		btnEdit.setIcon(newIcon);
-
+		btnEdit.setBorderPainted(false);
+		btnEdit.setFocusPainted(false);
+		btnEdit.setContentAreaFilled(false);
+		btnEdit.setOpaque(false);
+		
 		// Return the panel.
 		return buttonPanel;
 	}
